@@ -3,3 +3,5 @@ tags
 helps
 _old
 __pycache__
+*.old
+temporary.cfg

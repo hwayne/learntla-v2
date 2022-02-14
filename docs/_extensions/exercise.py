@@ -99,7 +99,8 @@ class CustomDirective(SphinxDirective):
 
         if not hasattr(self.env, "exercise_list"):
             # Creating global state, by setting it on self.env
-            self.env.exercise_list = {}
+            setattr(self.env, "exercise_list", {})
+            self.env.exercise_list = {} 
 
         # Probably for CSS classes
         classes, class_name = [self.name], self.options.get("class", "")
