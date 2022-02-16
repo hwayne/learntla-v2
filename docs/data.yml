@@ -1,0 +1,8 @@
+state_spaces:
+  test:
+    distinct: 4
+    states: 10
+  wire_overview:
+    config: 1
+    distinct: 1
+    states: 2

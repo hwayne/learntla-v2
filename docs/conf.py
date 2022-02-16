@@ -32,7 +32,8 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx_rtd_theme',    
     'exercise',
-    'state_space'
+    'state_space',
+    'specification'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

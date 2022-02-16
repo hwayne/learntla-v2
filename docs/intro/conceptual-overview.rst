@@ -59,3 +59,10 @@ Here's what a specification looks like in TLA+. Don't worry too hard about under
 .. todo:: spec
 
 Toodles :ss:`wire_overview` moodles
+
+
+.. note:: `setup` callforward
+
+
+Models
+---------

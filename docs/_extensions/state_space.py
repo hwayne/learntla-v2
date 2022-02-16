@@ -2,11 +2,12 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import SphinxRole
 from pathlib import Path
 from typing import Any
-from docutils.nodes import Node, TextElement
+from docutils.nodes import Node
 from docutils import nodes
+from sphinx import roles
 import yaml
 
-
+# https://stackoverflow.com/questions/20553551/how-do-i-get-pylint-to-recognize-numpy-members
 # make this use the proper class, so we can load the environment once
 class StateSpaceRole(SphinxRole):
     """Used to dynamically add 'error checks' to learntla specs.
@@ -17,32 +18,31 @@ class StateSpaceRole(SphinxRole):
 
     TODO: commas
     """
-    ...
+    def run(self) -> tuple[list[Node], list[Any]]:
+        if not hasattr(self.env, 'state_spaces'):
+            p = Path(self.env.srcdir) / "./data.yml"
+            self.env.state_spaces = yaml.load(p.read_text(), Loader=yaml.Loader)["state_spaces"]
 
-def state_space_role(name, rawtext, text, lineno, inliner,
-            options=None, content=None) -> tuple[list[Node], list[Any]]:
+        try:
+            data = self.env.state_spaces[self.text]
 
-    # Make this use the sphinx-path
-    p = Path(r"./data.yml")
-    try:
-        data = yaml.load(p.read_text())["state_spaces"][text]
+        # Error handling if the key is not found
+        except KeyError:
+            msg = self.inliner.reporter.error(
+                f"role was not able to find a state space with name {text}", line=self.lineno)
+            prb = self.inliner.reporter.problematic(self.rawtext, self.rawtext, self.msg)
+            return [prb], [msg]
 
-    # Error handling if the key is not found
-    except KeyError:
-        msg = inliner.reporter.error(
-            f"role was not able to find a state space with name {text}", line=lineno)
-        prb = inliner.problematic(rawtext, rawtext, msg)
-        return [prb], [msg]
+        body = f"({data['states']} states / {data['distinct']} distinct)"
 
-    body = f"({data['states']} states / {data['distinct']} distinct)"
+        node = nodes.inline(self.rawtext, body)
 
-    node = nodes.inline(rawtext, body)
-
-    return [node], []
+        return [node], []
+        # NOTE DEPENDENCY????
 
 def setup(app: Sphinx):
 
-    app.add_role('ss', state_space_role)
+    app.add_role('ss', StateSpaceRole())
     return {
         "version": 0.1,
         "parallel_read_safe": True,

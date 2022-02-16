@@ -3,17 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. todo:: 
+  https://sphinx-tabs.readthedocs.io/en/latest/
+  https://sphinx-book-theme.readthedocs.io/en/latest/
 
 Welcome to learntla's documentation!
 ====================================
 
-:ss:`test1`
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    intro/conceptual-overview.rst
+   beginner/layout-of-a-spec.rst
 
 
 
