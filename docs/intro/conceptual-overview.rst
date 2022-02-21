@@ -56,13 +56,24 @@ Let's stick to states, behaviors, and invariants right now. We have a system and
 
 Here's what a specification looks like in TLA+. Don't worry too hard about understanding the syntax: this is, after all, a conceptual overview. Instead, see if you can pick out what the things correspond to.
 
-.. todo:: spec
+.. spec:: wire.tla
 
 Toodles :ss:`wire_overview` moodles
 
 
-.. note:: `setup` callforward
+.. note:: If you want to run this yourself, see `setup`. You're not expected to learn
 
+Components
+-----------
+
+Let's now break down the specifics of the specification. We'll be going into details about all of these in the next few sections.
+
+* ``---- MODULE and end module ----``
+In the `conceptual overview <overview>`, we introduced a sample specification:
+
+.. spec:: wire.tla
+
+In that, we just noted how various parts of the spec corresponded to the concepts we are dealing with. Now it's time to discuss how it works syntactically. 
 
 Models
 ---------
