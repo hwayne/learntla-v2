@@ -292,15 +292,6 @@ def init_numfig(app: Sphinx, config: Config) -> None:
     config.numfig_format = numfig_format
 
 
-def copy_asset_files(app: Sphinx, exc: Union[bool, Exception]):
-    static_path = Path(__file__).parent.joinpath("_static", "exercise.css").absolute()
-    asset_files = [str(static_path)]
-
-    if exc is None:
-        for path in asset_files:
-            copy_asset(path, str(Path(app.outdir).joinpath("_static").absolute()))
-
-
 def doctree_read(app: Sphinx, document: Node) -> None:
     domain = cast(StandardDomain, app.env.get_domain("std"))
 
@@ -580,12 +571,12 @@ def setup(app: Sphinx) -> Dict[str, Any]:
     app.add_config_value("hide_solutions", False, "env")
 
     app.add_css_file("exercise.css")
-    app.connect("build-finished", copy_asset_files)
     app.connect("config-inited", init_numfig)
     app.connect("env-purge-doc", purge_exercises)
     app.connect("env-merge-info", merge_exercises)
     app.connect("doctree-read", doctree_read)
 
+    # TODO make this automatically place the solution as a foldopen for html
     app.add_enumerable_node(
         enumerable_node,
         "exercise",
@@ -599,6 +590,7 @@ def setup(app: Sphinx) -> Dict[str, Any]:
         html=(visit_unenumerable_node, depart_unenumerable_node),
         latex=(visit_unenumerable_node, depart_unenumerable_node),
     )
+    
 
     app.add_node(
         linked_node,

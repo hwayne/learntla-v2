@@ -35,7 +35,7 @@ extensions = [
     'state_space',
     'specification'
 ]
-
+# https://github.com/mgaitan/sphinxcontrib-mermaid/tree/master/docs
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 

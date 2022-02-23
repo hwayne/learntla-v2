@@ -1,11 +1,11 @@
 from pathlib import Path
-from typing import Any, List, Dict, Set, Union, cast
-from sphinx.config import Config
+from typing import Any, List, Dict
+# from sphinx.config import Config
 from sphinx.application import Sphinx
 from docutils import nodes
 from docutils.nodes import Node
 from sphinx.util.docutils import SphinxDirective
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import directives # type: ignore
 from sphinx.directives.code import LiteralInclude
 
 
@@ -26,10 +26,16 @@ class SpecificationDirective(LiteralInclude):
         self.arguments[0] = str(path)
         return super().run()
 
+class TroubleshootingDirective(nodes.Admonition):
+    ...
+
 def setup(app: Sphinx) -> Dict[str, Any]:
 
 
     app.add_directive("spec", SpecificationDirective)
+
+    # TODO move to their own thing
+    #app.add_directive("troubleshooting", TroubleshootingDirective)
 
     return {
         "version": "builtin",

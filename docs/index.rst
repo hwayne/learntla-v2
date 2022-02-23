@@ -17,6 +17,7 @@ Welcome to learntla's documentation!
 
    intro/conceptual-overview.rst
    beginner/layout-of-a-spec.rst
+   beginner/operators.rst
 
 
 

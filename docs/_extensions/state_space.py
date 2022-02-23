@@ -1,4 +1,5 @@
-from sphinx.application import Sphinx
+
+from sphinx.application import Sphinx 
 from sphinx.util.docutils import SphinxRole
 from pathlib import Path
 from typing import Any
@@ -6,6 +7,7 @@ from docutils.nodes import Node
 from docutils import nodes
 from sphinx import roles
 import yaml
+import sys
 
 # https://stackoverflow.com/questions/20553551/how-do-i-get-pylint-to-recognize-numpy-members
 # make this use the proper class, so we can load the environment once
@@ -16,7 +18,7 @@ class StateSpaceRole(SphinxRole):
     We store this information in modelchecks.yml. This role automatically inserts
     (n states / m distinct) for a given model check.
 
-    TODO: commas
+    TODO: number formatting
     """
     def run(self) -> tuple[list[Node], list[Any]]:
         if not hasattr(self.env, 'state_spaces'):
@@ -29,16 +31,18 @@ class StateSpaceRole(SphinxRole):
         # Error handling if the key is not found
         except KeyError:
             msg = self.inliner.reporter.error(
-                f"role was not able to find a state space with name {text}", line=self.lineno)
-            prb = self.inliner.reporter.problematic(self.rawtext, self.rawtext, self.msg)
+                f"role was not able to find a state space with name {self.text}", line=self.lineno)
+            prb = self.inliner.reporter.problematic(self.rawtext, self.rawtext, msg)
             return [prb], [msg]
 
         body = f"({data['states']} states / {data['distinct']} distinct)"
 
-        node = nodes.inline(self.rawtext, body)
+        node = nodes.inline(self.rawtext, body) 
+
+        self.env.note_dependency(__file__) # Rebuild everything if I change this role
 
         return [node], []
-        # NOTE DEPENDENCY????
+        # Add build information that can be read by neovim pumbl
 
 def setup(app: Sphinx):
 
