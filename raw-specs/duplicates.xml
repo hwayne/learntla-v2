@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<root folder="">
+<spec name="duplicates" num="5">
+---- MODULE $name ----
+EXTENDS Integers, Sequences, TLC
+
+<s on="2">S == 1..10
+
+</s>(*--algorithm dup
+variable seq <s on="1">= &lt;&lt;1, 2, 3, 2>></s><s on="2-6">\in S \X S \X S \X S</s>;
+i = 1;
+seen = {};
+all_unique = TRUE;
+<s on="3-">
+define
+  AllUnique == 
+  <s on="3">all_unique = (Cardinality(seen) = Len(seq))</s><s on="4-">\A i, j \in 1..Len(seq):
+      <s on="5-">i # j => </s><s on="4-">seq[i] # seq[j]</s></s>
+end define; 
+</s>
+begin
+  Iterate:
+    while i &lt;= Len(seq) do
+      if seq[i] \notin seen then
+        seen := seen \union {seq[i]};
+      else
+        all_unique := FALSE;
+      end if;
+    end while;
+end algorithm; *)
+====
+</spec>
+</root>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<root>
+<spec num="3">
+---- MODULE wire ----
+<s on="1,2">CONSTANT x, y, z</s>
+
+<s on="-2">
+a<s on="3">b</s></s><s on="3">c</s>
+
+====
+</spec>
+</root>

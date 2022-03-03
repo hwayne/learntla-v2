@@ -1,4 +1,8 @@
 state_spaces:
+  basic_pluscal:
+    config: 1
+    distinct: 3
+    states: 4
   test:
     distinct: 4
     states: 10

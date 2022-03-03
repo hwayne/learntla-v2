@@ -14,27 +14,6 @@ This section covers:
 * Implication
 
 
-* CHOOSE?
-
-The Golden Rule
-======================
-
-In the last section, we wrote a simple specification for finding duplicates in a sequence. It tells us if there are mistakes, but it's also a bad spec. To tell whether a spec had an issue, we did something clever.
-
-.. note:: The golden rule of TLA+
-
-  **Do not be clever.** Express things exactly as what they mean.
-
-Programming teaches us to be clever. Specification is not clever.
-
-There's two things we're doing that are clever.
-
-#. The if statement.
-#. How we check for uniqueness. Carindality? Len? Ewww.
-
-.. note:: No, this isn't *all* the way to being not clever. We have this extra ``done`` variable we don't need. We call this an `auxiliary variable <aux-var>`: something that isn't part of the system but is for bookkeeping the spec. Sometimes aux vars are a necessary evil. But in this case, we'll later learn two separate tools to specify the property more directly: `pc` and the `eventually` operator. 
-
-
 .. _invariants:
 
 Invariants
@@ -42,31 +21,189 @@ Invariants
 
 
 
-.. _type invariants:
+In the last section, we wrote a simple specification for finding duplicates in a sequence. How do we know it's working, though? Here's another spec for finding duplicates, that also runs without error:
 
-.. technique:: Type Invariants
+::
 
-  TODO
+  (*--algorithm find_duplicates
+  variables
+    seq \in S \X S \X S \X S;
+    all_unique = TRUE;
+  begin
+    all_unique := FALSE;
+  end algorithm; *)
 
-Fixing the if
------------------
+
+This just says that every single sequence has duplicates! So, like in programming, we want to write some kind of automated test to verify this is correct.
+
+In TLA+, the basic test we have is the :dfn:`invariant`. An invariant is something that must be true on every single step of the program, regardless of the initial values, regardless of where we are. 
+
+The most common invariant we use in programming: static types! When I have a variable of type ``boolean``, I'm saying that all points in the program, the value of that variable is always true or false, never a string or 17. We can write that as a TLA+ operator:
+
+::
+
+  TypeInvariant ==
+    /\ all_unique \in BOOLEAN
+
+This operator needs to know about the ``all_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper.
+
+.. todo:: spec
+
+To check this, we add it as an `invariant <setup>`. TLC will check it for every possible state :ss:`duplicates_starting_states`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
+
+.. todo:: img
+
+.. todo:: talk about the error trace
+
+  There's a little more we can do with the error trace, see here.
+
+
+So back to the nature of the invariant. We say ``all_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant
+
+::
+
+  TypeInvariant ==
+    /\ is_unique
+    /\ seen \subseteq S
+    /\ i \in 1..Len(seq)+1
+
+.. exercise::
+  :name: inv-seen
+
+  What's an even narrower type for ``seen``?
+
+  Hint: use ``Range`` from the `map-filter-seq` exercise.
+
+  .. seen \subseteq Range(seq)
+
+I think that's enough of an introduction to invariants. Now let's write one that proves our algorithm correct.
+
+Testing Duplicates
+-------------------
+
+When the algorithm finishes, ``is_unique`` is either true or false. If it's true, then every indice of the value is unique. If it's false, then there must be duplicates. So we're looking at something like
+
+::
+
+  IsCorrect == IF is_unique THEN IsUnique(seq) ELSE ~IsUnique(seq)
+
+We can simplify this by just using ``=``.
+
+::
+
+  IsCorrect == is_unique = IsUnique(seq)
+
+Now the next two steps:
+
+1. Actually implement ``IsUnique(s)``.
+2. Currently, ``is_unique`` starts out true and flips to false if we find a duplicate. If the sequence *isn't* unique, then the invariant would fail as soon as we start— ``is_unique`` is true but ``IsUnique(seq)`` will be false. So we only want to check the "invariant" after the algorithm finishes running.
+
+Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is pretty easy though, so let's stat with that, then cover (2), the double back to doing ``IsUnique`` properly.
+
+Here's the improper solution for ``IsUnique``:
+
+::
+
+  IsUnique(s) == Cardinality(seen) = Len(s) 
+
+If the sequence has duplicates, then we won't run the ``\union`` line every single time, so it will have a different cardinality. In the next section, we'll see why this is "improper" and implement it properly, but for now this opens up our ability to discuss (2).
+
+.. note:: Also, because sets are unique.
+
+pc
+....
+
+Time for a quick leaky abstraction. We talk about the labels as being the units of atomicity. That's a PlusCal abstraction to help developers. These are translated to the "actions" in TLA+. To track the label, the PlusCal translator adds an additional variable called ``pc``. The value of ``pc`` is a string matching the name of the current label we evaluated.
+
+You can see this in the error trace. When we start the algorithm, ``pc = "Iterate"``. After the algorithm completes, ``pc = "Done"``. So we can only test our invariant at the end with
+
+::
+
+  IsCorrect == IF pc = "Done" THEN is_unique = IsUnique(seq) ELSE TRUE
+
+On every label *except* "Done", this evaluates to TRUE and the invariant passes. When it *is* "Done", then we check the condition we care about.
+
+``IF A THEN B ELSE TRUE`` conditionals come up a lot, cases where we only want to check B if A is true. Another way of saying this "either B is true or A is false".
+
+Another way of writing this: ``A => B``. Either B is true or A is false. Now we have
+
+::
+
+  IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
+
+I said ``=>`` was really important earlier. This is one of those ways: it lets us put preconditions on our invariants. This isn't the only place we might TK.
+
+.. hascredential => TK EXAMPLES
+
+We can now run this as our full invariant, and the spec works :ss:`duplicates_starting_states`. 
+
+.. _\A:
+.. _\E:
+.. _quantifiers:
+
+Quantifiers
+===================
+
+.. note:: If you've been working in your own spec, I recommend switching to `scratch` for now, since we'll be testing a lot of simple operators. 
+
+Here's our current version of ``IsUnique``.
+
+::
+
+  IsUnique(s) == Cardinality(seen) = Len(s) 
+
+I said that this is the improper way. That's for two reasons. First of all, it's tying the definition of uniqueness to ``seen``, which is a variable. Whether a sequence is unique or not should be independent of our actual behavior. It is or it isn't. The ``IsUnique`` operator should rely on the values in ``s`` and nothing else.
+
+Second, this isn't really the *definition* of uniqueness. We're just using a clever trick involving set cardinalities. It'd be better if we our operator captured the meaning of uniqueness, not a weird side-channel which is coincidentally identical to uniqueness. 
+
+Finally, this doesn't give us anywhere to go. We could represent uniqueness this way, but what about, say, sortedness? 
+
+For all these reasons, it's time to introduce :dfn:`quantifiers`. A quantifier is a statement about the elements in a set. There are two: ``\A``, or "forall", tests if a statement is true about *every* element in the set. ``\E``, or "exists", tests if it's true for *at least one* element. If I write
+
+::
+
+  \A x \in {1, 2, 3}: x < 2
+
+That's equivalent to "every element in the set is less than 2", which is false. If I wrote ``\E x \in {1, 2, 3}: x < 3``, that would instead be true.
+
+.. warning:: 
+
+  ``\A x \in {}: ...`` is always true, and ``\E`` is always false. All zero elements satisfy the statement, while not one does! In fact, this is the only case where "forall" can be true when "exists" is not.
+
+We can pull multiple elements from the same quantifier. Example: a *composite* number is divisible by a number besides one and itself. I can write ``IsComposite`` as
+
+::
+
+  IsComposite(num) ==
+    \E m, n \in 2..Len(num):
+      m * n = num
+
+Notice that m and n can be the same number: ``IsComposite(9) = TRUE`` when we pick ``m = n = 3``.
+
+.. tip::
+
+  You can also pull from several *different* sets in the same quantifier: ``\A x \in S, y \in T: P(x, y)``.
+
+
+We can't use a quantifier on a sequence, since that's not a set. But we *can* use it on the sequence's indices.
+
+::
+
+  Contains(seq, elem) ==
+    \E i \in 1..Len(seq):
+      seq[i] = elem
+
+::
+
+  IsUnique(s) ==
+    \A i, j \in 1..Len(s):
+      s[i] # s[j]
 
 .. _implication-2:
 
 The power of ``=>``
 ---------------------
 
-Quantifiers
-=================
+Final spec:
 
-
-Fixing Unique
-------------------
-
-.. _implication-3:
-
-The even more power of ``=>``
------------------------------------
-
-Pulling it all together
-=========================
+.. spec
