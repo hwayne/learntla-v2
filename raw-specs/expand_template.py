@@ -59,7 +59,9 @@ def create_spec_version(spec_root: Element, version: int) -> Spec:
 
     for switch in new_version.findall('.//s'):
         if version not in get_on(switch):
-            switch.text = "" # make this also eliminate child element text
+            for child in switch.iter():
+                # includes switch
+                child.text = "" # make this also eliminate child element tex 
     return Spec(
         name=new_version.attrib["name"],
         version=version,

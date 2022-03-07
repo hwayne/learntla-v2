@@ -113,31 +113,120 @@ Label Rules
 
 We're modeling time here, so there are restrictions on what we can o
 
-#. All statements must belong to a label. This means, among other things, that you miust always start the algorithm with a label.
+1. All statements must belong to a label. 
+
+This means, among other things, that you miust always start the algorithm with a label.
+
+2. Any variable can only be updated once per label.
+
+Remember, each label only represents one single instant of time. If the variable is updated twice, that means it's gone through two separate values in a single instant of time, meaning... it's not an instant of time anymore.
+
+This poses a problem when updating sequences. This is invalid::
+
+  Label:
+    seq[1] := seq[1] + 1;
+    seq[2] := seq[2] - 1;
+
+Because we're updating the ``seq`` variable twice in one label. To get around this, PlusCal has the "simultaneous assignment" operator ``||``::
+
+  Label:
+
+    seq[1] := seq[1] + 1 ||
+    seq[2] := seq[2] - 1;
+
+The rest of the label rules relate to *specific* constructs in PlusCal, so let's go over those constructs now.
+
+PlusCal expressions
+-------------------
+
+.. _skip:
+
+skip
+.....
+
+A noop.
+
+
+.. _if-pluscal:
+
+if-then-elsif-endif
+....................
+
+You know what this is.
+
+::
+
+  if Expr then
+    skip;
+  elsif Expr2 then
+    skip;
+  else
+    skip;
+  end if;
+
+
+if statements are used for control flow. You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block— some conditionals can have labels and others do not. However, if *any* branches have labels, you must follow the entire block with a label.
+
+.. todo::
+  example of how to think about this
+  
+
 #. All statements must *unambiguously* belong to a label. If any part of an ``if`` block contains a label, then you *must* have a label after the end of the whole ``if`` block.
 
   Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time.
 
-#. Any variable can only be updated once per label. Otherwise,
-#. You must always precede a ``while`` statement with a label.
+macro
+......
+
+
+with
+.....
+
+``with`` statements let you create temporary assignments in the middle of a block.
 #. Macros and ``with`` statements cannot have labels.
 
 
+while
+......
+
+#. You must always precede a ``while`` statement with a label.
+
 ..
-  * If
   * While
-  * define
   * with
   * macro
-  * skip
   * assert
   * label rules
 
 A Duplication Checker
 ======================
 
+Now that we know the basics of PlusCal, let's apply it to a small problem. I like to start with simple array algorithms, because we already have the tools to specify them. First we write an operator that expresses the high-level goal of the algorithm, then we write the algorithm, then we verify the algorithm matches the operator. 
+
+For example, if we were writing an algorithm to check if ``seq`` has any duplicate elements, the operator might be ``IsUnique(seq)``, and then the algorithm could work like this:
+
+1. Create an empty set ``seen``, then step through the elements of ``seq``.
+2. Every time we see a number, we check if it's already in ``seen``. 
+    * If it is, we say the list is not unique.
+    * Otherwise, we add the element to ``seen`` and continue.
+3. If we reach the end and haven't seen any duplicate elements, we say the list is unique.
+4. Our decision should match the operator ``IsUnique(seq)``.
+
+In this chapter we'll focus on just writing out the spec, parts (2) and (3). In `the next chapter <invariants.tla>` we'll do steps (1) and (4), actually verifying the algorithm.
+
+I called this spec ``duplicates``, but the name isn't too important for this.
+
+.. spec:: duplicates/1/duplicates.tla
+
+.. todo:: explanation , use :ss:`duplicates_one_initial`
+
 Multiple Starting States
 -------------------------
+
+We have multiple starting states
+
+.. spec:: duplicates/2/duplicates.tla
+  :diff: duplicates/1/duplicates.tla
 
 :dfn:`behavior`
 

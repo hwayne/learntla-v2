@@ -32,7 +32,8 @@ class StateSpaceRole(SphinxRole):
         except KeyError:
             msg = self.inliner.reporter.error(
                 f"role was not able to find a state space with name {self.text}", line=self.lineno)
-            prb = self.inliner.reporter.problematic(self.rawtext, self.rawtext, msg)
+            #prb = (self.rawtext, self.rawtext, msg)
+            prb = self.inliner.problematic(self.rawtext, self.rawtext, msg)
             return [prb], [msg]
 
         body = f"({data['states']} states / {data['distinct']} distinct)"

@@ -308,7 +308,7 @@ Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType``
 
 .. tip::
 
-  I often see beginners try to test if "S is a subset of T" by writing ``S \in SUBSET T``. This works but adds a lot of overhead. Write ``S \subseteq T`` instead.
+  I often see beginners try to test if "S is a subset of T" by writing ``S \in SUBSET T``. This works but is very inefficient. Write ``S \subseteq T`` instead.
 
 
 
@@ -336,6 +336,8 @@ I've found that the best way to remember which is which is by reading the colon 
   #. ???
 
   .. ``{t \in ClockType: t[1] < 12}``
+
+  .. ordered pairs
 
 
 
@@ -385,6 +387,7 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
   ToClock(seconds) == CHOOSE x \in ClockType: ToSeconds(x) = seconds % 86400
 
 
+
 .. troubleshooting::
 
   If you see an error like
@@ -400,8 +403,27 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
   What if multiple values satisfy ``CHOOSE``? In this case the only requirement is that the result is *deterministic*: the engine must always return the same value, no matter what. In practice this means that TLC will always choose the lowest value that matches the set.
 
 
-.. todo:: CHOOSE
+.. _let:
 
+LET
+=====
+
+As you can imagine, TLA+ operators can get quite complex!
+
+::
+
+  ToClock(seconds) == 
+    LET seconds_per_day == 86400 
+    IN CHOOSE x \in ClockType: ToSeconds(x) = seconds % seconds_per_day
+
+The LET gives us a new definition, locally scoped to ``ToClock``. ``seconds_per_day`` is an operator that only exists in the definition of this one.
+
+Wait, operator? Yes, we can add parameterized operators in ``LET``, too!
+
+
+.. todo:: Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
+
+  If you have to write a complex operator, breaking it into steps with LET is a great way to make it more understandable.
 .. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...
 .. [#leapsecond] Fun fact, in the original ISO standard seconds could go 1-61! There were *two* leap seconds.
 .. [#million] If you actual try this TLC will error out, because it assumes sets with more than 1,000,000 elements are unintentional. You can raise the limit in the TLC options.

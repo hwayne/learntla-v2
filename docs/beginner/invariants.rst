@@ -49,7 +49,7 @@ This operator needs to know about the ``all_unique`` variable, so we have to put
 
 .. todo:: spec
 
-To check this, we add it as an `invariant <setup>`. TLC will check it for every possible state :ss:`duplicates_starting_states`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
+To check this, we add it as an `invariant <setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
 
 .. todo:: img
 

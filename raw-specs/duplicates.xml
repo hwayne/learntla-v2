@@ -16,7 +16,7 @@ define
   AllUnique == 
   <s on="3">all_unique = (Cardinality(seen) = Len(seq))</s><s on="4-">\A i, j \in 1..Len(seq):
       <s on="5-">i # j => </s><s on="4-">seq[i] # seq[j]</s></s>
-end define; 
+<s on="3-">end define; </s>
 </s>
 begin
   Iterate:

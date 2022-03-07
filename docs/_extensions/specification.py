@@ -17,13 +17,20 @@ class SpecificationDirective(LiteralInclude):
     """
     option_spec = LiteralInclude.option_spec | {"hide-header": directives.flag}
     def run(self) -> List[Node]:
+        spec_dir = Path(self.env.srcdir) / "specs" 
+        path = spec_dir / self.arguments[0]
+        self.arguments[0] = path.as_posix()
+        if not self.options.get('caption'):
+            dl_link = f":download:`spec <{self.arguments[0]}>`"
+            self.options['caption'] = dl_link
 
         if not self.options.get('language'):
             self.options['language'] = 'tla'
-        if not self.options.get('caption'):
-            self.options['caption'] = "TODO"
-        path = Path(self.env.srcdir) / "specs" / self.arguments[0]
-        self.arguments[0] = str(path)
+        if diff := self.options.get('diff'):
+            self.options['diff'] = str(spec_dir / diff)
+        #out = super().run()
+        #breakpoint()
+        #out[0][1][0].text
         return super().run()
 
 class TroubleshootingDirective(nodes.Admonition):
