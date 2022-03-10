@@ -30,7 +30,8 @@ out.write_text(cleaned_spec)
 
 data_file = Path("../docs/data.yml") # move this
 data = yaml.load(data_file.read_text(), Loader=yaml.Loader)
-data["state_spaces"] |= yml["states"]
+if states := yml.get("states"):
+    data["state_spaces"] |= states
 data_file.write_text(yaml.dump(data))
 
 

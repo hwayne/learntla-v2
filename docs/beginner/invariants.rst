@@ -63,7 +63,7 @@ So back to the nature of the invariant. We say ``all_unique`` is the boolean typ
 ::
 
   TypeInvariant ==
-    /\ is_unique
+    /\ is_unique \in BOOLEAN
     /\ seen \subseteq S
     /\ i \in 1..Len(seq)+1
 
@@ -101,6 +101,8 @@ Now the next two steps:
 Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is pretty easy though, so let's stat with that, then cover (2), the double back to doing ``IsUnique`` properly.
 
 Here's the improper solution for ``IsUnique``:
+
+..     is_unique = Cardinality(seen) = Len(seq)</s><s on="4-">\A i, j \in 1..Len(seq):<s on="5-">i # j => </s><s on="4-">seq[i] # seq[j]</s></s>
 
 ::
 
@@ -211,7 +213,7 @@ Let's add this new version of ``IsUnique`` to our duplicates spec:
 
 TK
 
-If you run this, you will see it *fail*. And it fails in the oddest way, by a unique sequence as duplicates. In my case I got ``seq``, but the exact one TLC finds may differ on your computer.
+If you run this, you will see it *fail*. And it fails in the oddest way, by a unique sequence as duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
 
 Let's use `CHOOSE` to ask TLC *what* the indices it's picking are. Back in Scratch:
 

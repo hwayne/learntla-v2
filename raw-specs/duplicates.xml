@@ -8,48 +8,57 @@ EXTENDS Integers, Sequences, TLC
 
 </s>(*--algorithm dup
 variable seq <s on="1">=</s><s on="2-">\in</s> <s on="2">{</s><s on="1-2">&lt;&lt;1, 2, 3, 2>></s><s on="2">, &lt;&lt;1, 2, 3, 4>>}</s><s on="3">S \X S \X S \X S</s>;
-i = 1;
+index = 1;
 seen = {};
-all_unique = TRUE;
+is_unique = TRUE;
 begin
   Iterate:
-    while i &lt;= Len(seq) do
-      if seq[i] \notin seen then
-        seen := seen \union {seq[i]};
+    while index &lt;= Len(seq) do
+      if seq[index] \notin seen then
+        seen := seen \union {seq[index]};
       else
-        all_unique := FALSE;
+        is_unique := FALSE;
       end if;
+      index := index + 1;
     end while;
 end algorithm; *)
 ====
 </spec>
 
-<spec name="duplicates_2" num="1">
+<spec name="duplicates_2" num="4">
 ---- MODULE $name ----
-EXTENDS Integers, Sequences, TLC
+EXTENDS Integers, Sequences, TLC<s on="2-">, FiniteSets</s>
 
 S == 1..10
 
 (*--algorithm dup
 variable seq \in S \X S \X S \X S;
-i = 1;
+index = 1;
 seen = {};
-all_unique = TRUE;
-<s on="3-">
+is_unique = TRUE;
+
 define
-  AllUnique == 
-  <s on="3">all_unique = (Cardinality(seen) = Len(seq))</s><s on="4-">\A i, j \in 1..Len(seq):
-      <s on="5-">i # j => </s><s on="4-">seq[i] # seq[j]</s></s>
+  TypeInvariant ==
+    /\ is_unique \in BOOLEAN
+    /\ seen \subseteq S
+    /\ index \in 1..Len(seq)+1
+    <s on="2-">
+  IsUnique(s) == </s><s on="2">Cardinality(seen) = Len(s)</s><s on="3-">
+    \A i, j \in 1..Len(s): </s>
+      <s on="4">i # j => </s><s on="3-">seq[i] # seq[j]</s><s on="2-"> 
+
+  IsCorrect == pc = "Done" => is_unique = IsUnique(seq)</s>
 end define; 
-</s>
+
 begin
   Iterate:
-    while i &lt;= Len(seq) do
-      if seq[i] \notin seen then
-        seen := seen \union {seq[i]};
+    while index &lt;= Len(seq) do
+      if seq[index] \notin seen then
+        seen := seen \union {seq[index]};
       else
-        all_unique := FALSE;
+        is_unique := FALSE;
       end if;
+      index := index + 1;
     end while;
 end algorithm; *)
 ====
