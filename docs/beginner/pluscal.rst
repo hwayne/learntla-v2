@@ -20,7 +20,7 @@ TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of
 
 PlusCal isn't as powerful as "raw" TLA+, and there are some types specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
 
-.. note:: If you're more mathematically inclined, or already know PlusCal and want to jump further, you can check out `pluscal-to-tla`.
+.. note:: If you're more mathematically inclined, or already know PlusCal and want to jump further, you can check out `pluscal_to_tla`.
 
 PlusCal
 ============
@@ -147,7 +147,7 @@ skip
 A noop.
 
 
-.. _if-pluscal:
+.. _if_pluscal:
 
 if-then-elsif-endif
 ....................
@@ -218,16 +218,54 @@ I called this spec ``duplicates``, but the name isn't too important for this.
 
 .. spec:: duplicates/1/duplicates.tla
 
-.. todo:: explanation , use :ss:`duplicates_one_initial`
+.. todo:: explanation , use 
+
+If you run it, you will see a page like this:
+
+.. todo:: page
+
+:todo:`page`
+
+To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_one_initial`; you should see that too.
 
 Multiple Starting States
 -------------------------
 
-We have multiple starting states
+We now have a basic implementation of our duplication checker. When we run it, though, we want to make sure it's working properly for both unique and non-unique sequences. Right now we've only hardcoded a single sequence, so we can only check one of the two cases.
+
+To check both, we can use multiple starting states. TLA+ doesn't just let us assign values to variables, it also lets us say a variable starts out as *some* element in a set. It looks like this:
 
 .. spec:: duplicates/2/duplicates.tla
   :diff: duplicates/1/duplicates.tla
 
-:dfn:`behavior`
+The model checker will now check *both* TK and TK as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know. 
 
-.. todo:: Bubblesort eff yeah
+Adding mutliple starting states increases the complexity of our model. If, in a spec, TLC will normally have to check 10 states, adding 100 initial states could increase the state space to a maximum of 1,000. In practice, it will often be lower, because sometimes initial states will converge:
+
+::
+
+  variables x \in 1..1000;
+  begin
+    A:
+      x := 0;
+    B:
+      x := x+1;
+  end algorithm;
+
+We might think, with 1000 initial states and 2 labels, there will be 3,000 total states. In practice, the first label "collapses" the state space. So the number of *distinct* states will be far smaller.
+
+We can use the number of states and distinct states as a partial "fingerprint" of a model. Going forward, we'll use that as a form of error checking. Whenever I show a spec, I'll list the states and distinct states of the model check. For example, with the multiple starting states before, I got :ss:`duplicates_two_initial`. If you got a different number, you may have made a mistake in transcribing.
+
+10,000 starting states
+........................
+
+So now we're testing two inputs. That's twice as good as one input. Even better than that would be testing 10,000 inputs. Remember how in the last chapter we talked about generating `sets_of_values`? This is just one of the many places it's really useful. 
+
+
+.. spec:: duplicates/3/duplicates.tla
+  :diff: duplicates/1/duplicates.tla
+
+.. todo:: Conclude this out :ss:`duplicates_many_inputs`
+
+
+.. note:: Yes, we'll be able to sweep more elements with some more practice, once we learn `function_set`.

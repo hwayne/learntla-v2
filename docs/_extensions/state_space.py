@@ -36,7 +36,7 @@ class StateSpaceRole(SphinxRole):
             prb = self.inliner.problematic(self.rawtext, self.rawtext, msg)
             return [prb], [msg]
 
-        body = f"({data['states']} states / {data['distinct']} distinct)"
+        body = f"({data['states']:n} states / {data['distinct']:n} distinct)"
 
         node = nodes.inline(self.rawtext, body) 
 

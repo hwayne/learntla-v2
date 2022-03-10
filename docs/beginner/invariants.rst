@@ -1,4 +1,4 @@
-.. _writing-invariant:
+.. _writing_invariant:
 
 ++++++++++++++++++++++++
 Writing an Invariant
@@ -68,11 +68,11 @@ So back to the nature of the invariant. We say ``all_unique`` is the boolean typ
     /\ i \in 1..Len(seq)+1
 
 .. exercise::
-  :name: inv-seen
+  :label: inv_seen
 
   What's an even narrower type for ``seen``?
 
-  Hint: use ``Range`` from the `map-filter-seq` exercise.
+  Hint: use ``Range`` from the `map_filter_seq` exercise.
 
   .. seen \subseteq Range(seq)
 
@@ -131,11 +131,11 @@ Another way of writing this: ``A => B``. Either B is true or A is false. Now we 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 
-I said ``=>`` was really important earlier. This is one of those ways: it lets us put preconditions on our invariants. This isn't the only place we might TK.
+I said ``=>`` was really important earlier. This is one of those ways: it lets us put preconditions on our invariants. This isn't the only place we might use it.
 
-.. hascredential => TK EXAMPLES
+.. todo:: hascredential => TK EXAMPLES
 
-We can now run this as our full invariant, and the spec works :ss:`duplicates_starting_states`. 
+We can now run this as our full invariant, and the spec works :ss:`duplicates_many_inputs`. 
 
 .. _\A:
 .. _\E:
@@ -198,12 +198,121 @@ We can't use a quantifier on a sequence, since that's not a set. But we *can* us
   IsUnique(s) ==
     \A i, j \in 1..Len(s):
       s[i] # s[j]
+  \* Warning, this is wrong!
+  \* We'll see why next.
 
-.. _implication-2:
+
+.. _implication_2:
 
 The power of ``=>``
 ---------------------
 
+Let's add this new version of ``IsUnique`` to our duplicates spec:
+
+TK
+
+If you run this, you will see it *fail*. And it fails in the oddest way, by a unique sequence as duplicates. In my case I got ``seq``, but the exact one TLC finds may differ on your computer.
+
+Let's use `CHOOSE` to ask TLC *what* the indices it's picking are. Back in Scratch:
+
+::
+
+  Eval == LET
+    seq == ...
+    s == 1..4
+  IN
+    CHOOSE p \in s \X s: seq[p[1]] = seq[p[2]]
+
+  >>> Eval
+  <<1, 1>>
+
+**We never said the indices had to be different.** Obviously every index is going to be equal to itself!
+
+Here's one way to fix it:
+
+::
+
+  IsUnique(s) ==
+    \A i \in 1..Len(s):
+      \A j \in (1..Len(s)) \ {i}:
+        s[i] # s[j]
+
+And that... works, I guess. But there's a better way to do this, one that really showcases the power of ``=>``: **it lets us rule out unwanted combinations in quantifiers.** Let's say we write
+
+::
+
+  IsUnique(s) ==
+    \A i, j \in 1..Len(s):
+      i # j => s[i] # s[j]
+
+And then pass in ``<<"a", "b">>``. There are four possible combinations of values for i and j. Let's write out the full truth table for every combination:
+
+.. list-table::
+  :header-rows: 1
+
+  * - ``i, j``
+    - ``s[i], s[j]``
+    - ``i # j (P)`` 
+    - ``s[i] # s[j] (Q)``
+    - ``P => Q``
+  * - 1, 1
+    - a, a
+    - F
+    - F
+    - **T**
+  * - 1, 2
+    - a, b
+    - T
+    - T
+    - **T**
+  * - 2, 1
+    - b, a
+    - T
+    - T
+    - **T**
+  * - 2, 2
+    - b, b
+    - F
+    - F
+    - **T**
+
+For every combination, ``P => Q`` is true. This means the ``\A`` is true, and ``IsUnique(<<a, b>>)``, as expected.
+
+Now let's do the same for ``<<a, a>>``:
+
+.. list-table::
+  :header-rows: 1
+
+  * - ``i, j``
+    - ``s[i], s[j]``
+    - ``i # j (P)`` 
+    - ``s[i] # s[j] (Q)``
+    - ``P => Q``
+  * - 1, 1
+    - a, a
+    - F
+    - F
+    - **T**
+  * - 1, 2
+    - a, a
+    - T
+    - F
+    - **F**
+  * - 2, 1
+    - a, a
+    - T
+    - F
+    - **F**
+  * - 2, 2
+    - a, a
+    - F
+    - F
+    - **T**
+
+Since ``1, 2`` gives us ``T => F``, there's a case where the quantiifer fails, and ``~IsUnique(<<a, a>>)``, as we want it to be. 
+
 Final spec:
 
 .. spec
+
+This should pass :ss:`duplicates_many_inputs`

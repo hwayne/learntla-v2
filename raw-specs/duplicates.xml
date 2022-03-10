@@ -1,23 +1,16 @@
 <?xml version="1.0"?>
 <root folder="duplicates">
-<spec name="duplicates_1" num="5">
+<spec name="duplicates_1" num="3">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
-<s on="2">S == 1..10
+<s on="3">S == 1..10
 
 </s>(*--algorithm dup
-variable seq <s on="1">= &lt;&lt;1, 2, 3, 2>></s><s on="2-6">\in S \X S \X S \X S</s>;
+variable seq <s on="1">=</s><s on="2-">\in</s> <s on="2">{</s><s on="1-2">&lt;&lt;1, 2, 3, 2>></s><s on="2">, &lt;&lt;1, 2, 3, 4>>}</s><s on="3">S \X S \X S \X S</s>;
 i = 1;
 seen = {};
 all_unique = TRUE;
-<s on="3-">
-define
-  AllUnique == 
-  <s on="3">all_unique = (Cardinality(seen) = Len(seq))</s><s on="4-">\A i, j \in 1..Len(seq):
-      <s on="5-">i # j => </s><s on="4-">seq[i] # seq[j]</s></s>
-<s on="3-">end define; </s>
-</s>
 begin
   Iterate:
     while i &lt;= Len(seq) do
@@ -31,14 +24,14 @@ end algorithm; *)
 ====
 </spec>
 
-<spec name="duplicates_2" num="5">
+<spec name="duplicates_2" num="1">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
-<s on="2">S == 1..10
+S == 1..10
 
-</s>(*--algorithm dup
-variable seq <s on="1">= &lt;&lt;1, 2, 3, 2>></s><s on="2-6">\in S \X S \X S \X S</s>;
+(*--algorithm dup
+variable seq \in S \X S \X S \X S;
 i = 1;
 seen = {};
 all_unique = TRUE;

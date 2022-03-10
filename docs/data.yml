@@ -11,6 +11,10 @@ state_spaces:
     config: 1
     distinct: 30000
     states: 40000
+  duplicates_two_inputs:
+    config: 1
+    distinct: 6
+    states: 8
   test:
     distinct: 4
     states: 10

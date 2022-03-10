@@ -43,7 +43,7 @@ Operators can take any number of arguments. There are no default values, operato
 
 The right-hand side of an operator is called an :dfn:`expression`.
 
-.. _if-tla:
+.. _if_tla:
 
 IF-THEN-ELSE
 ------------
@@ -256,6 +256,8 @@ Cardinality
 
   The easiest way to test if a set is empty is by writing ``set = {}``. Similarly, you can test if a sequence is empty by writing ``seq = <<>>``.
 
+.. _sets_of_values:
+
 Sets of Values
 --------------
 
@@ -342,7 +344,7 @@ I've found that the best way to remember which is which is by reading the colon 
 
 
 .. exercise:: Sequence Manipulations
-  :label: map-filter-seq
+  :label: map_filter_seq
 
   1. Write ``IndicesMatching(seq, val)``, which returns all indices ``i`` of ``seq`` where ``seq[i] = val``.
   2. Write ``Range(seq)``, which returns all values in ``seq``. IE ``Range(<<"a", "b", "a">>) = {"a", "b"}``.

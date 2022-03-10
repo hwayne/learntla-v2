@@ -3,7 +3,6 @@ from typing import Any
 from argparse import ArgumentParser
 from re import sub
 import yaml
-
 """This is used to process specs into a form that we can use, and also update the data file."""
 parser = ArgumentParser()
 parser.add_argument("spec", help="Spec file to translate")

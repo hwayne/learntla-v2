@@ -19,6 +19,9 @@ Welcome to learntla's documentation!
    beginner/layout-of-a-spec.rst
    beginner/operators.rst
    beginner/pluscal.rst
+   beginner/invariants.rst
+   beginner/functions.rst
+   beginner/concurrency.rst
 
 
 
