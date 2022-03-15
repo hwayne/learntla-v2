@@ -1,4 +1,4 @@
-.. _writing_invariant:
+.. _chapter_invariants:
 
 ++++++++++++++++++++++++
 Writing an Invariant
@@ -8,9 +8,7 @@ This section covers:
 
 * How to write invariants
 * Type Invariants
-
 * Quantifiers
-
 * Implication
 
 
@@ -215,7 +213,7 @@ TK
 
 If you run this, you will see it *fail*. And it fails in the oddest way, by a unique sequence as duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
 
-Let's use `CHOOSE` to ask TLC *what* the indices it's picking are. Back in Scratch:
+Let's use `CHOOSE` to ask TLC *what* indices it picked. Back in `scratch`:
 
 ::
 
@@ -311,10 +309,21 @@ Now let's do the same for ``<<a, a>>``:
     - F
     - **T**
 
-Since ``1, 2`` gives us ``T => F``, there's a case where the quantiifer fails, and ``~IsUnique(<<a, a>>)``, as we want it to be. 
+Since ``1, 2`` gives us ``T => F``, there's a case where the quantiifer fails, and ``~IsUnique(<<a, a>>)``, as we want it to be. ``=>`` is an *incredibly* powerful tool for writing invariants. 
 
 Final spec:
 
 .. spec
 
-This should pass :ss:`duplicates_many_inputs`
+This should pass :ss:`duplicates_many_inputs`.
+
+More ``=>`` practice
+--------------------
+
+Exercises
+
+
+Summary
+========
+
+TODO

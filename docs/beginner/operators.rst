@@ -4,7 +4,17 @@
 Operators and Values
 +++++++++++++++++++++++++
 
-We're going to model this with clock arithmetic!
+This chapter covers:
+
+- Operators
+- values
+- `sequences`
+- `sets`
+- sets of values
+- `choose`
+- `let`
+
+.. Summary remains
 
 Operators
 ===========
@@ -15,7 +25,7 @@ Operators are what you'd think of as a function in a programming language. They 
 
   EXTENDS Integers
 
-  Add(x, y) == x + y
+  MinutesToSeconds(m) == m * 60
 
 
 .. troubleshooting::
@@ -27,19 +37,15 @@ Operators are what you'd think of as a function in a programming language. They 
   It's likely because you used a single ``=`` instead of a double ``==`` when defining the operator.
 
 
-.. topic:: asdasdas
-
-  What is a topic
-
 Operators can take any number of arguments. There are no default values, operator overloading, or optional arguments. If an operator has two parameters, it must always take two values. If an operator takes no values, you can write it without the parens. In this case, it's effectively a programming constant.
 
 ::
 
-  MaxVal == 17
+  SecondsPerMinute == 60
 
 .. note::
 
-  Are a few special forms of operators, like higher-order operators, recursive operators, and lambdas, which we will cover `later <higher-order-operators>`.
+  Are a few special forms of operators, like higher-order operators, recursive operators, and lambdas, which we will cover `later <higher_order_operators>`.
 
 The right-hand side of an operator is called an :dfn:`expression`.
 
@@ -48,7 +54,7 @@ The right-hand side of an operator is called an :dfn:`expression`.
 IF-THEN-ELSE
 ------------
 
-We have three keywords for structuring expressions. These are `LET` statements, `case statements <case>`, and conditionals. We'll be introducing the first two later: LET statements are much more useful after we can write some basic operators, while case statements are fairly uncommon in TLA+ practice. That leaves conditionals:
+We have three keywords for structuring expressions. These are `let` statements, `case statements <case>`, and conditionals. We'll be introducing the first two later: LET statements are much more useful after we can write some basic operators, while case statements are fairly uncommon in TLA+ practice. That leaves conditionals:
 
 ::
 
@@ -64,7 +70,7 @@ TLA+ is an untyped formalism, due to its roots in mathematics. In practice, the 
 
 .. note::
   
-  If you want to get on ahead, the new types we are not talking about are `model values <model-value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things.
+  If you want to get on ahead, the new types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
 
 
 .. _=:
@@ -119,7 +125,8 @@ So why do they get their own section? There's two things you need to know about 
 
 A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\\`` looks like an "A", so it's "and". ``\/`` is the other one.
 
-.. exercise::
+.. exercise:: Xor
+  :label: t
   
   Write a ``Xor`` operator:
 
@@ -129,9 +136,9 @@ A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\\`` looks l
     Xor(TRUE, TRUE) = FALSE
 
 
-  .. solution:: TK
+.. solution:: t
 
-    ``Xor(A, B) == A = ~B``
+  ``Xor(A, B) == A = ~B``
 
 
 
@@ -216,7 +223,7 @@ There's also a ``Sequences`` module. If you ``EXTENDS sequences``, you also get 
 
     Earlier(t1, t2) == ToSeconds(t1) < ToSeconds(t2)
 
-.. note:: Tuples
+.. note:: Fixed-length sequences are also called "tuples". It's the same syntax either way.
 
 .. todo:: Some kind of question
 
@@ -227,7 +234,7 @@ Sets
 
 A set is a collection of *unordered*, *unique* values. You write them with braces, like ``{1, 2, 3}`` or ``{<<"a">>, <<"b", "c">>}``. 
 
-Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important. There's many reasons for this. One of them is that sets define the types of values. Set of people and values. 
+Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important. 
 
 .. This again breaks down to whether we care about programming or specifying. 
 
@@ -250,7 +257,7 @@ We also have ways of slicing and dicing sets:
 
 .. exercise:: outer-product
 
-Cardinality
+If you ``EXTEND FiniteSets``, you also get ``Cardinality(set)``, which is the number of elements in the set.
 
 .. tip:: 
 
@@ -297,7 +304,7 @@ Speaking of ``Time``, we can combine ``\X`` and ``..`` to finally get our clock 
 
   ClockType == (0..23) \X (0..59) \X (0..59)
 
-As a quick sanity check, run ``Cardinality(ClockType)`` in your `scratchfile` (remember, you'll need ``EXTENDS FiniteSets``). You should see it has 86400 elements. We're now one step closer to having a property for ``AddTimes``: we want the result of it to always return a value in ``ClockType``.
+As a quick sanity check, run ``Cardinality(ClockType)`` in your `scratch` (remember, you'll need ``EXTENDS FiniteSets``). You should see it has 86400 elements. We're now one step closer to having a property for ``AddTimes``: we want the result of it to always return a value in ``ClockType``.
 
 .. exercise:: ???
 
@@ -312,13 +319,19 @@ Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType``
 
   I often see beginners try to test if "S is a subset of T" by writing ``S \in SUBSET T``. This works but is very inefficient. Write ``S \subseteq T`` instead.
 
-
-
-What about sets? There's a special
-
 .. todo:: exercise parts
 
-.. todo:: should map-filter go before or after sets of elements?
+
+
+.. _map:
+.. _filter:
+
+Map and Filter
+..............
+
+.. todo:: connect it to sets of values
+
+Sets can be mapped and filtered.
 
 ::
 
@@ -365,20 +378,20 @@ Getting the number of seconds past midnight from a clock value is straightforwar
 #. Floor divide again by 60 to get the total hours.
 #. Set the remainder of the second divison as minutes.
 
-{{Talk about how this can give you ``<<25, 0, 0>>`` as a value}}
+.. todo:: Talk about how this can give you ``<<25, 0, 0>>`` as a value
 
 This *constructs* a clock value from the total seconds. This is how we'd do it in a programming language, where we are implementing algorithms to do things. But here's another thing we could do:
 
 #. Take the set of all possible clock values.
 #. Pick the element in the set that, when converted to seconds, gives us the value.
 
-We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion. Since we're not running a large app for everybody, defition > performance here. In TLA+ we can write the selection like this: 
+We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion. Since we're not running a large app for everybody, definition > performance here. In TLA+ we can write the selection like this: 
 
 ::
 
   ToClock(seconds) == CHOOSE x \in ClockType: ToSeconds(x) = seconds
 
-``CHOOSE x \in set: P(x)`` is the generic "selection" syntax. Try it in `Scratch`. 
+``CHOOSE x \in set: P(x)`` is the generic "selection" syntax. Try it in `scratch`. 
 
 CHOOSE is useful whenever we need to pull a value from a set.
 
@@ -400,17 +413,19 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
 
 
 
-.. note::
+.. warning::
 
   What if multiple values satisfy ``CHOOSE``? In this case the only requirement is that the result is *deterministic*: the engine must always return the same value, no matter what. In practice this means that TLC will always choose the lowest value that matches the set.
 
+
+.. exercise:: for what value in 1..100 does ``polynomial = 0``?
 
 .. _let:
 
 LET
 =====
 
-As you can imagine, TLA+ operators can get quite complex!
+As you can imagine, TLA+ operators can get quite complex! To make them easier to follow, we can break them into suboperators, using ``LET``:
 
 ::
 
@@ -422,10 +437,18 @@ The LET gives us a new definition, locally scoped to ``ToClock``. ``seconds_per_
 
 Wait, operator? Yes, we can add parameterized operators in ``LET``, too!
 
+.. todo:: example, fizzbuzz if I can't think of anything
 
 .. todo:: Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
 
-  If you have to write a complex operator, breaking it into steps with LET is a great way to make it more understandable.
+If you have to write a complex operator, breaking it into steps with LET is a great way to make it more understandable.
+
+.. todo:: Something on nesting expressions
+
+Summary
+========
+
+
 .. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...
 .. [#leapsecond] Fun fact, in the original ISO standard seconds could go 1-61! There were *two* leap seconds.
 .. [#million] If you actual try this TLC will error out, because it assumes sets with more than 1,000,000 elements are unintentional. You can raise the limit in the TLC options.

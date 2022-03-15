@@ -4,12 +4,13 @@ I copied all of this from sphinx_exercise so I could make a better question and 
 
 NOTE: Doesn't yet work for LaTeX builder
 
+NOTE: currently errors a solution corresponds to an exercise that doesn't have a title
 """
 
 ### INCLUDES {{{
 
 from pathlib import Path
-from typing import Any, List, Dict, Set, Union, cast
+from typing import Any, List, Dict, Set, Union, cast, TYPE_CHECKING
 from sphinx.config import Config
 from sphinx.application import Sphinx
 from sphinx.environment import BuildEnvironment
@@ -95,8 +96,6 @@ class CustomDirective(SphinxDirective):
 
     def run(self) -> List[Node]:
         
-
-
         if not hasattr(self.env, "exercise_list"):
             # Creating global state, by setting it on self.env
             setattr(self.env, "exercise_list", {})
@@ -293,6 +292,7 @@ def init_numfig(app: Sphinx, config: Config) -> None:
 
 
 def doctree_read(app: Sphinx, document: Node) -> None:
+    assert app.env
     domain = cast(StandardDomain, app.env.get_domain("std"))
 
     # Traverse extension nodes
@@ -328,6 +328,7 @@ def doctree_read(app: Sphinx, document: Node) -> None:
 
 class DoctreeResolve:
     def __init__(self, app: Sphinx, doctree: nodes.document, docname: str) -> None:
+        assert app.env
         self.builder = app.builder
         self.config = app.config
         self.env = app.env

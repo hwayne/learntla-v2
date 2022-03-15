@@ -7,20 +7,29 @@ Writing Specifications
 
 Overview
 ===========
-In the last section, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
 
-For a specification
+In the `last chapter <operators>`, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
 
-.. _pluscal:
+This chapter covers:
+
+- Pluscal
+- Labels
+- pluscal constructs
+
+
+.. index:: PlusCal
+  :name: pluscal
 
 PlusCal
 -----------
 
-TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of state changes in the system. It's a powerful way of expressing mutation, but it is also very general, accepting a large degree of complexity to be able to express more powerful systems. Many engineers struggle to start learning it. So in 2009, Leslie Lamport created a DSL called :dfn:`PlusCal`: a more programming-like syntax that compiles to TLA+ actions.
+TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of state changes in the system. It's a powerful way of expressing mutation, but it is also very general, accepting a large degree of complexity to be able to express more powerful systems. Many engineers struggle to start learning it. So in 2009, Leslie Lamport created a DSL called PlusCal: a more programming-like syntax that compiles to TLA+ actions.
+
+:ref:`pluscal`
 
 PlusCal isn't as powerful as "raw" TLA+, and there are some types specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
 
-.. note:: If you're more mathematically inclined, or already know PlusCal and want to jump further, you can check out `pluscal_to_tla`.
+.. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can check out `pluscal_to_tla`.
 
 PlusCal
 ============
@@ -53,22 +62,24 @@ That's what's actually run when we model check this spec.
 
   Put the translation below the ``====``
 
-.. troubleshooting:: Model Checking
+.. troubleshooting:: No spec
 
   If the blah blah blah
 
+.. index:: Labels
+  :name: label
+
 .. _labels:
-.. _label:
 
 Labels
 ------------
 
 We're learning TLA+ to work on complex systems, so let's frame the motivation and existence of labels in that context. What are we building up to?
 
-Complex systems have lots of *concurrency*, and many things are going on at once. Events aren't instantaneous, and may take some time to complete. But they will take different lengths of time. 
+Complex systems have lots of *concurrency*, and many things are going on at once. Events aren't instantaneous, and may take some time to complete. But they can happen on different timescales. Compare these two steps:
 
-1. Summing a list of 100 numbers
-2. In something like ``http.get(website, auth)``, some time will pass between making the HTTP request and receiving a response. 
+1. Summing a list of 100 numbers.
+2. Making an HTTP request and receiving the response.
 
 The first line of code takes tens of nanoseconds to run, and the second tens of milliseconds. That's a time difference of six orders of magnitude. It might be possible for the summation to happen in between the request and response, but it's virtually impossible for the HTTP request to happen in between starting and finishing the summation. In our system, the first event would be "instantaneous", while the second would not.
 
@@ -90,7 +101,7 @@ I am saying that the summation happens in a single step, and no time passes betw
 
 Then *time passes* between ``SendRequest`` and ``GetResponse``.
 
-.. note:: actions
+.. note:: The labels represent the titular "actions" in the *Temporal Logic of Actions*. 
 
 If I wanted to, I could *choose* to make the summation nonatomic. Here's how I'd do it in PlusCal:
 
@@ -111,7 +122,7 @@ The point is this: the labels let us specify just how concurrent our system is. 
 Label Rules
 --------------
 
-We're modeling time here, so there are restrictions on what we can o
+We're modeling time here, so there are restrictions on where we can place the labels.
 
 1. All statements must belong to a label. 
 
@@ -139,13 +150,21 @@ The rest of the label rules relate to *specific* constructs in PlusCal, so let's
 PlusCal expressions
 -------------------
 
-.. _skip:
+.. index:: skip
+  :name: skip
 
 skip
 .....
 
-A noop.
+A noop. 
 
+.. index:: assert
+  :name: assert
+
+assert
+......
+
+TODO
 
 .. _if_pluscal:
 
@@ -165,38 +184,62 @@ You know what this is.
   end if;
 
 
-if statements are used for control flow. You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block— some conditionals can have labels and others do not. However, if *any* branches have labels, you must follow the entire block with a label.
+if statements are used for control flow. You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block— some conditionals can have labels and others do not. However, if *any* branches have labels, you must follow the entire block with a label. To see why, consider the following:
 
-.. todo::
-  example of how to think about this
-  
+::
 
-#. All statements must *unambiguously* belong to a label. If any part of an ``if`` block contains a label, then you *must* have a label after the end of the whole ``if`` block.
+  A:
+    if bool then
+      B:
+        skip;
+    else
+      skip;
+    end if;
+    x := 1;
 
-  Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time.
+If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``bool`` is false, then it would happen as part of label A. Since statements must *unambiguously* belong to a single label, this is invalid PlusCal, and we need to add an extra label ``C``.
+
+3. All statements must *unambiguously* belong to a label. If any part of an ``if`` block contains a label, then you *must* have a label after the end of the whole ``if`` block.
+
+  Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of 
+
+.. index:: macro
+  :name: macro
 
 macro
 ......
 
+TODO
 
 with
 .....
 
 ``with`` statements let you create temporary assignments in the middle of a block.
-#. Macros and ``with`` statements cannot have labels.
 
+TODO
+
+3. Macros and ``with`` statements cannot have labels.
+
+
+.. _while:
 
 while
 ......
 
-#. You must always precede a ``while`` statement with a label.
+``while`` is the only form of loop we have. A while loop must always be preceded with a label.
 
-..
-  * While
-  * with
-  * macro
-  * assert
-  * label rules
+::
+
+  Sum:
+    while i <= Len(seq) do
+      x := x + seq[i];
+      Inc:
+        i := i + 1;
+    end while;
+
+**While is nonatomic**. After each iteration of the while loop, we're back at the ``Sum`` label. Other processes can run before the next iteration. This doesn't change things for single process algorithms, but it will matter a lot when we start adding in concurrency.
+
+.. todo:: exercise about showing that it has multiple states
 
 A Duplication Checker
 ======================
@@ -212,7 +255,7 @@ For example, if we were writing an algorithm to check if ``seq`` has any duplica
 3. If we reach the end and haven't seen any duplicate elements, we say the list is unique.
 4. Our decision should match the operator ``IsUnique(seq)``.
 
-In this chapter we'll focus on just writing out the spec, parts (2) and (3). In `the next chapter <invariants.tla>` we'll do steps (1) and (4), actually verifying the algorithm.
+In this chapter we'll focus on just writing out the spec, parts (2) and (3). In `the next chapter <chapter_invariants>` we'll do steps (1) and (4), actually verifying the algorithm.
 
 I called this spec ``duplicates``, but the name isn't too important for this.
 
@@ -223,8 +266,6 @@ I called this spec ``duplicates``, but the name isn't too important for this.
 If you run it, you will see a page like this:
 
 .. todo:: page
-
-:todo:`page`
 
 To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_one_initial`; you should see that too.
 
@@ -265,7 +306,15 @@ So now we're testing two inputs. That's twice as good as one input. Even better 
 .. spec:: duplicates/3/duplicates.tla
   :diff: duplicates/1/duplicates.tla
 
-.. todo:: Conclude this out :ss:`duplicates_many_inputs`
+We're now significantly more likely to cover all interesting edge cases :ss:`duplicates_many_inputs`. This isn't *guaranteed*: maybe there's a bug that *only* triggers if we have ``-187`` in there somewhere. But {{ending}}
 
+.. note:: Okay, there's one big gap: while we're trying a lot of different elements, we're only looking at one fixed *length*. Maybe there's an issue with 1 or 0-length sequences. We'll be able to fix this once we learn about `function_set`.
 
-.. note:: Yes, we'll be able to sweep more elements with some more practice, once we learn `function_set`.
+Now that we have broad state-space coverage, it's time to write some properties. In `the next chapter <chapter_invariants>` we'll specify that our checker always gets the correct result.
+
+.. exercise:: todo
+
+Summary
+=========
+
+Blah blagh blah

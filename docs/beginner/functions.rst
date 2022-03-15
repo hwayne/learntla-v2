@@ -1,10 +1,10 @@
-.. _functions:
+.. _chapter_functions:
 
 ++++++++++++++
 Functions
 ++++++++++++++
 
-We will cover
+In this chapter we will cover
 
 * Structures
 * Functions
@@ -31,8 +31,6 @@ You index structs the same way you do sequences so ``struct["a"] = 1``. You can 
 
 
 Unsurprisingly, structs are mainly used to represent organized collections of data. For example, a TK might consist of an TK.
-
-TK.
 
 .. some kind of exercise
 
@@ -80,16 +78,16 @@ Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
   .. Max(DOMAIN seq)
 
-
-Here's the punchline: *both sequences and structures are just syntactic sugar*. TLA+ has only two "real" collections: sets and `functions`. Sequences and structures are both particular classes of functions, the ones that we as programmers are most familiar with. It's time to finally introduce the true data type.
+Here's the punchline: *both sequences and structures are just syntactic sugar*. TLA+ has only two "real" collections: sets and functions. Sequences and structures are both particular classes of functions, the ones that we as programmers are most familiar with. It's time to finally introduce the true data type.
 
 
 .. _functions:
+.. _function:
 
 Functions
 ===============
 
-First of all, throw away the programming definition of "function". The closest thing TLA+ has to a programmatic function are operators. A :dfn:`function` follows the *mathematical* definition, a a mapping of values in one set to another set.
+First of all, throw away the programming definition of "function". The closest thing TLA+ has to a programmatic function are operators. A :dfn:`function` follows the *mathematical* definition, a mapping of values in one set to another set.
 
 ::
 
@@ -103,7 +101,6 @@ The set we're mapping from, ``S``, is the :dfn:`domain` of the function, and can
 But functions are a more general than that, and can map *any* set of values. For example, we can have pairs of numbers in the domain of the function.
 
 ::
-
   
   Prod == 
     LET S == 1..10 IN
@@ -119,26 +116,59 @@ But functions are a more general than that, and can map *any* set of values. For
 
 .. exercise::
 
-  Double a sequence
+  Write ``Double(seq)``.
 
-.. todo:: Use it to construct a truth table or find the values of IsUnique
+  ::
+
+    Double(<<1, 2, 3>>) = <<2, 4, 6>>
+
+  .. 
+
+.. todo:: 
+
+  Explain truth tables, then find the truth table of something simple.
+
+  ::
+
+    TruthTable == [p \in BOOLEAN, q \in BOOLEAN |-> p => q]
+
+  Exercise: truth table of something super complex
+
 
 @@ and :>
+...........
+
+TODO
 
 Using Functions
 -----------------
 
 Why functions over operators? We rarely use functions for computations— operators are far superior for that. Functions are important as *values*. We can assign them to variables and manipulate them like any other value.
 
+.. todo:: make the below a spec
+
+::
+
+  People == {"alice", "bob", "carol"}
 
 
-Flip a single one to on
+  (*--algorithm example
+  variables
+    acct = [p \in People |-> 10];
+    from \in People;
+    to \in People;
+  begin
+    A:
+      acct[from] := acct[from] - 1;
+    B:
+      acct[to] := acct[to] + 1;
+  end algorithm; *)
 
 .. note:: THis will make a lot more sense once we've covered concurrency.
 
 .. exercise::
 
-  Write invariantso n the functions
+  Write invariants on the functions
 
 .. _function_set:
 .. _function_sets:
@@ -148,12 +178,12 @@ Function sets
 
 You know the drill by now: new class of value, new need for a way to generate sets of that value. We need to add function values to our type invariants, too!
 
-The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." I find this is pretty unintuitive for beginners, so let's work through a bunch of examples.
+The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." Some examples: 
 
 #. We're tracking ownership of items by people: ``owns[i] = p`` means that person ``p`` is the owner of item ``i``. No matter what the assignments, ``owns \in [Item -> Person]``.
 #. We have a set of servers, which can have one of three states. Then ``status \in [Server -> {"online", "booting", "offline"}]``.
 #. We represent a directed graph as a function on pairs of points, which is true iff there's an edge between the two points. Then ``graph \in [Node \X Node -> BOOLEAN]``.
-#. If we define the previous set as the operator ``GraphType``, we could get the set of all *undirected* graphs with ``{g \in GraphType: \A n1, n2 \in Node: g[n1,n2] = g[n2,n1]``.
+#. If we define the previous set as the operator ``GraphType``, we could get the set of all *undirected* graphs with ``{g \in GraphType: \A n1, n2 \in Node: g[n1,n2] = g[n2,n1]}``.
 #. Integer addition, as in "two plus two is four", is an element of the function set ``[Int \X Int -> Int]``. However, while this is expressible, TLC cannot enumerate this set.
 
 .. troubleshooting::
@@ -170,7 +200,13 @@ The syntax for function sets is ``[S -> T]`` and is "every function where the do
 
 .. exercise::
 
-  FIND AN EXERCISE
+  Given the sets ``Servers`` and ``StatusType == {"on", "off", "booting"}``, find the set of all status configurations where at least one server is booting.
+
+  ::
+
+    {config \in [Servers -> StatusType]: \E s \in Servers: config[s] = "booting"}
+
+  .. this is too hard
 
 The Duplicate Checker Again
 ...........................
@@ -179,19 +215,19 @@ The Duplicate Checker Again
 
 Our last version of the duplicate checker was this:
 
-TK
+.. spec:: duplicates/5/duplicates.tla
 
-If I wanted to try it on five-element sequences, I'd have to add another ``\X S``. By the time we hit six or seven elements, it's too unweildy to work with. 
+If I wanted to try it on five-element sequences, I'd have to add another ``\X S``. By the time we hit six or seven elements, it's too unwieldy to work with. 
 
 We can simplify this with function sets. ``S \X S \X S`` is going to be a set of 3-tuples. We now know that a 3-tuple is a function with domain ``1..3``. Then ``[1..3 -> S] = S \X S \X S``: the set of all 3-tuples where each element of each tuple is a value in ``S``.
 
 From this, extending this to seven-element sequences is trivial :ss:`duplicates_len_7_seqs`:
 
-TK
+duplicates_f1
 
 Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]`` is based on a *value* — the size of the domain set. We can base that value on a variable, too!
 
-TK spec
+duplicates_f2
 
 Now, instead of checking all length 7 sequences, we're checking all length 7 *or smaller* sequences :ss:`duplicates_len_7_or_less`! This is a useful specifying trick known as *state sweeping*.
 
@@ -204,6 +240,9 @@ Now, instead of checking all length 7 sequences, we're checking all length 7 *or
 
 .. exercise::
 
+  TODO
 
 Summary
 ===========
+
+TODO

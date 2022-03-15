@@ -12,22 +12,20 @@ Welcome to learntla's documentation!
 
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Contents:
+   :maxdepth: 2
+   :caption: Learning
+   :hidden:
 
    intro/conceptual-overview.rst
-   beginner/layout-of-a-spec.rst
-   beginner/operators.rst
-   beginner/pluscal.rst
-   beginner/invariants.rst
-   beginner/functions.rst
-   beginner/concurrency.rst
+   beginner/index
+   intermediate/index
 
 
 
-Indices and tables
-==================
+.. applying
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. 
+  indexes and tables
+  * :ref:`genindex`
+  * :ref:`modindex`
+  * :ref:`search`
