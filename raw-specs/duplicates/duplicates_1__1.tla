@@ -7,7 +7,6 @@ states:
 !!!
 !tlacli check %
 !tlacli translate %
-!..\process_spec.py %
 !!!
 ---- MODULE duplicates_1__1 ----
 EXTENDS Integers, Sequences, TLC

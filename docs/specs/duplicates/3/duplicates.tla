@@ -4,18 +4,19 @@ EXTENDS Integers, Sequences, TLC
 S == 1..10
 
 (*--algorithm dup
-  variable seq \in S \X S \X S \X S;
-i = 1;
+variable seq \in S \X S \X S \X S;
+index = 1;
 seen = {};
-all_unique = TRUE;
+is_unique = TRUE;
 begin
   Iterate:
-    while i <= Len(seq) do
-      if seq[i] \notin seen then
-        seen := seen \union {seq[i]};
+    while index <= Len(seq) do
+      if seq[index] \notin seen then
+        seen := seen \union {seq[index]};
       else
-        all_unique := FALSE;
+        is_unique := FALSE;
       end if;
+      index := index + 1;
     end while;
 end algorithm; *)
 ====

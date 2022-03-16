@@ -208,6 +208,8 @@ The syntax for function sets is ``[S -> T]`` and is "every function where the do
 
   .. this is too hard
 
+.. index:: duplicates
+
 The Duplicate Checker Again
 ...........................
 
@@ -221,7 +223,7 @@ If I wanted to try it on five-element sequences, I'd have to add another ``\X S`
 
 We can simplify this with function sets. ``S \X S \X S`` is going to be a set of 3-tuples. We now know that a 3-tuple is a function with domain ``1..3``. Then ``[1..3 -> S] = S \X S \X S``: the set of all 3-tuples where each element of each tuple is a value in ``S``.
 
-From this, extending this to seven-element sequences is trivial :ss:`duplicates_len_7_seqs`:
+From this, extending this to seven-element sequences is trivial :ss:`duplicates_len_5_seqs`:
 
 duplicates_f1
 
@@ -229,7 +231,7 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
 
 duplicates_f2
 
-Now, instead of checking all length 7 sequences, we're checking all length 7 *or smaller* sequences :ss:`duplicates_len_7_or_less`! This is a useful specifying trick known as *state sweeping*.
+Now, instead of checking all length 7 sequences, we're checking all length 7 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
 
 .. technique:: State Sweeping
 

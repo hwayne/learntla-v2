@@ -68,20 +68,20 @@ end algorithm; *)
 EXTENDS Integers, Sequences, TLC
 
 (*--algorithm dup
-variable <s on="2">n \in 1..7;
-</s>seq \in [1..<s on="1">7</s><s on="2">n</s> -> 1..10];
-i = 1;
+variable <s on="2">n \in 1..5;
+</s>seq \in [1..<s on="1">5</s><s on="2">n</s> -> 1..10];
+index = 1;
 seen = {};
 is_unique = TRUE;
 
 define
   TypeInvariant ==
     /\ is_unique \in BOOLEAN
-    /\ seen \subseteq S
-    /\ i \in 1..Len(seq)+1
+    /\ seen \subseteq 1..10
+    /\ index \in 1..Len(seq)+1
     
   IsUnique(s) == 
-    \A i, j \in 1..Len(s)
+    \A i, j \in 1..Len(s):
       i # j => seq[i] # seq[j] 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
@@ -89,12 +89,13 @@ end define;
 
 begin
   Iterate:
-    while i &lt;= Len(seq) do
-      if seq[i] \notin seen then
-        seen := seen \union {seq[i]};
+    while index &lt;= Len(seq) do
+      if seq[index] \notin seen then
+        seen := seen \union {seq[index]};
       else
         is_unique := FALSE;
       end if;
+      index := index + 1;
     end while;
 end algorithm; *)
 ====

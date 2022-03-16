@@ -14,6 +14,7 @@ This section covers:
 
 .. _invariants:
 
+
 Invariants
 =============
 
@@ -75,6 +76,8 @@ So back to the nature of the invariant. We say ``all_unique`` is the boolean typ
   .. seen \subseteq Range(seq)
 
 I think that's enough of an introduction to invariants. Now let's write one that proves our algorithm correct.
+
+.. index:: duplicates
 
 Testing Duplicates
 -------------------

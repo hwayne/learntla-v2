@@ -1,15 +1,8 @@
-target: specs/duplicates/inv_3/duplicates.tla
-!!!
-!tlacli check % --inv TypeInvariant --inv IsCorrect
-!tlacli translate %
-!!!
----- MODULE duplicates_2__3 ----
-EXTENDS Integers, Sequences, TLC, FiniteSets
-
-S == 1..10
+---- MODULE duplicates ----
+EXTENDS Integers, Sequences, TLC
 
 (*--algorithm dup
-variable seq \in S \X S \X S \X S;
+variable seq \in [1..5 -> 1..10];
 index = 1;
 seen = {};
 is_unique = TRUE;
@@ -17,12 +10,12 @@ is_unique = TRUE;
 define
   TypeInvariant ==
     /\ is_unique \in BOOLEAN
-    /\ seen \subseteq S
+    /\ seen \subseteq 1..10
     /\ index \in 1..Len(seq)+1
     
   IsUnique(s) == 
-    \A i, j \in 1..Len(s): 
-      seq[i] # seq[j] 
+    \A i, j \in 1..Len(s):
+      i # j => seq[i] # seq[j] 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 end define; 

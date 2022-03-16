@@ -1,27 +1,27 @@
 """
 I copied all of this from sphinx_exercise so I could make a better question and solution linker
 
-
+https://www.sphinx-doc.org/en/master/development/tutorials/recipe.html
+https://github.com/sphinx-doc/sphinx/blob/4.x/sphinx/ext/todo.py
+https://www.sphinx-doc.org/en/master/development/tutorials/recipe.html
 NOTE: Doesn't yet work for LaTeX builder
 
 NOTE: currently errors a solution corresponds to an exercise that doesn't have a title
 """
 
 ### INCLUDES {{{
+from docutils import nodes
+from docutils.nodes import Node
+from docutils.parsers.rst import directives
 
-from pathlib import Path
-from typing import Any, List, Dict, Set, Union, cast, TYPE_CHECKING
+from typing import Any, List, Dict, Set, Union, cast, Tuple
 from sphinx.config import Config
 from sphinx.application import Sphinx
 from sphinx.environment import BuildEnvironment
-from sphinx.domains.std import StandardDomain
-from sphinx.addnodes import number_reference
-from docutils.nodes import Node
-from docutils import nodes
+from sphinx.domains.std import StandardDomain, Domain
+from sphinx.addnodes import pending_xref, number_reference
 from sphinx.util import logging
-from sphinx.util.fileutil import copy_asset
 from sphinx.util.docutils import SphinxDirective
-from docutils.parsers.rst import directives
 
 logger = logging.getLogger(__name__)
 ### END INCLUDES }}}
@@ -49,7 +49,6 @@ def is_extension_node(node):
 
 class enumerable_node(nodes.Admonition, nodes.Element):
     pass
-
 
 def visit_enumerable_node(self, node: Node) -> None:
     # import traceback
@@ -87,7 +86,33 @@ def depart_linked_node(self, node: Node) -> None:
 
 ### END LOCAL NODES }}}
 
+
 ### DIRECTIVES {{{
+
+class ExerciseDirective(SphinxDirective):
+    """ A custom exercise directive """
+
+    has_content = True
+    required_arguments = 0
+    optional_arguments = 1
+    final_argument_whitespace = True
+    option_spec = {
+        "name": directives.unchanged_required, # probably a sphinx thing, might be `str or None`
+        "class": directives.class_option,
+        "hidden": directives.flag,
+    }
+
+    def run(self) -> List[Node]:
+        self.options.setdefault('class', 'exercise')
+
+        (ex, ) = super().run() # type: Tuple[Node]
+        if isinstance(ex, nodes.system_message):
+            return [ex]
+
+    def base_node_type(self):
+        if "nonumber" in self.options:
+            return unenumerable_node()
+        return enumerable_node()
 
 class CustomDirective(SphinxDirective):
     """ A custom Sphinx directive """
@@ -202,7 +227,7 @@ class CustomDirective(SphinxDirective):
             label = f"{self.env.docname}-{self.name}-{serial_no}" # Autogen IFF not existing label
         return label
 
-class ExerciseDirective(CustomDirective):
+class OldExerciseDirective(CustomDirective):
     """ A custom exercise directive """
 
     name = "exercise"
@@ -599,7 +624,7 @@ def setup(app: Sphinx) -> Dict[str, Any]:
         latex=(visit_linked_node, depart_linked_node),
     )
 
-    app.add_directive("exercise", ExerciseDirective)
+    app.add_directive("exercise", OldExerciseDirective)
     app.add_directive("solution", SolutionDirective)
 
     app.connect("doctree-resolved", DoctreeResolve)

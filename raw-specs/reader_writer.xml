@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<root folder="reader_writer">
+<spec name="reader_writer_1" num="3">
+---- MODULE $name ----
+EXTENDS Integers, Sequences, TLC
+
+(*--algorithm reader_writer
+variables
+  queue = &lt;&lt;>>;
+  total = 0;
+
+process writer = 1
+begin
+  AddToQueue:
+    queue := Append(queue, 1);
+end process;<s on="2-">
+
+process reader = 2
+begin
+  ReadFromQueue:</s><s on="3">
+    if queue # &lt;&lt;>> then
+      total := total + Head(queue);
+      queue := Tail(queue);
+    end if;</s><s on="2">
+    total := total + Head(queue);
+    queue := Tail(queue);</s>
+<s on="2-">end process;
+</s>end algorithm; *)
+====
+</spec>
+</root>
+

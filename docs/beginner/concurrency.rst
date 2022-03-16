@@ -33,6 +33,9 @@ Processes
 .. warning:: variables local to processes *can not* be used in `define` blocks.
 
 
+.. index:: await
+  :name: await
+
 await
 ---------
 

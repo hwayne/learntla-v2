@@ -3,20 +3,18 @@ EXTENDS Integers, Sequences, TLC
 
 (*--algorithm dup
 variable seq = <<1, 2, 3, 2>>;
-i = 1;
+index = 1;
 seen = {};
-all_unique = TRUE;
-
-
-
+is_unique = TRUE;
 begin
   Iterate:
-    while i <= Len(seq) do
-      if seq[i] \notin seen then
-        seen := seen \union {seq[i]};
+    while index <= Len(seq) do
+      if seq[index] \notin seen then
+        seen := seen \union {seq[index]};
       else
-        all_unique := FALSE;
+        is_unique := FALSE;
       end if;
+      index := index + 1;
     end while;
 end algorithm; *)
 ====

@@ -1,23 +1,21 @@
-
----- MODULE duplicates_2__5 ----
+---- MODULE duplicates ----
 EXTENDS Integers, Sequences, TLC
 
-S == 1..10
-
 (*--algorithm dup
-variable seq \in S \X S \X S \X S;
-i = 1;
+variable n \in 1..5;
+seq \in [1..n -> 1..10];
+index = 1;
 seen = {};
 is_unique = TRUE;
 
 define
   TypeInvariant ==
     /\ is_unique \in BOOLEAN
-    /\ seen \subseteq S
-    /\ i \in 1..Len(seq)+1
+    /\ seen \subseteq 1..10
+    /\ index \in 1..Len(seq)+1
     
   IsUnique(s) == 
-    \A i, j \in 1..Len(s)
+    \A i, j \in 1..Len(s):
       i # j => seq[i] # seq[j] 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
@@ -25,12 +23,13 @@ end define;
 
 begin
   Iterate:
-    while i <= Len(seq) do
-      if seq[i] \notin seen then
-        seen := seen \union {seq[i]};
+    while index <= Len(seq) do
+      if seq[index] \notin seen then
+        seen := seen \union {seq[index]};
       else
         is_unique := FALSE;
       end if;
+      index := index + 1;
     end while;
 end algorithm; *)
 ====

@@ -25,8 +25,6 @@ PlusCal
 
 TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of state changes in the system. It's a powerful way of expressing mutation, but it is also very general, accepting a large degree of complexity to be able to express more powerful systems. Many engineers struggle to start learning it. So in 2009, Leslie Lamport created a DSL called PlusCal: a more programming-like syntax that compiles to TLA+ actions.
 
-:ref:`pluscal`
-
 PlusCal isn't as powerful as "raw" TLA+, and there are some types specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
 
 .. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can check out `pluscal_to_tla`.
@@ -241,6 +239,8 @@ while
 
 .. todo:: exercise about showing that it has multiple states
 
+.. index:: ! duplicates
+
 A Duplication Checker
 ======================
 
@@ -250,8 +250,10 @@ For example, if we were writing an algorithm to check if ``seq`` has any duplica
 
 1. Create an empty set ``seen``, then step through the elements of ``seq``.
 2. Every time we see a number, we check if it's already in ``seen``. 
+
     * If it is, we say the list is not unique.
     * Otherwise, we add the element to ``seen`` and continue.
+
 3. If we reach the end and haven't seen any duplicate elements, we say the list is unique.
 4. Our decision should match the operator ``IsUnique(seq)``.
 

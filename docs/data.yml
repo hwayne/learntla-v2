@@ -7,14 +7,26 @@ state_spaces:
     config: 1
     distinct: 3
     states: 4
+  duplicates_len_5_or_less:
+    distinct: 765430
+    states: 876540
+  duplicates_len_5_seqs:
+    distinct: 700000
+    states: 800000
   duplicates_many_inputs:
     config: 1
-    distinct: 30000
-    states: 40000
+    distinct: 60000
+    states: 70000
   duplicates_two_inputs:
     config: 1
-    distinct: 6
-    states: 8
+    distinct: 12
+    states: 14
+  rw_1:
+    distinct: 2
+    states: 3
+  rw_2:
+    distinct: 5
+    states: 7
   test:
     distinct: 4
     states: 10
