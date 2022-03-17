@@ -33,7 +33,8 @@ extensions = [
     'sphinx_rtd_theme',    
     'exercise',
     'state_space',
-    'specification'
+    'specification',
+    'troubleshooting'
 ]
 # https://github.com/mgaitan/sphinxcontrib-mermaid/tree/master/docs
 # Add any paths that contain templates here, relative to this directory.

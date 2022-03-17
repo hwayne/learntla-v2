@@ -10,6 +10,7 @@
 Welcome to learntla's documentation!
 ====================================
 
+.. troubleshootinglist:: 
 
 .. toctree::
    :maxdepth: 2

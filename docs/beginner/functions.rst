@@ -217,21 +217,24 @@ The Duplicate Checker Again
 
 Our last version of the duplicate checker was this:
 
-.. spec:: duplicates/5/duplicates.tla
+.. spec:: duplicates/inv_4/duplicates.tla
 
 If I wanted to try it on five-element sequences, I'd have to add another ``\X S``. By the time we hit six or seven elements, it's too unwieldy to work with. 
 
 We can simplify this with function sets. ``S \X S \X S`` is going to be a set of 3-tuples. We now know that a 3-tuple is a function with domain ``1..3``. Then ``[1..3 -> S] = S \X S \X S``: the set of all 3-tuples where each element of each tuple is a value in ``S``.
 
-From this, extending this to seven-element sequences is trivial :ss:`duplicates_len_5_seqs`:
+From this, extending this to five-element sequences is trivial :ss:`duplicates_len_5_seqs`:
 
-duplicates_f1
+.. spec:: duplicates/fs_1/duplicates.tla
+  :diff: duplicates/inv_4/duplicates.tla
 
 Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]`` is based on a *value* — the size of the domain set. We can base that value on a variable, too!
 
-duplicates_f2
+.. spec:: duplicates/fs_2/duplicates.tla
+  :diff: duplicates/fs_1/duplicates.tla
 
-Now, instead of checking all length 7 sequences, we're checking all length 7 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
+
+Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
 
 .. technique:: State Sweeping
 

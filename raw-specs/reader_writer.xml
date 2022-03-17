@@ -28,5 +28,31 @@ begin
 </s>end algorithm; *)
 ====
 </spec>
+
+<spec name="reader_writer_2" num="1">
+---- MODULE $name ----
+EXTENDS Integers, Sequences, TLC
+
+(*--algorithm reader_writer
+variables
+  queue = &lt;&lt;>>;
+  total = 0;
+
+process writer = 1
+begin
+  AddToQueue:
+    queue := Append(queue, 1);
+end process;
+
+process reader = 2
+begin
+  ReadFromQueue:
+    if queue # &lt;&lt;>> then
+      total := total + Head(queue);
+      queue := Tail(queue);
+    end if;
+end process;
+end algorithm; *)
+</spec>
 </root>
 

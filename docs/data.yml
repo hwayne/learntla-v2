@@ -8,9 +8,11 @@ state_spaces:
     distinct: 3
     states: 4
   duplicates_len_5_or_less:
+    config: 1
     distinct: 765430
     states: 876540
   duplicates_len_5_seqs:
+    config: 1
     distinct: 700000
     states: 800000
   duplicates_many_inputs:
