@@ -5,3 +5,5 @@ _old
 __pycache__
 *.old
 temporary.cfg
+*.toolbox
+venv-sphinx

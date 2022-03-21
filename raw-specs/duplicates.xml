@@ -43,9 +43,9 @@ define
     /\ seen \subseteq S
     /\ index \in 1..Len(seq)+1
     <s on="2-">
-  IsUnique(s) == </s><s on="2">Cardinality(seen) = Len(s)</s><s on="3-">
-    \A i, j \in 1..Len(s): </s>
-      <s on="4">i # j => </s><s on="3-">seq[i] # seq[j]</s><s on="2-"> 
+  IsUnique(s) == <s on="2">Cardinality(seen) = Len(s)</s><s on="3-">
+    \A i, j \in 1..Len(s): 
+      <s on="4">i # j => </s>seq[i] # seq[j]</s>
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)</s>
 end define; 

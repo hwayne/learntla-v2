@@ -6,17 +6,16 @@ from dataclasses import dataclass
 from string import Template
 from pathlib import Path
 
-"""This is used to process specs into a form that we can use, and also update the data file."""
+#Common issue is that I need to have multiple slightly different versions of the same spec, this is a helper to do that.
+
 parser = ArgumentParser()
 parser.add_argument("file", help="xml file to convert")
-parser.add_argument("--spec", required=False, help="spec in the file to convert. Leave out if all")
-parser.add_argument("--version", required=False, help="which version of the spec. Should only be used if --spec is also used. Leave out if all. TODO find how argparse works for better documentation of flag limitations")
-# TODO add flag to write them instead of dryrun parser.add_argument("--version", required=False, help="which version of the spec. Should only be used if --spec is also used. Leave out if all. TODO find how argparse works for better documentation of flag limitations")
+parser.add_argument("--spec", required=False, help="spec in the file to convert. Default is all.")
+parser.add_argument("--version", required=False, help="which version of the spec. Should only be used if --spec is also used. Default is all. TODO find how argparse works for better documentation of flag limitations")
+parser.add_argument("-d", "--dryrun", action="store_true", help="print the expansion to STDOUT instead of writing files.")
 # Arguments to control if we're updating just the file or also the state spaces
 args = parser.parse_args()
 
-"""Common issue is that I need to have multiple slightly different versions of the same spec, this is a helper to do that.
-"""
 def expand_on_attrib(on_str: str) -> set[int]:
     out = set()
     on = on_str.split(',')
@@ -60,8 +59,14 @@ def create_spec_version(spec_root: Element, version: int) -> Spec:
     for switch in new_version.findall('.//s'):
         if version not in get_on(switch):
             for child in switch.iter():
-                # includes switch
-                child.text = "" # make this also eliminate child element tex 
+                # includes switch ^
+                child.text = "" 
+
+                # A tag's *text* is the text between start and first child
+                # A tag's *tail* is the text between close and the next tag
+                # So all the text INSIDE switch is switch.text + switch.child.(text + tail)
+                if child != switch:
+                    child.tail = ""
     return Spec(
         name=new_version.attrib["name"],
         version=version,
@@ -93,14 +98,18 @@ if __name__ == "__main__":
             out += create_all_spec_versions(spec_root)
 
     for spec in out:
-        out_path = Path(folder) / f"{spec.filename()}.tla"
         to_write = str(spec)
-        if out_path.exists():
-            parts = out_path.read_text().split("!!!")
-            parts[-1] = to_write
-            to_write = "!!!".join(parts)
-        
-        out_path.write_text(to_write)
+        if args.dryrun: 
+            print(to_write)
+        else:
+            out_path = Path(folder) / f"{spec.filename()}.tla"
+            if out_path.exists():
+                # Preserve metadata at top of file
+                parts = out_path.read_text().split("!!!")
+                parts[-1] = to_write
+                to_write = "!!!".join(parts)
+            
+            out_path.write_text(to_write)
         
 
         
