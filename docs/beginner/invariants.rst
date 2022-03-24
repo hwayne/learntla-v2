@@ -107,8 +107,6 @@ Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *im
 
 Here's the improper solution for ``IsUnique``:
 
-..     is_unique = Cardinality(seen) = Len(seq)</s><s on="4-">\A i, j \in 1..Len(seq):<s on="5-">i # j => </s><s on="4-">seq[i] # seq[j]</s></s>
-
 ::
 
   IsUnique(s) == Cardinality(seen) = Len(s) 
@@ -138,7 +136,7 @@ Another way of writing this: ``A => B``. Either B is true or A is false. Now we 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 
-I said ``=>`` was really important earlier. This is one of those ways: it lets us put preconditions on our invariants. This isn't the only place we might use it.
+I said ``=>`` was really important earlier. This is one of those ways: it lets us say invariants should only apply under certain conditions. This isn't the only place we might use it.
 
 .. todo:: hascredential => TK EXAMPLES
 
@@ -203,10 +201,10 @@ We can't use a quantifier on a sequence, since that's not a set. But we *can* us
 ::
 
   IsUnique(s) ==
-    \A i, j \in 1..Len(s):
-      s[i] # s[j]
   \* Warning, this is wrong!
   \* We'll see why next.
+    \A i, j \in 1..Len(s):
+      s[i] # s[j]
 
 
 .. _implication_2:
@@ -216,7 +214,8 @@ The power of ``=>``
 
 Let's add this new version of ``IsUnique`` to our duplicates spec:
 
-TK
+.. spec:: duplicates/inv_3/duplicates.tla
+  :diff: duplicates/inv_2/duplicates.tla
 
 If you run this, you will see it *fail*. And it fails in the oddest way, by a unique sequence as duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
 
@@ -318,16 +317,20 @@ Now let's do the same for ``<<a, a>>``:
 
 Since ``1, 2`` gives us ``T => F``, there's a case where the quantiifer fails, and ``~IsUnique(<<a, a>>)``, as we want it to be. ``=>`` is an *incredibly* powerful tool for writing invariants. 
 
-Final spec:
+So we just make that change, and:
 
-.. spec
+.. spec:: duplicates/inv_4/duplicates.tla
+  :diff: duplicates/inv_3/duplicates.tla
 
 This should pass :ss:`duplicates_many_inputs`.
 
 More ``=>`` practice
 --------------------
 
-Exercises
+``=>`` is extremely powerful, so let's spend more time working with it.
+
+We can tell a sequence is sorted iff TK
+.. todo:: Exercises
 
 
 Summary

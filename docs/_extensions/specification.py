@@ -14,6 +14,8 @@ class SpecificationDirective(LiteralInclude):
         * Only requires the filename, not the full path
         * Automatically includes download option
         * Has option to hide header and footer
+        * TODO: Removes the top-level "diff" code
+        * TODO: Allows placing a state-space caption by default"
     """
     option_spec = LiteralInclude.option_spec | {"hide-header": directives.flag}
     def run(self) -> List[Node]:

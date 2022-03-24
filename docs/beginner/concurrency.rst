@@ -14,7 +14,7 @@ In this chapter we will cover
 - with
 - procedures
 
-So far we've only worked with single-process algorithms.
+So far we've only worked with single-process algorithms. But the selling point for formal methods is dealing with concurrency. Concurrency is both very common and very hard ot reason about, so we get a tool to reason about it for us. A tool like TLA+!
 
 
 .. Needs LOTS of exercises
@@ -31,7 +31,7 @@ Processes are the main agents of concurrency. They usually represent independent
 
 .. spec:: reader_writer/1/reader_writer.tla
 
-:ss:`rw_1` Identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process, one to read from the queue and finish.
+:ss:`rw_1` This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process, one to read from the queue and finish.
 
 .. spec:: reader_writer/2/reader_writer.tla
   :diff: reader_writer/1/reader_writer.tla
@@ -94,13 +94,16 @@ Process Sets
 
 Once we have a single process, we can extend it into a process set. Instead of saying ``process name = val``, we write ``process name \in val``. Then PlusCal will create one distinct process for *each* value in the set.
 
-TK three_writers
+TK two writers
+
+This has TK states
+There are :math:`4! = 24` ways to organize four independent processes.
 
 W1-W2-W3-R, W2-W1-W3-R, W1-W3-W2-R...
 
 .. tip:: ``pc`` *can* be used in `define` blocks.
 
-.. todo:: ``pc``, functions
+.. todo:: ``pc`` is a function
 
 We're now adding up to three values to the queue, but we're only reading one value. Let's make the reader run forever.
 
@@ -109,9 +112,19 @@ This is equivalent to putting the label in a ``while TRUE`` loop.
 .. index:: self
   :name: self
 
-In process sets have a special keyword ``self``, which retrieves the value of the 
+In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 3.
+
+spec
+
+That's what we see, but we *also* see a **massive** state space increase. TK. To see why, consider what happens when both writers have run, but the reader has not. No matter which writer completes first, the queue will be ``<<1, 1>>``. But now, sinece they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
+
+
+Often we use ``self`` in conjunction with functions to make global state. For example, if we wanted to have multiple readers with separate totals but a shared queue, we'd instead write this:
+
+.. note:: I'm giving ``Readers`` weird numbers because all of the process values need to be comparable. Again, we'l fix this in the next chapter.
 
 ::
+
   variable online [w \in Writers |-> TRUE];
 
   \* somewhere in a process
@@ -126,18 +139,19 @@ In process sets have a special keyword ``self``, which retrieves the value of th
 
     online \in [Writers -> Boolean]
 
-.. tip:: 
 
-  Macros *can* use the value of self inside of them. In the above spec, the following would be valid::
+Macros *can* use the value of self inside of them. In the above spec, the following would be valid::
 
-    macro turn_off() begin
-      online[self] := FALSE;
+    macro add(val) begin
+      total[self] := total[self] + val;
     end macro;
 
-  Then we can call ``turn_off()`` inside a writer process.
+  Then we can call ``turn_off(Tail(queue))`` inside a writer process.
 
 .. todo:: Come up with some exercises
 
+
+.. todo:: We'll go back to ``rw_3`` going forward.
 
 .. -----------------------
 
@@ -168,32 +182,86 @@ What if it's impossible for a label to *ever* be evaluated? For example, in this
       await FALSE;
   end process;
 
+
+In that case, TLC raise an error as a *deadlock*. A deadlock is when *no processes can make any progress*.
+
+.. exercise::
+
+  Why doesn't this deadlock?
+
+  .. todo:: example
+
 Procedures
 -----------
 
 *Note: this is both fairly complicated and fairly niche, so feel free to skip this and come back to it later.*
 
-todo explain
-``EXTENDS sequences``
+.. todo::
+  * explain
+  * ``EXTENDS sequences``
 
+
+.. index:: nondeterminism
+  :name: nondeterminism
 
 Nondeterminism
 =================
 
+Lets us 
+
+.. index:: either
+  :name: either
 
 either-or
 ----------
 
+write or skip
+
 with
 -----------
+
+multiple values
+
+The ``with`` set can also be a variable. If the set is empty, then the ``with`` blocks. This can lead to deadlocks, too.
+
+.. tip:: You can combine deterministic and nondeterminsitic assignments in a single ``with`` statement. The following is valid::
+
+  with
+    x \in BOOLEAN,
+    y \in 1..10,
+    z = TRUE
+  do
+    \* ...
+  end with;
 
 .. index:: threads
   :name: threads
 
-Example
-============
+Example: Threads
+=================
+
+Let's go through another example of concurrency. We have two threads incrementing a single counter. At first, we'll have them do this atomically, and show that we get the expected value. Then, we'll make the updates nonconcurrent and show a race condition exists.
+
+.. spec:: threads/1/threads.tla
 
 
+Explain ``Correct``, check
+
+Give each process a local counter, make the thing nonatomic
+
+spec2
+
+Show error
+
+Add a mutex
+
+Talk about sentinel values and what the alternative is.
+
+If I was doing this for real, I'd add an assert
+
+Exercise: write type invariants for all of these
+
+Can scale it to N threads
 
 Summary
 ============

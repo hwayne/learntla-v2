@@ -16,7 +16,7 @@ begin
     queue := Append(queue, 1);
 end process;<s on="2-">
 
-process reader = 2
+process reader = 0
 begin
   ReadFromQueue:</s><s on="3">
     if queue # &lt;&lt;>> then
@@ -51,7 +51,7 @@ begin
     end while;
 end process;
 
-process reader = 2
+process reader = 0
 begin
   ReadFromQueue:
     if queue # &lt;&lt;>> then
@@ -63,7 +63,39 @@ end algorithm; *)
 ====
 </spec>
 
-<spec name="rw_many" num="3">
+<spec name="rw_many" num="4">
+---- MODULE $name ----
+EXTENDS Integers, Sequences, TLC
+
+Writers == {1, 2, 3}<s on="4">
+Readers = {-1, 0}</s>
+
+(*--algorithm reader_writer
+variables
+  queue = &lt;&lt;>>;
+  total = <s on="-3">0</s><s on="4-">[r \in Readers |-> 0]</s>;
+
+process writer \in Writers
+begin
+  AddToQueue:
+    queue := Append(queue, <s on="-2">1</s><s on="3">self</s>);
+end process;
+
+process reader <s on="-3">= 0</s><s on="4-">\in Readers</s>
+\* Make this use a local variable so there's no deadlock
+begin
+  ReadFromQueue:
+    if queue # &lt;&lt;>> then
+      total<s on="4">[self]</s> := total<s on="4">[self]</s> + Head(queue);
+      queue := Tail(queue);
+    end if;<s on="2">
+    goto ReadFromQueue;</s>
+end process;
+end algorithm; *)
+====
+</spec>
+
+<spec name="rw_await" num="1">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
@@ -77,19 +109,30 @@ variables
 process writer \in Writers
 begin
   AddToQueue:
-    queue := Append(queue, <s on="-2">1</s><s on="3">self</s>);
+    queue := Append(queue, self);
 end process;
 
-process reader = 2
+process reader = 0
 begin
   ReadFromQueue:
-    if queue # &lt;&lt;>> then
-      total := total + Head(queue);
-      queue := Tail(queue);
-    end if;<s on="2">
-    goto ReadFromQueue;</s>
+    await queue # &lt;&lt;>>;
+    total := total + Head(queue);
+    queue := Tail(queue);
+    goto ReadFromQueue;
 end process;
 end algorithm; *)
 ====
-</spec></root>
+</spec>
+
+<spec name="rw_nondeterministic">
+---- MODULE $name ----
+EXTENDS Integers, Sequences, TLC
+
+Writers == {1, 2, 3}
+
+(*--algorithm reader_writer
+
+either write or skip;
+</spec>
+</root>
 
