@@ -87,7 +87,7 @@ In practice, local variables aren't often used, as they can't be placed in `defi
 
 .. todo:: better example of bookkeeping variable
 
-For now let's pull out the ``while`` loop and go back to version TK.
+For now let's pull out the ``while`` loop and go back to our previous version.
 
 Process Sets
 ---------------------
@@ -102,13 +102,29 @@ W1-W2-W3-R, W2-W1-W3-R, W1-W3-W2-R...
 
 .. todo:: ``pc``, functions
 
+We're now adding up to three values to the queue, but we're only reading one value. Let's make the reader run forever.
+
+This is equivalent to putting the label in a ``while TRUE`` loop.
+
 .. index:: self
   :name: self
 
-We're now adding up to three values to the queue, but we're only reading one value. 
 In process sets have a special keyword ``self``, which retrieves the value of the 
 
-.. TK online [w \in Writers > TRUE] online[self] := FALSE
+::
+  variable online [w \in Writers |-> TRUE];
+
+  \* somewhere in a process
+
+  online[self] := FALSE;
+
+.. exercise:: 
+
+  what would be the type invariant of ``online`` there?
+
+  :: 
+
+    online \in [Writers -> Boolean]
 
 .. tip:: 
 

@@ -207,12 +207,23 @@ If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``
 macro
 ......
 
-TODO
+Macros are simple rewrite rules, designed to help clean up repetitive bits of logic. They must be placed above the ``begin`` and may not contain labels.
+
+::
+
+  macro inc(var) begin
+    if var < 10 then
+      var := var + 1;
+    end if;
+  end macro;
+
+Macros count as *textual* substitutions. If we passed in ``some_inc(x)`` then it would increment the ``x`` variable.
+
 
 with
 .....
 
-``with`` statements let you create temporary assignments in the middle of a block.
+``with`` statements let you create temporary assignments in the middle of a label.
 
 TODO
 

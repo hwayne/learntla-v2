@@ -9,6 +9,7 @@ variables
   queue = &lt;&lt;>>;
   total = 0;
 
+
 process writer = 1
 begin
   AddToQueue:
@@ -29,19 +30,25 @@ begin
 ====
 </spec>
 
-<spec name="reader_writer_2" num="1">
+<spec name="rw_local" num="2">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
 (*--algorithm reader_writer
 variables
   queue = &lt;&lt;>>;
-  total = 0;
+  total = 0;<s on="1">
+  i = 0;</s>
 
-process writer = 1
+process writer = 1<s on="2">
+variables
+  i = 0;</s>
 begin
   AddToQueue:
-    queue := Append(queue, 1);
+    while i &lt; 2 do
+      queue := Append(queue, 1);
+      i := i + 1;
+    end while;
 end process;
 
 process reader = 2
@@ -53,6 +60,36 @@ begin
     end if;
 end process;
 end algorithm; *)
+====
 </spec>
-</root>
+
+<spec name="rw_many" num="3">
+---- MODULE $name ----
+EXTENDS Integers, Sequences, TLC
+
+Writers == {1, 2, 3}
+
+(*--algorithm reader_writer
+variables
+  queue = &lt;&lt;>>;
+  total = 0;
+
+process writer \in Writers
+begin
+  AddToQueue:
+    queue := Append(queue, <s on="-2">1</s><s on="3">self</s>);
+end process;
+
+process reader = 2
+begin
+  ReadFromQueue:
+    if queue # &lt;&lt;>> then
+      total := total + Head(queue);
+      queue := Tail(queue);
+    end if;<s on="2">
+    goto ReadFromQueue;</s>
+end process;
+end algorithm; *)
+====
+</spec></root>
 
