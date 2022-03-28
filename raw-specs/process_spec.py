@@ -17,7 +17,7 @@ parts = spec.split("!!!")
 
 yml = yaml.load(parts[0], Loader=yaml.Loader)
 out = Path("../") / "docs" / yml['target']
-out.parent.mkdir(exist_ok=True)
+out.parent.mkdir(exist_ok=True, parents=True)
 
 remove_translation = r"\\\* BEGIN TRANSLATION(.|\n)*" + r"\\\* END TRANSLATION.*\n"
 cleaned_spec = sub(remove_translation, "", parts[-1]).lstrip()
