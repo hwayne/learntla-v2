@@ -17,6 +17,9 @@ Temporal Properties
 
   Wait, what? That's because invariants are too limited. TLA+ can specify properties on *behaviors*, not just *all states in a behavior*.
 
+.. index:: safety
+
+Safety properties
 
 .. orchestrator spec
 
@@ -32,7 +35,7 @@ Here's how we'd write these as temporal properties:
 1. ``Safety1 == [](\E s \in Servers: s \in online)``
 2. ``Safety2 == \E s \in Servers: [](s \in online)``
 
-Notice that in (1), we have the ``[]`` wrapping the entire quantifier. That;s how you know it's an invariant. In (2), the ``[]`` is *inside* a quantifier. 
+Notice that in (1), we have the ``[]`` wrapping the entire quantifier. That;s how you know it's an invariant. In (2), the ``[]`` is *inside* a quantifier.
 
 ``Safety2`` is also *stronger* than ``Safety1``: if it holds, we know that ``Safety1`` also holds. You can reason this through mathematically, or we could use TLC to check that.
 
@@ -40,10 +43,23 @@ Notice that in (1), we have the ``[]`` wrapping the entire quantifier. That;s ho
 
 In summary, adding ``[]`` to the language lets us represent all invariants, and a host of other properties too.
 
-* ``[]`` is just a logical operator, like any other, meaning we can combine it with other logical operators.
 
 Stuttering and Fairness
 ------------------------
+
+``[]`` is just a logical operator, like any other, meaning we can combine it with other logical operators. ``[]~P`` means that P is always not true. ``~[]P`` means that P isn't *always* true. There are two things that could mean:
+
+1. In every behavior, there is at least one state where P is false
+2. There is at least one behavior which has at least one state where P is false.
+
+Version (1) is more often useful in specs, so that's what ``[]~P`` formally means. If we write::
+
+  \* It's not the case that all servers are always online
+  Safety3 == ~[](online = Servers)
+
+We'd expect that to pass. The orchestrator can do one of two things: remove an existing server from ``online`` or add one that's not in it. So if all the servers start online, then eventually we'll remove one, right?
+
+Not so fast! There's a *third* thing the orchestrator can do: it can crash.
 
 ``~[]P`` means that "P isn't always true", or "there is a state where P is not true." Let's add TK to TK
 
