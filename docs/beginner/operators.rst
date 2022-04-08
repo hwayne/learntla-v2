@@ -14,7 +14,7 @@ This chapter covers:
 - `choose`
 - `let`
 
-.. Summary remains
+.. todo:: Summary, exercises
 
 Operators
 ===========
@@ -123,7 +123,7 @@ So why do they get their own section? There's two things you need to know about 
     - ``~``
     - :math:`\neg`
 
-A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\\`` looks like an "A", so it's "and". ``\/`` is the other one.
+A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\ `` looks like an "A", so it's "and". ``\/`` is the other one.
 
 .. exercise:: Xor
   :label: t
@@ -397,6 +397,7 @@ CHOOSE is useful whenever we need to pull a value from a set.
 
 Now what happens if we write ``ToClock(86401)``? There are no clock times that have 86,401 seconds. If you try this, TLC will raise an error. This is in contrast to the implementation solution, which will instead give us a nonsense value. 99% of the time if it can't find a corresponding element of the set, that's a bug in the specification, an edge case you didn't consider. Better to harden up the operator:
 {{Notice this is more stricter than the constructive solution, which would isntead give you junk values}}
+
 ::
 
   ToClock(seconds) == CHOOSE x \in ClockType: ToSeconds(x) = seconds % 86400

@@ -64,7 +64,7 @@ Stuttering and Fairness
 1. In every behavior, there is at least one state where P is false
 2. There is at least one behavior which has at least one state where P is false.
 
-Version (1) is more often useful in specs, so that's what ``[]~P`` formally means. If we write::
+Version (1) is more often useful in specs, so that's what ``~[]P`` formally means. [#ctl]_ If we write::
 
   \* It's not the case that all servers are always online
   Liveness == ~[](online = Servers)
@@ -100,4 +100,28 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
 .. todo:: explain difference between stutter and an action that does nothing. It matters for deadlocks only
 
+.. index::
+  :single: <>
+  :see: eventually; <>
+  :name: <>
 
+<>
+------
+
+While ``~[]P`` has some interesting properties, we rarely write it. It's not often we need to check that something "is sometimes" not true in our system. What *is* useful is writing ``~[]~P``: "Sometimes 'not P' is false", or "Sometimes P is true". This means that P isn't an invariant in all states, but must hold in *at least one* state. 
+
+Because "Not always not P" is a mouthful, we have a separate operator that means the same thing: ``<>P``, or "Eventually P".
+
+
+.. exercise::
+
+  Just as predicate logic has tautologies, so does temporal logic. Informally explain why these tautologies are true:
+
+  #. ``~<>~P = []P`` (``~(~[]~)~P``)
+  #. ``<>(P \/ Q) = <>P \/ <>Q``
+  #. ``[](P /\ Q) = []P /\ []Q``
+
+  #. ``\A x \in S: []P(x) = [](\A x \in S: P(x))``
+  #. ``\E x \in S: <>P(x) = <>(\E x \in S: P(x))``
+
+.. [ctl] CTL vs LTL logic, explain

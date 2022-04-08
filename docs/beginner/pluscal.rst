@@ -162,7 +162,7 @@ A noop.
 assert
 ......
 
-TODO
+``assert x`` automatically fails the model check if it's false.
 
 .. _if_pluscal:
 
@@ -225,9 +225,14 @@ with
 
 ``with`` statements let you create temporary assignments in the middle of a label.
 
-TODO
+::
 
-3. Macros and ``with`` statements cannot have labels.
+  with tmpx = x, tmpy = y do
+    y := tmpx;
+    x := tmpy;
+  end
+
+Macros and ``with`` statements cannot have labels.
 
 
 .. _while:
@@ -326,6 +331,8 @@ We're now significantly more likely to cover all interesting edge cases :ss:`dup
 Now that we have broad state-space coverage, it's time to write some properties. In `the next chapter <chapter_invariants>` we'll specify that our checker always gets the correct result.
 
 .. exercise:: todo
+
+  Something involving extracting parts into a macro
 
 Summary
 =========

@@ -207,6 +207,17 @@ We can't use a quantifier on a sequence, since that's not a set. But we *can* us
       s[i] # s[j]
 
 
+.. exercise::
+
+  Predicate logic has tautologies: like how ``~~P = P``. Explain these tautologies:
+
+  #. ``\A x \in S: ~P(x) = ~(\E x \in S: P(x))``
+  #. ``\E x \in S: ~P(x) = ~(\A x \in S: P(x))``
+  #. ``\A x \in S: P(x) /\ Q(x) = (\A x \in S: P(x)) /\ (\A x \in S: Q(x))``
+  #. ``\E x \in S: P(x) \/ Q(x) = (\E x \in S: P(x)) \/ (\E x \in S: Q(x))``
+
+  .. bring up duals
+
 .. _implication_2:
 
 The power of ``=>``
