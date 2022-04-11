@@ -34,5 +34,3 @@ data = yaml.load(data_file.read_text(), Loader=yaml.Loader)
 if states := yml.get("states"):
     data["state_spaces"] |= states
 data_file.write_text(yaml.dump(data))
-
-

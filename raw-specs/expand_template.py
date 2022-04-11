@@ -102,6 +102,7 @@ if __name__ == "__main__":
         if args.dryrun: 
             print(to_write)
         else:
+            Path(folder).mkdir(exist_ok=True, parents=True)
             out_path = Path(folder) / f"{spec.filename()}.tla"
             if out_path.exists():
                 # Preserve metadata at top of file

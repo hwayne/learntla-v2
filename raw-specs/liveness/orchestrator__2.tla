@@ -1,6 +1,9 @@
-<root folder="liveness">
-<spec name="orchestrator" num="4">
----- MODULE $name ----
+target: specs/liveness/2/orchestrator.tla
+!!!
+!tlacli check % --inv Invariant
+!tlacli check % --prop Safety
+!!!
+---- MODULE orchestrator__2 ----
 EXTENDS Integers, TLC, FiniteSets
 
 Servers == {"s1", "s2"}
@@ -9,14 +12,12 @@ Servers == {"s1", "s2"}
 variables 
   online = Servers;
 
-<s on="2-">define
+define
   Invariant == \E s \in Servers: s \in online
-  Safety == \E s \in Servers: [](s \in online)<s on="3-">
-  \* It's ot the case that all servers are always online
-  Liveness == ~[](online = Servers)</s>
-end define;</s>
+  Safety == \E s \in Servers: [](s \in online)
+end define;
 
-<s on="4">fair </s>process orchestrator = "orchestrator"
+process orchestrator = "orchestrator"
 begin
   Change:
     while TRUE do
@@ -35,5 +36,3 @@ end process;
 
 end algorithm; *)
 ====
-</spec>
-</root>

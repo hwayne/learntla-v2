@@ -115,6 +115,9 @@ If the sequence has duplicates, then we won't run the ``\union`` line every sing
 
 .. note:: Also, because sets are unique.
 
+.. index:: pc
+  :name: pc
+
 pc
 ....
 

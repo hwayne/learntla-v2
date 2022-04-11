@@ -72,7 +72,9 @@ local variables
 
 Let's modify the writer so it can write twice, instead of once.
 
-TK while loop
+.. spec:: reader_writer/rw_local_1/reader_writer.tla
+  :diff: reader_writer/3/reader_writer.tla
+
 
 Notice how many more states we have :ss:`rw_local_1`. The ``while`` loop is nonatomic, and every iteration counts as a separate ``Write`` action. So there are now three possible orderings: Read-Write-Write, Write-Read-Write, and Write-Write-Read.
 
@@ -191,15 +193,7 @@ In that case, TLC raise an error as a *deadlock*. A deadlock is when *no process
 
   .. todo:: example
 
-Procedures
------------
-
-*Note: this is both fairly complicated and fairly niche, so feel free to skip this and come back to it later.*
-
-.. todo::
-  * explain
-  * ``EXTENDS sequences``
-
+.. include:: advanced/procedures.rst
 
 .. index:: nondeterminism
   :name: nondeterminism

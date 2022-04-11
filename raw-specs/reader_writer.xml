@@ -124,7 +124,7 @@ end algorithm; *)
 ====
 </spec>
 
-<spec name="rw_nondeterministic">
+<spec name="rw_nondeterministic" num="1">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 

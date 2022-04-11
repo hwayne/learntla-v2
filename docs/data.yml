@@ -3,32 +3,47 @@ state_spaces:
     config: 1
     distinct: 3
     states: 4
+  duplicates_basic:
+    config: 1
+    distinct: 3
+    states: 4
   duplicates_fixed_input:
     config: 1
     distinct: 3
     states: 4
   duplicates_len_5_or_less:
-    config: 1
     distinct: 765430
     states: 876540
   duplicates_len_5_seqs:
-    config: 1
     distinct: 700000
     states: 800000
   duplicates_many_inputs:
     config: 1
     distinct: 60000
     states: 70000
+  duplicates_starting_states:
+    config: 2
+    distinct: 30000
+    states: 40000
   duplicates_two_inputs:
     config: 1
     distinct: 12
     states: 14
+  orchestrator:
+    distinct: 3
+    states: 5
   rw_1:
     distinct: 2
     states: 3
   rw_2:
     distinct: 5
     states: 7
+  rw_local_1:
+    distinct: 11
+    states: 15
+  rw_local_2:
+    distinct: 11
+    states: 15
   test:
     distinct: 4
     states: 10

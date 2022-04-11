@@ -13,12 +13,11 @@ Temporal Properties
 - Warnings
 
 
-.. invariants aren't really part of TLA+. There's no concept of an "invariant" that's treated as special by TLA+. The model checker, TLC, gives us that, but more that's due to pramgatics and efficiency than "invariants" being something deeply important. Rather, TLA+ provides a *general principled* way to write all kinds of different properties, where invariants are just one of many things we can check. To write these, we a set of :dfn:`temporal operators` to describe logical statements across time. We call the broad class of all properties :dfn:`temporal properties`.
+Invariants aren't really part of TLA+. There's no concept of an "invariant" that's treated as special by TLA+. The model checker, TLC, gives us that, but more that's due to pramgatics and efficiency than "invariants" being something deeply important. Rather, TLA+ provides a *general principled* way to write all kinds of different properties, where invariants are just one of many things we can check. To write these, we a set of :dfn:`temporal operators` to describe logical statements across time. We call the broad class of all properties :dfn:`temporal properties`.
 
-There are two kinds of temporal properties: "safety" properties say our system doesn't do bad things. "liveness" properties say our system always does a good thing. "We do not violate any database constraints" is safety, "All transactions either complete or roll back" is a liveness property. All invariants are safety properties, but not all safety properties are invariants. For example
+There are two kinds of temporal properties: "safety" properties say our system doesn't do bad things. "liveness" properties say our system always does a good thing. "We do not violate any database constraints" is safety, "All transactions either complete or roll back" is a liveness property. All invariants are safety properties, but not all safety properties are invariants. For example:
 
-
-.. orchestrator spec
+.. spec:: liveness/1/orchestrator.tla
 
 "There is at least one server that's always online" could mean one of two thigns:
 
@@ -39,14 +38,24 @@ TLC can check (2) as a temporal property. To do this we'll need a new operator.
 
 Things get more interesting when ``[]`` is part of a larger expresion. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q: We can also put it inside quantifiers. To properly model (2), we could write::
 
-  ``Safety2 == \E s \in Servers: [](s \in online)``
+  Safety == \E s \in Servers: [](s \in online)
 
 At the beginning of the behavior, we pick one online server. That server is then *always* online. 
 .. note:: this is evlaauted at hte beginnieng of hte temporal poperties, which is why it's ewird if you leave the square out.
 
+::
 
+  State 1: online = {"s1", "s2"}
 
-.. tip:: tripwire properties
+  State 2: online = {"s2"}
+
+  State 3: online = {"s1", "s2"}
+
+  State 4: online = {"s1"}
+
+  State 5: online = {"s1", "s2"}
+
+.. tip:: 
 
   I'm not going to go into the exact semantics for *how* it works just yet, but ``[](P => []Q)`` says that Q can be false *until* there's a state where P is true, and then Q must be true forever after. This is a tripwire.
 
@@ -64,10 +73,11 @@ Stuttering and Fairness
 1. In every behavior, there is at least one state where P is false
 2. There is at least one behavior which has at least one state where P is false.
 
-Version (1) is more often useful in specs, so that's what ``~[]P`` formally means. [#ctl]_ If we write::
+Version (1) is more often useful in specs, so that's what ``~[]P`` formally means. [#ctl]_ If we write
 
-  \* It's not the case that all servers are always online
-  Liveness == ~[](online = Servers)
+.. spec:: liveness/3/orchestrator.tla
+  :diff: liveness/1/orchestrator.tla
+  :language: diff
 
 This is a *liveness* property, not a *safety* property. In order to satisfy ``Liveness``, the behavior has to *reach* a state where the server is offline.
 
@@ -100,7 +110,7 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
 .. todo:: explain difference between stutter and an action that does nothing. It matters for deadlocks only
 
-.. index::
+..  index: :
   :single: <>
   :see: eventually; <>
   :name: <>
@@ -124,4 +134,4 @@ Because "Not always not P" is a mouthful, we have a separate operator that means
   #. ``\A x \in S: []P(x) = [](\A x \in S: P(x))``
   #. ``\E x \in S: <>P(x) = <>(\E x \in S: P(x))``
 
-.. [ctl] CTL vs LTL logic, explain
+.. [#ctl] CTL vs LTL logic, explain
