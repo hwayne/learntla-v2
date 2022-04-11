@@ -5,7 +5,6 @@ states:
     distinct: 2
 !!!
 !tlacli check %
-!tlacli translate %
 !!!
 ---- MODULE reader_writer_1__1 ----
 EXTENDS Integers, Sequences, TLC

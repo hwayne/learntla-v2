@@ -85,7 +85,7 @@ ss rw_local_2
 
 As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
 
-In practice, local variables aren't often used, as they can't be placed in `define` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables for "bookkeeping" variables, like loop iterations and TK.
+In practice, local variables aren't often used, as they can't be placed in `definition` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables for "bookkeeping" variables, like loop iterations and TK.
 
 .. todo:: better example of bookkeeping variable
 
@@ -148,7 +148,7 @@ Macros *can* use the value of self inside of them. In the above spec, the follow
       total[self] := total[self] + val;
     end macro;
 
-  Then we can call ``turn_off(Tail(queue))`` inside a writer process.
+Then we can call ``turn_off(Tail(queue))`` inside a writer process.
 
 .. todo:: Come up with some exercises
 
@@ -218,15 +218,18 @@ multiple values
 
 The ``with`` set can also be a variable. If the set is empty, then the ``with`` blocks. This can lead to deadlocks, too.
 
-.. tip:: You can combine deterministic and nondeterminsitic assignments in a single ``with`` statement. The following is valid::
+.. tip:: You can combine deterministic and nondeterminsitic assignments in a single ``with`` statement. The following is valid:
 
-  with
-    x \in BOOLEAN,
-    y \in 1..10,
-    z = TRUE
-  do
-    \* ...
-  end with;
+  ::
+
+    with
+      x \in BOOLEAN,
+      y \in 1..10,
+      z = TRUE
+    do
+      \* ...
+    end with;
+
 
 .. index:: threads
   :name: threads

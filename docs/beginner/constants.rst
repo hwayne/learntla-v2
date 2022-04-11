@@ -26,7 +26,7 @@ Now the more threads we have, the bigger the state space and the longer the spec
 
 Answer: neither. It doesn't make sense to fix the number of threads *in the definition of the spec*. We should instead define the spec to work for an arbitrary number of threads, and then pick the actual number at model-checking time.
 
-We specify, then, that ``NumThreads`` is a **constant**: something where the value is picked outside the TLA+. [#constant]_
+We specify, then, that ``NumThreads`` is a **constant**: something where the value is picked outside the TLA+. [#footnote-constant]_
 
 
 .. def constant
@@ -82,4 +82,4 @@ Okay this chapter is a little on the short side, let's throw in one more thing.
 Summary
 ===========
 
-.. [constant] This is different from how we use constant in programming languages, as well as other specification languages. AFAICT it's an idiosyncracy of TLA+. Constants as in "values that never change" are just 0-arity operators.
+.. [#footnote-constant] This is different from how we use constant in programming languages, as well as other specification languages. AFAICT it's an idiosyncracy of TLA+. Constants as in "values that never change" are just 0-arity operators.

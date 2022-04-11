@@ -47,6 +47,15 @@ state_spaces:
   test:
     distinct: 4
     states: 10
+  threads_1:
+    distinct: 4
+    states: 6
+  threads_2:
+    distinct: 13
+    states: 18
+  threads_3:
+    distinct: 17
+    states: 19
   wire_overview:
     config: 1
     distinct: 1

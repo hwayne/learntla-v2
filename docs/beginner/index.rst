@@ -9,6 +9,7 @@ Blah blah blah
   :hidden:
 
   layout-of-a-spec.rst
+  setup.rst
   operators.rst
   pluscal.rst
   invariants.rst

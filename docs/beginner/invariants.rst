@@ -12,7 +12,7 @@ This section covers:
 * Implication
 
 
-.. _invariants:
+.. _define:
 
 
 Invariants
