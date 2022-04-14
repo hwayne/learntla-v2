@@ -40,9 +40,8 @@ class SpecificationDirective(LiteralInclude):
 
             # TODO make this all a function
             # TODO this should also remove inline @@, so using a regex
-            new_body = out[0][1][0].split('@@', maxsplit=3)[-1]
-            #new_body = sub(r'\n[-]', r'\n- ', new_body)
-            #new_body = sub(r'\n[+]', r'\n+ ', new_body)
+            new_body = out[0][1][0].split(r'@@', maxsplit=2)[-1]
+            #new_body = sub(r'\n@@[ 0-9+,-]*@@', r'\n\n\\* ... \n', new_body)
 
 
             #  ↓ Might not be needed

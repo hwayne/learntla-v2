@@ -135,8 +135,7 @@ But functions are a more general than that, and can map *any* set of values. For
   Exercise: truth table of something super complex
 
 
-@@ and :>
-...........
+.. rubric:: ``@@`` and ``:>``
 
 TODO
 

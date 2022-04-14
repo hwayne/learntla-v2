@@ -12,9 +12,6 @@ This section covers:
 * Implication
 
 
-.. _define:
-
-
 Invariants
 =============
 
@@ -52,7 +49,7 @@ This operator needs to know about the ``all_unique`` variable, so we have to put
 
 .. todo:: spec
 
-To check this, we add it as an `invariant <setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
+To check this, we add it as an `invariant <_chapter_setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
 
 .. todo:: img
 
@@ -205,7 +202,7 @@ We can't use a quantifier on a sequence, since that's not a set. But we *can* us
 
   IsUnique(s) ==
   \* Warning, this is wrong!
-  \* We'll see why next.
+  \* We'll see why in the next part.
     \A i, j \in 1..Len(s):
       s[i] # s[j]
 

@@ -1,5 +1,5 @@
 
-.. _foo:
+.. _chapter_pluscal:
 
 ++++++++++++++++++++++++
 Writing Specifications
@@ -219,6 +219,8 @@ Macros are simple rewrite rules, designed to help clean up repetitive bits of lo
 
 Macros count as *textual* substitutions. If we passed in ``some_inc(x)`` then it would increment the ``x`` variable.
 
+.. index:: ! with
+  :name: with
 
 with
 .....
@@ -230,7 +232,9 @@ with
   with tmpx = x, tmpy = y do
     y := tmpx;
     x := tmpy;
-  end
+  end with;
+
+Inside the ``with`` definition, we do the temporary assignments with ``=``, not ``:=``. Remember the rule: ``:=`` is only used for updating an existing variable.
 
 Macros and ``with`` statements cannot have labels.
 

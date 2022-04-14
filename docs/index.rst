@@ -5,7 +5,6 @@
 
 .. todo:: 
   https://sphinx-tabs.readthedocs.io/en/latest/
-  https://sphinx-book-theme.readthedocs.io/en/latest/
 
 Welcome to learntla's documentation!
 ====================================
@@ -20,6 +19,8 @@ Welcome to learntla's documentation!
    intro/conceptual-overview.rst
    beginner/index
    intermediate/index
+   
+:ref:`genindex`
 
 
 
@@ -27,7 +28,6 @@ Welcome to learntla's documentation!
 
 .. 
   indexes and tables
-  * :ref:`genindex`
   * :ref:`modindex`
   * :ref:`search`
 

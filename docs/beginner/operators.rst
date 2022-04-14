@@ -8,11 +8,11 @@ This chapter covers:
 
 - Operators
 - values
-- `sequences`
-- `sets`
+- `Sequences <sequence>`
+- `Sets <set>`
 - sets of values
-- `choose`
-- `let`
+- `CHOOSE`
+- `LET`
 
 .. todo:: Summary, exercises
 
@@ -172,7 +172,10 @@ That means something different! It's now ``A /\ (B \/ C) /\ (D \/ E) /\ F``.
 .. tip:: "Why would you even want something like that?" It makes complex `invariants` *much* easier to read.
 
 
-.. _sequence:
+.. index:: 
+  single: sequence
+  single: types; sequence
+  :name: sequence
 
 Sequences
 =========
@@ -227,7 +230,8 @@ There's also a ``Sequences`` module. If you ``EXTENDS sequences``, you also get 
 
 .. todo:: Some kind of question
 
-.. _set:
+.. index:: set
+  :name: set
 
 Sets
 ====
@@ -293,8 +297,13 @@ Let's start with the easiest: to get the set of all booleans, just write ``BOOLE
 
   If ``a > b``, then ``a..b`` is empty. This makes a lot of things a lot simpler. For example, ``1..Len(seq)`` is the set of all of ``seq``'s indices. If ``seq = <<>>``, you get ``1..0 = {}``, which is what you'd expect.
 
+.. index::
+  see: Cartesian Product; \X
 
-.. _\X:
+.. index::
+  single: \X
+  single: sequence; sequence sets
+  :name: \X
 
 Now for sequences. The :dfn:`Cartesian product` of two sets S and T is the set of all sequences where the first element is in S and the second is in T. It's written with ``\X``. For example, consider ``LoginAttempt`` containing who's logging in, the time they attempted the login, and if it was successful or not. I can represent the set of all possible such values as ``LoginAttempt == Person \X Time \X BOOLEAN`` {{explain better}}.
 
@@ -367,7 +376,8 @@ I've found that the best way to remember which is which is by reading the colon 
   1. ``IndicesMatching(seq, val) == {i \in 1..Len(seq): seq[i] = val}``
   2. ``Range(seq) == {seq[i]: i \in 1..Len(seq)}``
 
-.. _choose:
+.. index:: CHOOSE
+  :name: CHOOSE
 
 CHOOSE
 --------
@@ -421,7 +431,8 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
 
 .. exercise:: for what value in 1..100 does ``polynomial = 0``?
 
-.. _let:
+.. index:: LET-IN
+  :name: LET
 
 LET
 =====

@@ -67,6 +67,8 @@ The point is that we decide what's the right choice based on what we need from t
 
 This passes :ss:`rw_2`.
 
+.. index:: process; local variables
+
 local variables
 -----------------
 
@@ -85,11 +87,13 @@ ss rw_local_2
 
 As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
 
-In practice, local variables aren't often used, as they can't be placed in `definition` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables for "bookkeeping" variables, like loop iterations and TK.
+In practice, local variables aren't often used, as they can't be placed in `define <define>` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables for "bookkeeping" variables, like loop iterations and TK.
 
 .. todo:: better example of bookkeeping variable
 
 For now let's pull out the ``while`` loop and go back to our previous version.
+
+.. index:: process; process sets
 
 Process Sets
 ---------------------
@@ -103,7 +107,7 @@ There are :math:`4! = 24` ways to organize four independent processes.
 
 W1-W2-W3-R, W2-W1-W3-R, W1-W3-W2-R...
 
-.. tip:: ``pc`` *can* be used in `define` blocks.
+.. tip:: ``pc`` *can* be used in `define <define>` blocks.
 
 .. todo:: ``pc`` is a function
 
@@ -112,7 +116,7 @@ We're now adding up to three values to the queue, but we're only reading one val
 This is equivalent to putting the label in a ``while TRUE`` loop.
 
 .. index:: self
-  :name: self
+.. _self:
 
 In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 3.
 
@@ -157,13 +161,15 @@ Then we can call ``turn_off(Tail(queue))`` inside a writer process.
 
 .. -----------------------
 
+
 .. index:: await
-  :name: await
+
+.. _await:
 
 await
 ---------
 
-The current spec ignores logic when the queue is empty. Earlier I proposed some other options. Of them, it's "straightforward" to TK. What about having the reader *wait* for something to enter the queue?
+The current spec ignores logic when the queue is empty. What about having the reader *wait* for something to enter the queue?
 
 await version
 
@@ -173,9 +179,6 @@ await version
 
 .. todo:: writer also blocks
 
-.. index:: deadlock
-  :name: deadlock
-
 What if it's impossible for a label to *ever* be evaluated? For example, in this spec::
 
   process x = "x"
@@ -184,8 +187,9 @@ What if it's impossible for a label to *ever* be evaluated? For example, in this
       await FALSE;
   end process;
 
+.. _deadlock:
 
-In that case, TLC raise an error as a *deadlock*. A deadlock is when *no processes can make any progress*.
+In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no processes can make any progress*.
 
 .. exercise::
 
@@ -195,41 +199,6 @@ In that case, TLC raise an error as a *deadlock*. A deadlock is when *no process
 
 .. include:: advanced/procedures.rst
 
-.. index:: nondeterminism
-  :name: nondeterminism
-
-Nondeterminism
-=================
-
-Lets us 
-
-.. index:: either
-  :name: either
-
-either-or
-----------
-
-write or skip
-
-with
------------
-
-multiple values
-
-The ``with`` set can also be a variable. If the set is empty, then the ``with`` blocks. This can lead to deadlocks, too.
-
-.. tip:: You can combine deterministic and nondeterminsitic assignments in a single ``with`` statement. The following is valid:
-
-  ::
-
-    with
-      x \in BOOLEAN,
-      y \in 1..10,
-      z = TRUE
-    do
-      \* ...
-    end with;
-
 
 .. index:: threads
   :name: threads
@@ -237,20 +206,36 @@ The ``with`` set can also be a variable. If the set is empty, then the ``with`` 
 Example: Threads
 =================
 
-Let's go through another example of concurrency. We have two threads incrementing a single counter. At first, we'll have them do this atomically, and show that we get the expected value. Then, we'll make the updates nonconcurrent and show a race condition exists.
+Let's go through another example of concurrency. We have two threads incrementing a single counter. At first, we'll have them do this atomically, and show that we get the expected value. Then, we'll make the updates nonatomic and show a race condition exists.
 
 .. spec:: threads/1/threads.tla
 
+``Correct`` is similar to our invariants in `duplicates`. *Once every thread is done running*, each thread should have incremented ``counter`` once, which means that ``counter = NumThreads``. Confirm that the spec passes with ``INVARIANT Correct`` :ss:`threads_1`. 
 
-Explain ``Correct``, check
+Now let's assume we can't atomically update ``counter``: maybe our hardware doesn't support it, maybe ``counter`` is on a separate machine of the network, or maybe the increment is just a stand-in for a much more complex implementation logic. Regardless, we now have to update it in two steps: first we assign it to a thread-local variable, then we compute the next value and assign it to ``counter``. To model this, we'll split the label in two, creating a point of concurrency.
 
-Give each process a local counter, make the thing nonatomic
+The thread-local variable is an "internal implementation detail", and I don't think we'll be doing global operations on it, so this is a good place to use a process var.
 
-spec2
+.. spec:: threads/2/threads.tla
+  :diff: threads/1/threads.tla
 
-Show error
+Before we continue, I want to recommend a good exercise to improve your modeling skills. You know, based on how I'm presenting this example, that this will fail. But *how* will it fail? Before you run the model checker, try to figure out what error it will give you and why. See if you can guess the number of steps it will take, and what order the processes will run.
 
-Add a mutex
+This is will help you get better with TLA+, but it's does something else, too. As you write more specifications, you'll start to see errors *without* running the model checker. One reason why concurrency is so unintuitive is we normally don't get rapid feedback on the mistakes we make. If you had a race condition to your code, it could be days or weeks before bites you, and then it takes even longer to fully understand it. Whereas in a specification, the model checker shows you immediately. This trains your intuition for race conditions much more quickly than normal.
+
+...
+
+Okay, so the error should look something like this:
+
+.. todo:: ERROR
+
+Both threads read the value of ``counter`` when it's 0, meaning they both set ``tmp`` to 0, meaning they both assign ``counter := 1``. Let's add a lock.
+
+.. spec:: threads/3/threads.tla
+  :diff: threads/2/threads.tla
+
+:ss:`threads_3`
+
 
 Talk about sentinel values and what the alternative is.
 

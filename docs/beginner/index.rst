@@ -14,6 +14,7 @@ Blah blah blah
   pluscal.rst
   invariants.rst
   functions.rst
+  nondeterminism.rst
   concurrency.rst
   constants.rst
   temporal-logic.rst
