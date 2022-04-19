@@ -13,8 +13,8 @@ Blah blah blah
   operators.rst
   pluscal.rst
   invariants.rst
+  constants.rst
   functions.rst
   nondeterminism.rst
   concurrency.rst
-  constants.rst
   temporal-logic.rst

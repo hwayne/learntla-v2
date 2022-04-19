@@ -315,11 +315,8 @@ Speaking of ``Time``, we can combine ``\X`` and ``..`` to finally get our clock 
 
 As a quick sanity check, run ``Cardinality(ClockType)`` in your `scratch` (remember, you'll need ``EXTENDS FiniteSets``). You should see it has 86400 elements. We're now one step closer to having a property for ``AddTimes``: we want the result of it to always return a value in ``ClockType``.
 
-.. exercise:: ???
 
-  TODO
-
-
+.. index:: SUBSET
 .. _SUBSET:
 
 Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType`` will be all the sets containing a bunch of clock values... all 7,464,960,000 of them. [#million]_
@@ -328,9 +325,6 @@ Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType``
 
   I often see beginners try to test if "S is a subset of T" by writing ``S \in SUBSET T``. This works but is very inefficient. Write ``S \subseteq T`` instead.
 
-.. todo:: exercise parts
-
-
 
 .. _map:
 .. _filter:
@@ -338,7 +332,7 @@ Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType``
 Map and Filter
 ..............
 
-.. todo:: connect it to sets of values
+.. todo:: Sometimes you want a more restrictive type
 
 Sets can be mapped and filtered.
 

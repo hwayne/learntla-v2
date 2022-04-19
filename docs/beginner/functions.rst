@@ -71,7 +71,7 @@ Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
 ...Huh. ``DOMAIN seq == 1..Len(seq)``! In fact, it's actually *the other way around*: ``Len`` is defined in terms of DOMAIN!
 
-.. exercise:: MyLen
+.. .. exercise:: MyLen
   :label: mylen
 
   Write ``MyLen(seq)``, which returns the length of seq, without using ``Len``. You may need ``Max(set)``.
@@ -80,6 +80,8 @@ Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
 Here's the punchline: *both sequences and structures are just syntactic sugar*. TLA+ has only two "real" collections: sets and functions. Sequences and structures are both particular classes of functions, the ones that we as programmers are most familiar with. It's time to finally introduce the true data type.
 
+
+.. index:: function
 
 .. _functions:
 .. _function:
@@ -114,7 +116,7 @@ But functions are a more general than that, and can map *any* set of values. For
 
   (Internally, TLA+ will represent it as a tuple, so ``DOMAIN F = S \X T``.)
 
-.. exercise::
+.. .. exercise::
 
   Write ``Double(seq)``.
 
@@ -124,50 +126,50 @@ But functions are a more general than that, and can map *any* set of values. For
 
   .. 
 
-.. todo:: 
-
-  Explain truth tables, then find the truth table of something simple.
+I like using functions to show me the results of an expression for various inputs. For what values of P and Q is ``P => Q`` true?
 
   ::
 
-    TruthTable == [p \in BOOLEAN, q \in BOOLEAN |-> p => q]
+    TruthTable == [p, q \in BOOLEAN |-> p => q]
 
-  Exercise: truth table of something super complex
+If you run this in `scratch`, you'll get the results, though they'll be in an unusual format::
 
+  .. todo:: put it here, my clipboard is broken somehow
 
-.. rubric:: ``@@`` and ``:>``
-
-TODO
+This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
 
 Using Functions
 -----------------
 
 Why functions over operators? We rarely use functions for computations— operators are far superior for that. Functions are important as *values*. We can assign them to variables and manipulate them like any other value.
 
-.. todo:: make the below a spec
+In a spec I once wrote, I had to assign tasks to CPUs. Some tasks needed to be assigned to many CPUs, but each CPU should only have one task. In that spec, the best solution was to store assignments as functions, where each task mapped to a set of CPUs.
 
 ::
 
-  People == {"alice", "bob", "carol"}
-
-
-  (*--algorithm example
   variables
-    acct = [p \in People |-> 10];
-    from \in People;
-    to \in People;
-  begin
-    A:
-      acct[from] := acct[from] - 1;
-    B:
-      acct[to] := acct[to] + 1;
-  end algorithm; *)
+    assignments = [t \in Tasks |-> {}] 
 
-.. note:: THis will make a lot more sense once we've covered concurrency.
+Then I could write ``assignment[t] := assignment[t] \union {cpu}`` to assign ``cpu`` to task ``t``. For my invariant, I said no two tasks shared a CPU assignment.
 
-.. exercise::
+::
 
-  Write invariants on the functions
+  OnlyOneTaskPerCpu ==
+    \A t1, t2 \in Tasks, c \in CPU:
+      /\ (t1 # t2) 
+      /\ c \in assignments[t1] 
+      => c \notin assignments[t2]
+
+We could also write this invariant by noticing that "tasks don't share cpus" is the same as saying "assignment sets are disjoint:
+
+::
+
+  OnlyOneTaskPerCpu ==
+    \A t1, t2 \in Tasks:
+      (t1 # t2) 
+      => assignments[t1] \intersect assignments[t2] = {}
+
+.. index:: function; function sets
 
 .. _function_set:
 .. _function_sets:
@@ -177,9 +179,26 @@ Function sets
 
 You know the drill by now: new class of value, new need for a way to generate sets of that value. We need to add function values to our type invariants, too!
 
-The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." Some examples: 
+The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``. I could also have represented the state with functons of form ``[CPUs -> Tasks \union {NoAssignment}]``.
 
-#. We're tracking ownership of items by people: ``owns[i] = p`` means that person ``p`` is the owner of item ``i``. No matter what the assignments, ``owns \in [Item -> Person]``.
+I can also use set `maps <map>` and filters here. Let's say a task can only be assigned to at most two CPUs. If I wanted to, I could fold that into the type invariant, using a function set::
+
+  TypeInvariant ==
+    \* ...
+    /\ assignments \in 
+      LET LeqTwoCPUs == {set \in SUBSET CPUs: Cardinality(set) <= 2}
+      IN [Tasks -> LeqTwoCPUs]
+
+Though in this case I'd prefer to keep the type invariant simple and write a second invariant with the additional restriction::
+
+  TypeInvariant ==
+    /\ assignments \in [Tasks -> SUBSET CPUs]
+
+  AnotherInvariant ==
+    \A t \in Tasks: Cardinality(assignments[t]) <= 2
+
+Some more examples of function sets: 
+
 #. We have a set of servers, which can have one of three states. Then ``status \in [Server -> {"online", "booting", "offline"}]``.
 #. We represent a directed graph as a function on pairs of points, which is true iff there's an edge between the two points. Then ``graph \in [Node \X Node -> BOOLEAN]``.
 #. If we define the previous set as the operator ``GraphType``, we could get the set of all *undirected* graphs with ``{g \in GraphType: \A n1, n2 \in Node: g[n1,n2] = g[n2,n1]}``.
@@ -189,15 +208,15 @@ The syntax for function sets is ``[S -> T]`` and is "every function where the do
 
   If you get
 
-  X
+  | Encountered "|->" in line X, column Y
 
-  You probably wrote ``[S |-> T]`` instead of ``[S -> T]``. Similarly, if you get
+  In a function set, then you probably wrote ``[S |-> T]`` instead of ``[S -> T]``. Similarly, if you get
 
-  Y
+  | Encountered "->" in line X, column Y
 
-  You probably wrote ``[x \in S -> T]`` instead of ``[x \in S |-> T]``. Don't worry, everybody gets the two mixed up at some point.
+  In a function, then you probably wrote ``[x \in S -> T]`` instead of ``[x \in S |-> T]``. Don't worry, everybody gets the two mixed up at some point.
 
-.. exercise::
+.. .. exercise::
 
   Given the sets ``Servers`` and ``StatusType == {"on", "off", "booting"}``, find the set of all status configurations where at least one server is booting.
 
@@ -205,14 +224,13 @@ The syntax for function sets is ``[S -> T]`` and is "every function where the do
 
     {config \in [Servers -> StatusType]: \E s \in Servers: config[s] = "booting"}
 
-  .. this is too hard
 
 .. index:: duplicates
 
 The Duplicate Checker Again
 ...........................
 
-*You will never be free of this*
+Last time, I promise.
 
 Our last version of the duplicate checker was this:
 
@@ -235,16 +253,12 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
 
 Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
 
-.. technique:: State Sweeping
+.. tip:: State Sweeping
 
   *State sweeping* is when we use an initial starting state variable to control the parameters for other variables. For example, we could have one variable determine the length of an input sequence, or the maximum size of a bounded buffer.
 
   Strictly speaking, sweeping isn't *necessary*: we can, with sufficient cleverness, construct a complex operator that does the same thing. Sweeping, however, is often much *easier* than doing that, and frees up your brainpower for the actual act of specification.
 
-
-.. exercise::
-
-  TODO
 
 Summary
 ===========

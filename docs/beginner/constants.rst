@@ -16,6 +16,7 @@ Constants
 CONSTANT
 ========
 
+Okay, *actual* last time we touch our duplicate checker.
 Getting back to our duplicate checker— actually you know what I'm sick of that damn thing. Our new best friend is the `threads` spec. Here's where we left off:
 
 TK
@@ -24,6 +25,7 @@ If I want to test it with two threads, I set ``NumThreads == 2``. If I want to t
 
 Now the more threads we have, the bigger the state space and the longer the spec will take to run. If I was hacking on the spec a lot, I'd want to do most of my iteration with two threads and catch bugs early that way. Once that's working, I'd then kick it up to six threads and make sure that's also correct. But then which version do I share with my coworkers, ``NumThreads == 2`` or ``NumThreads == 6``?
 
+Environmental variables
 Answer: neither. It doesn't make sense to fix the number of threads *in the definition of the spec*. We should instead define the spec to work for an arbitrary number of threads, and then pick the actual number at model-checking time.
 
 We specify, then, that ``NumThreads`` is a **constant**: something where the value is picked outside the TLA+. [#footnote-constant]_
