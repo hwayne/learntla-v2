@@ -6,6 +6,8 @@
 .. todo:: 
   https://sphinx-tabs.readthedocs.io/en/latest/
 
+.. todo:: IsUnique(<<x, y, z>>)
+
 Welcome to learntla's documentation!
 ====================================
 
@@ -30,6 +32,3 @@ Welcome to learntla's documentation!
   indexes and tables
   * :ref:`modindex`
   * :ref:`search`
-
-::
-

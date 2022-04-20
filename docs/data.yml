@@ -3,6 +3,12 @@ state_spaces:
     config: 1
     distinct: 3
     states: 4
+  calculator_five_inputs_no_either:
+    distinct: 187
+    states: 1043
+  calculator_five_inputs_with_either:
+    distinct: 16551
+    states: 71333
   duplicates_basic:
     config: 1
     distinct: 3

@@ -1,0 +1,37 @@
+<root folder="nondeterminism">
+<spec name="calculator" num="3">
+---- MODULE $name ----
+EXTENDS Integers, TLC
+CONSTANT NumInputs<s on="3-">, Target</s>
+
+Digits == 0..9
+
+(* --algorithm calculator
+variables 
+  i = 0;
+  sum = 0;<s on="3-">
+define
+  Invariant == sum # Target
+end define;</s>
+
+begin
+  Calculator:
+    while i &lt; NumInputs do
+      with x \in Digits do<s on="2-">
+        either</s>
+          \* Add
+          sum := sum + x;<s on="2-">
+        or
+          \* Subtract
+          sum := sum - x;
+        or
+          \* Multiply
+          sum := sum * x;
+        end either;</s>
+      end with;
+      i := i + 1;
+    end while;
+end algorithm; *)
+====
+</spec>
+</root>

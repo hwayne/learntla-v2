@@ -135,16 +135,77 @@ If we need to also model the type of error (if that affects our recovery logic),
 .. todo:: More
 
 
-Example
-===========
-.. using nondeterminism
+Example: A Calculator
+=======================
 
-.. example
+One way we use nondeterminism is to simulate user input. Our system has to handle all user actions properly, so we model them as nondeterministically taking actions from a valid set. As an example, let's specify an extremely simple calculator. While TLA+ can't represent decimal numbers, we can do addition, multiplication, and subtraction. First, let's allow users to add any digit to a current sum:
 
 
-.. fifteen algorithm?
-.. todo:: IsUnique(<<x, y, z>>)
+.. spec:: calculator/1/calculator.tla
 
-TK
-Lets us 
+.. todo:: This example might work better if I break the ``while`` into a separate step. But that's for after v2 is up and I'm polishing— might be totally unecessary.
 
+Two things to notice:
+
+1. The user can input any single digit, which is represented with a ``with``. We restrict their options to ``0..9`` to keep the state space smaller.
+2. We restrict the spec to only ``NumInputs`` operations per behavior. If we instead did ``while TRUE``, ``sum`` would be unbounded, the state space would be infinitely large, and the model checker would run forever. I do make ``NumInputs`` a `constant` for easy modification.
+
+For all this spec, I'm using ``NumInputs <- 5``, for :ss:`calculator_five_inputs_no_either`. This is a much higher ratio of (seen states / distinct states) than we've seen before: adding 5 and then 3 gives the same state as adding 3 and then 5. There's also a much higher ratio of (seen states / initial states). Before, we only had one behavior from each starting state, but now we have many.
+
+To allow users to also subtract and multiply, we can place the addition logic in an ``either`` branch, and then create two more branches.
+
+
+.. spec:: calculator/2/calculator.tla
+  :diff: calculator/1/calculator.tla
+
+Allowing a nondeterministic choice of operator bloats the state space further :ss:`calculator_five_inputs_with_either`. When dealing with nondeterminism, there are lots of possible states, which is one reason it's harder to reason about.
+
+Normally we'd write an invariant to test that this spec is working correctly, but aside from a type invariant or two there's not much to check here. So let's instead turn things around and see if we can use TLA+ to *find* a solution to something. Can we reach some number, say ``417``, in five inputs?
+
+To find this, let's add an invariant saying ``sum`` is *not* 417. Then, if ``sum`` is reachable, the model checker will *fail*, and give us an error trace representing a path to 417.
+
+.. spec:: calculator/3/calculator.tla
+  :diff: calculator/2/calculator.tla
+
+Now running the checker with ``INVARIANT Invariant`` and ``NumInputs <- 5, Target <- 417``, we get this error trace:
+
+
+.. code-block::
+
+  State 1: 
+  /\ sum = 0
+  /\ i = 0
+
+  State 2:
+  /\ sum = 1
+  /\ i = 1
+
+  State 3:
+  /\ sum = 10
+  /\ i = 2
+
+  State 4:
+  /\ sum = 60
+  /\ i = 3
+
+  State 5:
+  /\ sum = 420
+  /\ i = 4
+
+  State 6:
+  /\ sum = 417
+  /\ i = 5
+
+So 417 is (0+1)+9)*6)*7)-3.
+
+.. todo:: 
+
+  This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker with every value of ``Target`` from 0 to 1000 and counted which ones didn't produce an error trace. {{Link to the command line options}}. The first such number is 851.
+
+
+Summary
+==========
+
+* Nondeterminism is when the spec can do one of many things at a time.
+* ``with x \in set`` nondeterministically chooses a value from ``set`` for ``x``.
+* ``either branch1 or branch2`` nondeterministically chooses a branch to execute.
