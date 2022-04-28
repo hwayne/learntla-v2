@@ -4,7 +4,7 @@ target: specs/duplicates/inv_3/duplicates.tla
 !tlacli translate %
 !!!
 ---- MODULE duplicates_2__3 ----
-EXTENDS Integers, Sequences, TLC, FiniteSets
+EXTENDS Integers, Sequences, TLC
 
 S == 1..10
 
@@ -22,7 +22,7 @@ define
     
   IsUnique(s) == 
     \A i, j \in 1..Len(s): 
-      seq[i] # seq[j] 
+      seq[i] # seq[j]
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 end define; 

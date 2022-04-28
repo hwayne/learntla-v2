@@ -20,7 +20,6 @@ define
     /\ seen \subseteq S
     /\ index \in 1..Len(seq)+1
     
-      
 end define; 
 
 begin

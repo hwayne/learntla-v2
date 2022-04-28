@@ -1,12 +1,6 @@
-target: specs/duplicates/inv_2/duplicates.tla
-!!!
-!tlacli check % --inv TypeInvariant --inv IsCorrect
-!tlacli translate %
-!!!
----- MODULE duplicates_2__2 ----
-EXTENDS Integers, Sequences, TLC, FiniteSets
-
-S == 1..10
+---- MODULE duplicates ----
+EXTENDS Integers, Sequences, TLC
+CONSTANT S
 
 (*--algorithm dup
 variable seq \in S \X S \X S \X S;
@@ -20,7 +14,9 @@ define
     /\ seen \subseteq S
     /\ index \in 1..Len(seq)+1
     
-  IsUnique(s) == Cardinality(seen) = Len(s)
+  IsUnique(s) == 
+    \A i, j \in 1..Len(s): 
+      i # j => seq[i] # seq[j] 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 end define; 

@@ -289,7 +289,7 @@ If you run it, you will see a page like this:
 
 .. todo:: page
 
-To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_one_initial`; you should see that too.
+To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too.
 
 Multiple Starting States
 -------------------------
@@ -317,7 +317,7 @@ Adding mutliple starting states increases the complexity of our model. If, in a 
 
 We might think, with 1000 initial states and 2 labels, there will be 3,000 total states. In practice, the first label "collapses" the state space. So the number of *distinct* states will be far smaller.
 
-We can use the number of states and distinct states as a partial "fingerprint" of a model. Going forward, we'll use that as a form of error checking. Whenever I show a spec, I'll list the states and distinct states of the model check. For example, with the multiple starting states before, I got :ss:`duplicates_two_initial`. If you got a different number, you may have made a mistake in transcribing.
+We can use the number of states and distinct states as a partial "fingerprint" of a model. Going forward, we'll use that as a form of error checking. Whenever I show a spec, I'll list the states and distinct states of the model check. For example, with the multiple starting states before, I got :ss:`duplicates_two_inputs`. If you got a different number, you may have made a mistake in transcribing.
 
 10,000 starting states
 ........................

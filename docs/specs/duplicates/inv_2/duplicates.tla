@@ -16,7 +16,6 @@ define
     /\ index \in 1..Len(seq)+1
     
   IsUnique(s) == Cardinality(seen) = Len(s)
-       
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 end define; 
