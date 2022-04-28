@@ -128,11 +128,11 @@ But notice this other option below the "set of model values" bar:
 
 .. todo:: 
 
-.. warning:: Symmetry sets don't always make the spec run faster. TLC has some overhead in figuring out all the symmetries; with very large sets, that can take longer than actually checking the model. On my computer, checking ``duplicates`` with an 8-element symmetry set takes two minutes longer than checking it with a regular model set.
+  .. warning:: Symmetry sets don't always make the spec run faster. TLC has some overhead in figuring out all the symmetries; with very large sets, that can take longer than actually checking the model. On my computer, checking ``duplicates`` with an 8-element symmetry set takes two minutes longer than checking it with a regular model set.
 
 .. todo::
 
-Advanced: Non-enumerable sets
+  Advanced: Non-enumerable sets
 
 
 Summary

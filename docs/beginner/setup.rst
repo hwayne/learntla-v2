@@ -23,3 +23,6 @@ Manual Outputs
 ====================
 
 
+.. _scratch:
+
+Blah blah

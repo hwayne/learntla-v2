@@ -27,7 +27,11 @@ You index structs the same way you do sequences so ``struct["a"] = 1``. You can 
 
 .. troubleshooting::
 
-  Quoted keys
+  If you get
+
+  | Encountered ``"|->"`` at line X, column Y and token ``"\"key\""``,
+
+  It's because you wrote ``["key" |-> val]`` instead of ``[key |-> val]``.
 
 
 Unsurprisingly, structs are mainly used to represent organized collections of data. For example, a TK might consist of an TK.
@@ -42,6 +46,15 @@ Just like sequences, sets, and primitive values, we want some way to generate se
 
 This is the set of all structures where ``s.a \in S /\ s.b \in T``.
 
+.. troubleshooting::
+
+  If you get
+
+  | Attempted to compute the number of elements in the string "val"
+
+  *at model-checking time*, it's because you wrote ``[key: "val"]`` instead of ``[key: {"val"}]``.
+
+.. index:: DOMAIN
 .. _domain:
 
 DOMAIN
@@ -97,8 +110,8 @@ First of all, throw away the programming definition of "function". The closest t
 
 The set we're mapping from, ``S``, is the :dfn:`domain` of the function, and can be retreived by writing ``DOMAIN F``. That's why we could also use ``DOMAIN`` with sequences and structures:
 
-1. A sequence is a function with domain ``1..n``.
-2. A struct is a function with a domain of strings.
+1. A sequence is just a function where the domain is ``1..n``.
+2. A struct is just a function where the domain is a set of strings.
 
 But functions are a more general than that, and can map *any* set of values. For example, we can have pairs of numbers in the domain of the function.
 
@@ -132,9 +145,14 @@ I like using functions to show me the results of an expression for various input
 
     TruthTable == [p, q \in BOOLEAN |-> p => q]
 
-If you run this in `scratch`, you'll get the results, though they'll be in an unusual format::
+If you run this in `scratch <scratch>`, you'll get the results, though they'll be in an unusual format:
 
-  .. todo:: put it here, my clipboard is broken somehow
+.. code-block:: text
+
+  ( <<FALSE, FALSE>> :> TRUE @@
+  <<FALSE, TRUE>> :> TRUE @@
+  <<TRUE, FALSE>> :> FALSE @@
+  <<TRUE, TRUE>> :> TRUE )
 
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
 
@@ -234,9 +252,9 @@ Last time, I promise.
 
 Our last version of the duplicate checker was this:
 
-.. spec:: duplicates/inv_4/duplicates.tla
+.. spec:: duplicates/constant_2/duplicates.tla
 
-If I wanted to try it on five-element sequences, I'd have to add another ``\X S``. By the time we hit six or seven elements, it's too unwieldy to work with. 
+Currently we can control the value of ``S`` per model, it would be good if we could control the length of ``seq`` too. Then we can test both 2-element sequences and 20-element sequences. But currently the length is hardcoded by the number of ``\X`` cross-products we used.
 
 We can simplify this with function sets. ``S \X S \X S`` is going to be a set of 3-tuples. We now know that a 3-tuple is a function with domain ``1..3``. Then ``[1..3 -> S] = S \X S \X S``: the set of all 3-tuples where each element of each tuple is a value in ``S``.
 
@@ -245,17 +263,22 @@ From this, extending this to five-element sequences is trivial :ss:`duplicates_l
 .. spec:: duplicates/fs_1/duplicates.tla
   :diff: duplicates/inv_4/duplicates.tla
 
-Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]`` is based on a *value* — the size of the domain set. We can base that value on a variable, too!
+Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]`` is based on a *value* — the size of the domain set. This means we can pull it into a constant!
 
-.. spec:: duplicates/fs_2/duplicates.tla
-  :diff: duplicates/fs_1/duplicates.tla
+.. todo:: Pull into a constant
 
 
-Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
+
+
 
 .. tip:: State Sweeping
 
   *State sweeping* is when we use an initial starting state variable to control the parameters for other variables. For example, we could have one variable determine the length of an input sequence, or the maximum size of a bounded buffer.
+
+  .. spec:: duplicates/fs_2/duplicates.tla
+    :diff: duplicates/fs_1/duplicates.tla
+
+  Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
 
   Strictly speaking, sweeping isn't *necessary*: we can, with sufficient cleverness, construct a complex operator that does the same thing. Sweeping, however, is often much *easier* than doing that, and frees up your brainpower for the actual act of specification.
 
@@ -263,4 +286,13 @@ Now, instead of checking all length 5 sequences, we're checking all length 5 *or
 Summary
 ===========
 
-TODO
+* Functions map a set of values to another set of values. They are written ``[x \in set |-> Expr(x)]`` and called with ``f[value]``.
+    * Functions can also be written ``[x, y \in Set1, z \in Set2 |-> P(x, y, z)`` and called with ``f[a, b, c]`` (or ``f[<<a, b, c>>]``).
+* The domain of a function, the set we're mapping from, is ``DOMAIN f``.
+    * ``a :> b`` is the function ``[x \in {a} |-> b]``.
+    * ``f @@ g`` merges ``f`` and ``g``, **preferring keys in f**.
+* Sequences are just a special kind of function, where the domain is ``1..n``. 
+* Structures are another special kind of function, written ``[key1 |-> val1, key2 |-> val2]``. They are called with ``struct["key1"]`` (or ``struct.key1``).
+* Functions and structures both have special set syntax. For structures, it is ``[key1: set1]``. For functions, it's ``[A -> B]``.
+
+.. todo:: Mor on function sets as a summary
