@@ -40,7 +40,7 @@ Things get more interesting when ``[]`` is part of a larger expresion. Writing `
 
   Safety == \E s \in Servers: [](s \in online)
 
-At the beginning of the behavior, we pick one online server. That server is then *always* online. This isn't true, as we see if we check it with ``PROPERTY Safety``
+At the beginning of the behavior, we pick one online server. That server is then *always* online. This isn't true, as we see if we check it with ``PROPERTY Safety``.
 
 .. todo:: image of the change
 

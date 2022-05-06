@@ -34,13 +34,13 @@ You should be able to look at this spec and run it in your head, know exactly wh
 
 There are operators: ``Init``, ``Next``, and ``Spec``. ``Spec`` is what we always put as "the temporal property to run", so that's the core of the TLA+ specification.
 
-In ``Next``, we've replaced ``hr := 1`` with ``hr' = 1``. As we learned in the `last chapter <_chapter_action_properties>`, ``hr'`` is the value of ``hr`` in the *next* state. ``hr' = 1`` is a *boolean* statement, which is true or false. In fact, ``Next`` is a boolean operator: it's either true or false. It is true if it accurately describes the value of ``hr`` in the next state, and false if it doesn't.
+In ``Next``, we've replaced ``hr := 1`` with ``hr' = 1``. As we learned in the `last chapter <chapter_action_properties>`, ``hr'`` is the value of ``hr`` in the *next* state. ``hr' = 1`` is a *boolean* statement, which is true or false. In fact, ``Next`` is a boolean operator: it's either true or false. It is true if it accurately describes the value of ``hr`` in the next state, and false if it doesn't.
 
 .. todo:: explain this better?
 
 .. index:: action
 
-An boolean operator that contains primed variables is called an **action**. It's the titular action in *Temporal Logic of Action* (plus).
+An boolean operator that contains primed variables is called an **action**. It's the titular action in *Temporal Logic of Actions* (plus). [#plus]_
 
 .. todo:: note on the name TLA+
 
@@ -80,6 +80,8 @@ What you can do with TLA+:
   * Or
   * Strong fairness on branches
   * Refinement (next chapter)
+  * Refactoring actions
 TODO
 
 .. _Specifying Systems: https://lamport.azurewebsites.net/tla/book-02-08-08.pdf
+.. [#plus] The "plus" is for the addition of ZF set theory.

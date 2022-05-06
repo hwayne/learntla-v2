@@ -87,6 +87,10 @@ Every value type in TLA+ has its own operators, with no overlap or overloading. 
   It's likely because you used a double ``==`` instead of a single ``=`` when testing for equality.
 
 
+.. index::
+  single: integers
+  single: strings
+
 .. _integer:
 .. _string:
 

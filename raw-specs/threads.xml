@@ -41,6 +41,53 @@ end process;
 end algorithm; *)
 ====
 </spec>
+
+<spec name="threads_action_props" num="7"> 
+    <s><s><s>TODO move this to a different file?
+---- MODULE $name ----
+EXTENDS TLC, Sequences, Integers
+CONSTANT NULL
+
+NumThreads == 2
+Threads == 1..NumThreads
+
+(* --algorithm threads
+
+variables 
+  counter = 0;
+  lock = NULL;
+
+define <s on="2-">  
+  CounterOnlyIncreases ==
+    [][counter' >= counter]_counter</s><s on="4-">
+
+  LockCantBeStolen ==
+    [][lock # NULL => lock' = NULL]_lock</s><s on="6-">
+
+  LockNullBeforeAcquired ==
+    [][lock' # NULL => lock = NULL]_lock</s>
+end define;  
+
+process thread \in Threads
+variables tmp = 0;
+begin
+  GetLock:
+    <s on="-4">await lock = NULL;</s>
+    lock := self;
+
+  GetCounter:
+    tmp := counter;
+
+  IncCounter:
+    counter := tmp + <s on="3"> IF tmp = 0 THEN 1 ELSE -</s>1;
+  
+  ReleaseLock:
+    lock := NULL; 
+end process;
+end algorithm; *)
+====
+
+</spec>
 </root>
 
 
