@@ -102,7 +102,8 @@ replace the sentinel value in ``threads``
 
 .. index::
   pair: Model values; sets of model values
-  :name: model_set
+
+.. _model_set:
 
 Sets of Model Values
 ---------------------

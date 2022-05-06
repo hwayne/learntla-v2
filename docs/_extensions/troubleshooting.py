@@ -20,11 +20,10 @@ from sphinx.domains import Domain
 from sphinx.environment import BuildEnvironment
 from sphinx.errors import NoUri
 from sphinx.locale import _, __
-from sphinx.util import logging, texescape
+from sphinx.util import logging
 from sphinx.util.docutils import SphinxDirective, new_document
 from sphinx.util.typing import OptionSpec
 from sphinx.writers.html import HTMLTranslator
-from sphinx.writers.latex import LaTeXTranslator
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +55,7 @@ class TroubleshootingDirective(BaseAdmonition, SphinxDirective):
         if not self.options.get('class'):
             self.options['class'] = ['admonition-troubleshooting']
 
-        (troubleshooting,) = super().run()  # type: Tuple[Node]
+        (troubleshooting,) = super().run()
         if isinstance(troubleshooting, nodes.system_message):
             return [troubleshooting]
         elif isinstance(troubleshooting, troubleshooting_node):

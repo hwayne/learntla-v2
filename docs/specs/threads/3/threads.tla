@@ -1,6 +1,8 @@
 ---- MODULE threads ----
 EXTENDS TLC, Sequences, Integers
+CONSTANT NULL
 
+\* Hardcoded, in a real spec NumThreads would be a constant
 NumThreads == 2
 Threads == 1..NumThreads
 
@@ -8,7 +10,7 @@ Threads == 1..NumThreads
 
 variables 
   counter = 0;
-  lock = -1;
+  lock = NULL;
 
 define
   AllDone == 
@@ -22,7 +24,7 @@ process thread \in Threads
 variables tmp = 0;
 begin
   GetLock:
-    await lock = -1;
+    await lock = NULL;
     lock := self;
 
   GetCounter:
@@ -32,7 +34,7 @@ begin
     counter := tmp + 1;
   
   ReleaseLock:
-    lock := -1; 
+    lock := NULL; 
 end process;
 end algorithm; *)
 ====

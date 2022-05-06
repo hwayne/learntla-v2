@@ -1,6 +1,7 @@
 ---- MODULE duplicates ----
 EXTENDS Integers, Sequences, TLC, FiniteSets
 CONSTANT S
+ASSUME Cardinality(S) >= 4
 
 (*--algorithm dup
 variable seq \in S \X S \X S \X S;

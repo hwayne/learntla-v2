@@ -1,12 +1,4 @@
-target: specs/reader_writer/rw_local_2/reader_writer.tla
-states:
-  rw_local_2:
-    states: 15
-    distinct: 11
-!!!
-!tlacli check %
-!!!
----- MODULE rw_local__2 ----
+---- MODULE reader_writer ----
 EXTENDS Integers, Sequences, TLC
 
 (*--algorithm reader_writer

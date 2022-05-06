@@ -36,4 +36,43 @@ end process;
 end algorithm; *)
 ====
 </spec>
+
+<spec name="threads_liveness" num="4">
+---- MODULE $name ----
+EXTENDS TLC, Sequences, Integers
+CONSTANT NULL
+
+NumThreads == 2
+Threads == 1..NumThreads
+
+(* --algorithm threads
+
+variables 
+  counter = <s on="1-2">0</s><s on="3-4">1</s>;
+  lock = NULL;
+
+define
+  Liveness ==
+    &lt;><s on="4">[]</s>(counter = NumThreads)
+end define;  
+
+<s on="2-">fair </s>process thread \in Threads
+variables tmp = 0;
+begin
+  GetLock:
+    await lock = NULL;
+    lock := self;
+
+  GetCounter:
+    tmp := counter;
+
+  IncCounter:
+    counter := tmp + 1;
+  
+  ReleaseLock:
+    lock := NULL; 
+end process;
+end algorithm; *)
+====
+</spec>
 </root>

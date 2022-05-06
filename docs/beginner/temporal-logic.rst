@@ -40,7 +40,10 @@ Things get more interesting when ``[]`` is part of a larger expresion. Writing `
 
   Safety == \E s \in Servers: [](s \in online)
 
-At the beginning of the behavior, we pick one online server. That server is then *always* online. 
+At the beginning of the behavior, we pick one online server. That server is then *always* online. This isn't true, as we see if we check it with ``PROPERTY Safety``
+
+.. todo:: image of the change
+
 .. note:: this is evlaauted at hte beginnieng of hte temporal poperties, which is why it's ewird if you leave the square out.
 
 ::
@@ -54,13 +57,6 @@ At the beginning of the behavior, we pick one online server. That server is then
   State 4: online = {"s1"}
 
   State 5: online = {"s1", "s2"}
-
-.. tip:: 
-
-  I'm not going to go into the exact semantics for *how* it works just yet, but ``[](P => []Q)`` says that Q can be false *until* there's a state where P is true, and then Q must be true forever after. This is a tripwire.
-
-
-.. =>
 
 In summary, adding ``[]`` to the language lets us represent all invariants, and a host of other properties too.
 
@@ -98,9 +94,19 @@ So we need a way to say "don't assume this system can crash". We do this by sayi
 
 .. spec
 
-This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add this change, we see ``Liveness`` holds. There's also **strong** fairness. But this easier to explain (and more useful) in pure TLA+, as opposed to PLusCal. I'll leave the PlusCal material in an advanced topic here.
+This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add this change, we see ``Liveness`` holds. There's also **strong** fairness. But this easier to explain (and more useful) in pure TLA+, as opposed to PlusCal. I'll leave the PlusCal material in an advanced topic here.
 
-.. .. advanced-topic:: Strong Fairness
+.. todo:: .. advanced-topic: Strong Fairness
+
+  Weak fairness says that if a process can *always* make progress, it will eventually make progress. Strong fairness is that if a process can *always intermittently* make progress, it will eventually make progress. To see the difference, consider this model of several threads sharing a lock:
+
+  .. spec
+
+  When in ``AwaitLock``, each thread can only get the lock if ``lock := Null``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
+
+  .. error trace
+
+  We can make the processes strongly fair by writing ``fair+``. Then every thread will eventually get the lock. We can also make indiviudal actions strongly fair, by writing ``AwaitLock:+``.
 
 .. tip::
   
@@ -110,20 +116,111 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
 .. todo:: explain difference between stutter and an action that does nothing. It matters for deadlocks only
 
-..  index: :
-  :single: <>
-  :see: eventually; <>
-  :name: <>
+.. index::
+  single: <>
+  see: eventually; <>
+
+.. _eventually:
 
 <>
 ------
 
 While ``~[]P`` has some interesting properties, we rarely write it. It's not often we need to check that something "is sometimes" not true in our system. What *is* useful is writing ``~[]~P``: "Sometimes 'not P' is false", or "Sometimes P is true". This means that P isn't an invariant in all states, but must hold in *at least one* state. 
 
-Because "Not always not P" is a mouthful, we have a separate operator that means the same thing: ``<>P``, or "Eventually P".
+Because "Not always not P" is a mouthful, we have a separate operator that means the same thing: ``<>P``, or "Eventually P". We've already been crudely simulating "eventually" properties before, in duplicates and `threads`. Here's the correctness condition for threads:
+
+::
+
+  AllDone == 
+    \A t \in Threads: pc[t] = "Done"
+
+  Correct ==
+      AllDone => counter = NumThreads
 
 
-.. exercise::
+The ``AllDone =>`` is just a precondition that ``counter = NumThreads`` is true at the end of the algorithm execution. Using ``<>`` we can rewrite it as a temporal property:
+
+.. spec:: threads\liveness_1\threads.tla
+  :diff: threads\3\threads.tla
+
+(Remember this is checked under "Temporal Properties", not "Invariants"!)
+
+When we run this with ``PROP Liveness, NULL <- [mv]`` the spec fails due to stuttering. There's no guarantee the threads will finish running, because they're unfair. This *wasn't* a problem with ``Correct`` before because that only says that *if* we reach the end, *then* the answer is correct. It still passes if we never reach the end!
+
+Making the threads fair makes this pass :ss:`threads_liveness`:
+
+.. spec:: threads\liveness_2\threads.tla
+  :diff: threads\liveness_1\threads.tla
+
+.. index:: <>[]
+
+In one way, ``Liveness`` is more accurate than ``Correct``. In another way, though, it's *less* accurate. Here's a bug that wouldn't pass ``Correct``:
+
+
+.. spec:: threads\liveness_3\threads.tla
+  :diff: threads\liveness_2\threads.tla
+
+When we're done, ``counter = 3``... but ``Liveness`` still passes! This is because ``<>(counter = 2)`` is true if ``counter = 2`` in *at least one state* of the behavior. It doesn't matter if we then change *away* from that, because it's been true at least once.
+
+Fortunately, our temporal operators are extremely flexible, and we can compose them together. If ``[]P`` means "P is always true", and ``<>P`` is "P is eventually true", then ``<>[]P`` is "eventually P is always true". P can start out false, but after some point in every behavior, it will forevermore be true.
+
+.. spec:: threads\liveness_4\threads.tla
+  :diff: threads\liveness_3\threads.tla
+
+This now fails, as ``counter`` doesn't stay as 2.
+
+.. tip::
+
+  You can also write ``[]<>P``: "P is always eventually true". In the threads spec, this has the same outcome, but there are cases where it's broader than ``<>[]P``. For example, in an hour clock, ``[]<>(time = midnight)`` is true, but ``<>[](time = midnight)`` is false.
+
+
+.. todo:: inkscape of the three different uses of ``<>``
+
+.. index::
+  single: ~>
+
+.. _leads_to:
+.. _~>:
+
+~>
+------
+
+The last operator is ``~>``. Recall that ``P => Q`` preconditions Q on P: if P is true, then Q is also true. ``P ~> Q`` is the temporal analog: if P is true, then Q is *eventually* true (now or in a future state).
+
+.. todo:: better example?
+
+Say we have a set of tasks described by ``TaskType``, an ``inbound`` pool of type ``SUBSET TaskType``, and a set of workers with their own task sets. A property of this system might be that every inbound task is eventually processed by a worker. You can represent this with ``~>``:
+
+  ::
+
+    Liveness ==
+      \A t \in TaskType:
+        t \in inbound
+          ~> \E w \in Workers:
+            t \in worker_pool[w]
+
+.. note:: ``P ~> Q`` is triggered *every* time P is true. Even if the formula was satisfied before, if ``P`` becomes true again, then ``Q`` has to become true again too.
+
+.. todo:: an example
+
+Using Temporal Operators
+----------------------------
+
+Temporal properties are incredibly powerful. There's some things you need to keep in mind, though:
+
+* Don't try to be too clever.
+
+It takes TLC significantly longer to test liveness properties than safety ones.
+
+You cannot use `symmetry sets <model_set>` with liveness properties.
+
+
+Summary
+=========
+
+.. [#ctl] CTL vs LTL logic, explain
+
+.. .. exercise::
 
   Just as predicate logic has tautologies, so does temporal logic. Informally explain why these tautologies are true:
 
@@ -134,4 +231,5 @@ Because "Not always not P" is a mouthful, we have a separate operator that means
   #. ``\A x \in S: []P(x) = [](\A x \in S: P(x))``
   #. ``\E x \in S: <>P(x) = <>(\E x \in S: P(x))``
 
-.. [#ctl] CTL vs LTL logic, explain
+
+

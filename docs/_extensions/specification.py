@@ -1,11 +1,10 @@
 from pathlib import Path
 from typing import Any, List, Dict
-from re import sub
+# from re import sub
 # from sphinx.config import Config
 from sphinx.application import Sphinx
 from docutils import nodes
 from docutils.nodes import Node
-from sphinx.util.docutils import SphinxDirective
 from docutils.parsers.rst import directives # type: ignore
 from sphinx.directives.code import LiteralInclude
 
@@ -45,7 +44,7 @@ class SpecificationDirective(LiteralInclude):
 
 
             #  ↓ Might not be needed
-            rel_filename, filename = self.env.relfn2path(self.arguments[0])
+            _, filename = self.env.relfn2path(self.arguments[0])
             new_literal = nodes.literal_block(new_body, new_body, source=filename)
             new_literal.attributes = out[0][1].attributes
             

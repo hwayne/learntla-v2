@@ -212,6 +212,8 @@ Let's go through another example of concurrency. We have two threads incrementin
 
 ``Correct`` is similar to our invariants in `duplicates`. *Once every thread is done running*, each thread should have incremented ``counter`` once, which means that ``counter = NumThreads``. Confirm that the spec passes with ``INVARIANT Correct`` :ss:`threads_1`. 
 
+.. note:: I'm hardcoding ``NumThreads`` to make running the example easier. In a real Hardcoded, in a real spec NumThreads would be a constant
+
 Now let's assume we can't atomically update ``counter``: maybe our hardware doesn't support it, maybe ``counter`` is on a separate machine of the network, or maybe the increment is just a stand-in for a much more complex implementation logic. Regardless, we now have to update it in two steps: first we assign it to a thread-local variable, then we compute the next value and assign it to ``counter``. To model this, we'll split the label in two, creating a point of concurrency.
 
 The thread-local variable is an "internal implementation detail", and I don't think we'll be doing global operations on it, so this is a good place to use a process var.
