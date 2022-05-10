@@ -120,6 +120,8 @@ The point is this: the labels let us specify just how concurrent our system is. 
 Label Rules
 --------------
 
+.. todo:: Rewrite in paragraph form
+
 We're modeling time here, so there are restrictions on where we can place the labels.
 
 1. All statements must belong to a label. 
@@ -164,9 +166,11 @@ assert
 
 ``assert x`` automatically fails the model check if it's false.
 
+.. index:: if (pluscal)
+
 .. _if_pluscal:
 
-if-then-elsif-endif
+if
 ....................
 
 You know what this is.
@@ -202,7 +206,7 @@ If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``
   Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of 
 
 .. index:: macro
-  :name: macro
+.. _macro:
 
 macro
 ......
@@ -229,15 +233,16 @@ with
 
 ::
 
-  with tmpx = x, tmpy = y do
-    y := tmpx;
-    x := tmpy;
+  with tmp_x = x, tmp_y = y do
+    y := tmp_x;
+    x := tmp_y;
   end with;
 
 Inside the ``with`` definition, we do the temporary assignments with ``=``, not ``:=``. Remember the rule: ``:=`` is only used for updating an existing variable.
 
 Macros and ``with`` statements cannot have labels.
 
+.. index:: while
 
 .. _while:
 

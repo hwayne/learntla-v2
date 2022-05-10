@@ -61,6 +61,7 @@ The ASSUME is checked before the model run even starts. If we try running the sp
 
 If you have a spec with constants, you should put constraining assumptions on them. In addition to preventing errors, they also help readers of the spec understand what the constants are supposed to be.
 
+
 .. index:: Model Values
 
 .. _model_values:
@@ -94,11 +95,6 @@ What you can do instead is define a new constant, like ``NULL`` or ``NoLastAcces
     X <- [model value]
     Set <- {1, 2, X}
 
-  Totally okay!
-
-Compare false to everything BUT themselves, don't raise an error
-
-replace the sentinel value in ``threads``
 
 .. index::
   pair: Model values; sets of model values
@@ -135,6 +131,33 @@ But notice this other option below the "set of model values" bar:
 
   Advanced: Non-enumerable sets
 
+
+Other Uses for Constants
+-------------------------
+
+You can also use constants to control the flow of your spec. When working on complicated specs, I sometimes like to make a ``DEBUG`` constant:
+
+::
+
+  CONSTANT DEBUG
+  ASSUME DEBUG \in BOOLEAN
+
+  \* ...
+
+  macro print_if_debug(str) begin
+    if DEBUG then
+      print str;
+    end if;
+
+Another thing you can do is restrict multiple starting states with ``DEBUG``:
+
+::
+
+  Inputs == IF DEBUG 
+  THEN {<<1, 2, 3, 4>>} 
+  ELSE S \X S \X S \X S
+
+Don't be afraid to make helper constants!
 
 Summary
 ===========

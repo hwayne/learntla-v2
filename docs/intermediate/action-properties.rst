@@ -53,6 +53,8 @@ It's finally time to talk about the "actions" in "Temporal Logic of Actions".
 
 So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+! In any given step, ``x'`` is the value of x at the *end of the step*, and what it starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than x".
 
+.. tip:: you can use primed operators in the `trace explorer`. It'll show you the value of the expression in the next step.
+
 .. index:: UNCHANGED
 
 But that's not (yet) a valid TLA+ property. Consider the slightly different property ``[](x' = x + 1)``: "x always increases by exactly one". What happens if we insert a `stutter step <stuttering>`? Then x doesn't change at all, which means that the property is false. But by the definition of TLA+, we can *always* insert a stutter step anywhere. So this property is *trivially* false. The more interesting property we actually wanted to check was ``[](x' # x => x' + 1)``. Alternatively, we can write this as ``x' > x \/ UNCHANGED x``.
