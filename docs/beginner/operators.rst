@@ -242,7 +242,9 @@ Sets
 
 A set is a collection of *unordered*, *unique* values. You write them with braces, like ``{1, 2, 3}`` or ``{<<"a">>, <<"b", "c">>}``. 
 
-Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important. 
+Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important.
+
+.. todo:: Explain why they're so powerful
 
 .. This again breaks down to whether we care about programming or specifying. 
 
@@ -263,7 +265,7 @@ We also have ways of slicing and dicing sets:
 
 .. note:: You might see ``\cup`` and ``\cap`` instead of ``\union`` and ``\intersect``. This comes from the mathematical symbols for set union and intersection, which are :math:`\cup` and :math:`\cap`.
 
-.. exercise:: outer-product
+.. todo:: Let's do some examples
 
 If you ``EXTEND FiniteSets``, you also get ``Cardinality(set)``, which is the number of elements in the set.
 
@@ -284,22 +286,13 @@ Now imagine we're writing a spec which uses clock values, and we want a quick op
 
 Then ``AddTimes(<<2, 0, 1>>, <<1, 2, 3>>) = <<3, 2, 4>>``, and ``AddTimes(<<2, 0, 1>>, <<1, 2, 80>>) = <<3, 2, 81>>``.
 
-And that should make the specifier in you do a double-take. Our clock can't show 81 seconds, so the answer should be ``<<3, 3, 21>>``. You can think of there being a set of valid clock values, all the way from ``<<0, 0, 0>>`` to ``<<23, 59, 59>>``, and ``AddTimes`` should always return some value in that set, almost like it has a type signature. We can enforce this in TLA+, but first we need a way of generating sets of values from values. Fortunately, for every type of value in TLA+, there's a method to generate sets of those values. [#except-strings]_
+Wait, 81 seconds? Our clock can't show 81 seconds, the answer should be ``<<3, 3, 21>>``. You can think of there being a set of valid clock values, all the way from ``<<0, 0, 0>>`` to ``<<23, 59, 59>>``, and ``AddTimes`` should always return some value in that set, almost like it has a type signature. We can enforce this in TLA+, but first we need a way of generating sets of values from values. Fortunately, for every type of value in TLA+, there's a method to generate sets of those values. [#except-strings]_
 
 Let's start with the easiest: to get the set of all booleans, just write ``BOOLEAN``. That's the set ``{TRUE, FALSE}``. For integers, ``a..b`` is the set ``{a, a+1, a+2, ... , b}``. You need ``EXTENDS Integers`` for this to work.
 
-.. exercise:: Sequence indices
-  :label: one-len
-
-  How do you get all of the indices of a sequence? Hint: use ``Len(seq)``.
-
-.. solution:: one-len
-
-  ``1..Len(seq)``
-
 .. tip::
 
-  If ``a > b``, then ``a..b`` is empty. This makes a lot of things a lot simpler. For example, ``1..Len(seq)`` is the set of all of ``seq``'s indices. If ``seq = <<>>``, you get ``1..0 = {}``, which is what you'd expect.
+  If ``a > b``, then ``a..b`` is empty. This makes a lot of things a lot simpler. For example, ``1..Len(seq)`` is the set of the indices of ``seq``. If ``seq = <<>>``, you get ``1..0 = {}``, which is what you'd expect.
 
 .. index::
   see: Cartesian Product; \X
@@ -350,7 +343,7 @@ Sets can be mapped and filtered.
 
 I've found that the best way to remember which is which is by reading the colon as a "where". So the map is "x squared where x in 1..4", while the filter is "x in 1..4 where x is even".
 
-.. exercise:: taba
+.. .. exercise:: taba
   :label: asdasd
 
   #. Using ``ClockType`` as the set of all valid times, use a filter to get all of the times before noon (``<<12, 0, 0>>``)
@@ -363,19 +356,20 @@ I've found that the best way to remember which is which is by reading the colon 
 
 
 
-.. exercise:: Sequence Manipulations
-  :label: map_filter_seq
+.. .. exercise:: Sequence Manipulations
+    :label: map_filter_seq
 
-  1. Write ``IndicesMatching(seq, val)``, which returns all indices ``i`` of ``seq`` where ``seq[i] = val``.
-  2. Write ``Range(seq)``, which returns all values in ``seq``. IE ``Range(<<"a", "b", "a">>) = {"a", "b"}``.
+    1. Write ``IndicesMatching(seq, val)``, which returns all indices ``i`` of ``seq`` where ``seq[i] = val``.
+    2. Write ``Range(seq)``, which returns all values in ``seq``. IE ``Range(<<"a", "b", "a">>) = {"a", "b"}``.
 
-.. solution:: map-filter-seq
+  .. solution:: map-filter-seq
 
-  1. ``IndicesMatching(seq, val) == {i \in 1..Len(seq): seq[i] = val}``
-  2. ``Range(seq) == {seq[i]: i \in 1..Len(seq)}``
+    1. ``IndicesMatching(seq, val) == {i \in 1..Len(seq): seq[i] = val}``
+    2. ``Range(seq) == {seq[i]: i \in 1..Len(seq)}``
 
 .. index:: CHOOSE
-  :name: CHOOSE
+  
+.. _CHOOSE:
 
 CHOOSE
 --------
@@ -427,10 +421,11 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
   What if multiple values satisfy ``CHOOSE``? In this case the only requirement is that the result is *deterministic*: the engine must always return the same value, no matter what. In practice this means that TLC will always choose the lowest value that matches the set.
 
 
-.. exercise:: for what value in 1..100 does ``polynomial = 0``?
+.. .. exercise:: for what value in 1..100 does ``polynomial = 0``?
 
-.. index:: LET-IN
-  :name: LET
+.. index:: LET
+
+.. _LET:
 
 LET
 =====

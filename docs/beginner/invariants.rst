@@ -341,8 +341,9 @@ More ``=>`` practice
 ``=>`` is extremely powerful, so let's spend more time working with it.
 
 We can tell a sequence is sorted iff TK
-.. todo:: Exercises
 
+Finding Good Invariants
+=======================
 
 Summary
 ========

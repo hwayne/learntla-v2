@@ -11,7 +11,7 @@
 Welcome to learntla's documentation!
 ====================================
 
-.. troubleshootinglist:: 
+How to read this book
 
 .. toctree::
    :maxdepth: 2
@@ -24,11 +24,10 @@ Welcome to learntla's documentation!
    
 :ref:`genindex`
 
+.. todolist::
 
 
 .. applying
 
-.. 
-  indexes and tables
-  * :ref:`modindex`
-  * :ref:`search`
+
+

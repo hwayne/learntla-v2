@@ -1,11 +1,39 @@
 <?xml version="1.0"?>
 <root>
 <spec num="3">
----- MODULE wire ----
-<s on="1,2">CONSTANT x, y, z</s>
+---- MODULE $name ----
+EXTENDS TLC, Integers<s on="2-">
+CONSTANTS People, Money, NumTransfers</s>
+<s on="1">
+People == {"alice", "bob"}
+Money == 1..10
+NumTransfers == 2
 
-<s on="-2">
-a<s on="3">b</s></s><s on="3">c</s>
+</s>(* --algorithm wire
+variables
+  acct \in [People -> Money];
+
+define
+  NoOverdrafts ==
+    \A p \in People:
+      acct[p] >= 0
+end define;
+
+process wire \in 1..NumTransfers
+variable
+  amnt \in 1..5;
+  from \in People;
+  to \in People
+begin
+  Check<s on="3">AndWithdraw</s>:
+    if acct[from] >= amnt then
+      <s on="-2">Withdraw:</s>
+        acct[from] := acct[from] - amnt;
+      Deposit:
+        acct[to] := acct[to] + amnt;
+    end if;
+end process;
+end algorithm; *)
 
 ====
 </spec>
