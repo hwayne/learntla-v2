@@ -19,7 +19,7 @@ Let's play a bit more with the threads spec:
 
 .. todo:: write this more gradually
 
-Some things about this spec:
+Here are a couple of restrictions on the way the spec should be allowed to change. Some things about this spec:
 
 * ``counter`` should only increase.
 * If a thread holds the lock, it *cannot* go to another thread without being unlocked first.
@@ -45,7 +45,7 @@ This doesn't fail because we have a state where ``counter = 0``. That's a totall
 What's this Syntax
 ------------------
 
-On one hand, cool tool. On the other, we now have to understand what ``[][counter' >= counter]_counter`` is supposed to mean.
+On one hand, cool trick. On the other, we now have to figure out what ``[][counter' >= counter]_counter`` is supposed to mean.
 
 
 
@@ -91,6 +91,16 @@ Running with ``PROPERTY LockCantBeStolen`` shows this fail.
 Another way we could have writen the property:
 
 .. todo:: Putting quantifiers inside action properties
+
+{{ A property using ``\A`` }}
+
+unfortunately, TLC can't check this, due to limitations of the model checker. 
+
+| Error
+
+What we can do in this case is pull the quantifier *inside* the action property.
+
+.. example
 
 Summary
 ========

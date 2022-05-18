@@ -189,9 +189,16 @@ The last operator is ``~>``. Recall that ``P => Q`` preconditions Q on P: if P i
 
 .. todo:: better example?
 
+    Liveness ==
+      \A e \in Employees:
+        r \in Reimburisment ~> Filed_reimbursement
+
 Say we have a set of tasks described by ``TaskType``, an ``inbound`` pool of type ``SUBSET TaskType``, and a set of workers with their own task sets. A property of this system might be that every inbound task is eventually processed by a worker. You can represent this with ``~>``:
 
+
+
   ::
+
 
     Liveness ==
       \A t \in TaskType:
@@ -203,8 +210,15 @@ Say we have a set of tasks described by ``TaskType``, an ``inbound`` pool of typ
 
 .. todo:: an example
 
-Using Temporal Operators
-----------------------------
+When to use Liveness
+--------------------------
+
+You probably won't need to ever write a property of form ``\E x: [](P(x))``. 
+
+Liveness properties are less common than invariants. Invariants check faster and give you finer-grained information, and they're a lot easier to write! Most systems will have lots of invariants but only a couple of `
+
+Considerations
+..............
 
 Temporal properties are incredibly powerful. There's some things you need to keep in mind, though:
 

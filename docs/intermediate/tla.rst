@@ -23,6 +23,8 @@ We saw in the `last chapter <chapter_action_properties>` all the base components
 * The prime operator: ``x'`` is the value of x *in the next state*.
 * The box operator: ``[P]_x`` is ``P \/ UNCHANGED x``.
 
+Learning from PlusCal
+======================
 
 I find the easiest way to explain what's going on with TLA+ is to relate it to what the PlusCal does. In his original book `Specifying Systems`_, Leslie Lamport introduces TLA+ with a specification of an hour clock, and I'd be remiss to break with tradition. The pluscal is a *mostly* faithful translation of his TLA+ spec.
 
@@ -57,6 +59,19 @@ By convention, in a temporal formula, anything outside a temporal operator (``[]
 
 Since ``Next`` is an action, to be "always true" it must always accurately describe the new values of the system. Formally, we call it the dfn:`Next State Relationship`. This gives us the blueprint for what spec is.
 
+.. note::
+
+  Technically speaking, we can use TLA+ to describe **any possible set of behaviors**. This is technically a valid spec:
+
+  ::
+
+    Init == x = 0
+    Next == x' >= x
+    Spec == Init /\ [][Next]_x
+
+  This is a valid tla+ spec, and the behavior 1 → 9 → 17 → 17.1 → 84 is a valid behavior of this spec. It's just not a spec that TLC can generate. It's a tool made by mortal men.
+
+
 UNCHANGED
 ---------
 
@@ -77,7 +92,7 @@ Despite x not appearing anywhere, the translator added the ``x' = x`` line. This
 
 | Error: Successor state is not completely specified by the next-state action. The following variable is not assigned: x.
 
-In typical TLA+ usage, we'd instead write ``UNCHANGED x``. In fact there's some syntactic sugar here, we can write ``UNCHANGED <<x, y, z>>`` to mean ``x' = x /\ y' = y /\ z' = z``.
+In typical TLA+ usage, we'd instead write ``UNCHANGED x``. In fact there's some syntactic sugar here, we can write ``UNCHANGED <<x, y, z>>`` to mean "none of x, y, or z change".
 
 with
 -----
@@ -106,13 +121,83 @@ Now for nondeterministic with:
   Next == IF hr = 12
              THEN /\ hr' = 1
              ELSE /\ \E x \in 1..2:
-                       hr' = hr + 1
+                       hr' = hr + x
 
 
-This is more interesting!
+This is more interesting! {{We "assign" ``hr' `` inside the quantifier.}}
 
-either
---------
+That should tell us the following is also ok:
+
+::
+
+  Next == IF hr = 12
+             THEN /\ hr' = 1
+             ELSE \/ hr' = hr + 1
+                  \/ hr' = hr + 2
+
+And that's in fact how ``either`` is translated.
+
+EXCEPT
+---------
+
+Before we go onto concurrency, there's one thing I want to get out of the way first. What's wrong with the following spec?
+
+.. code-block::
+
+  VARIABLE s
+
+  Init == s = <<TRUE, FALSE>>
+
+  Next == s[1]' = FALSE
+
+  Spec == Init /\ [][Next]_s
+
+(I mean, besides the missing module name.)
+
+If you run it, you will get this *very helpful error*:
+
+| In evaluation, the identifier s is either undefined or not an operator.
+
+But s *is* defined, it's a variable right there!
+
+The problem is actually a subtle nuance of assigning to functions. In ``Next``, we're only giving the next state of ``s[1]``. Here are some values of ``s'`` that would satisfy ``Next``:
+
+#. ``<<FALSE, FALSE>>``
+#. ``<<FALSE, TRUE>>``
+#. ``<<FALSE, 186>>``
+#. ``<<FALSE>>``
+#. ``0 :> 🌽 @@ 1 :> FALSE @@ 19 :> 🌽🌽🌽``
+
+Remember, TLA+ wants you to be as precise as possible. If you didn't specify that ``s[2]'`` is the same as ``s[2]``, it doesn't have to be. TLC naturally considers this an error.
+
+What we actually wanted to write is that ``s'`` is the same as ``s`` *except* that ``s[1]`` is false. Here's the syntax for that:
+
+.. code-block::
+
+  Next == s' = [s EXCEPT ![1] = FALSE]
+
+Yes, I know it's really awkward. No, I don't know of anything better. ``EXCEPT`` has a couple bits of syntactic sugar to make using it a wee bit more pleasant. First of all, we can assign multiple keys in the same statement:
+
+.. code-block::
+
+  Next == s' = [s EXCEPT ![1] = FALSE, ![2] = 17]
+
+Second, we can reference the original value of the key with ``@``.
+
+.. code-block::
+
+  IncCounter(c) == 
+    counter' = [counter EXCEPT ![c] = @ + 1]
+
+Finally, we can {{do nested lookups in the ``EXCEPT``}}:
+
+.. code-block::
+
+  Init == s = <<[x |-> TRUE], FALSE>>
+
+  Next == s' = [s EXCEPT ![1].x = ~@]
+
+{{PlusCal will naturally convert function assignments to ``EXCEPT`` statements.}}
 
 pc
 -----
@@ -121,8 +206,6 @@ pc
 
 PLAN:
 
-  * A with (``x' \in Set``)
-  * An either (nondeterminisim)
   * await
     * Leads to nonaction booleans
   * processes
@@ -130,9 +213,65 @@ PLAN:
   * Fairness
     * Strong fairness
 
+Weak Fairness
+-------------
+
 A TLA+ Spec From Scratch
 =========================
 
+Strong Fairness
+---------------
+
+For this spec, we have a worker doing some abstract job. It can succeed or fail. If it fails, it retries until it succeeds. We make both ``Succeed`` and ``Retry`` weakly fair and leave ``Fail`` unfair. 
+
+::
+
+  VARIABLES status
+
+  Init == status = "start"
+
+  ChangeStatus(from, to) == status = from /\ status' = to
+
+  Succeed == ChangeStatus("start", "done")
+  Fail == ChangeStatus("start", "fail")
+  Retry == ChangeStatus("fail", "start")
+
+  Next == Succeed \/ Fail \/ Retry \/ UNCHANGED status
+
+  Fairness ==
+    /\ WF_status(Succeed)
+    /\ WF_status(Retry)
+
+  Spec == Init /\ [][Next]_status /\ Fairness
+
+  Liveness == <>(status = "done")
+
+  ====
+
+Does ``Liveness`` hold? It does not! Our fairness clause only says that if ``Succeed`` is guaranteed if it is *permanently* enabled. The problem it's *not* permanently enabled. We could have the following error trace:
+
+.. code-block::
+  <Init>    status = "start"
+
+  <Fail>*   status = "fail"
+
+  <Retry>   status = "start"
+  <Fail>*   status = "fail"
+  <Retry>   status = "start"
+  ...
+
+After every step marked ``*``, ``status /= "start"``, so ``Succeed`` is not enabled. ``Retry`` _is_ enabled, and no action at this point can disable it, so it's guaranteed to happen. Now we're back with ``status = "start"``, and ``Succeed`` is enabled again. But then ``Fail`` happens and changes ``status``...
+
+Since ``Succeed`` keeps flipping between enabled and disabled, weak fairness can't guarantee it happens. If we want to make sure ``Succeed`` happens we need to make it **strongly fair**. Strong fairness says that if an action isn't permanently disabled it will eventually happen. Unlike weak fairness the action can be _intermittently_ enabled and is still guaranteed to happen. 
+
+.. code-block:: diff
+
+  Fairness ==
+  + /\ SF_status(Succeed)
+  - /\ WF_status(Succeed)
+    /\ WF_status(Retry)
+
+This satisfies ``Liveness``.
 
 
 What you can do with TLA+:

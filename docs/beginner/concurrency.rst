@@ -4,20 +4,10 @@
 Concurrency
 ################
 
-In this chapter we will cover
+.. todo:: Fill in all of the specs
 
-- concurrency
-- processes
-- await
-- deadlocks
-- either
-- with
-- procedures
+So far we've only worked with single-process algorithms. But the selling point for formal methods is dealing with concurrency. Concurrency is both very common and very hard to reason about, so we get a tool to reason about it for us. A tool like TLA+!
 
-So far we've only worked with single-process algorithms. But the selling point for formal methods is dealing with concurrency. Concurrency is both very common and very hard ot reason about, so we get a tool to reason about it for us. A tool like TLA+!
-
-
-.. Needs LOTS of exercises
 
 .. index:: process
   :name: process
@@ -27,17 +17,17 @@ So far we've only worked with single-process algorithms. But the selling point f
 Processes
 =============
 
-Processes are the main agents of concurrency. They usually represent independent programs, but can be used more broadly, too. Let's start with one process.
+Processes are the main agents of concurrency. They can represent different OS processes, or different threads, or different programs on different machines, or even different people. Let's start with one process.
 
 .. spec:: reader_writer/1/reader_writer.tla
 
-:ss:`rw_1` This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process, one to read from the queue and finish.
+:ss:`rw_1` This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process that reads from the queue.
 
 .. spec:: reader_writer/2/reader_writer.tla
   :diff: reader_writer/1/reader_writer.tla
 
 
-.. note:: All processes must have comparable types: all integers, all strings, all sequences, etc. The one exception is that processes can also be `model_values`, which will be covered in the `next chapter <chapter_constants>`.
+.. note:: All processes must have comparable types: all integers, all strings, all sequences, etc. The one exception is that processes can also be `model_values`. 
 
 The writer has a single action, ``Write``, and the reader has a single action, ``Read``. We haven't specified which should happen first, so the two can happen in any order. Either we (1) write to the queue and then read from it, or (2) read from the queue and then write to it.
 
@@ -113,6 +103,8 @@ W1-W2-W3-R, W2-W1-W3-R, W1-W3-W2-R...
 
 We're now adding up to three values to the queue, but we're only reading one value. Let's make the reader run forever.
 
+.. tip:: This is where `model_set` becomes extremely useful. model value sets 
+
 This is equivalent to putting the label in a ``while TRUE`` loop.
 
 .. index:: self
@@ -127,7 +119,6 @@ That's what we see, but we *also* see a **massive** state space increase. TK. To
 
 Often we use ``self`` in conjunction with functions to make global state. For example, if we wanted to have multiple readers with separate totals but a shared queue, we'd instead write this:
 
-.. note:: I'm giving ``Readers`` weird numbers because all of the process values need to be comparable. Again, we'l fix this in the next chapter.
 
 ::
 
@@ -137,15 +128,6 @@ Often we use ``self`` in conjunction with functions to make global state. For ex
 
   online[self] := FALSE;
 
-.. exercise:: 
-
-  what would be the type invariant of ``online`` there?
-
-  :: 
-
-    online \in [Writers -> Boolean]
-
-
 Macros *can* use the value of self inside of them. In the above spec, the following would be valid::
 
     macro add(val) begin
@@ -153,9 +135,6 @@ Macros *can* use the value of self inside of them. In the above spec, the follow
     end macro;
 
 Then we can call ``turn_off(Tail(queue))`` inside a writer process.
-
-.. todo:: Come up with some exercises
-
 
 .. todo:: We'll go back to ``rw_3`` going forward.
 
@@ -212,7 +191,7 @@ Let's go through another example of concurrency. We have two threads incrementin
 
 ``Correct`` is similar to our invariants in `duplicates`. *Once every thread is done running*, each thread should have incremented ``counter`` once, which means that ``counter = NumThreads``. Confirm that the spec passes with ``INVARIANT Correct`` :ss:`threads_1`. 
 
-.. note:: I'm hardcoding ``NumThreads`` to make running the example easier. In a real Hardcoded, in a real spec NumThreads would be a constant
+.. note:: I'm hardcoding ``NumThreads`` to make running the example easier. In a real spec NumThreads would be a constant.
 
 Now let's assume we can't atomically update ``counter``: maybe our hardware doesn't support it, maybe ``counter`` is on a separate machine of the network, or maybe the increment is just a stand-in for a much more complex implementation logic. Regardless, we now have to update it in two steps: first we assign it to a thread-local variable, then we compute the next value and assign it to ``counter``. To model this, we'll split the label in two, creating a point of concurrency.
 
@@ -236,16 +215,29 @@ Both threads read the value of ``counter`` when it's 0, meaning they both set ``
 .. spec:: threads/3/threads.tla
   :diff: threads/2/threads.tla
 
-:ss:`threads_3`
+Now the spec passes again :ss:`threads_3`.
 
+.. todo::
 
-Talk about sentinel values and what the alternative is.
+  .. tip:: If I was doing this for real, I'd add an assert
 
-If I was doing this for real, I'd add an assert
+Finding invariants
+-------------------
 
-Exercise: write type invariants for all of these
+Finding more invariants is good practice
 
-Can scale it to N threads
+* Type invariant
+  * Retstrict ``counter`` to ``0..NumThreads``
+
+* Lock can't go from thread to thread
+  * Action properties
 
 Summary
 ============
+
+* Processes
+* Local variables
+* Process sets
+* self
+* await
+* Deadlock

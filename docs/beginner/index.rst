@@ -18,3 +18,4 @@ Blah blah blah
   nondeterminism.rst
   concurrency.rst
   temporal-logic.rst
+  toolbox.rst

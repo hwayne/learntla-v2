@@ -199,7 +199,7 @@ You know the drill by now: new class of value, new need for a way to generate se
 
 The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``. I could also have represented the state with functons of form ``[CPUs -> Tasks \union {NoAssignment}]``.
 
-I can also use set `maps <map>` and filters here. Let's say a task can only be assigned to at most two CPUs. If I wanted to, I could fold that into the type invariant, using a function set::
+I can also use `set maps <map>` and filters here. Let's say a task can only be assigned to at most two CPUs. If I wanted to, I could fold that into the type invariant, using a function set::
 
   TypeInvariant ==
     \* ...
@@ -242,6 +242,66 @@ Some more examples of function sets:
 
     {config \in [Servers -> StatusType]: \E s \in Servers: config[s] = "booting"}
 
+Sorting
+.........
+
+Let's put function sets to good use. We `learned before  <issorted>` that we can write ``IsSorted(seq)`` as:
+
+::
+
+  IsSorted(seq) ==
+    \A i, j \in 1..Len(seq):
+      i < j => seq[i] <= seq[j]
+
+Now what about an operator that *sorts* as a sequence? Specifically, one such that ``IsSorted(SortSeq(seq))`` is always true. That's easy:
+
+::
+
+  Sort(seq) ==
+    <<>>
+
+We had to tweak the definition a bit and make sure that the output sequence has all the same elements, too. 
+
+Now you might remember from our discussion of `CHOOSE` that instead of manually constructing the sequence with the desired properties, it's easier to instead take a set of sequences and pluck out the one that has the properties we want.
+
+We know we can get the set of elements in a sequence this way:
+
+::
+  
+  Range(f) == {f[x] : x \in DOMAIN f}
+
+Then ``[DOMAIN seq -> Range(seq)]`` is the set of all sequences which have the same elements as ``seq``. Our operator will then look something like this:
+
+::
+
+  Sort(seq) ==
+    CHOOSE sorted \in [DOMAIN seq -> Range(seq)]:
+      /\ \* sorted has the same number of each element as seq
+      /\ IsSorted(sorted)
+
+To figure out if two sequences have the same number of each elemnet, let's define a ``CountMatching(f, val)`` operator that tells us the number of inputs matching ``val``. To get the size of a set, we need ``Cardinality`` from the `FiniteSets` module.
+
+::
+
+  CountMatching(f, val) ==
+    Cardinality({key \in DOMAIN f: f[key] = val})
+    
+::
+
+  Sort(seq) ==
+    CHOOSE sorted \in [DOMAIN seq -> Range(seq)]:
+      /\ \A i \in DOMAIN seq:
+        CountMatching(seq, i) = CountMatching(sorted, i)
+      /\ IsSorted(sorted)
+
+Let's try this on some input:
+
+::
+
+  >>> Sort(<<8, 2, 7, 4, 3, 1, 3>>)
+  <<1, 2, 3, 3, 4, 7, 8>>
+
+.. tip:: Explain bags
 
 .. index:: duplicates
 

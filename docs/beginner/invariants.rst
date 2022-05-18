@@ -4,18 +4,11 @@
 Writing an Invariant
 ++++++++++++++++++++++++
 
-This section covers:
-
-* How to write invariants
-* Type Invariants
-* Quantifiers
-* Implication
-
+.. index:: Invariant
+.. _invariant:
 
 Invariants
 =============
-
-
 
 In the last section, we wrote a simple specification for finding duplicates in a sequence. How do we know it's working, though? Here's another spec for finding duplicates, that also runs without error:
 
@@ -49,7 +42,7 @@ This operator needs to know about the ``all_unique`` variable, so we have to put
 
 .. todo:: spec
 
-To check this, we add it as an `invariant <_chapter_setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
+To check this, we add it as an `invariant <chapter_setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
 
 .. todo:: img
 
@@ -58,7 +51,7 @@ To check this, we add it as an `invariant <_chapter_setup>`. TLC will check it f
   There's a little more we can do with the error trace, see here.
 
 
-So back to the nature of the invariant. We say ``all_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant
+So back to the nature of the invariant. We say ``all_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
 
 ::
 
@@ -67,7 +60,7 @@ So back to the nature of the invariant. We say ``all_unique`` is the boolean typ
     /\ seen \subseteq S
     /\ i \in 1..Len(seq)+1
 
-.. exercise::
+.. .. exercise::
   :label: inv_seen
 
   What's an even narrower type for ``seen``?
@@ -335,17 +328,37 @@ So we just make that change, and:
 
 This should pass :ss:`duplicates_many_inputs`.
 
-More ``=>`` practice
---------------------
 
-``=>`` is extremely powerful, so let's spend more time working with it.
 
-We can tell a sequence is sorted iff TK
+.. todo:: 
 
-Finding Good Invariants
+  .. rubric:: More invariant practice
+
+  ``=>`` is extremely powerful, so let's spend more time working with it. How would we write an operator that tests if a sequence is sorted in ascending order? What would ``IsSorted(seq)`` look like,
+
+  ::
+
+    IsSorted(seq) ==
+      \A i, j \in 1..Len(seq):
+        i < j => seq[i] <= seq[j]
+
+
+When to use Invariants
 =======================
+
+The invariant we wrote here, "the algorithm has the correct answer at the end", isn't usually written *as an invariant*. There's a more elegant way to specify that, which we'll be covering in a `later chapter <chapter_temporal_logic>`.
+
+Invariants are your bread and butter of TLA+. Every specification should at least have a type invariant, to make sure all values are what you expect. They are very cheap to check. Use a lot of them. Here are some invariants I've written for production specs:
+
+TODO
+
 
 Summary
 ========
 
-TODO
+* Invariant
+* Type Invariants
+* Implication
+* Quantifiers
+* More implication
+* When to use invariants

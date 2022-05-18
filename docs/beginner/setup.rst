@@ -13,16 +13,24 @@ For teaching purposes, I like to start people off using the TLA+ IDE. It abstrac
 
 Once you have the 
 
+image
+
 Translating Specs
 ====================
 
+blah blah
 Running Models
 ====================
 
+blah blah
 Manual Outputs
 ====================
 
+blah blah
 
 .. _scratch:
+
+Scratch
+------------
 
 Blah blah
