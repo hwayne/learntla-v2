@@ -1,4 +1,4 @@
-target: specs/reader_writer/1/reader_writer.tla
+target: specs/reader_writer/rw_many_1/reader_writer.tla
 states:
   rw_many_1:
     states: 17

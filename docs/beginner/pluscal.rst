@@ -8,26 +8,16 @@ Writing Specifications
 Overview
 ===========
 
-In the `last chapter <operators>`, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
-
-This chapter covers:
-
-- Pluscal
-- Labels
-- pluscal constructs
-
+In the `last chapter <chapter_operators>`, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
 
 .. index:: PlusCal
   :name: pluscal
-
-PlusCal
------------
 
 TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of state changes in the system. It's a powerful way of expressing mutation, but it is also very general, accepting a large degree of complexity to be able to express more powerful systems. Many engineers struggle to start learning it. So in 2009, Leslie Lamport created a DSL called PlusCal: a more programming-like syntax that compiles to TLA+ actions.
 
 PlusCal isn't as powerful as "raw" TLA+, and there are some types specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
 
-.. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can check out `pluscal_to_tla`.
+.. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can skip to the section on `learning TLA+ <chapter_tla>`.
 
 PlusCal
 ============
@@ -165,6 +155,14 @@ assert
 ......
 
 ``assert x`` automatically fails the model check if it's false.
+
+.. index:: goto
+.. _goto:
+
+goto
+.....
+
+``goto L`` jumps to label ``L``.
 
 .. index:: if (pluscal)
 

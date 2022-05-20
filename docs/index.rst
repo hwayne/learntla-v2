@@ -21,23 +21,15 @@ About this guide
 This is a free online resource for learning TLA+ . The guide is divided into three parts:
 
 * The *core*: 
+
 About me
 --------
 
 Blah blah
-expectations, it could be that the code is wrong. Most software correctness techniques –
-types, tests, etc. – are used to check the code. But it could instead be that the code is
-correct and our expectations are wrong: there’s a fundamental error in our design.
-These errors, called specification errors, are some of the most subtle and dangerous
-bugs. They can span multiple independent programs, occur in convoluted race
-conditions, or depend on physical phenomena. Our regular tools simply can’t find them.
-Instead, we can find them with a specification language such as TLA+. TLA+ is
-the invention of Leslie Lamport, winner of the 2013 Turing Award and the inventor of
-Paxos and LaTeX. Instead of writing your design in code or plain English, you write it
-in TLA+’s special notation. Once you specify your core assumptions and requirements,
-it can explore how that system would evolve over time, and whether it actually has the
-properties you want.
+
 How to read this book
+
+whatsnew.rst
 
 .. toctree::
    :maxdepth: 2
@@ -52,8 +44,27 @@ How to read this book
 
 .. todolist::
 
+.. topics
 
+  Toolbox
+  CLI
+  Advanced operators
+  Strong Fairness
+  Refinement
+  Partial ADTs
+  Standard Library
+  Helper variables
+  Invariants vs Liveness vs Action properties
+  Case statements
+  
 .. applying
+
+.. examples
+
+  Tortoise and hare
+  
+  
+.. optimization
 
 
 

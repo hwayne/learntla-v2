@@ -202,7 +202,6 @@ So 417 is (0+1)+9)*6)*7)-3.
 
   This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker with every value of ``Target`` from 0 to 1000 and counted which ones didn't produce an error trace. {{Link to the command line options}}. The first such number is 851.
 
-
 Summary
 ==========
 

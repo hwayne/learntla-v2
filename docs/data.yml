@@ -50,6 +50,12 @@ state_spaces:
   rw_local_2:
     distinct: 11
     states: 15
+  rw_many_1:
+    distinct: 11
+    states: 17
+  rw_many_2:
+    distinct: 8
+    states: 15
   test:
     distinct: 4
     states: 10

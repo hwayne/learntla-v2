@@ -63,7 +63,7 @@ Since ``Next`` is an action, to be "always true" it must always accurately descr
 
   Technically speaking, we can use TLA+ to describe **any possible set of behaviors**. This is technically a valid spec:
 
-  ::
+  .. code-block:: text
 
     Init == x = 0
     Next == x' >= x
@@ -251,6 +251,7 @@ For this spec, we have a worker doing some abstract job. It can succeed or fail.
 Does ``Liveness`` hold? It does not! Our fairness clause only says that if ``Succeed`` is guaranteed if it is *permanently* enabled. The problem it's *not* permanently enabled. We could have the following error trace:
 
 .. code-block::
+
   <Init>    status = "start"
 
   <Fail>*   status = "fail"

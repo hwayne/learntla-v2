@@ -4,7 +4,7 @@
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = &lt;&lt;>>;
   total = 0;
@@ -34,7 +34,7 @@ begin
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = &lt;&lt;>>;
   total = 0;<s on="1">
@@ -101,7 +101,7 @@ EXTENDS Integers, Sequences, TLC
 
 Writers == {1, 2, 3}
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = &lt;&lt;>>;
   total = 0;
@@ -130,7 +130,7 @@ EXTENDS Integers, Sequences, TLC
 
 Writers == {1, 2, 3}
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 
 either write or skip;
 </spec>

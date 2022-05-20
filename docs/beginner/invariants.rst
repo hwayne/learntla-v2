@@ -38,7 +38,7 @@ The most common invariant we use in programming: static types! When I have a var
 .. index:: define
   :name: define
 
-This operator needs to know about the ``all_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper.
+This operator needs to know about the ``all_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper. A define block contains pure TLA+ operators, and the operators may reference the values of PlusCal variables.
 
 .. todo:: spec
 

@@ -6,7 +6,7 @@ target: specs/reader_writer/2/reader_writer.tla
 ---- MODULE reader_writer_1__2 ----
 EXTENDS Integers, Sequences, TLC
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = <<>>;
   total = 0;

@@ -108,13 +108,11 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
   We can make the processes strongly fair by writing ``fair+``. Then every thread will eventually get the lock. We can also make indiviudal actions strongly fair, by writing ``AwaitLock:+``.
 
+  We'll double back to strong fairness when we talk about writing `Pure TLA+ <chapter_tla>` specs, where we can do a little more with it.
+
 .. tip::
   
-  Not every process in a spec needs to, or should be, fair. Consider a spec where one process represents the worker and one represents a user. The user actions aren't *guaranteed* to happen: the user can always step off the computer and go outside.
-
-.. todo:: make an advanced-topic directive that's either a dropdown or a popout. And it should do an include
-
-.. todo:: explain difference between stutter and an action that does nothing. It matters for deadlocks only
+  Not every process in a spec needs to be fair. Consider a spec where one process represents the worker and one represents a user. The user actions aren't *guaranteed* to happen: the user can always log off.
 
 .. index::
   single: <>

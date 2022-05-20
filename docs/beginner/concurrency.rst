@@ -72,7 +72,10 @@ Notice how many more states we have :ss:`rw_local_1`. The ``while`` loop is nona
 
 ``i`` is only used in the writer, so we don't necessarily need to expose it to the reader. We can make a variable local to the process, like this:
 
-TK local_2
+
+.. spec:: reader_writer/rw_local_2/reader_writer.tla
+  :diff: reader_writer/rw_local_1/reader_writer.tla
+
 ss rw_local_2
 
 As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
@@ -89,6 +92,10 @@ Process Sets
 ---------------------
 
 Once we have a single process, we can extend it into a process set. Instead of saying ``process name = val``, we write ``process name \in val``. Then PlusCal will create one distinct process for *each* value in the set.
+
+.. spec:: reader_writer/rw_many_1/reader_writer.tla
+  :diff: reader_writer/3/reader_writer.tla
+
 
 TK two writers
 
@@ -221,16 +228,20 @@ Now the spec passes again :ss:`threads_3`.
 
   .. tip:: If I was doing this for real, I'd add an assert
 
-Finding invariants
--------------------
+.. rubric:: Finding invariants
 
 Finding more invariants is good practice
 
 * Type invariant
+
   * Retstrict ``counter`` to ``0..NumThreads``
 
+* Assert
+
 * Lock can't go from thread to thread
+
   * Action properties
+
 
 Summary
 ============

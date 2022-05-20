@@ -9,7 +9,7 @@ states:
 ---- MODULE reader_writer_1__1 ----
 EXTENDS Integers, Sequences, TLC
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = <<>>;
   total = 0;
