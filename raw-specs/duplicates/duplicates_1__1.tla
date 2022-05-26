@@ -1,13 +1,3 @@
-target: specs/duplicates/1/duplicates.tla
-states:
-  duplicates_fixed_input:
-    config: 1
-    states: 4
-    distinct: 3
-!!!
-!tlacli check %
-!tlacli translate %
-!!!
 ---- MODULE duplicates_1__1 ----
 EXTENDS Integers, Sequences, TLC
 

@@ -75,4 +75,34 @@ end process;
 end algorithm; *)
 ====
 </spec>
+
+<spec name="strong_fairness" num="2">
+---- MODULE $name ----
+EXTENDS Integers
+CONSTANT NULL
+
+Threads == 1..2
+
+(*--algorithm threads
+variable lock = NULL;
+
+define
+  Liveness == 
+    \A t \in Threads:
+      &lt;>(lock = t)
+end define;
+
+fair<s on="2">+</s> process thread \in Threads
+begin
+  GetLock:
+    await lock = NULL;
+    lock := self;
+  ReleaseLock:
+    lock := NULL;
+  Reset:
+    goto GetLock;
+end process;
+end algorithm; *)
+====
+</spec>
 </root>
