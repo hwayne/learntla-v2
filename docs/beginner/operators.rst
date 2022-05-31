@@ -4,17 +4,11 @@
 Operators and Values
 +++++++++++++++++++++++++
 
-This chapter covers:
 
-- Operators
-- values
-- `Sequences <sequence>`
-- `Sets <set>`
-- sets of values
-- `CHOOSE`
-- `LET`
-
-.. todo:: Summary, exercises
+.. todo:: 
+  Summary, 
+  exercises
+  mention recursive operators come later
 
 Operators
 ===========

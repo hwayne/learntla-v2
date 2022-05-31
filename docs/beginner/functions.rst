@@ -4,11 +4,6 @@
 Functions
 ++++++++++++++
 
-In this chapter we will cover
-
-* Structures
-* Functions
-* Function sets
 
 
 .. _struct:
@@ -155,6 +150,14 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
   <<TRUE, TRUE>> :> TRUE )
 
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
+
+Zip
+.....
+
+.. todo::
+
+  zip example
+
 
 Using Functions
 -----------------

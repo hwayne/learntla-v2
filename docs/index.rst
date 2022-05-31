@@ -33,30 +33,20 @@ whatsnew.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Learning
+   :caption: Learn
    :hidden:
 
    intro/conceptual-overview.rst
    beginner/index
-   intermediate/index
+   topics/index
    
 :ref:`genindex`
 
 .. todolist::
 
-.. topics
-
-  Toolbox
-  CLI
-  Advanced operators
-  Strong Fairness
-  Refinement
-  Partial ADTs
-  Standard Library
-  Helper variables
-  Invariants vs Liveness vs Action properties
-  Case statements
+.. todo:: == vs =
   
+
 .. applying
 
 .. examples
@@ -65,6 +55,4 @@ whatsnew.rst
   
   
 .. optimization
-
-
 
