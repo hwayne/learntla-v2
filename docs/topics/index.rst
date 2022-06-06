@@ -14,14 +14,19 @@ Topics
 
 .. topics
 
-  Advanced operators
-  Strong Fairness
-  Refinement
-  Partial ADTs
-  Standard Library
-  Helper variables
+  ADAPT:
+    Refinement
+    Partial ADTs
+    Adversaries
+    Standard Library
+    Strong Fairness
+
+  WRITE:
+    Helper variables <aux_vars>
+    General tips <tips>
+      Illegal States are representable
+    
+
   Invariants vs Liveness vs Action properties
-    aux_vars
-  General tips
-    tips
+
 
