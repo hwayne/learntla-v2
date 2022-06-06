@@ -10,7 +10,7 @@ Writing an Invariant
 Invariants
 =============
 
-In the last section, we wrote a simple specification for finding duplicates in a sequence. How do we know it's working, though? Here's another spec for finding duplicates, that also runs without error:
+In the last chapter, we wrote a simple specification for finding duplicates in a sequence. How do we know it's working, though? Here's another spec for finding duplicates that also runs without error:
 
 ::
 
@@ -191,6 +191,8 @@ We can't use a quantifier on a sequence, since that's not a set. But we *can* us
     \E i \in 1..Len(seq):
       seq[i] = elem
 
+That suggests we can write ``IsUnique`` as
+
 ::
 
   IsUnique(s) ==
@@ -199,17 +201,6 @@ We can't use a quantifier on a sequence, since that's not a set. But we *can* us
     \A i, j \in 1..Len(s):
       s[i] # s[j]
 
-
-.. exercise::
-
-  Predicate logic has tautologies: like how ``~~P = P``. Explain these tautologies:
-
-  #. ``\A x \in S: ~P(x) = ~(\E x \in S: P(x))``
-  #. ``\E x \in S: ~P(x) = ~(\A x \in S: P(x))``
-  #. ``\A x \in S: P(x) /\ Q(x) = (\A x \in S: P(x)) /\ (\A x \in S: Q(x))``
-  #. ``\E x \in S: P(x) \/ Q(x) = (\E x \in S: P(x)) \/ (\E x \in S: Q(x))``
-
-  .. bring up duals
 
 .. _implication_2:
 
@@ -221,14 +212,14 @@ Let's add this new version of ``IsUnique`` to our duplicates spec:
 .. spec:: duplicates/inv_3/duplicates.tla
   :diff: duplicates/inv_2/duplicates.tla
 
-If you run this, you will see it *fail*. And it fails in the oddest way, by a unique sequence as duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
+If you run this, you will see it *fail*. And it fails in the oddest way, by saying a unique sequence has duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
 
 Let's use `CHOOSE` to ask TLC *what* indices it picked. Back in `scratch`:
 
 ::
 
   Eval == LET
-    seq == ...
+    seq == <<1, 2, 3, 4>>
     s == 1..4
   IN
     CHOOSE p \in s \X s: seq[p[1]] = seq[p[2]]
@@ -328,6 +319,48 @@ So we just make that change, and:
 
 This should pass :ss:`duplicates_many_inputs`.
 
+.. warning:: Do not use ``=>`` with ``\E``! Imagine I wanted to an operator that checks if a sequence has duplicates, and wrote
+
+  ::
+
+    HasDuplicates(seq) ==
+      \E i, j \in 1..Len(seq):
+        i # j => seq[i] = seq[j]
+
+  If I picked ``i = j = 1``, then the left-hand side would be false, meaning the expression is true, meaning the whole quantifier is true. *This holds regardless of the right-hand side!* Instead I should write
+
+  ::
+
+    HasDuplicates(seq) ==
+      \E i, j \in 1..Len(seq):
+        i # j /\ seq[i] = seq[j]
+
+More invariant practice
+------------------------
+
+.. todo:: Find actual names for everything
+
+Consider we have an event queue of events that happen in a system, where the queue is represented by a sequence of strings. One of teh invariants of the system is that "A can only come after B if the D flag is set."
+
+Properties of the form "X can only be true if Y is also true" can be written as ``X => Y``. To see why, try writing out the truth table.
+
+So we have:
+
+::
+
+  Inv == IsAfter(A, B) => D
+
+That just leaves specifying ``IsAfter``. 
+
+::
+
+  \* Test this
+
+  IsAfter(seq, e1, e2) ==
+    \E i, j \in 1..Len(seq):
+      /\ i > j
+      /\ seq[i] = e1
+      /\ seq[j] = e2
 
 
 .. todo:: 
@@ -346,11 +379,15 @@ This should pass :ss:`duplicates_many_inputs`.
 When to use Invariants
 =======================
 
-The invariant we wrote here, "the algorithm has the correct answer at the end", isn't usually written *as an invariant*. There's a more elegant way to specify that, which we'll be covering in a `later chapter <chapter_temporal_logic>`.
+.. todo::
 
-Invariants are your bread and butter of TLA+. Every specification should at least have a type invariant, to make sure all values are what you expect. They are very cheap to check. Use a lot of them. Here are some invariants I've written for production specs:
+  The invariant we wrote here, "the algorithm has the correct answer at the end", isn't usually written *as an invariant*. There's a more elegant way to specify that, which we'll be covering in a `later chapter <chapter_temporal_logic>`.
 
-TODO
+  Invariants are your bread and butter of TLA+. Every specification should at least have a type invariant, to make sure all values are what you expect. They are very cheap to check. Use a lot of them. Here are some invariants I've written for production specs:
+
+
+  - Messages on the queue are unique.
+  - 
 
 
 Summary

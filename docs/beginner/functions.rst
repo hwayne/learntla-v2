@@ -151,13 +151,48 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
 
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
 
-Zip
-.....
+Example: Zip
+............
 
-.. todo::
+Python has a function called ``zip``. It takes two iterables and returns a single sequence, where the elements are pairs of elements from the two inputs. If one is larger than the other, it only does up to the length of the shorter.
 
-  zip example
+.. code-block:: python
 
+  >>> list(zip([1, 2], ["a", "b", "c"]))
+  [(1, 'a'), (2, 'b')]
+
+Normally programming languages implement zip with iteration or recursion. We don't need that here because we can "see" the entire sequence at once.
+
+
+::
+
+  \* TODO Check
+  Zip1(seq1, seq2) ==
+    LET Min(a, b) == IF a < b THEN a ELSE b
+        N == Min(Len(seq1), Len(seq2))
+    IN
+      [i \in 1..N |-> <<seq1[i], seq2[i]>>]
+
+Another way we could write this would be to notice that the `intersection <set_operators>` of ``1..a`` and ``1..b`` is ``1..Min(a,b)``. So we can simplify ``Zip`` to:
+
+::
+
+  \* TODO Check
+  Zip2(seq1, seq2) ==
+    LET N == (DOMAIN seq1) \intersect (DOMAIN seq2)
+    IN
+      [i \in 1..N |-> <<seq1[i], seq2[i]>>]
+
+We can check that these are equivalent by writing a quantifier check:
+
+::
+
+  LET 
+    S == 1..4
+    Input == (S \X S \X S) \union (S \X S)
+  IN
+    \A s1, s2 \in Input:
+      Zip1(s1, s2) = Zip2(s1, s2)
 
 Using Functions
 -----------------
@@ -237,18 +272,10 @@ Some more examples of function sets:
 
   In a function, then you probably wrote ``[x \in S -> T]`` instead of ``[x \in S |-> T]``. Don't worry, everybody gets the two mixed up at some point.
 
-.. .. exercise::
-
-  Given the sets ``Servers`` and ``StatusType == {"on", "off", "booting"}``, find the set of all status configurations where at least one server is booting.
-
-  ::
-
-    {config \in [Servers -> StatusType]: \E s \in Servers: config[s] = "booting"}
-
 Sorting
 .........
 
-Let's put function sets to good use. We `learned before  <issorted>` that we can write ``IsSorted(seq)`` as:
+Let's put function sets to good use. We `learned before<issorted>` that we can write ``IsSorted(seq)`` as:
 
 ::
 

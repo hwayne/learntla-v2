@@ -4,16 +4,16 @@ Topics
 
 .. toctree::
   :maxdepth: 1
+  :hidden:
 
-
+  toolbox
+  cli
 
 
 
 
 .. topics
 
-  Toolbox
-  CLI
   Advanced operators
   Strong Fairness
   Refinement
@@ -21,5 +21,7 @@ Topics
   Standard Library
   Helper variables
   Invariants vs Liveness vs Action properties
-  Case statements
+    aux_vars
+  General tips
+    tips
 

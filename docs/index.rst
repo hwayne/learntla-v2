@@ -11,23 +11,32 @@
 Welcome to learntla's documentation!
 ====================================
 
-Most software flaws come from one of two places. A code bug is when the code doesn't match our design— for example, an off-by-one error, or a null derefence. We have lots of techniques for finding code bugs. But what about design flaws? We can't find issues in our designs. TK
+Most software flaws come from one of two places. A code bug is when the code doesn't match our design— for example, an off-by-one error, or a null derefence. We have lots of techniques for finding code bugs. But what about design flaws? When it comes to bugs in our designs, the best most of us are taught is "think about it really hard".
 
 TLA+ is a language for design systems that lets you directly test those designs. Think of it like making an outline of what you want to build, and then finding erros in the outline.  and then directly test those designs. 
 
 About this guide
 ----------------
 
-This is a free online resource for learning TLA+ . The guide is divided into three parts:
+This is a free online resource for learning TLA+. To help both beginners and experienced users, the guide is divided into three parts:
 
-* The *core*: 
+- The *core*: a linear introduction to all of the TLA+ language. It starts with basic operators and gradually progresses all the way to advanced topics. The core is intended to be read **linearly**: people new to TLA+ should start with the conceptual overview, and then work forward from there. People comfortable with TLA+ should skim until they find the new material.
+
+- *Topics*: "Optional" advanced material. Any individual lesson will be useful to *many* but not *all* TLA+ users. Unlike the core, these are designed to be mostly independent of each other. If topics have dependencies on other topics, I will call them out.
+
+- *Examples:* Applications of TLA+ to specs, showing both how to write and undersstand specs. 
+
+The guide is still under development, check {{what's new}} to see most recent updates and the {{roadmap}} to see what I'm currently working on.
+
 
 About me
 --------
 
-Blah blah
+.. todo::
 
-How to read this book
+  I'm Hillel. I created a `previous version <old.learntla.com>`_ of *Learn TLA+* and am the author of the book `Practical TLA+`. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a blog, a twitter, and a weekly newsletter. 
+
+.. todo:: TLA+ vs pluscal page with prerequisites
 
 whatsnew.rst
 

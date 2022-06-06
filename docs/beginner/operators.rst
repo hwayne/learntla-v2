@@ -242,6 +242,8 @@ Some programming languages have sets, but they're often less important than arra
 
 .. This again breaks down to whether we care about programming or specifying. 
 
+.. _set_operators:
+
 Operators
 ----------
 
