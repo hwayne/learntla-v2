@@ -7,3 +7,4 @@ __pycache__
 temporary.cfg
 *.toolbox
 venv-sphinx
+.vscode

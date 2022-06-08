@@ -20,6 +20,8 @@ The last case, `concurrency`, we'll cover in the next chapter. To handle the res
 
 .. index:: with; nondeterministic
 
+.. _nondet_with:
+
 with
 -----------
 

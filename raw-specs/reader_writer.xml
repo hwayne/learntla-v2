@@ -109,30 +109,20 @@ variables
 process writer \in Writers
 begin
   AddToQueue:
+    await queue = <<>>;
     queue := Append(queue, self);
 end process;
 
 process reader = 0
 begin
-  ReadFromQueue:
-    await queue # &lt;&lt;>>;
+  ReadFromQueue:<s on="2">
+    await queue # &lt;&lt;>>;</s>
     total := total + Head(queue);
     queue := Tail(queue);
     goto ReadFromQueue;
 end process;
 end algorithm; *)
 ====
-</spec>
-
-<spec name="rw_nondeterministic" num="1">
----- MODULE $name ----
-EXTENDS Integers, Sequences, TLC
-
-Writers == {1, 2, 3}
-
-(* --algorithm reader_writer
-
-either write or skip;
 </spec>
 </root>
 

@@ -12,7 +12,7 @@ So far we've only worked with single-process algorithms. But the selling point f
 .. index:: process
   :name: process
 
-.. _processes:
+.. _process:
 
 Processes
 =============
@@ -57,6 +57,12 @@ The point is that we decide what's the right choice based on what we need from t
 
 This passes :ss:`rw_2`.
 
+.. rubric:: pc
+
+In our single process specs, we used a string variable called `pc` to track the value. To model multiple processes, the translator "lifts" ``pc`` to be a function from process values to strings.
+
+.. tip:: ``pc`` *can* be used in `define <define>` blocks.
+
 .. index:: process; local variables
 
 local variables
@@ -76,13 +82,9 @@ Notice how many more states we have :ss:`rw_local_1`. The ``while`` loop is nona
 .. spec:: reader_writer/rw_local_2/reader_writer.tla
   :diff: reader_writer/rw_local_1/reader_writer.tla
 
-ss rw_local_2
+ss:`rw_local_2` As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
 
-As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
-
-In practice, local variables aren't often used, as they can't be placed in `define <define>` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables for "bookkeeping" variables, like loop iterations and TK.
-
-.. todo:: better example of bookkeeping variable
+In practice, local variables aren't often used, as they can't be placed in `define <define>` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables as :ref:`auxiliary <topic_aux_vars>` or "bookkeeping" variables, like loop iterations and model bounding.
 
 For now let's pull out the ``while`` loop and go back to our previous version.
 
@@ -93,57 +95,46 @@ Process Sets
 
 Once we have a single process, we can extend it into a process set. Instead of saying ``process name = val``, we write ``process name \in val``. Then PlusCal will create one distinct process for *each* value in the set.
 
+
 .. spec:: reader_writer/rw_many_1/reader_writer.tla
   :diff: reader_writer/3/reader_writer.tla
 
+.. tip:: This is where `model_set` become extremely useful. If we also wanted multiple readers, we'd have to make sure that ``Readers`` and ``Writers`` were the same type but didn't overlap. The easiest way to do that is to use two sets of model values.
 
-TK two writers
-
-This has TK states
-There are :math:`4! = 24` ways to organize four independent processes.
-
-W1-W2-W3-R, W2-W1-W3-R, W1-W3-W2-R...
-
-.. tip:: ``pc`` *can* be used in `define <define>` blocks.
-
-.. todo:: ``pc`` is a function
+:ss:`rw_many_1` Concurrency is one of the main sources of state space explosion. With three writers and one reader, there are :math:`4! = 24` different ways to order their four actions. If we added a fifth writer (or a second reader), that would jump to 120 orderings.
 
 We're now adding up to three values to the queue, but we're only reading one value. Let's make the reader run forever.
 
-.. tip:: This is where `model_set` becomes extremely useful. model value sets 
 
-This is equivalent to putting the label in a ``while TRUE`` loop.
+.. spec:: reader_writer/rw_many_2/reader_writer.tla
+  :diff: reader_writer/rw_many_1/reader_writer.tla
+
+:ss:`rw_many_2` This is equivalent to putting the label in a ``while TRUE`` loop.
+
 
 .. index:: self
 .. _self:
 
+.. rubric:: self
+
 In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 3.
 
-spec
+.. spec:: reader_writer/rw_many_3/reader_writer.tla
+  :diff: reader_writer/rw_many_2/reader_writer.tla
 
-That's what we see, but we *also* see a **massive** state space increase. TK. To see why, consider what happens when both writers have run, but the reader has not. No matter which writer completes first, the queue will be ``<<1, 1>>``. But now, sinece they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
-
-
-Often we use ``self`` in conjunction with functions to make global state. For example, if we wanted to have multiple readers with separate totals but a shared queue, we'd instead write this:
+That's what we see, but we *also* see a **massive** state space increase :ss:`rw_many_3`.  To see why, consider what happens when writers 1 and 2 have run in some order. Before the queue would have been ``<<1, 1>>``, regardless of which writer ran first. But now, sinece they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
 
 
-::
+.. tip::
 
-  variable online [w \in Writers |-> TRUE];
+  Macros *can* use the value of ``self`` inside of them. So you can write
 
-  \* somewhere in a process
+  ::
 
-  online[self] := FALSE;
-
-Macros *can* use the value of self inside of them. In the above spec, the following would be valid::
-
-    macro add(val) begin
-      total[self] := total[self] + val;
+    macro write() begin
+      queue := Append(queue, self)
     end macro;
 
-Then we can call ``turn_off(Tail(queue))`` inside a writer process.
-
-.. todo:: We'll go back to ``rw_3`` going forward.
 
 .. -----------------------
 
@@ -155,33 +146,34 @@ Then we can call ``turn_off(Tail(queue))`` inside a writer process.
 await
 ---------
 
-The current spec ignores logic when the queue is empty. What about having the reader *wait* for something to enter the queue?
+In real systems you often have *bounded* queues, which prevent writes when they're over a certain size. The strictest possible bound would be "you can only write if the queue is empty". Let's add that:
 
-await version
+.. spec:: reader_writer/rw_await_1/reader_writer.tla
+  :diff: reader_writer/rw_many_3/reader_writer.tla
+
+:ss:`rw_await_1`
 
 ``await`` is a *restriction* on when the label can run. The label can only run— the state "committed", if you will— if *every* ``await`` statement in the label evaluates to true.
 
+.. note:: `with <nondet_with>` ``x \in set`` also blocks if the set is empty.
+
 .. warning:: ``await`` interacts a little oddly with variable updates— it will be based on the updated value if directly embedded but not if the variable is used via a ``defined`` operator. This is due to the PlusCal->TLA+ translation grammar. As a general precaution, don't use updated variables in ``await`` statements.
 
-.. todo:: writer also blocks
-
-What if it's impossible for a label to *ever* be evaluated? For example, in this spec::
-
-  process x = "x"
-  begin
-    X:
-      await FALSE;
-  end process;
-
+.. index:: Deadlocks
 .. _deadlock:
 
-In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no processes can make any progress*.
+What if we also add an ``await`` to the Reader? We'll see something interesting happen:
 
-.. exercise::
+.. spec:: reader_writer/rw_await_2/reader_writer.tla
+  :diff: reader_writer/rw_await_1/reader_writer.tla
 
-  Why doesn't this deadlock?
+Instead of running, to completion, TLC reports a "deadlock":
 
-  .. todo:: example
+In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no processes can make any progress*. Usually this is an error, but if it's not for your particular spec, you disable it here:
+
+.. todo:: image
+
+.. note:: 
 
 .. include:: advanced/procedures.rst
 
