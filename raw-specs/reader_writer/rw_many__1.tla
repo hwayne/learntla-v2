@@ -1,8 +1,8 @@
 target: specs/reader_writer/rw_many_1/reader_writer.tla
 states:
   rw_many_1:
-    states: 17
-    distinct: 11
+    states: 44
+    distinct: 23
 
 !!!
 ---- MODULE rw_many__1 ----
@@ -22,7 +22,6 @@ begin
 end process;
 
 process reader = 0
-\* Make this use a local variable so there's no deadlock
 begin
   ReadFromQueue:
     if queue # <<>> then

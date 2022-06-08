@@ -1,9 +1,13 @@
----- MODULE reader_writer ----
+target: specs/reader_writer/rw_await_2/reader_writer.tla
+!!!
+LoadLocal !tlacli check %
+!!!
+---- MODULE rw_await__2 ----
 EXTENDS Integers, Sequences, TLC
 
 Writers == {1, 2, 3}
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = <<>>;
   total = 0;
@@ -11,16 +15,17 @@ variables
 process writer \in Writers
 begin
   AddToQueue:
-    queue := Append(queue, 1);
+    await queue = <<>>;
+    queue := Append(queue, self);
 end process;
 
 process reader = 0
 begin
   ReadFromQueue:
-    if queue # <<>> then
+    await queue # <<>>;
       total := total + Head(queue);
       queue := Tail(queue);
-    end if;
+    goto ReadFromQueue;
 end process;
 end algorithm; *)
 ====

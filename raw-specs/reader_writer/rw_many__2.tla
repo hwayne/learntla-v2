@@ -1,8 +1,8 @@
-target: specs/reader_writer/many_2/reader_writer.tla
+target: specs/reader_writer/rw_many_2/reader_writer.tla
 states:
   rw_many_2:
-    states: 15
-    distinct: 8
+    states: 45
+    distinct: 20
 !!!
 ---- MODULE rw_many__2 ----
 EXTENDS Integers, Sequences, TLC
@@ -21,7 +21,6 @@ begin
 end process;
 
 process reader = 0
-\* Make this use a local variable so there's no deadlock
 begin
   ReadFromQueue:
     if queue # <<>> then

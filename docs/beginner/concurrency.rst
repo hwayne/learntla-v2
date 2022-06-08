@@ -4,8 +4,6 @@
 Concurrency
 ################
 
-.. todo:: Fill in all of the specs
-
 So far we've only worked with single-process algorithms. But the selling point for formal methods is dealing with concurrency. Concurrency is both very common and very hard to reason about, so we get a tool to reason about it for us. A tool like TLA+!
 
 
@@ -117,12 +115,12 @@ We're now adding up to three values to the queue, but we're only reading one val
 
 .. rubric:: self
 
-In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 3.
+In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 6.
 
 .. spec:: reader_writer/rw_many_3/reader_writer.tla
   :diff: reader_writer/rw_many_2/reader_writer.tla
 
-That's what we see, but we *also* see a **massive** state space increase :ss:`rw_many_3`.  To see why, consider what happens when writers 1 and 2 have run in some order. Before the queue would have been ``<<1, 1>>``, regardless of which writer ran first. But now, sinece they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
+If you run this, you'll see the state space increase a little and the distinct states more than double :ss:`rw_many_3`.  To see why, consider what happens when writers 1 and 2 have run in some order. Before the queue would have been ``<<1, 1>>``, regardless of which writer ran first. But now, sinece they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
 
 
 .. tip::
@@ -151,7 +149,7 @@ In real systems you often have *bounded* queues, which prevent writes when they'
 .. spec:: reader_writer/rw_await_1/reader_writer.tla
   :diff: reader_writer/rw_many_3/reader_writer.tla
 
-:ss:`rw_await_1`
+:ss:`rw_await`
 
 ``await`` is a *restriction* on when the label can run. The label can only run— the state "committed", if you will— if *every* ``await`` statement in the label evaluates to true.
 
@@ -209,30 +207,29 @@ Okay, so the error should look something like this:
 
 .. todo:: ERROR
 
-Both threads read the value of ``counter`` when it's 0, meaning they both set ``tmp`` to 0, meaning they both assign ``counter := 1``. Let's add a lock.
+Both threads read the value of ``counter`` when it's 0, meaning they both set ``tmp`` to 0, meaning they both assign ``counter := 0 + 1``. Let's add a lock.
 
 .. spec:: threads/3/threads.tla
   :diff: threads/2/threads.tla
 
 Now the spec passes again :ss:`threads_3`.
 
+Finding More Invariants
+-------------------------
+
 .. todo::
 
-  .. tip:: If I was doing this for real, I'd add an assert
+  Finding more invariants is good practice
 
-.. rubric:: Finding invariants
+  * Type invariant
 
-Finding more invariants is good practice
+    * Retstrict ``counter`` to ``0..NumThreads``
 
-* Type invariant
+  * Assert
 
-  * Retstrict ``counter`` to ``0..NumThreads``
+  * Lock can't go from thread to thread
 
-* Assert
-
-* Lock can't go from thread to thread
-
-  * Action properties
+    * Action properties
 
 
 Summary

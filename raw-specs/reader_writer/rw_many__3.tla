@@ -1,4 +1,11 @@
-
+target: specs/reader_writer/rw_many_3/reader_writer.tla
+states:
+  rw_many_3:
+    states: 69
+    distinct: 38
+!!!
+LoadLocal !tlacli check %
+!!!
 ---- MODULE rw_many__3 ----
 EXTENDS Integers, Sequences, TLC
 
@@ -16,13 +23,56 @@ begin
 end process;
 
 process reader = 0
-\* Make this use a local variable so there's no deadlock
 begin
   ReadFromQueue:
     if queue # <<>> then
       total := total + Head(queue);
       queue := Tail(queue);
     end if;
+    goto ReadFromQueue;
 end process;
 end algorithm; *)
+\* BEGIN TRANSLATION - the hash of the PCal code: PCal-6c5cc353948e03151f1729a313737477
+VARIABLES queue, total, pc
+
+vars == << queue, total, pc >>
+
+ProcSet == (Writers) \cup {0}
+
+Init == (* Global variables *)
+        /\ queue = <<>>
+        /\ total = 0
+        /\ pc = [self \in ProcSet |-> CASE self \in Writers -> "AddToQueue"
+                                        [] self = 0 -> "ReadFromQueue"]
+
+AddToQueue(self) == /\ pc[self] = "AddToQueue"
+                    /\ queue' = Append(queue, self)
+                    /\ pc' = [pc EXCEPT ![self] = "Done"]
+                    /\ total' = total
+
+writer(self) == AddToQueue(self)
+
+ReadFromQueue == /\ pc[0] = "ReadFromQueue"
+                 /\ IF queue # <<>>
+                       THEN /\ total' = total + Head(queue)
+                            /\ queue' = Tail(queue)
+                       ELSE /\ TRUE
+                            /\ UNCHANGED << queue, total >>
+                 /\ pc' = [pc EXCEPT ![0] = "ReadFromQueue"]
+
+reader == ReadFromQueue
+
+(* Allow infinite stuttering to prevent deadlock on termination. *)
+Terminating == /\ \A self \in ProcSet: pc[self] = "Done"
+               /\ UNCHANGED vars
+
+Next == reader
+           \/ (\E self \in Writers: writer(self))
+           \/ Terminating
+
+Spec == Init /\ [][Next]_vars
+
+Termination == <>(\A self \in ProcSet: pc[self] = "Done")
+
+\* END TRANSLATION - the hash of the generated TLA code (remove to silence divergence warnings): TLA-70f4be979c13aeb860f1cfe5635132f1
 ====

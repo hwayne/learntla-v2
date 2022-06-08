@@ -21,6 +21,7 @@ begin
       total := total + Head(queue);
       queue := Tail(queue);
     end if;
+    goto ReadFromQueue;
 end process;
 end algorithm; *)
 ====

@@ -63,17 +63,16 @@ end algorithm; *)
 ====
 </spec>
 
-<spec name="rw_many" num="4">
+<spec name="rw_many" num="3">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
-Writers == {1, 2, 3}<s on="4">
-Readers = {-1, 0}</s>
+Writers == {1, 2, 3}
 
 (*--algorithm reader_writer
 variables
   queue = &lt;&lt;>>;
-  total = <s on="-3">0</s><s on="4-">[r \in Readers |-> 0]</s>;
+  total = <s on="-3">0</s>;
 
 process writer \in Writers
 begin
@@ -81,21 +80,20 @@ begin
     queue := Append(queue, <s on="-2">1</s><s on="3">self</s>);
 end process;
 
-process reader <s on="-3">= 0</s><s on="4-">\in Readers</s>
-\* Make this use a local variable so there's no deadlock
+process reader <s on="-3">= 0</s>
 begin
   ReadFromQueue:
     if queue # &lt;&lt;>> then
-      total<s on="4">[self]</s> := total<s on="4">[self]</s> + Head(queue);
+      total := total + Head(queue);
       queue := Tail(queue);
-    end if;<s on="2">
+    end if;<s on="2-">
     goto ReadFromQueue;</s>
 end process;
 end algorithm; *)
 ====
 </spec>
 
-<spec name="rw_await" num="1">
+<spec name="rw_await" num="2">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 
@@ -109,16 +107,18 @@ variables
 process writer \in Writers
 begin
   AddToQueue:
-    await queue = <<>>;
+    await queue = &lt;&lt;>>;
     queue := Append(queue, self);
 end process;
 
 process reader = 0
 begin
   ReadFromQueue:<s on="2">
-    await queue # &lt;&lt;>>;</s>
-    total := total + Head(queue);
-    queue := Tail(queue);
+    await queue # &lt;&lt;>>;</s><s on="1">
+    if queue # &lt;&lt;>> then</s>
+      total := total + Head(queue);
+      queue := Tail(queue);<s on="1">
+    end if;</s>
     goto ReadFromQueue;
 end process;
 end algorithm; *)

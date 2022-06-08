@@ -1,29 +1,27 @@
-
----- MODULE rw_many__4 ----
+---- MODULE reader_writer ----
 EXTENDS Integers, Sequences, TLC
 
 Writers == {1, 2, 3}
-Readers = {-1, 0}
 
 (*--algorithm reader_writer
 variables
   queue = <<>>;
-  total = [r \in Readers |-> 0];
+  total = 0;
 
 process writer \in Writers
 begin
   AddToQueue:
-    queue := Append(queue, );
+    queue := Append(queue, self);
 end process;
 
-process reader \in Readers
-\* Make this use a local variable so there's no deadlock
+process reader = 0
 begin
   ReadFromQueue:
     if queue # <<>> then
-      total[self] := total[self] + Head(queue);
+      total := total + Head(queue);
       queue := Tail(queue);
     end if;
+    goto ReadFromQueue;
 end process;
 end algorithm; *)
 ====

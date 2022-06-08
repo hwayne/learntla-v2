@@ -15,12 +15,14 @@ begin
 end process;
 
 process reader = 0
+\* Make this use a local variable so there's no deadlock
 begin
   ReadFromQueue:
     if queue # <<>> then
       total := total + Head(queue);
       queue := Tail(queue);
     end if;
+    goto ReadFromQueue;
 end process;
 end algorithm; *)
 ====

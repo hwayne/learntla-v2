@@ -44,6 +44,9 @@ state_spaces:
   rw_2:
     distinct: 5
     states: 7
+  rw_await:
+    distinct: 20
+    states: 33
   rw_local_1:
     distinct: 11
     states: 15
@@ -51,11 +54,14 @@ state_spaces:
     distinct: 11
     states: 15
   rw_many_1:
-    distinct: 11
-    states: 17
+    distinct: 23
+    states: 44
   rw_many_2:
-    distinct: 8
-    states: 15
+    distinct: 20
+    states: 45
+  rw_many_3:
+    distinct: 38
+    states: 69
   test:
     distinct: 4
     states: 10
