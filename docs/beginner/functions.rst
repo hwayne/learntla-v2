@@ -24,7 +24,7 @@ You index structs the same way you do sequences so ``struct["a"] = 1``. You can 
 
   If you get
 
-  | Encountered ``"|->"`` at line X, column Y and token ``"\"key\""``,
+    Encountered "\|->" at line X, column Y and token "key"
 
   It's because you wrote ``["key" |-> val]`` instead of ``[key |-> val]``.
 

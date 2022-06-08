@@ -52,11 +52,15 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**/advanced']
 # a list of builtin themes.
 #
 html_theme = 'piccolo_theme'
+#html_theme = 'alabaster'
+html_title = "Learn TLA+"
 default_role = "any"
 highlight_language = "tla"
+html_style = "custom.css"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css = ["custom.css"]
 todo_include_todos = True

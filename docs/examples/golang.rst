@@ -37,11 +37,9 @@ easy <https://utcc.utoronto.ca/~cks/space/blog/programming/GoConcurrencyStillNot
 
 In his words:
 
-   The bug is that the goroutines only receive from limitCh to release
-   their token after sending their result to the unbuffered found
-   channel, while the main code only starts receiving from found after
-   running through the entire loop, and the main code takes the token in
-   the loop and blocks if no tokens are available.
+.. pull-quote::
+
+   The bug is that the goroutines only receive from limitCh to release their token after sending their result to the unbuffered found channel, while the main code only starts receiving from found after running through the entire loop, and the main code takes the token in the loop and blocks if no tokens are available.
 
 This is a good example of directly verifying code with a TLA+ spec, instead of verifying just a design.
 

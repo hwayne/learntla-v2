@@ -596,7 +596,7 @@ def setup(app: Sphinx) -> Dict[str, Any]:
 
     app.add_config_value("hide_solutions", False, "env")
 
-    app.add_css_file("exercise.css")
+    #app.add_css_file("exercise.css")
     app.connect("config-inited", init_numfig)
     app.connect("env-purge-doc", purge_exercises)
     app.connect("env-merge-info", merge_exercises)

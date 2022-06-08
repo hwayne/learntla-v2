@@ -10,5 +10,5 @@ $docs_path = "$PSScriptRoot\docs"
 while($true) {
     wait-event "learntla"
     remove-event "learntla"
-    & "$PSScriptRoot\venv-sphinx\Scripts\sphinx-build.exe" $docs_path "$docs_path\_build\html"
+    & "$PSScriptRoot\venv-sphinx\Scripts\sphinx-build.exe" -qT $docs_path "$docs_path\_build\html"
 }

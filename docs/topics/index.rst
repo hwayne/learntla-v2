@@ -6,10 +6,12 @@ Topics
   :maxdepth: 1
   :hidden:
 
+  tips
   toolbox
   cli
-
-
+  aux-vars
+  state-machines
+  refinement
 
 
 .. topics

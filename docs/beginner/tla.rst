@@ -18,7 +18,7 @@ TLA+ is a third-generation formal method, based on issues seen with LTL and Z. I
 
 .. index:: Action
 
-We saw in the `last chapter <chapter_action_properties>` all the base components that drive a TLA+ spec:
+We saw in the :doc:`last chapter <action-properties>` all the base components that drive a TLA+ spec:
 
 * The prime operator: ``x'`` is the value of x *in the next state*.
 * The box operator: ``[P]_x`` is ``P \/ UNCHANGED x``.

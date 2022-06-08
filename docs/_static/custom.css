@@ -1,0 +1,7 @@
+@import 'basic_mod.css';
+
+blockquote.pull-quote {
+  border-left: .2em solid #bdbdbd;
+  font-style: italic;
+  padding-left: 0.5em;
+}

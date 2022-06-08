@@ -29,7 +29,7 @@ About me
 
 .. todo::
 
-  I'm Hillel. I created a `previous version <old.learntla.com>`_ of *Learn TLA+* and am the author of the book `Practical TLA+`. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a blog, a twitter, and a weekly newsletter. 
+  I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* and am the author of the book `Practical TLA+ <PT>`_. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a blog, a twitter, and a weekly newsletter. 
 
 .. todo:: TLA+ vs pluscal page with prerequisites
 
@@ -55,3 +55,5 @@ About me
 
 .. todo:: == vs =
   
+
+.. _PT: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281
