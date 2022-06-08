@@ -5,11 +5,6 @@ Operators and Values
 +++++++++++++++++++++++++
 
 
-.. todo:: 
-  Summary, 
-  exercises
-  mention recursive operators come later
-
 Operators
 ===========
 
@@ -39,7 +34,7 @@ Operators can take any number of arguments. There are no default values, operato
 
 .. note::
 
-  Are a few special forms of operators, like higher-order operators, recursive operators, and lambdas, which we will cover `later <higher_order_operators>`.
+  Are a few special forms of operators, like higher-order operators, recursive operators, and lambdas, which we will cover `later <chapter_advanced_operators>`.
 
 The right-hand side of an operator is called an :dfn:`expression`.
 
@@ -91,7 +86,7 @@ Every value type in TLA+ has its own operators, with no overlap or overloading. 
 The obvious ones
 ----------------
 
-Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in a `sequence`.
+Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in `sequence`.
 
 Note there is **not** a float type. Floats have incredibly complex semantics that are *extremely* hard to model-check. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
 
@@ -121,28 +116,15 @@ So why do they get their own section? There's two things you need to know about 
     - ``~``
     - :math:`\neg`
 
-A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\ `` looks like an "A", so it's "and". ``\/`` is the other one.
+A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\`` looks like an "A", so it's "and". ``\/`` is the other one. We can use these to build the other operators, like ``Xor``::
 
-.. exercise:: Xor
-  :label: t
-  
-  Write a ``Xor`` operator:
-
-  ::
-    
-    Xor(TRUE, FALSE) = TRUE
-    Xor(TRUE, TRUE) = FALSE
-
-
-.. solution:: t
-
-  ``Xor(A, B) == A = ~B``
+  Xor(A, B) == A = ~B
 
 
 
 There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means that B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into much, much more detail about it later.
 
-The other thing is that TLA+ has a "bullet point notation" for boolean logic. Let's say you need an expression like ``A /\ (B \/ C) /\ (D \/ (E /\ F))``. That's really hard to parse! So in TLA+ you, can instead write it as:
+The other thing is that TLA+ has a "bullet point notation" for boolean logic. Let's say you need an expression like ``A /\ (B \/ C) /\ (D \/ (E /\ F))``. That's really hard to read! So in TLA+ you can instead write it as:
 
 ::
 
@@ -154,7 +136,7 @@ The other thing is that TLA+ has a "bullet point notation" for boolean logic. Le
         /\ F
 
 
-That makes it much clearer. Notice that we have an extra ``/\\`` before ``A``. That's not necessary, but it makes the shape more pleasing, so we do it. **This is also the only place in the language where whitespace matters.** Lets say I instead wrote
+That makes it much clearer. Notice that we have an extra ``/\`` before ``A``. That's not necessary, but it makes the shape more pleasing, so we do it. **This is also the only place in the language where whitespace matters.** Lets say I instead wrote
 
 ::
 
@@ -167,7 +149,7 @@ That makes it much clearer. Notice that we have an extra ``/\\`` before ``A``. T
 
 That means something different! It's now ``A /\ (B \/ C) /\ (D \/ E) /\ F``. 
 
-.. tip:: "Why would you even want something like that?" It makes complex `invariants` *much* easier to read.
+.. tip:: "Why would you even want something like that?" It makes complex `invariants <invariants>` *much* easier to read.
 
 
 .. index:: 
@@ -178,11 +160,11 @@ That means something different! It's now ``A /\ (B \/ C) /\ (D \/ E) /\ F``.
 Sequences
 =========
 
-A sequence is like a list in any other language. You write it like ``<<a, b, c>>``, and the elements can be any other values (including other sequences). As with most other languages, you look up a value of the sequence with ``seq[n]``, except that instead of the range being ``0..Len(seq)-1``, it's ``1..Len(seq)``. So yeah, they're 1-indexed.
+A sequence is like a list in any other language. You write it like ``<<a, b, c>>``, and the elements can be any other values (including other sequences). As with most other languages, you look up a value of the sequence with ``seq[n]``, except that instead of the indices being ``0..Len(seq)-1``, it's ``1..Len(seq)``. So yeah, they're 1-indexed.
 
 .. warning:: Did I mention they're 1-indexed? Because they're 1-indexed.
 
-There's also a ``Sequences`` module. If you ``EXTENDS sequences``, you also get (letting ``S == <<"a">>``: 
+There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get (letting ``S == <<"a">>``: 
 
 .. list-table::
   :header-rows: 1
@@ -199,7 +181,7 @@ There's also a ``Sequences`` module. If you ``EXTENDS sequences``, you also get 
     - ``<<2>>``
   * - ``Len(S)``
     - ``1``
-  * - ``SubSeq(<<1, 2, 3>>, 1, 2)``
+  * - ``SubSeq(<<1, 3, 5>>, 1, 2)``
     - TODO
 
 
@@ -209,24 +191,10 @@ There's also a ``Sequences`` module. If you ``EXTENDS sequences``, you also get 
 ::
 
   ToSeconds(time) == time[1] + time[2]*60 + time[3]*3600
+  Earlier(t1, t2) == ToSeconds(t1) < ToSeconds(t2)
 
-
-.. exercise:: Earlier
-  :label: operators-earlier
-
-
-  1. Write an operator ``Earlier(t1, t2)``, which is true if ``t1`` represents an earlier time on the clock than ``t2``.
-
-
-.. solution:: earlier
-
-  ::
-
-    Earlier(t1, t2) == ToSeconds(t1) < ToSeconds(t2)
 
 .. note:: Fixed-length sequences are also called "tuples". It's the same syntax either way.
-
-.. todo:: Some kind of question
 
 .. index:: set
   :name: set
@@ -251,7 +219,7 @@ The main thing we do with sets is check if some values belong to it. We do this 
 
 * ``set1 \subseteq set2`` tests if every element of ``set1`` is also an element of ``set2``.
 
-.. note:: That's "subset or equals". It's a way to sidestep the question "Is a set a subset of itself?"
+    .. note:: That's "subset or equals". It's a way to sidestep the question "Is a set a subset of itself?"
 
 We also have ways of slicing and dicing sets:
 
@@ -438,9 +406,13 @@ The LET gives us a new definition, locally scoped to ``ToClock``. ``seconds_per_
 
 Wait, operator? Yes, we can add parameterized operators in ``LET``, too!
 
-.. todo:: example, fizzbuzz if I can't think of anything
+.. todo:: 
 
-.. todo:: Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
+    Clamp(min, val, max) ==
+    
+      
+
+Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
 
 If you have to write a complex operator, breaking it into steps with LET is a great way to make it more understandable.
 

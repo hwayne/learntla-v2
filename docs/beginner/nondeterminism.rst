@@ -4,13 +4,6 @@
 Nondeterminism
 ##################
 
-In this chapter we will cover
-
-- nondeterminism
-- either
-- with (again)
-
-
 Nondeterminism
 =================
 
@@ -21,7 +14,7 @@ So far all of our specs have been **deterministic**. While there are multiple po
 - We might know the range of readings a sensor could get, but not what specific reading it *will* get.
 - If the system has many moving independent parts, we don't know in which order they'll run.
 
-The last case, `concurrency`, we'll cover in the next chapter. To handle the first two cases, PlusCal has a couple of new constructs:
+The last case, `concurrency`, we'll cover in the next chapter. To handle the rest, PlusCal has a couple of new constructs:
 
 .. constructs
 
@@ -80,7 +73,7 @@ You can also nondeterministically pull from a variable set:
 either-or
 ----------
 
-``either`` is nondeterminsitic control flow. It lets us write one of severla things happens: 
+``either`` is nondeterminsitic control flow. It lets us write one of several things happens: 
 
 .. todo:: example
 
@@ -92,7 +85,7 @@ write or skip
 Using Nondeterminism
 --------------------
 
-Nondeterminism is the first major break between specifications and programming languages. It's also the first thing that significnatly raises our level of abstraction. In particular, it lets us abstract over "sad paths" in our program.
+Nondeterminism is the first major break between specifications and programming languages. It's also the first thing that significantly raises our level of abstraction. In particular, it lets us abstract over "sad paths" in our program.
 
 Say we're specifying a large business workflow, and as one step in it, an employee requests access to a resource. In the happy path, she makes the request, it's assigned to her, and the workflow continues. There are many business reasons the assignment might be rejected:
 
@@ -200,7 +193,7 @@ So 417 is (0+1)+9)*6)*7)-3.
 
 .. todo:: 
 
-  This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker with every value of ``Target`` from 0 to 1000 and counted which ones didn't produce an error trace. {{Link to the command line options}}. The first such number is 851.
+  This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker with every value of ``Target`` from 0 to 1000 and counted which ones didn't produce an error trace. `topic_cli`  The first such number is 851.
 
 Summary
 ==========

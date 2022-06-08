@@ -13,12 +13,12 @@ There are two kinds of temporal properties: "safety" properties say our system d
 
 .. spec:: liveness/1/orchestrator.tla
 
-"There is at least one server that's always online" could mean one of two thigns:
+"There is at least one server that's always online" could mean one of two things:
 
 1. At any given point in time, there is at least one server online.
 2. In every behavior, there is a particular server, and *that* server is online at all points in time.
 
-(1) is a standard invariant. (2) is a safety property, but **not** an invariant. There is no individual state, by itself, that would violate it. Say I give you the state ``online = {1}``. Is that a violation? *Only* if, in the behavior, there's another state where ``1 \notin online``. So we can't just look at a single state to know if we've broken (2) or not.
+``(1)`` is a standard invariant. (2) is a safety property, but **not** an invariant. There is no individual state, by itself, that would violate it. Say I give you the state ``online = {1}``. Is that a violation? *Only* if, in the behavior, there's another state where ``1 \notin online``. So we can't just look at a single state to know if we've broken (2) or not.
 
 TLC can check (2) as a temporal property. To do this we'll need a new operator.
 

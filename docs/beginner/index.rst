@@ -21,6 +21,7 @@ Outline
   nondeterminism.rst
   concurrency.rst
   temporal-logic.rst
+  advanced-operators
   toolbox.rst
   action-properties.rst
   tla.rst

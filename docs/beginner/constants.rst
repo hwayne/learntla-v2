@@ -121,11 +121,23 @@ But notice this other option below the "set of model values" bar:
 .. index:: 
   pair: Model values; symmetry sets
 
-"Symmetry set" is a special TLC optimization. In a symmetry set, {{TODO explain what exactly goes on}}. By making ``S`` a symmetry set, the number of states drops to only 715. Symmetry sets are a very powerful optimization technique!
+"Symmetry set" is a special TLC optimization. By making ``S`` a symmetry set, the number of states drops to only 715. Symmetry sets are a very powerful optimization technique!
 
-.. todo:: 
+To illustrate what's going on, let's look at four possible values for ``seq``:
 
-  .. warning:: Symmetry sets don't always make the spec run faster. TLC has some overhead in figuring out all the symmetries; with very large sets, that can take longer than actually checking the model. On my computer, checking ``duplicates`` with an 8-element symmetry set takes two minutes longer than checking it with a regular model set.
+::
+
+  (1) <<s1, s2, s3>>
+  (2) <<s2, s1, s3>>
+  (3) <<s1, s2, s2>>
+  (4) <<s2, s3, s3>>
+
+Normally we'd think of these as four separate initial states. But is that necessarily true? The only difference between (1) and (2) is that we swapped every ``s1`` with an ``s2``. Similarly, the only difference between (3) and (4) is that in (4) we replaced every s1 with s2 and every s2 with s3. So we can tell TLC to treat these "symmetric" values as identical.
+
+Notice this only works because we're working with model values, which only support equality checks. If we instead had ``<<1, 2, 2>>`` and ``<<2, 3, 3>>`` the results would *not* be symmetric, as they'd give different results for ``s[1] + s[2]``.
+
+
+.. warning:: Symmetry sets don't always make the spec run faster. TLC has some overhead in figuring out all the symmetries; with very large sets, that can take longer than actually checking the model. On my computer, checking ``duplicates`` with an 8-element symmetry set takes two minutes longer than checking it with a regular model set.
 
 .. todo::
 
