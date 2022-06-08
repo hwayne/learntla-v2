@@ -1,5 +1,8 @@
 :orphan:
 
+.. _whatsnew:
+
+
 #######################
 What's New
 #######################
@@ -8,6 +11,7 @@ DATE:
 
   - Released beta!
 
+:doc:`tla`
 
 
 Roadmap

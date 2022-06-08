@@ -11,20 +11,18 @@ Outline
   :maxdepth: 2
   :hidden:
 
-  layout-of-a-spec.rst
-  setup.rst
-  operators.rst
-  pluscal.rst
-  invariants.rst
-  constants.rst
-  functions.rst
-  nondeterminism.rst
-  concurrency.rst
-  temporal-logic.rst
+  setup
+  operators
+  pluscal
+  invariants
+  constants
+  functions
+  nondeterminism
+  concurrency
+  temporal-logic
   advanced-operators
-  toolbox.rst
-  action-properties.rst
-  tla.rst
-  modules.rst
+  action-properties
+  tla
+  modules
 
 .. next steps

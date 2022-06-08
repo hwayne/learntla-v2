@@ -8,7 +8,7 @@ Writing Specifications
 Overview
 ===========
 
-In the `last chapter <chapter_operators>`, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
+In the :doc:`last chapter <operators>`, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
 
 .. index:: PlusCal
   :name: pluscal

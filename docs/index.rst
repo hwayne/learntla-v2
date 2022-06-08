@@ -1,12 +1,7 @@
-.. learntla documentation master file, created by
-   sphinx-quickstart on Thu Jan 27 12:28:32 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 .. todo:: 
   https://sphinx-tabs.readthedocs.io/en/latest/
 
-.. todo:: IsUnique(<<x, y, z>>)
+.. todo:: banner saying this is under construction, see :doc:`whatsnew`
 
 Welcome to learntla's documentation!
 ====================================
@@ -26,7 +21,7 @@ This is a free online resource for learning TLA+. To help both beginners and exp
 
 - *Examples:* Applications of TLA+ to specs, showing both how to write and undersstand specs. 
 
-The guide is still under development, check {{what's new}} to see most recent updates and the {{roadmap}} to see what I'm currently working on.
+The guide is still under development, check :doc:`whatsnew` to see most recent updates and the {{roadmap}} to see what I'm currently working on.
 
 
 About me
@@ -38,8 +33,6 @@ About me
 
 .. todo:: TLA+ vs pluscal page with prerequisites
 
-whatsnew.rst
-
 .. toctree::
    :maxdepth: 2
    :caption: Learn
@@ -48,6 +41,13 @@ whatsnew.rst
    intro/conceptual-overview.rst
    beginner/index
    topics/index
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Apply
+   :hidden:
+
+   examples/index
    
 :ref:`genindex`
 
@@ -55,13 +55,3 @@ whatsnew.rst
 
 .. todo:: == vs =
   
-
-.. applying
-
-.. examples
-
-  Tortoise and hare
-  
-  
-.. optimization
-

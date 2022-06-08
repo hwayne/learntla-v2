@@ -106,10 +106,7 @@ these are representable with PlusCal macros:
      channels[chan] := channels[chan] - 1;
    end macro;
 
-.. For the purposes of pedagogy I'm not modeling what we actually read or
-write. This is good practice when writing real-world specs too: write
-the simplest specification that usefully captures behavior and
-iteratively add detail to that.
+.. For the purposes of pedagogy I'm not modeling what we actually read or write. This is good practice when writing real-world specs too: write the simplest specification that usefully captures behavior and iteratively add detail to that.
 
 That covers buffered channels. Unbuffered channels, by contrast, always
 block unless there is *both* a sender and receiver. In pure TLA+ this
@@ -319,15 +316,14 @@ goroutine releases a token. [3]_ Final spec:
 
 Now that we have a full spec, we can use the model checker, TLC, to see
 if it satisfies any properties. We didn't specify any, but TLC will
-check for deadlocks by default. I'm going to model check it with 3
-goroutines and 2 tokens.  [4]_
+check for deadlocks by default. 
 
 Finding Deadlocks
 ~~~~~~~~~~~~~~~~~
 
 To make this deadlock, I checked it with ``NumRoutines <- 3, NumTokens <- 2``. {{TODO state space}}. Unsurprisingly, this deadlocks: [5]_
 
-::
+.. code-block:: none
 
    State 1: <Initial predicate>
    /\ buffered = [limitCh |-> 2]
