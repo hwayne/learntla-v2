@@ -7,37 +7,41 @@ Concurrency
 So far we've only worked with single-process algorithms. But the selling point for formal methods is dealing with concurrency. Concurrency is both very common and very hard to reason about, so we get a tool to reason about it for us. A tool like TLA+!
 
 
-.. index:: process
-  :name: process
 
+
+.. index:: process
 .. _process:
 
 Processes
 =============
 
+
+
+
 Processes are the main agents of concurrency. They can represent different OS processes, or different threads, or different programs on different machines, or even different people. Let's start with one process.
 
 .. spec:: reader_writer/1/reader_writer.tla
+  :ss: rw_1
 
-:ss:`rw_1` This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process that reads from the queue.
+This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process that reads from the queue.
 
 .. spec:: reader_writer/2/reader_writer.tla
   :diff: reader_writer/1/reader_writer.tla
+  :fails:
 
+.. warning:: All processes must have comparable types: all integers, all strings, all sequences, etc. The one exception is that processes can also be `model_values`. 
 
-.. note:: All processes must have comparable types: all integers, all strings, all sequences, etc. The one exception is that processes can also be `model_values`. 
+  Different processes cannot share label names.
 
 The writer has a single action, ``Write``, and the reader has a single action, ``Read``. We haven't specified which should happen first, so the two can happen in any order. Either we (1) write to the queue and then read from it, or (2) read from the queue and then write to it.
 
-.. warning:: Different processes cannot share label names.
-
 Behavior (2) doesn't make any sense: how can we read from the queue if there's nothing already in it? And if you try to run the spec, TLC will raise this as an error.
 
-| Error: TLC threw an unexpected exception.
-| This was probably caused by an error in the spec or model.
-| See the User Output or TLC Console for clues to what happened.
-| The exception was a tlc2.tool.EvalException
-| : Attempted to apply Head to the empty sequence.
+  | Error: TLC threw an unexpected exception.
+  | This was probably caused by an error in the spec or model.
+  | See the User Output or TLC Console for clues to what happened.
+  | The exception was a tlc2.tool.EvalException
+  | : Attempted to apply Head to the empty sequence.
 
 It's an "unexpected exception", but it points to a real flaw in our system: we don't specify what should be possible in the case of attempting to read from an empty queue. There's a lot of different things we could *choose* to do:
 
@@ -52,14 +56,14 @@ The point is that we decide what's the right choice based on what we need from t
 
 .. spec:: reader_writer/3/reader_writer.tla
   :diff: reader_writer/2/reader_writer.tla
+  :name: rw_3
+  :ss: rw_2
 
-This passes :ss:`rw_2`.
+This passes.
 
 .. rubric:: pc
 
-In our single process specs, we used a string variable called `pc` to track the value. To model multiple processes, the translator "lifts" ``pc`` to be a function from process values to strings.
-
-.. tip:: ``pc`` *can* be used in `define <define>` blocks.
+In our single process specs, we used a string variable called `pc` to track the value. To model multiple processes, the translator "lifts" ``pc`` to be a function from process values to strings. So if you're writing an invariant that depends on the reader's current label, you can retrieve it with ``pc[0]``.
 
 .. index:: process; local variables
 
@@ -70,21 +74,23 @@ Let's modify the writer so it can write twice, instead of once.
 
 .. spec:: reader_writer/rw_local_1/reader_writer.tla
   :diff: reader_writer/3/reader_writer.tla
+  :ss: rw_local_1
 
 
-Notice how many more states we have :ss:`rw_local_1`. The ``while`` loop is nonatomic, and every iteration counts as a separate ``Write`` action. So there are now three possible orderings: Read-Write-Write, Write-Read-Write, and Write-Write-Read.
+Notice how many more states we have. The ``while`` loop is nonatomic, and every iteration counts as a separate ``Write`` action. So there are now three possible orderings: Read-Write-Write, Write-Read-Write, and Write-Write-Read.
 
 ``i`` is only used in the writer, so we don't necessarily need to expose it to the reader. We can make a variable local to the process, like this:
 
 
 .. spec:: reader_writer/rw_local_2/reader_writer.tla
   :diff: reader_writer/rw_local_1/reader_writer.tla
+  :ss: rw_local_2
 
-ss:`rw_local_2` As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
+As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
 
 In practice, local variables aren't often used, as they can't be placed in `define <define>` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables as :ref:`auxiliary <topic_aux_vars>` or "bookkeeping" variables, like loop iterations and model bounding.
 
-For now let's pull out the ``while`` loop and go back to our previous version.
+For now let's pull out the ``while`` loop and go back to our `previous version <rw_3>`.
 
 .. index:: process; process sets
 
@@ -96,24 +102,26 @@ Once we have a single process, we can extend it into a process set. Instead of s
 
 .. spec:: reader_writer/rw_many_1/reader_writer.tla
   :diff: reader_writer/3/reader_writer.tla
+  :ss: rw_many_1
 
 .. tip:: This is where `model_set` become extremely useful. If we also wanted multiple readers, we'd have to make sure that ``Readers`` and ``Writers`` were the same type but didn't overlap. The easiest way to do that is to use two sets of model values.
 
-:ss:`rw_many_1` Concurrency is one of the main sources of state space explosion. With three writers and one reader, there are :math:`4! = 24` different ways to order their four actions. If we added a fifth writer (or a second reader), that would jump to 120 orderings.
+Concurrency is one of the main sources of state space explosion. With three writers and one reader, there are :math:`4! = 24` different ways to order their four actions. If we added a fifth writer (or a second reader), that would jump to 120 orderings.
 
 We're now adding up to three values to the queue, but we're only reading one value. Let's make the reader run forever.
 
 
 .. spec:: reader_writer/rw_many_2/reader_writer.tla
   :diff: reader_writer/rw_many_1/reader_writer.tla
+  :ss: rw_many_2
 
-:ss:`rw_many_2` This is equivalent to putting the label in a ``while TRUE`` loop.
+This is equivalent to putting the label in a ``while TRUE`` loop.
 
 
 .. index:: self
 .. _self:
 
-.. rubric:: self
+.. rubric:: ``self``
 
 In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 6.
 
@@ -133,23 +141,29 @@ If you run this, you'll see the state space increase a little and the distinct s
       queue := Append(queue, self)
     end macro;
 
+  Singly-defined processes can't use this macro because they don't have an internal ``self``. To get around this, replace the assignment with selecting from a single-element set:
 
-.. -----------------------
+  .. code-block:: diff
+
+    - process P = val
+    + process P \in {val}
+
+
 
 
 .. index:: await
-
 .. _await:
 
 await
 ---------
 
+
+
 In real systems you often have *bounded* queues, which prevent writes when they're over a certain size. The strictest possible bound would be "you can only write if the queue is empty". Let's add that:
 
 .. spec:: reader_writer/rw_await_1/reader_writer.tla
   :diff: reader_writer/rw_many_3/reader_writer.tla
-
-:ss:`rw_await`
+  :ss: rw_await
 
 ``await`` is a *restriction* on when the label can run. The label can only run— the state "committed", if you will— if *every* ``await`` statement in the label evaluates to true.
 
@@ -164,6 +178,7 @@ What if we also add an ``await`` to the Reader? We'll see something interesting 
 
 .. spec:: reader_writer/rw_await_2/reader_writer.tla
   :diff: reader_writer/rw_await_1/reader_writer.tla
+  :fails:
 
 Instead of running, to completion, TLC reports a "deadlock":
 
@@ -171,9 +186,9 @@ In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no 
 
 .. todo:: image
 
-.. note:: 
-
 .. include:: advanced/procedures.rst
+
+
 
 
 .. index:: threads
@@ -181,6 +196,8 @@ In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no 
 
 Example: Threads
 =================
+
+
 
 Let's go through another example of concurrency. We have two threads incrementing a single counter. At first, we'll have them do this atomically, and show that we get the expected value. Then, we'll make the updates nonatomic and show a race condition exists.
 
@@ -196,6 +213,7 @@ The thread-local variable is an "internal implementation detail", and I don't th
 
 .. spec:: threads/2/threads.tla
   :diff: threads/1/threads.tla
+  :fails:
 
 Before we continue, I want to recommend a good exercise to improve your modeling skills. You know, based on how I'm presenting this example, that this will fail. But *how* will it fail? Before you run the model checker, try to figure out what error it will give you and why. See if you can guess the number of steps it will take, and what order the processes will run.
 
@@ -211,8 +229,9 @@ Both threads read the value of ``counter`` when it's 0, meaning they both set ``
 
 .. spec:: threads/3/threads.tla
   :diff: threads/2/threads.tla
+  :ss: threads_3
 
-Now the spec passes again :ss:`threads_3`.
+Now the spec passes again.
 
 Finding More Invariants
 -------------------------
@@ -235,9 +254,8 @@ Finding More Invariants
 Summary
 ============
 
-* Processes
-* Local variables
-* Process sets
-* self
-* await
-* Deadlock
+* Concurrency is when multiple different independent agents are interacting in a spec.
+* In PlusCal, the base unit of concurrency is the *process*. All processes must have the same type (or be a model value). 
+* Processes can belong to Process Sets. TLC will make one process for each element of the set. The value of a process in a process set can be retrieved with ``self``.
+* Processes can have local variables. In a process set, each process may start with a different value in the local variable. Local variables cannot be referenced in other processes, or in a ``define``.
+* ``await expr`` prevents a label from running if ``expr`` is false. If no labels in a spec can run, the spec deadlocks.

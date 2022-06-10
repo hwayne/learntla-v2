@@ -157,13 +157,14 @@ We can also use nondeterminism to represent outside actions. If we're modeling r
       \* something's wrong with our spec!
       assert FALSE;
     end if;
+  end with;
 
+.. todo:: Find a good conclusion
 
 Example: A Calculator
 =======================
 
 One way we use nondeterminism is to simulate user input. Our system has to handle all user actions properly, so we model them as nondeterministically taking actions from a valid set. As an example, let's specify an extremely simple calculator. While TLA+ can't represent decimal numbers, we can do addition, multiplication, and subtraction. First, let's allow users to add any digit to a current sum:
-
 
 .. spec:: calculator/1/calculator.tla
 

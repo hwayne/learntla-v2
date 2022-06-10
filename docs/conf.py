@@ -22,6 +22,7 @@ copyright = '2022, Hillel Wayne'
 author = 'Hillel Wayne'
 
 
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -45,6 +46,9 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**/advanced']
 
+
+numfig=False
+numfig_secnum_depth=1
 
 # -- Options for HTML output -------------------------------------------------
 

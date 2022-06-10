@@ -263,6 +263,7 @@ while
 .. todo:: exercise about showing that it has multiple states
 
 .. index:: ! duplicates
+.. _duplicates:
 
 A Duplication Checker
 ======================
@@ -293,6 +294,11 @@ If you run it, you will see a page like this:
 .. todo:: page
 
 To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too.
+
+.. index:: diameter
+.. note::
+
+  The first column, ``diameter``, is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
 
 Multiple Starting States
 -------------------------

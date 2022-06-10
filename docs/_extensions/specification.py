@@ -16,14 +16,19 @@ class SpecificationDirective(LiteralInclude):
         * TODO: Allows placing a state-space caption by default"
         * TODO: Allow for marking a spec as "is broken"
     """
-    option_spec = LiteralInclude.option_spec | {"hide-header": directives.flag}
+    option_spec = LiteralInclude.option_spec | {"hide-header": directives.flag, "ss": directives.unchanged_required, "fails": directives.flag}
     def run(self) -> List[Node]:
         spec_dir = Path(self.env.srcdir) / "specs" 
         path = spec_dir / self.arguments[0]
         self.arguments[0] = path.as_posix()
         if not self.options.get('caption'):
             dl_link = f":download:`spec <{self.arguments[0]}>`"
+            if ss := self.options.get('ss'):
+                dl_link = f":ss:`{ss}` {dl_link}"
+            elif 'fails' in self.options:
+                dl_link = f"(fails) {dl_link}"
             self.options['caption'] = dl_link
+
 
         if not self.options.get('language'):
             self.options['language'] = 'tla'

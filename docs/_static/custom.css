@@ -17,3 +17,11 @@ div.document h2, div.document h3, div.document h4, .rubric {
   padding-left: 0.3em;
   display: inline-block;
 }
+
+div.document div.admonition.warning {
+  border-left: 5px solid red;
+}
+
+div.document div.admonition.warning p.admonition-title {
+  color: red;
+}
