@@ -62,6 +62,9 @@ state_spaces:
   rw_many_3:
     distinct: 38
     states: 69
+  strong_fairness_threads:
+    distinct: 8
+    states: 15
   test:
     distinct: 4
     states: 10

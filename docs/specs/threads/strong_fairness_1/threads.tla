@@ -1,12 +1,4 @@
-target: specs/threads/strong_fairness_2/threads.tla
-states:
-  strong_fairness_threads:
-    states: 15
-    distinct: 8
-!!!
-LoadLocal !tlacli check % --model-value NULL --prop Liveness
-!!!
----- MODULE strong_fairness__2 ----
+---- MODULE threads ----
 EXTENDS Integers
 CONSTANT NULL
 
@@ -21,7 +13,7 @@ define
       <>(lock = t)
 end define;
 
-fair+ process thread \in Threads
+fair process thread \in Threads
 begin
   GetLock:
     await lock = NULL;
