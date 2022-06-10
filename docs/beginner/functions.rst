@@ -48,11 +48,13 @@ This is the set of all structures where ``s.a \in S /\ s.b \in T``.
 
   *at model-checking time*, it's because you wrote ``[key: "val"]`` instead of ``[key: {"val"}]``.
 
+
+
 .. index:: DOMAIN
 .. _domain:
 
-DOMAIN
---------
+Getting a Struct's Keys
+-----------------------
 
 If I wanted to find all of the values of a *sequence*, I could get it like this:
 
@@ -76,18 +78,11 @@ Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
   {"a", "b"}
 
-...Huh. ``DOMAIN seq == 1..Len(seq)``! In fact, it's actually *the other way around*: ``Len`` is defined in terms of DOMAIN!
-
-.. .. exercise:: MyLen
-  :label: mylen
-
-  Write ``MyLen(seq)``, which returns the length of seq, without using ``Len``. You may need ``Max(set)``.
-
-  .. Max(DOMAIN seq)
+...Huh. ``DOMAIN seq == 1..Len(seq)``! In fact, it's actually *the other way around*: ``Len`` is defined in terms of ``DOMAIN``!
 
 Here's the punchline: *both sequences and structures are just syntactic sugar*. TLA+ has only two "real" collections: sets and functions. Sequences and structures are both particular classes of functions, the ones that we as programmers are most familiar with. It's time to finally introduce the true data type.
 
-.. index:: function
+.. index:: function, types; function
 
 .. _functions:
 .. _function:
@@ -95,7 +90,7 @@ Here's the punchline: *both sequences and structures are just syntactic sugar*. 
 Functions
 ===============
 
-First of all, throw away the programming definition of "function". The closest thing TLA+ has to a programmatic function are operators. A :dfn:`function` follows the *mathematical* definition, a mapping of values in one set to another set.
+First of all, throw away the programming definition of "function". The closest thing TLA+ has to a programmatic function are operators. A function follows the *mathematical* definition, a mapping of values in one set to another set.
 
 ::
 
@@ -122,16 +117,6 @@ But functions are a more general than that, and can map *any* set of values. For
 
   (Internally, TLA+ will represent it as a tuple, so ``DOMAIN F = S \X T``.)
 
-.. .. exercise::
-
-  Write ``Double(seq)``.
-
-  ::
-
-    Double(<<1, 2, 3>>) = <<2, 4, 6>>
-
-  .. 
-
 I like using functions to show me the results of an expression for various inputs. For what values of P and Q is ``P => Q`` true?
 
   ::
@@ -147,7 +132,13 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
   <<TRUE, FALSE>> :> FALSE @@
   <<TRUE, TRUE>> :> TRUE )
 
+.. index:: @@; :>
+
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
+
+
+
+
 
 .. rubric:: Example: Zip
 
@@ -163,7 +154,6 @@ Normally programming languages implement zip with iteration or recursion. We don
 
 ::
 
-  \* TODO Check
   Zip1(seq1, seq2) ==
     LET Min(a, b) == IF a < b THEN a ELSE b
         N == Min(Len(seq1), Len(seq2))
@@ -174,11 +164,10 @@ Another way we could write this would be to notice that the `intersection <set_o
 
 ::
 
-  \* TODO Check
   Zip2(seq1, seq2) ==
     LET N == (DOMAIN seq1) \intersect (DOMAIN seq2)
     IN
-      [i \in 1..N |-> <<seq1[i], seq2[i]>>]
+      [i \in N |-> <<seq1[i], seq2[i]>>]
 
 We can check that these are equivalent by writing a quantifier check:
 
@@ -222,7 +211,7 @@ We could also write this invariant by noticing that "tasks don't share cpus" is 
       (t1 # t2) 
       => assignments[t1] \intersect assignments[t2] = {}
 
-.. index:: function; function sets
+.. index:: function; function sets, sets of; functions, [A -> B]
 
 .. _function_set:
 .. _function_sets:
@@ -271,7 +260,7 @@ Some more examples of function sets:
 
 .. rubric:: Example: Sorting
 
-Let's put function sets to good use. We `learned before<issorted>` that we can write ``IsSorted(seq)`` as:
+Let's put function sets to good use. We `learned before <issorted>` that we can write ``IsSorted(seq)`` as:
 
 ::
 
@@ -305,7 +294,7 @@ Then ``[DOMAIN seq -> Range(seq)]`` is the set of all sequences which have the s
       /\ \* sorted has the same number of each element as seq
       /\ IsSorted(sorted)
 
-To figure out if two sequences have the same number of each elemnet, let's define a ``CountMatching(f, val)`` operator that tells us the number of inputs matching ``val``. To get the size of a set, we need ``Cardinality`` from the `FiniteSets` module.
+To figure out if two sequences have the same number of each elemnet, let's define a ``CountMatching(f, val)`` operator that tells us the number of inputs matching ``val``. To get the size of a set, we need `Cardinality <Cardinality>` from the ``FiniteSets`` module.
 
 ::
 
@@ -327,7 +316,7 @@ Let's try this on some input:
   >>> Sort(<<8, 2, 7, 4, 3, 1, 3>>)
   <<1, 2, 3, 3, 4, 7, 8>>
 
-.. tip:: Explain bags
+.. tip:: {CONTENT} Explain bags
 
 .. index:: duplicates
 
@@ -380,4 +369,4 @@ Summary
 * Structures are another special kind of function, written ``[key1 |-> val1, key2 |-> val2]``. They are called with ``struct["key1"]`` (or ``struct.key1``).
 * Functions and structures both have special set syntax. For structures, it is ``[key1: set1]``. For functions, it's ``[A -> B]``.
 
-.. todo:: Mor on function sets as a summary
+.. todo:: {{POLISH}} Mor on function sets as a summary

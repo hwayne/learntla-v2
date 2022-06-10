@@ -233,6 +233,8 @@ We also have ways of slicing and dicing sets:
 
 .. todo:: Let's do some examples
 
+.. _Cardinality:
+
 If you ``EXTEND FiniteSets``, you also get ``Cardinality(set)``, which is the number of elements in the set.
 
 .. tip:: 

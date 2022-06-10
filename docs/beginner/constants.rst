@@ -1,22 +1,15 @@
 .. _chapter_constants:
 
-###############
-Constants
-###############
-
-- CONSTANTs
-- ASSUME
-- Model Values
-- Instances?
-
-
+##############################
+Parameterizing Specs
+##############################
 
 .. index:: constants, CONSTANT
 
 .. _constant:
 
-CONSTANT
-========
+Model Constants
+===============
 
 In the last chapter, we made a complete specification of the duplicate checker, adding a property to our implementation. By using initial states, we can check all 4-digit lists of single digits. If we wanted to be more thorough, we could check a wider range of inputs, for example ``S == 1..100``. By my estimate, this would kick the number of found states from 70,000 to about seven hundred million. That would take a lot more time to check! If we were writing this as a "real" spec, we'd want to do most of our writing with a smaller value of S, like ``1..10``, so we can get faster feedback from the model checker. It's only when we've shaken out the obvious issues that we'd switch a large value of S, like ``1..100``.
 
@@ -48,8 +41,8 @@ There are three options for constants: ordinary assignments, model values, and s
   
 .. _ASSUME:
 
-ASSUME
--------
+Preventing Nonsense Constants
+-----------------------------
 
 Not all values of ``S`` are meaningful for our spec. For example, what if we do ``S <- {}``? Then there's no possible values for ``seq``, so there's no possible duplicates, so the entire model is pointless. Or what about ``S <- {1, 2}``? While there are now possible values of ``seq``, they will *always* contain duplicates, so running the spec isn't particularly interesting.
 
@@ -111,22 +104,20 @@ What you can do instead is define a new constant, like ``NULL`` or ``NoLastAcces
 Sets of Model Values
 ---------------------
 
-.. todo:: explain better
-
 We can also assign constants to sets of model values. Put it in as a normal set, but without quotes.
 
 ::
 
   S <- [model value] {s1, s2, s3, s4, s5}
 
-Sets of model values will become *extremely* useful when we start modeling `concurrency <chapter_concurrency>`, but there's still one cool trick we can do with them right now. If you run the model with that value of ``S``, you will get 4,735 states total— the same as if you did ``S <- 1..5``...
+Sets of model values will become *extremely* useful when we start modeling :doc:`concurrency <concurrency>`, but there's still one cool trick we can do with them right now. If you run the model with that value of ``S``, you will get 4,735 states total— the same as if you did ``S <- 1..5``...
 
 But notice this other option below the "set of model values" bar:
 
 .. image:: img/symmetry_set.png
 
 .. index:: 
-  pair: model value; symmetry sets
+  single: model value; symmetry sets
 
 "Symmetry set" is a special TLC optimization. By making ``S`` a symmetry set, the number of states drops to only 715. Symmetry sets are a very powerful optimization technique!
 
@@ -148,7 +139,7 @@ Notice this only works because we're working with model values, which only suppo
 
 .. todo::
 
-  Advanced: Non-enumerable sets
+  {CONTENT} Non-enumerable sets
 
 
 Other Uses for Constants
@@ -172,7 +163,8 @@ Another thing you can do is restrict multiple starting states with ``DEBUG``:
 
 ::
 
-  Inputs == IF DEBUG 
+  Inputs == 
+  IF DEBUG 
   THEN {<<1, 2, 3, 4>>} 
   ELSE S \X S \X S \X S
 

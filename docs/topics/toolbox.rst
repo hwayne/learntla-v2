@@ -33,7 +33,7 @@ Fraction of memory:
 Model checking mode
   View
   Depth-first
-  Simulation Mode
+  Simulation Mode: Random, doesn't stop, doesn't check liveness properties
     Maximum Length of trace
   Visualize state graph
     If too big, you're better dumping it yourself
@@ -43,9 +43,6 @@ TLC command-line parameters
 
 Profiler
 =============
-
-Overrides
-==============
 
 Misc Features
 ================

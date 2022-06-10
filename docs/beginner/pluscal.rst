@@ -310,9 +310,11 @@ To check both, we can use multiple starting states. TLA+ doesn't just let us ass
 .. spec:: duplicates/2/duplicates.tla
   :diff: duplicates/1/duplicates.tla
 
-The model checker will now check *both* TK and TK as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know. 
+The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>`` as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know. 
 
-Adding mutliple starting states increases the complexity of our model. If, in a spec, TLC will normally have to check 10 states, adding 100 initial states could increase the state space to a maximum of 1,000. In practice, it will often be lower, because sometimes initial states will converge:
+.. todo:: {INKSCAPE} diagram of state space
+
+Adding multiple starting states increases the complexity of our model. If, in a spec, TLC will normally have to check 10 states, adding 100 initial states could increase the state space to a maximum of 1,000. In practice, it will often be lower, because sometimes initial states will converge:
 
 ::
 
@@ -326,20 +328,23 @@ Adding mutliple starting states increases the complexity of our model. If, in a 
 
 We might think, with 1000 initial states and 2 labels, there will be 3,000 total states. In practice, the first label "collapses" the state space. So the number of *distinct* states will be far smaller.
 
-We can use the number of states and distinct states as a partial "fingerprint" of a model. Going forward, we'll use that as a form of error checking. Whenever I show a spec, I'll list the states and distinct states of the model check. For example, with the multiple starting states before, I got :ss:`duplicates_two_inputs`. If you got a different number, you may have made a mistake in transcribing.
+We can use the number of states and distinct states as a partial "fingerprint" of a model. Going forward, we'll use that as a form of error checking. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check. For example, with the multiple starting states before, I got :ss:`duplicates_two_inputs`. If you got a different number, you may have made a mistake in transcribing.
+
+.. note:: We *cannot* use this as a fingerprint if the spec *fails*, because TLC will terminate execution early. In that case, I will note that the modelcheck should fail when showing the code listing.
 
 10,000 starting states
-........................
+----------------------
 
 So now we're testing two inputs. That's twice as good as one input. Even better than that would be testing 10,000 inputs. Remember how in the last chapter we talked about generating `sets_of_values`? This is just one of the many places it's really useful. 
 
 
 .. spec:: duplicates/3/duplicates.tla
   :diff: duplicates/1/duplicates.tla
+  :ss: duplicates_many_inputs
 
-We're now significantly more likely to cover all interesting edge cases :ss:`duplicates_many_inputs`. This isn't *guaranteed*: maybe there's a bug that *only* triggers if we have ``-187`` in there somewhere. But {{ending}}
+We're now significantly more likely to cover all interesting edge cases. This isn't *guaranteed*: maybe there's a bug that *only* triggers if we have ``-187`` in there somewhere. But {{ending}}
 
-.. todo:: ending
+.. todo:: {CONTENT} ending
 
 .. note:: Okay, there's one big gap: while we're trying a lot of different elements, we're only looking at one fixed *length*. Maybe there's an issue with 1 or 0-length sequences. We'll be able to fix this once we learn about `function sets <function_set>`.
 
