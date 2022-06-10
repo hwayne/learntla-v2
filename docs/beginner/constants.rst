@@ -39,7 +39,10 @@ Which opens this box:
 
 There are three options for constants: ordinary assignments, model values, and sets of model values. We'll talk about the other two later, for now let's just look at ordinary assignments. This lets you assign any valid TLA+ expression to the constant. Since showing screenshots of every single assignment is annoying, I'll write ``S <- 1..10`` to mean "we do an ordinary assignment of ``1..10`` to S." Now we can make separate models with a small ``S`` for iterative development and one with a large ``S`` for final testing.
 
-.. todo:: It's good practice to use constants in your TLA+ specs. Generally I use .To keep the examples simple, though, I'll hardcode more values than I normally would.
+.. note:: It's good practice to use constants in your TLA+ specs. To keep the examples simple, though, I'll hardcode more values than I normally would.
+
+
+
 
 .. index:: ASSUME
   
@@ -57,13 +60,15 @@ We can rule these pathological values out with the ``ASSUME`` keyword. ``ASSUME`
 
 The ASSUME is checked before the model run even starts. If we try running the spec with ``S <- {1}``, we get an error:
 
-| Error: Assumption %line% is false.
+  Error: Assumption %line% is false.
 
 If you have a spec with constants, you should put constraining assumptions on them. In addition to preventing errors, they also help readers of the spec understand what the constants are supposed to be.
 
 
-.. index:: Model Values
 
+
+.. index:: model value
+.. _model_value:
 .. _model_values:
 
 Model Values
@@ -97,7 +102,9 @@ What you can do instead is define a new constant, like ``NULL`` or ``NoLastAcces
 
 
 .. index::
-  pair: Model values; sets of model values
+  single: model value; model value sets
+  single: sets of; model values
+  single: tuple; see sequence
 
 .. _model_set:
 
@@ -119,7 +126,7 @@ But notice this other option below the "set of model values" bar:
 .. image:: img/symmetry_set.png
 
 .. index:: 
-  pair: Model values; symmetry sets
+  pair: model value; symmetry sets
 
 "Symmetry set" is a special TLC optimization. By making ``S`` a symmetry set, the number of states drops to only 715. Symmetry sets are a very powerful optimization technique!
 

@@ -3,12 +3,20 @@
 
 .. todo:: banner saying this is under construction, see :doc:`whatsnew`
 
-Welcome to learntla's documentation!
+.. note::
+
+  Welcome to Learn TLA+! This is still a work in progress, please see :doc:`whatsnew` for updates and pardon the dust!
+
+  (In the meantime, you can find the old version at `old.learntla.com <https://old.learntla.com>`__.)
+
+Learn TLA+
 ====================================
 
 Most software flaws come from one of two places. A code bug is when the code doesn't match our design— for example, an off-by-one error, or a null derefence. We have lots of techniques for finding code bugs. But what about design flaws? When it comes to bugs in our designs, the best most of us are taught is "think about it really hard".
 
 TLA+ is a language for design systems that lets you directly test those designs. Think of it like making an outline of what you want to build, and then finding erros in the outline.  and then directly test those designs. 
+
+`genindex`
 
 About this guide
 ----------------
@@ -29,9 +37,16 @@ About me
 
 .. todo::
 
-  I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* and am the author of the book `Practical TLA+ <PT>`_. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a blog, a twitter, and a weekly newsletter. 
+  I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* and am the author of the book `Practical TLA+`_. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a blog, a twitter, and a weekly newsletter. 
 
 .. todo:: TLA+ vs pluscal page with prerequisites
+
+.. toctree::
+  :maxdepth: 2
+  :hidden:
+
+  Intro <self>
+  whatsnew
 
 .. toctree::
    :maxdepth: 2
@@ -48,12 +63,13 @@ About me
    :hidden:
 
    examples/index
-   
+
 :ref:`genindex`
+   
 
 .. todolist::
 
 .. todo:: == vs =
   
 
-.. _PT: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281
+.. _Practical TLA+: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281

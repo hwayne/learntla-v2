@@ -5,6 +5,10 @@ Operators and Values
 +++++++++++++++++++++++++
 
 
+.. index::
+  single: operator
+  single: ==
+
 Operators
 ===========
 
@@ -38,6 +42,7 @@ Operators can take any number of arguments. There are no default values, operato
 
 The right-hand side of an operator is called an :dfn:`expression`.
 
+.. index:: IF
 .. _if_tla:
 
 IF-THEN-ELSE
@@ -62,8 +67,7 @@ TLA+ is an untyped formalism, due to its roots in mathematics. In practice, the 
   If you want to get on ahead, the new types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
 
 
-.. _=:
-.. _#:
+.. index:: =, #
 
 Every value type in TLA+ has its own operators, with no overlap or overloading. The two exceptions to this are ``=`` and ``#``, which "equals" and "not equals", respectively. Values of different types cannot be tested for equality, and that will throw an error.
 
@@ -71,30 +75,23 @@ Every value type in TLA+ has its own operators, with no overlap or overloading. 
 
   If you see an error like
 
-  > Encountered "Beginning of Definition" at line $n...
+    Encountered "Beginning of Definition" at line $n...
 
   It's likely because you used a double ``==`` instead of a single ``=`` when testing for equality.
 
 
-.. index::
-  single: integers
-  single: strings
-
-.. _integer:
-.. _string:
-
 The obvious ones
 ----------------
 
-Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in `sequence`.
+Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in a `sequence <sequence>`.
 
 Note there is **not** a float type. Floats have incredibly complex semantics that are *extremely* hard to model-check. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
 
-.. _bool:
+.. index:: 
+  /\ (and), \/ (or), ~ (not)
 
 Booleans
 --------
-
 
 The booleans are ``TRUE`` and ``FALSE``.
 
@@ -120,7 +117,8 @@ A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\`` looks li
 
   Xor(A, B) == A = ~B
 
-
+.. index:: => (implies)
+.. _=>:
 
 There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means that B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into much, much more detail about it later.
 
@@ -164,7 +162,9 @@ A sequence is like a list in any other language. You write it like ``<<a, b, c>>
 
 .. warning:: Did I mention they're 1-indexed? Because they're 1-indexed.
 
-There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get (letting ``S == <<"a">>``: 
+There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get (letting ``S == <<"a">>``): 
+
+.. todo:: {PLAN} how to integrate modules and operations in modules
 
 .. list-table::
   :header-rows: 1
@@ -182,10 +182,10 @@ There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get 
   * - ``Len(S)``
     - ``1``
   * - ``SubSeq(<<1, 3, 5>>, 1, 2)``
-    - TODO
+    - ``<<1, 3>>``
 
 
-.. note:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it later.
+.. note:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it :doc:`later <advanced-operators>`.
 
 
 ::
@@ -210,6 +210,8 @@ Some programming languages have sets, but they're often less important than arra
 
 .. This again breaks down to whether we care about programming or specifying. 
 
+
+.. index:: set; set operators, \in; x \in set
 .. _set_operators:
 
 Operators
@@ -252,6 +254,12 @@ Then ``AddTimes(<<2, 0, 1>>, <<1, 2, 3>>) = <<3, 2, 4>>``, and ``AddTimes(<<2, 0
 
 Wait, 81 seconds? Our clock can't show 81 seconds, the answer should be ``<<3, 3, 21>>``. You can think of there being a set of valid clock values, all the way from ``<<0, 0, 0>>`` to ``<<23, 59, 59>>``, and ``AddTimes`` should always return some value in that set, almost like it has a type signature. We can enforce this in TLA+, but first we need a way of generating sets of values from values. Fortunately, for every type of value in TLA+, there's a method to generate sets of those values. [#except-strings]_
 
+.. index:: 
+  single: BOOLEAN
+  single: .. (set interval)
+  single: sets of; booleans
+  single: sets of; numbers
+
 Let's start with the easiest: to get the set of all booleans, just write ``BOOLEAN``. That's the set ``{TRUE, FALSE}``. For integers, ``a..b`` is the set ``{a, a+1, a+2, ... , b}``. You need ``EXTENDS Integers`` for this to work.
 
 .. tip::
@@ -259,12 +267,11 @@ Let's start with the easiest: to get the set of all booleans, just write ``BOOLE
   If ``a > b``, then ``a..b`` is empty. This makes a lot of things a lot simpler. For example, ``1..Len(seq)`` is the set of the indices of ``seq``. If ``seq = <<>>``, you get ``1..0 = {}``, which is what you'd expect.
 
 .. index::
-  see: Cartesian Product; \X
-
-.. index::
   single: \X
   single: sequence; sequence sets
-  :name: \X
+  single: sets of; sequences
+
+.. _\X:
 
 Now for sequences. The :dfn:`Cartesian product` of two sets S and T is the set of all sequences where the first element is in S and the second is in T. It's written with ``\X``. For example, consider ``LoginAttempt`` containing who's logging in, the time they attempted the login, and if it was successful or not. I can represent the set of all possible such values as ``LoginAttempt == Person \X Time \X BOOLEAN`` {{explain better}}.
 
@@ -277,7 +284,7 @@ Speaking of ``Time``, we can combine ``\X`` and ``..`` to finally get our clock 
 As a quick sanity check, run ``Cardinality(ClockType)`` in your `scratch` (remember, you'll need ``EXTENDS FiniteSets``). You should see it has 86400 elements. We're now one step closer to having a property for ``AddTimes``: we want the result of it to always return a value in ``ClockType``.
 
 
-.. index:: SUBSET
+.. index:: SUBSET, set; set sets, sets of; sets
 .. _SUBSET:
 
 Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType`` will be all the sets containing a bunch of clock values... all 7,464,960,000 of them. [#million]_
@@ -331,7 +338,7 @@ I've found that the best way to remember which is which is by reading the colon 
     1. ``IndicesMatching(seq, val) == {i \in 1..Len(seq): seq[i] = val}``
     2. ``Range(seq) == {seq[i]: i \in 1..Len(seq)}``
 
-.. index:: CHOOSE
+.. index:: CHOOSE, \in; x \in set
   
 .. _CHOOSE:
 
@@ -374,18 +381,16 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
 
   If you see an error like
 
-  .. todo:: no element satisfied P
+    | Attempted to compute the value of an expression of form
+    | CHOOSE x \in S: P, but no element of S satisfied P.
 
-  It's because you a ``CHOOSE`` that couldn't find any values.  Sometimes this just means you got the expression wrong. But other times, it points to an actual flaw in your system: you expected a value to exist, and it did not. Better write some error-handling logic or you'll get a nasty surprise in production.
+  It's because you wrote a ``CHOOSE`` that couldn't find any values.  Sometimes this just means you got the expression wrong. But other times, it points to an actual flaw in your system: you expected a value to exist, and it did not. Better write some error-handling logic or you'll get a nasty surprise in production.
 
 
 
 .. warning::
 
   What if multiple values satisfy ``CHOOSE``? In this case the only requirement is that the result is *deterministic*: the engine must always return the same value, no matter what. In practice this means that TLC will always choose the lowest value that matches the set.
-
-
-.. .. exercise:: for what value in 1..100 does ``polynomial = 0``?
 
 .. index:: LET
 
@@ -421,6 +426,15 @@ If you have to write a complex operator, breaking it into steps with LET is a gr
 Summary
 ========
 
+.. todo:: this
+
+- Operators
+- IF
+- sets
+- sequences
+- Map-filter
+- CHOOSE
+- LET
 
 .. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...
 .. [#leapsecond] Fun fact, in the original ISO standard seconds could go 1-61! There were *two* leap seconds.
