@@ -5,7 +5,6 @@ Functions
 ++++++++++++++
 
 
-
 .. _struct:
 
 Structures
@@ -45,7 +44,7 @@ This is the set of all structures where ``s.a \in S /\ s.b \in T``.
 
   If you get
 
-  | Attempted to compute the number of elements in the string "val"
+    Attempted to compute the number of elements in the string "val"
 
   *at model-checking time*, it's because you wrote ``[key: "val"]`` instead of ``[key: {"val"}]``.
 
@@ -87,7 +86,6 @@ Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
   .. Max(DOMAIN seq)
 
 Here's the punchline: *both sequences and structures are just syntactic sugar*. TLA+ has only two "real" collections: sets and functions. Sequences and structures are both particular classes of functions, the ones that we as programmers are most familiar with. It's time to finally introduce the true data type.
-
 
 .. index:: function
 
@@ -151,8 +149,7 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
 
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
 
-Example: Zip
-............
+.. rubric:: Example: Zip
 
 Python has a function called ``zip``. It takes two iterables and returns a single sequence, where the elements are pairs of elements from the two inputs. If one is larger than the other, it only does up to the length of the shorter.
 
@@ -264,16 +261,15 @@ Some more examples of function sets:
 
   If you get
 
-  | Encountered ``"|->"`` in line X, column Y
+    Encountered "\|->" in line X, column Y
 
   In a function set, then you probably wrote ``[S |-> T]`` instead of ``[S -> T]``. Similarly, if you get
 
-  | Encountered "->" in line X, column Y
+    Encountered "->" in line X, column Y
 
   In a function, then you probably wrote ``[x \in S -> T]`` instead of ``[x \in S |-> T]``. Don't worry, everybody gets the two mixed up at some point.
 
-Sorting
-.........
+.. rubric:: Example: Sorting
 
 Let's put function sets to good use. We `learned before<issorted>` that we can write ``IsSorted(seq)`` as:
 
@@ -351,21 +347,20 @@ We can simplify this with function sets. ``S \X S \X S`` is going to be a set of
 From this, extending this to five-element sequences is trivial :ss:`duplicates_len_5_seqs`:
 
 .. spec:: duplicates/fs_1/duplicates.tla
-  :diff: duplicates/inv_4/duplicates.tla
+  :diff: duplicates/constant_2/duplicates.tla
 
 Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]`` is based on a *value* — the size of the domain set. This means we can pull it into a constant!
 
-.. todo:: Pull into a constant
-
-
-
-
+.. spec:: duplicates/fs_2/duplicates.tla
+  :diff: duplicates/fs_1/duplicates.tla
 
 .. tip:: State Sweeping
 
   *State sweeping* is when we use an initial starting state variable to control the parameters for other variables. For example, we could have one variable determine the length of an input sequence, or the maximum size of a bounded buffer.
 
-  .. spec:: duplicates/fs_2/duplicates.tla
+  .. todo:: fix
+
+    spec:: duplicates/fs_2/duplicates.tla
     :diff: duplicates/fs_1/duplicates.tla
 
   Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.

@@ -17,7 +17,7 @@ TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of
 
 PlusCal isn't as powerful as "raw" TLA+, and there are some types specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
 
-.. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can skip to the section on `learning TLA+ <chapter_tla>`.
+.. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can skip to the section on :doc:`learning TLA+ <tla>`.
 
 PlusCal
 ============
@@ -280,7 +280,7 @@ For example, if we were writing an algorithm to check if ``seq`` has any duplica
 3. If we reach the end and haven't seen any duplicate elements, we say the list is unique.
 4. Our decision should match the operator ``IsUnique(seq)``.
 
-In this chapter we'll focus on just writing out the spec, parts (2) and (3). In `the next chapter <chapter_invariants>` we'll do steps (1) and (4), actually verifying the algorithm.
+In this chapter we'll focus on just writing out the spec, parts (2) and (3). In :doc:`the next chapter <invariants>` we'll do steps (1) and (4), actually verifying the algorithm.
 
 I called this spec ``duplicates``, but the name isn't too important for this.
 
@@ -333,13 +333,11 @@ So now we're testing two inputs. That's twice as good as one input. Even better 
 
 We're now significantly more likely to cover all interesting edge cases :ss:`duplicates_many_inputs`. This isn't *guaranteed*: maybe there's a bug that *only* triggers if we have ``-187`` in there somewhere. But {{ending}}
 
-.. note:: Okay, there's one big gap: while we're trying a lot of different elements, we're only looking at one fixed *length*. Maybe there's an issue with 1 or 0-length sequences. We'll be able to fix this once we learn about `function_set`.
+.. todo:: ending
 
-Now that we have broad state-space coverage, it's time to write some properties. In `the next chapter <chapter_invariants>` we'll specify that our checker always gets the correct result.
+.. note:: Okay, there's one big gap: while we're trying a lot of different elements, we're only looking at one fixed *length*. Maybe there's an issue with 1 or 0-length sequences. We'll be able to fix this once we learn about `function sets <function_set>`.
 
-.. exercise:: todo
-
-  Something involving extracting parts into a macro
+Now that we have broad state-space coverage, it's time to write some properties. In :doc:`the next chapter <invariants>` we'll specify that our checker always gets the correct result.
 
 Summary
 =========

@@ -1,7 +1,19 @@
 @import 'basic_mod.css';
 
-blockquote.pull-quote {
+blockquote.quote {
   border-left: .2em solid #bdbdbd;
   font-style: italic;
   padding-left: 0.5em;
+}
+
+div.document h2, div.document h3, div.document h4, .rubric {
+  font-weight: 100;
+  margin: 1rem 0 0.5rem 0;
+  border-left-style: solid;
+  border-left-width: thin;
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  border-color: gray;
+  padding-left: 0.3em;
+  display: inline-block;
 }

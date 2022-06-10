@@ -14,7 +14,7 @@ So far all of our specs have been **deterministic**. While there are multiple po
 - We might know the range of readings a sensor could get, but not what specific reading it *will* get.
 - If the system has many moving independent parts, we don't know in which order they'll run.
 
-The last case, `concurrency`, we'll cover in the next chapter. To handle the rest, PlusCal has a couple of new constructs:
+The last case, concurrency, we'll cover in the :doc:`next chapter <concurrency>`. To handle the rest, PlusCal has a couple of new constructs:
 
 .. constructs
 
@@ -67,7 +67,7 @@ You can also nondeterministically pull from a variable set:
     sleeping := sleeping \ {thread};
   end with;
 
-.. note:: If the variable set is empty, the ``with`` will block, which can lead to a `deadlock <deadlock>`. We'll talk about deadlocks more in the `next chapter <chapter_concurrency>`, when we cover concurrency.
+.. note:: If the variable set is empty, the ``with`` will block, which can lead to a `deadlock <deadlock>`. We'll talk about deadlocks more in the :doc:`next chapter <concurrency>`, when we cover concurrency.
 
 .. index:: either
 .. _either:
@@ -75,13 +75,23 @@ You can also nondeterministically pull from a variable set:
 either-or
 ----------
 
-``either`` is nondeterminsitic control flow. It lets us write one of several things happens: 
+``either`` is nondeterminsitic control flow. 
 
-.. todo:: example
+::
 
+  either
+    approve_pull_request();
+  or
+    request_changes();
+  or
+    reject_request();
+  end either;
+    
+On evaluating this, TLC will create three branches:
 
-You *can* have labels inside an either statement.
-write or skip
+.. todo:: diagram
+
+You *can* have labels inside an either statement. Either statements are especially useful for implementing `state machines <topic_state_machines>`. 
 
 
 Using Nondeterminism
@@ -124,10 +134,29 @@ If we need to also model the type of error (if that affects our recovery logic),
       with reason \in {"unauthorized", "in_use", "other"} do
         failure_reason := reason;
       end with;
+    or
+      \* some other error
+      skip;
     end either;
   end macro;
 
-.. todo:: More
+``either or skip`` is a common nondeterminism pattern and it's quite useful in a lot of places.
+
+We can also use nondeterminism to represent outside actions. If we're modeling requests are coming into a system, we don't need to pick a specific request to spec. Instead we can define a ``RequestType`` and pull from that on every inbound request.
+
+::
+
+  RequestType == [from: Client, type: {"GET", "POST"}, params: ParamType]
+  
+  with request \in RequestType do
+    if request.type = "GET" then
+      \* get logic
+    elsif request.type = "POST" then
+      \* post logic
+    else
+      \* something's wrong with our spec!
+      assert FALSE;
+    end if;
 
 
 Example: A Calculator
@@ -193,13 +222,12 @@ Now running the checker with ``INVARIANT Invariant`` and ``NumInputs <- 5, Targe
 
 So 417 is (0+1)+9)*6)*7)-3.
 
-.. todo:: 
-
-  This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker with every value of ``Target`` from 0 to 1000 and counted which ones didn't produce an error trace. `topic_cli`  The first such number is 851.
+(This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker `from the command line <topic_cli>` with every value of ``Target`` from 0 to 1000. The first number that doesn't produce an error trace is 851.)
 
 Summary
 ==========
 
-* Nondeterminism is when the spec can do one of many things at a time.
+* Nondeterminism is when the spec can do one of several different things in one step.
 * ``with x \in set`` nondeterministically chooses a value from ``set`` for ``x``.
 * ``either branch1 or branch2`` nondeterministically chooses a branch to execute.
+* Nondeterminism can be used to abstract implementation details into a high-level step.

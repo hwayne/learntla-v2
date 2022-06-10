@@ -15,8 +15,8 @@ state_spaces:
     states: 4
   duplicates_fixed_input:
     config: 1
-    distinct: 3
-    states: 4
+    distinct: 6
+    states: 7
   duplicates_len_5_or_less:
     distinct: 765430
     states: 876540
