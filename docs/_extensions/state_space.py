@@ -18,7 +18,6 @@ class StateSpaceRole(SphinxRole):
     We store this information in modelchecks.yml. This role automatically inserts
     (n states / m distinct) for a given model check.
 
-    TODO: number formatting
     """
     def run(self) -> tuple[list[Node], list[Any]]:
         if not hasattr(self.env, 'state_spaces'):
@@ -39,6 +38,7 @@ class StateSpaceRole(SphinxRole):
         body = f"({data['states']:n} states / {data['distinct']:n} distinct)"
 
         node = nodes.inline(self.rawtext, body) 
+
 
         self.env.note_dependency(__file__) # Rebuild everything if I change this role
 

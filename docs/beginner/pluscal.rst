@@ -295,6 +295,11 @@ If you run it, you will see a page like this:
 
 To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too.
 
+.. digraph:: test
+  :caption: The execution diagram of TLC.
+
+  a -> b;
+
 .. index:: diameter
 .. note::
 

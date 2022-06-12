@@ -31,6 +31,7 @@ author = 'Hillel Wayne'
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.githubpages',
+    'sphinx.ext.graphviz',
     'piccolo_theme',    
     'exercise',
     'state_space',
@@ -47,8 +48,8 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**/advanced']
 
 
-numfig=False
-numfig_secnum_depth=1
+numfig = False
+smartquote = False
 
 # -- Options for HTML output -------------------------------------------------
 

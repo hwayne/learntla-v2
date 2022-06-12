@@ -25,3 +25,10 @@ div.document div.admonition.warning {
 div.document div.admonition.warning p.admonition-title {
   color: red;
 }
+
+.caption-number {
+/* For some inane reason, the html writer ignores numfig = False when you use captions
+ * Best I can figure is to hide it entirely
+ */
+  display: none;
+}
