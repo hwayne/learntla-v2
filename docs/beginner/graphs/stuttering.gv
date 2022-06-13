@@ -1,0 +1,24 @@
+digraph stuttering {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  edge[arrowhead=vee];
+
+  node[label="{1, 2}"];
+  {
+    rank=same;
+    A1[color=blue] 
+    S1[style=dotted];
+  }
+  
+  A1 -> {E1[label="{1}"] E2[label="{2}"]};
+  A1 -> S1[style=dotted];
+  {edge[style=dotted];
+  node[style=dotted];
+  S1 -> S2 -> S3 -> S4 -> S5;
+  }
+  S1 -> {E1 E2};
+  S2 -> {E3 E4};
+  S3 -> {E5 E6};
+  S4 -> {E7 E8};
+}
+

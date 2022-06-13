@@ -40,7 +40,10 @@ The most common invariant we use in programming: static types! When I have a var
 
 This operator needs to know about the ``all_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper. A define block contains pure TLA+ operators, and the operators may reference the values of PlusCal variables.
 
-.. todo:: spec
+.. spec:: duplicates/inv_1/duplicates.tla
+  :diff: duplicates/3/duplicates.tla
+  :ss: duplicates_many_inputs
+  :caption: blah
 
 To check this, we add it as an `invariant <chapter_setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
 
@@ -59,15 +62,6 @@ So back to the nature of the invariant. We say ``all_unique`` is the boolean typ
     /\ is_unique \in BOOLEAN
     /\ seen \subseteq S
     /\ i \in 1..Len(seq)+1
-
-.. .. exercise::
-  :label: inv_seen
-
-  What's an even narrower type for ``seen``?
-
-  Hint: use ``Range`` from the `map_filter_seq` exercise.
-
-  .. seen \subseteq Range(seq)
 
 I think that's enough of an introduction to invariants. Now let's write one that proves our algorithm correct.
 

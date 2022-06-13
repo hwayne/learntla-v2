@@ -1,0 +1,11 @@
+digraph duplicates_1 {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  I1 [label="i=1\nseq[i]=1"];
+  I2 [label="i=2\nseq[i]=2"];
+  I3 [label="i=3\nseq[i]=3"];
+  I4 [label="i=4\nseq[i]=4"];
+
+  I1 -> I2 -> I3 -> I4;
+}
+

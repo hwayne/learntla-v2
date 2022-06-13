@@ -1,0 +1,12 @@
+digraph with {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  edge[arrowhead=vee];
+
+  "sum = 0" -> {"sum = 1" "sum = 2"
+  "sum = 3"
+  "sum = 4"
+  "sum = 5"
+  "sum = 6"}[tailport=e];
+}
+

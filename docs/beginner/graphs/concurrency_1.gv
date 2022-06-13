@@ -1,0 +1,13 @@
+digraph concurrency {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  edge[arrowhead=vee];
+
+  Read1[label=Read, color=tomato, fontcolor=tomato];
+  Read2[label=Read];
+  Write1[label=Write];
+
+  Init -> {Read1 Write1};
+  //Read1 -> Write2;
+  Write1 -> Read2;
+}

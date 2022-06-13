@@ -1,0 +1,20 @@
+digraph stuttering {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  edge[arrowhead=vee, color=tomato];
+  {
+    rank=same;
+  S2[label="{2}"];
+  S1[label="{1}"];
+  }
+  {
+  rank=min;
+  S12[label="{1, 2}"];
+  }
+
+  S12 -> S2[label="1"];
+  S2 -> S12[label=2];
+  S12 -> S1[label=3];
+  S1 -> S12[color=black];
+}
+

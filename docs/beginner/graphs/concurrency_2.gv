@@ -1,0 +1,25 @@
+digraph concurrency {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  edge[arrowhead=vee];
+
+  {
+    node[label=Read]
+    ReadA ReadB ReadC;
+  }
+  {
+    node[label="Write\ni:=1"]
+    Write1A Write1C;
+  }
+  {
+    node[label="Write\ni:=2"]
+    Write2A Write2B Write2C;
+  }
+
+  Init -> {Write1A ReadA};
+  ReadA -> Write1C -> Write2C;
+  Write1A -> {Write2A ReadB};
+  ReadB -> Write2B;
+  Write2A -> ReadC;
+}
+

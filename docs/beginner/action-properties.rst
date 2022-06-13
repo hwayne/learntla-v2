@@ -26,7 +26,9 @@ Here are a couple of restrictions on the way the spec should be allowed to chang
 
 Here's how we write the first as an action property:
 
-.. spec
+::
+
+  [][counter' >= counter]_counter
 
 Wait, *what*?
 
@@ -40,13 +42,16 @@ Now run this with ``PROPERTY CounterOnlyIncreases``. If set up right, you should
 
 This doesn't fail because we have a state where ``counter = 0``. That's a totally valid state for the spec, and is in fact the starting state! It fails because ``counter = 1`` *and then becomes 0*. It's the fact *counter decreases* that's an error.
 
-.. index:: Box Action Formula
+.. index:: Box Action Formula, action
+
 
 What's this Syntax
 ------------------
 
 On one hand, cool trick. On the other, we now have to figure out what ``[][counter' >= counter]_counter`` is supposed to mean.
 
+
+......
 
 
 It's finally time to talk about the "actions" in "Temporal Logic of Actions".
@@ -65,7 +70,7 @@ As yet more syntactic sugar, we can write ``[](x' = x + 1 \/ UNCHANGED x)`` as `
 
 .. todo:: more explanation?
 
-.. tip:: The underscory bit means that we oculd have written the property as ``[][counter' > counter]_counter``. Expanding all the steps: 
+.. tip:: The underscory bit means that we could have written the property as ``[][counter' > counter]_counter``. Expanding all the steps: 
 
   #. ``[counter' > counter]_counter``
   #. ``counter' > counter \/ UNCHANGED counter``
@@ -103,8 +108,14 @@ What we can do in this case is pull the quantifier *inside* the action property.
 .. example
 
 .. todo:: 
+
+  {CONTENT}
   - ENABLED
   - ``<<A>>_v``
 
 Summary
 ========
+
+- Action properties are properties on *transitions* of a system, and are checked as temporal properties.
+- ``x'`` is the value of ``x`` in the *next* state. Operators with primes in them are called **Actions**.
+- ``[P]_x`` means that ``P /\ UNCHANGED x``. If 

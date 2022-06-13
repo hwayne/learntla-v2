@@ -1,5 +1,9 @@
 @import 'basic_mod.css';
 
+.code-block-caption {
+  text-align: center;
+}
+
 blockquote.quote {
   border-left: .2em solid #bdbdbd;
   font-style: italic;
