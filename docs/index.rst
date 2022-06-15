@@ -1,11 +1,11 @@
 .. todo:: 
   https://sphinx-tabs.readthedocs.io/en/latest/
 
-.. todo:: banner saying this is under construction, see :doc:`whatsnew`
+  Separate workbook for MONEYZ
 
 .. note::
 
-  Welcome to Learn TLA+! This is still a work in progress, please see :doc:`whatsnew` for updates and pardon the dust!
+  Welcome to Learn TLA+! This is still a work in progress, please see :doc:`whatsnew` for updates and please raise any questions or concerns at the `github repo <https://github.com/hwayne/learntla-v2>`__.
 
   (In the meantime, you can find the old version at `old.learntla.com <https://old.learntla.com>`__.)
 

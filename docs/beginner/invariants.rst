@@ -43,13 +43,12 @@ This operator needs to know about the ``all_unique`` variable, so we have to put
 .. spec:: duplicates/inv_1/duplicates.tla
   :diff: duplicates/3/duplicates.tla
   :ss: duplicates_many_inputs
-  :caption: blah
 
-To check this, we add it as an `invariant <chapter_setup>`. TLC will check it for every possible state :ss:`duplicates_many_inputs`. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
+To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at every possible state. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
 
-.. todo:: img
+.. todo:: {SCREENSHOT}
 
-.. todo:: talk about the error trace
+.. todo:: {CONTENT} talk about the error trace
 
   There's a little more we can do with the error trace, see here.
 
@@ -97,10 +96,11 @@ Here's the improper solution for ``IsUnique``:
 
 If the sequence has duplicates, then we won't run the ``\union`` line every single time, so it will have a different cardinality. In the next section, we'll see why this is "improper" and implement it properly, but for now this opens up our ability to discuss (2).
 
-.. note:: Also, because sets are unique.
+.. note:: This works because sets are unique.
+
 
 .. index:: pc
-  :name: pc
+.. _pc:
 
 pc
 ....
@@ -115,6 +115,8 @@ You can see this in the error trace. When we start the algorithm, ``pc = "Iterat
 
 On every label *except* "Done", this evaluates to TRUE and the invariant passes. When it *is* "Done", then we check the condition we care about.
 
+.. index:: => (implies)
+
 ``IF A THEN B ELSE TRUE`` conditionals come up a lot, cases where we only want to check B if A is true. Another way of saying this "either B is true or A is false".
 
 Another way of writing this: ``A => B``. Either B is true or A is false. Now we have
@@ -123,9 +125,7 @@ Another way of writing this: ``A => B``. Either B is true or A is false. Now we 
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 
-I said ``=>`` was really important earlier. This is one of those ways: it lets us say invariants should only apply under certain conditions. This isn't the only place we might use it.
-
-.. todo:: hascredential => TK EXAMPLES
+I said ``=>`` was really important earlier. This is one of those ways: it lets us say invariants should only apply under certain conditions. 
 
 We can now run this as our full invariant, and the spec works :ss:`duplicates_many_inputs`. 
 
@@ -198,8 +198,8 @@ That suggests we can write ``IsUnique`` as
 
 .. _implication_2:
 
-The power of ``=>``
----------------------
+The power of :math:`\Rightarrow`
+---------------------------------
 
 Let's add this new version of ``IsUnique`` to our duplicates spec:
 
@@ -329,45 +329,46 @@ This should pass :ss:`duplicates_many_inputs`.
       \E i, j \in 1..Len(seq):
         i # j /\ seq[i] = seq[j]
 
-More invariant practice
-------------------------
-
-.. todo:: Find actual names for everything
-
-Consider we have an event queue of events that happen in a system, where the queue is represented by a sequence of strings. One of teh invariants of the system is that "A can only come after B if the D flag is set."
-
-Properties of the form "X can only be true if Y is also true" can be written as ``X => Y``. To see why, try writing out the truth table.
-
-So we have:
-
-::
-
-  Inv == IsAfter(A, B) => D
-
-That just leaves specifying ``IsAfter``. 
-
-::
-
-  \* Test this
-
-  IsAfter(seq, e1, e2) ==
-    \E i, j \in 1..Len(seq):
-      /\ i > j
-      /\ seq[i] = e1
-      /\ seq[j] = e2
-
-
-.. todo:: 
+.. todo::
 
   .. rubric:: More invariant practice
 
-  ``=>`` is extremely powerful, so let's spend more time working with it. How would we write an operator that tests if a sequence is sorted in ascending order? What would ``IsSorted(seq)`` look like,
+  .. todo:: Find actual names for everything
+
+  Consider we have an event queue of events that happen in a system, where the queue is represented by a sequence of strings. One of teh invariants of the system is that "A can only come after B if the D flag is set."
+
+  Properties of the form "X can only be true if Y is also true" can be written as ``X => Y``. To see why, try writing out the truth table.
+
+  So we have:
 
   ::
 
-    IsSorted(seq) ==
-      \A i, j \in 1..Len(seq):
-        i < j => seq[i] <= seq[j]
+    Inv == IsAfter(A, B) => D
+
+  That just leaves specifying ``IsAfter``. 
+
+  ::
+
+    \* Test this
+
+    IsAfter(seq, e1, e2) ==
+      \E i, j \in 1..Len(seq):
+        /\ i > j
+        /\ seq[i] = e1
+        /\ seq[j] = e2
+
+
+  .. todo:: 
+
+    .. rubric:: More invariant practice
+
+    ``=>`` is extremely powerful, so let's spend more time working with it. How would we write an operator that tests if a sequence is sorted in ascending order? What would ``IsSorted(seq)`` look like
+
+    ::
+
+      IsSorted(seq) ==
+        \A i, j \in 1..Len(seq):
+          i < j => seq[i] <= seq[j]
 
 
 When to use Invariants

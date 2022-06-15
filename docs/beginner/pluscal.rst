@@ -101,11 +101,13 @@ If I wanted to, I could *choose* to make the summation nonatomic. Here's how I'd
       i := i + 1;
     end while;
     
+.. todo:: {GV} Diagram of the different times
+
 We'll talk about the nuances of `while` later, but the basic idea is that now *each iteration* of the summation is nonatomic. We could add two numbers, start an http request, add two more, receive the response, and add the rest. Or we could add them all before both steps of the http, or all after. Concurrency is weird.
 
 The point is this: the labels let us specify just how concurrent our system is. If we want to express that something is atomic, we can do that. If we want it to be interruptable, we can do that too.
 
-.. todo:: conclusion
+.. todo:: {conclusion}
 
 Label Rules
 --------------
@@ -140,29 +142,18 @@ The rest of the label rules relate to *specific* constructs in PlusCal, so let's
 PlusCal expressions
 -------------------
 
-.. index:: skip
-  :name: skip
+In addition to updates, there are three other statement-level constructs: 
 
-skip
-.....
-
-A noop. 
-
-.. index:: assert
-  :name: assert
-
-assert
-......
-
-``assert x`` automatically fails the model check if it's false.
-
-.. index:: goto
+.. index:: skip; assert; goto
 .. _goto:
 
-goto
-.....
+* ``skip``: a noop.
+* ``assert expr``: automatically fails the model check if ``expr`` is false.
+* ``goto L``: jumps to label ``L``.
 
-``goto L`` jumps to label ``L``.
+.. todo:: {CONTENT} Also mention print
+
+Everything else in PlusCal is a block-level construct.
 
 .. index:: if (pluscal)
 
@@ -285,13 +276,14 @@ In this chapter we'll focus on just writing out the spec, parts (2) and (3). In 
 
 I called this spec ``duplicates``, but the name isn't too important for this.
 
+.. no ss because I haven't introduced it yet
 .. spec:: duplicates/1/duplicates.tla
 
-.. todo:: explanation , use 
+(I *think* this is self-explanatory, but I've been doing this so long I have no idea what is or isn't explanatory anymore. If enough people say otherwise I'll put a fuller description here.)
 
 If you run it, you will see a page like this:
 
-.. todo:: page
+.. todo:: {SCREENSHOT}
 
 To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too.
 
@@ -314,7 +306,9 @@ To check both, we can use multiple starting states. TLA+ doesn't just let us ass
 
 The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>`` as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know. 
 
-.. todo:: {INKSCAPE} diagram of state space
+.. figure:: graphs/duplicates_2.gv.png
+
+  There are two possible behaviors now.
 
 Adding multiple starting states increases the complexity of our model. If, in a spec, TLC will normally have to check 10 states, adding 100 initial states could increase the state space to a maximum of 1,000. In practice, it will often be lower, because sometimes initial states will converge:
 
@@ -344,9 +338,7 @@ So now we're testing two inputs. That's twice as good as one input. Even better 
   :diff: duplicates/1/duplicates.tla
   :ss: duplicates_many_inputs
 
-We're now significantly more likely to cover all interesting edge cases. This isn't *guaranteed*: maybe there's a bug that *only* triggers if we have ``-187`` in there somewhere. But {{ending}}
-
-.. todo:: {CONTENT} ending
+We're now significantly more likely to cover all interesting edge cases. This isn't *guaranteed*: maybe there's a bug that *only* triggers if we have ``-187`` in there somewhere. TLA+ can only augment your engineering judgement, not replace it. But my judgement is telling me that it's unlikely for ``-187`` to be the edge case, so I'm confident calling this good coverage.
 
 .. note:: Okay, there's one big gap: while we're trying a lot of different elements, we're only looking at one fixed *length*. Maybe there's an issue with 1 or 0-length sequences. We'll be able to fix this once we learn about `function sets <function_set>`.
 
@@ -355,4 +347,27 @@ Now that we have broad state-space coverage, it's time to write some properties.
 Summary
 =========
 
-Blah blagh blah
+.. todo:: {CONTENT} Summary
+
+- PlusCal
+
+
+- :=
+- = vs :=
+
+- PlusCal expressions:
+
+  - assert, goto, skip
+
+- PlusCal constructs
+
+  - If
+  - While
+  - Macro
+  - With
+
+
+- Labels represent *atomicity*.
+
+  - Label rules:
+

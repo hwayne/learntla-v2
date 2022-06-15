@@ -1,9 +1,5 @@
 @import 'basic_mod.css';
 
-.code-block-caption {
-  text-align: center;
-}
-
 blockquote.quote {
   border-left: .2em solid #bdbdbd;
   font-style: italic;
@@ -23,11 +19,11 @@ div.document h2, div.document h3, div.document h4, .rubric {
 }
 
 div.document div.admonition.warning {
-  border-left: 5px solid red;
+  border-left: 5px solid crimson;
 }
 
 div.document div.admonition.warning p.admonition-title {
-  color: red;
+  color: crimson;
 }
 
 .caption-number {
@@ -35,4 +31,20 @@ div.document div.admonition.warning p.admonition-title {
  * Best I can figure is to hide it entirely
  */
   display: none;
+}
+
+/* span.caption-text */
+.code-block-caption {
+  text-align: center;
+}
+
+
+figure img {
+  border: 1px;
+}
+
+figcaption p {
+  margin-top: 8px;
+  text-align: center;
+
 }
