@@ -14,6 +14,8 @@ Operators
 
 Operators are what you'd think of as a function in a programming language. They take arguments and evaluate to expressions.
 
+.. todo:: {CONTENT} When do I talk about EXTENDS?
+
 ::
 
   EXTENDS Integers

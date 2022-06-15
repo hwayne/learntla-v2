@@ -4,7 +4,8 @@
 Conceptual Overview
 +++++++++++++++++++
 
-.. todo:: {{ ALL THIS IS DRAFT }}
+
+.. todo:: Mention the name TLC
 
 To justify the value of TLA+, let's talk about how it's useful, and how it's different from programming languages.
 
@@ -73,9 +74,11 @@ Now we can't check *every* possible behavior. In fact there's an infinite number
 Specifications
 ---------------
 
+
 So what does this all look like in practice? Let's present a spec for wire transfers, first with hardcoded parameters and then with model-parameterizable ones.
 
 .. spec:: wire.tla
+  :name: wire
   :fails:
 
 Over the rest of the book I'll be covering how all of this works syntactically. For now I just want to call attention to various parts that TLA+ does different from code:

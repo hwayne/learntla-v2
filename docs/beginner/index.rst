@@ -7,7 +7,11 @@ This is the core language material.
 
 
 Outline
---------
+========
+
+
+PlusCal
+-------
 
 .. toctree::
   :maxdepth: 2
