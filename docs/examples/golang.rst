@@ -9,31 +9,32 @@ Goroutines
 In `Even in Go, concurrency is still not
 easy <https://utcc.utoronto.ca/~cks/space/blog/programming/GoConcurrencyStillNotEasy>`__, Chris Siebenmann gives an example of Go code which deadlocks:
 
-.. code:: go
+.. code-block:: go
+  :linenos:
 
-   /*1 */ func FindAll() []P { //P = process data
-   /*2 */    pss, err := ps.Processes()
-   /*3 */    [...]
-   /*4 */    found := make(chan P)
-   /*5 */    limitCh := make(chan struct{}, concurrencyProcesses)
-   /*6 */ 
-   /*7 */    for _, pr := range pss {
-   /*8 */       limitCh <- struct{}{}
-   /*9 */       pr := pr
-   /*10*/       go func() {
-   /*11*/          defer func() { <-limitCh }()
-   /*12*/          [... get a P with some error checking ...]
-   /*13*/          found <- P
-   /*14*/       }()
-   /*15*/    }
-   /*16*/    [...]
-   /*17*/ 
-   /*18*/    var results []P
-   /*19*/    for p := range found {
-   /*20*/       results = append(results, p)
-   /*21*/    }
-   /*22*/    return results
-   /*23*/ }
+    func FindAll() []P { //P = process data
+       pss, err := ps.Processes()
+       [...]
+       found := make(chan P)
+       limitCh := make(chan struct{}, concurrencyProcesses)
+    
+       for _, pr := range pss {
+          limitCh <- struct{}{}
+          pr := pr
+          go func() {
+             defer func() { <-limitCh }()
+             [... get a P with some error checking ...]
+             found <- P
+          }()
+       }
+       [...]
+    
+       var results []P
+       for p := range found {
+          results = append(results, p)
+       }
+       return results
+    }
 
 In his words:
 

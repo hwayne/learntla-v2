@@ -1,13 +1,20 @@
-++++++++
-Examples
-++++++++
++++++++++
+Operators
++++++++++
 
 
 .. toctree::
-  :maxdepth: 2
-  :hidden:
+  :titlesonly:
+
+
+
+
++++++++++++++
+PlusCal Specs
++++++++++++++
+
+
+.. toctree::
+  :titlesonly:
 
   golang
-
-
-Test
