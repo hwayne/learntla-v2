@@ -4,7 +4,7 @@ states:
     states: 19
     distinct: 17
 !!!
-!tlacli check % --inv Correct --model-value NULL
+LoadLocal !tlacli check % --inv Correct --model-value NULL
 !!!
 ---- MODULE threads__3 ----
 EXTENDS TLC, Sequences, Integers

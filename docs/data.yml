@@ -1,4 +1,7 @@
 state_spaces:
+  action_prop_counter:
+    distinct: 9
+    states: 14
   basic_pluscal:
     config: 1
     distinct: 3

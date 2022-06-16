@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<root folder="action_props">
+<spec name="threads" num="6"> 
+---- MODULE $name ----
+EXTENDS TLC, Integers
+CONSTANT NULL
+
+NumThreads == 2
+Threads == 1..NumThreads
+
+(* --algorithm threads
+
+variables 
+  counter = 0;
+  lock = NULL;
+
+define <s on="2-">  
+  CounterOnlyIncreases ==
+    [][counter' >= counter]_counter</s><s on="4-">
+
+  LockCantBeStolen ==
+    [][lock # NULL => lock' = NULL]_lock</s><s on="6">
+
+  LockNullBeforeAcquired ==
+    [][lock' # NULL => lock = NULL]_lock</s>
+end define;  
+
+process thread \in Threads
+variables tmp = 0;
+begin
+  GetLock:
+    <s on="-4">await lock = NULL;</s>
+    lock := self;
+
+  GetCounter:
+    tmp := counter;
+
+  IncCounter:
+    counter := tmp + <s on="3">IF tmp = 0 THEN 1 ELSE -</s>1;
+  
+  ReleaseLock:
+    lock := NULL; 
+end process;
+end algorithm; *)
+====
+
+</spec>
+
+<spec name="counters" num="3">
+---- MODULE $name ----
+EXTENDS Integers
+
+Counters == {1, 2}
+(* --algorithm counters
+variables 
+  values = [i \in Counters |-> 0];
+
+define<s on="2-">
+  CounterOnlyIncreases == <s on="3">
+    [][</s>
+      \A c \in Counters:<s on="2">
+        [][values[c]' >= values[c]]_values[c]</s><s on="3">
+        values[c]' >= values[c]
+      ]_values</s></s>
+end define;  
+
+macro increment() begin
+  values[self] := values[self] + 1;
+end macro
+
+process counter \in Counters
+begin
+  A:
+    increment();
+  B:
+    increment();
+end process;
+end algorithm; *)
+=====
+</spec>
+</root>

@@ -81,6 +81,8 @@ A basic config file might look like this:
 
 Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, which work equivalently to their `Toolbox options <topic_toolbox>`. 
 
+.. todo:: Finally, we have ``ALIAS``. 
+
 .. todo:: Symmetry sets
 
 
@@ -88,6 +90,8 @@ TLC Options
 -----------
 
 Now that we know how to run a config file, let's get back to the TLC options. You can read all of them with ``java -jar tla2tools.jar -help`` (*not* ``-h``), or by reading them `here <tlc_page>`. Most of them are self-explanatory or equivalent to toolbox options. See the `Toolbox topic <topic_toolbox>` for more information on how to use them. The main things of note are:
+
+.. dump:
 
 - ``dump``: TODO
 - ``metadir``:

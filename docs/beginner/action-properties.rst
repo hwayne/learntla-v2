@@ -11,42 +11,63 @@ Action Properties
 Action Properties
 ==================
 
-In the `last chapter <chapter_temporal_logic>` I said that all invariants are safety properties, but not all safety properties are invariants. Outside invariants, the biggest class of safety properties are action properties, which are restrictions on how the system is allowed to *change*.
+In the `last chapter <chapter_temporal_logic>` I said that all invariants are safety properties, but not all safety properties are invariants. Outside invariants, the biggest class of safety properties are "action properties", which are restrictions on how the system is allowed to *change*.
 
 Let's play a bit more with the threads spec:
 
-.. spec:: threads/3/threads.tla
+.. spec:: action_props/threads_1/threads.tla
+  :ss: threads_3
 
-.. todo:: write this more gradually
-
-Here are a couple of restrictions on the way the spec should be allowed to change. Some things about this spec:
+Here are a couple of restrictions on the way the spec should be allowed to change:
 
 * ``counter`` should only increase.
 * If a thread holds the lock, it *cannot* go to another thread without being unlocked first.
 
 Here's how we write the first as an action property:
 
-::
-
-  [][counter' >= counter]_counter
+.. spec:: action_props/threads_2/threads.tla
+  :diff: action_props/threads_1/threads.tla
 
 Wait, *what*?
 
-Don't worry, we'll be going into *painful* detail in the next section. For now, let's confirm that this actually breaks. First make a change where counter decreases:
+Don't worry, we'll be going into *painful* detail in `the next section <action_prop_syntax>`. For now, let's confirm that this actually breaks. First make a change where counter decreases:
 
-.. spec
+.. spec:: action_props/threads_3/threads.tla
+  :diff: action_props/threads_2/threads.tla
+  :fails:
 
-Now run this with ``PROPERTY CounterOnlyIncreases``. If set up right, you should see this error:
+Now run this with ``PROPERTY CounterOnlyIncreases`` (**not** as an invariant). If set up right, you should see this error:
 
-.. error
+.. code:: text
 
-This doesn't fail because we have a state where ``counter = 0``. That's a totally valid state for the spec, and is in fact the starting state! It fails because ``counter = 1`` *and then becomes 0*. It's the fact *counter decreases* that's an error.
+  \* some initial states
+  State 7:
+    /\ counter = 1
+    /\ lock = 1
+    /\ pc = <<"IncCounter", "Done">>
+    /\ tmp = <<1, 0>>
 
-.. index:: Box Action Formula, action
+  State 8:
+    /\ counter = 0
+    /\ lock = 1
+    /\ pc = <<"ReleaseLock", "Done">>
+    /\ tmp = <<1, 0>>
+
+This doesn't fail because we have a state where the counter is 0. That's a totally valid state for the spec, and is in fact the starting state! It fails because counter *changes from 1 to 0*. It's the fact *counter decreases* that's an error.
+
+.. todo:: make this an image
+.. digraph:: G
+  :caption: Neither state is illegal, but the *transition between them* is.
+
+  A -> B -> {C A};
 
 
-What's this Syntax
-------------------
+
+.. index:: box action formula, action
+.. _action_prop_syntax:
+
+Understanding the Syntax
+-------------------------
 
 On one hand, cool trick. On the other, we now have to figure out what ``[][counter' >= counter]_counter`` is supposed to mean.
 
@@ -84,38 +105,74 @@ More Action Properties
 
 Let's add another property that "the lock can't go straight from one thread to another":
 
-.. spec
+.. spec:: action_props/threads_4/threads.tla
+  :diff: action_props/threads_3/threads.tla
+
 
 And now we'll make a change that breaks this property:
 
-.. change
+.. spec:: action_props/threads_5/threads.tla
+  :diff: action_props/threads_4/threads.tla
 
 
 Running with ``PROPERTY LockCantBeStolen`` shows this fail.
 
-Another way we could have writen the property:
+.. todo:: {Graph} LockCantBeStolen
 
-.. todo:: Putting quantifiers inside action properties
+Another way we could have written the property:
 
-{{ A property using ``\A`` }}
+.. spec:: action_props/threads_6/threads.tla
+  :diff: action_props/threads_5/threads.tla
+
+You *can* use helper actions in your action properties, so we could do something like
+
+::
+
+  BecomesNull(x) == x' = NULL
+
+  LockCantBeStolen ==
+     [][lock # NULL => BecomesNull(lock')]_lock
+
+Quantified Action Properties
+-----------------------------
+
+I mentioned earlier that TLC can only check top-level action properties. This can make some things a little awkward. Let's write a quick spec with several independent counters:
+
+.. spec:: action_props/counters_1/counters.tla
+  :ss: action_prop_counter
+
+As before, we want an action property saying that the counters are monotonic. Unlike before, we have several counters we need to quantify over.
+
+.. spec:: action_props/counters_2/counters.tla
+  :diff: action_props/counters_1/counters.tla
+  :fails:
 
 unfortunately, TLC can't check this, due to limitations of the model checker. 
 
-| Error
+  [] followed by action not of form [A]_v.
 
-What we can do in this case is pull the quantifier *inside* the action property.
+(The error is a little confusing, but it happens whenever we put our action property inside a quantifier). 
 
-.. example
+What we can do in this case is pull the quantifier *inside* the action property. It turns out that ``[]`` commutes with ``\A``! In other words, any equation written ``\A x: []P(x)`` is *equivalent* to the formula ``[](\A x: P(x))``.
 
-.. todo:: 
+.. spec:: action_props/counters_3/counters.tla
+  :diff: action_props/counters_2/counters.tla
 
-  {CONTENT}
+.. todo:: {CONTENT}
+
   - ENABLED
   - ``<<A>>_v``
+
+Using Action Properties
+=======================
+
+I love using action properties.
+
+Invariants > Action > Liveness 
 
 Summary
 ========
 
 - Action properties are properties on *transitions* of a system, and are checked as temporal properties.
 - ``x'`` is the value of ``x`` in the *next* state. Operators with primes in them are called **Actions**.
-- ``[P]_x`` means that ``P /\ UNCHANGED x``. If 
+- ``[P]_x`` means that ``P \/ UNCHANGED x``.
