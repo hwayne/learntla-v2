@@ -79,7 +79,7 @@ blah blah
 
 .. _scratch:
 
-Scratch
+Scratchfile
 ------------
 
 Blah blah

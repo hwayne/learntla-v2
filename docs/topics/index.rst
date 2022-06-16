@@ -24,9 +24,10 @@ Topics
     Strong Fairness
 
   WRITE:
-    Helper variables <aux_vars>
     General tips <tips>
       Illegal States are representable
+    Optimization
+    Modelling legacy systems
     
 
   Invariants vs Liveness vs Action properties

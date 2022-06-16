@@ -28,7 +28,8 @@ There are two kinds of temporal properties: "safety" properties say our system d
 TLC can check (2) as a temporal property, though. 
 
 
-
+Temporal Operators
+===================
 
 .. index:: 
   single: []
@@ -66,7 +67,9 @@ At the beginning of the behavior, we pick one online server. That server is then
 
   State 5: online = {"s1", "s2"}
 
-.. todo:: {INKSCAPE} Diagram
+.. figure:: graphs/liveness.gv.png
+
+  The behavior sequence 1-2-3 breaks violates our safety property, even though no state is individually a "bad state".
 
 In summary, adding ``[]`` to the language lets us represent all invariants, and a host of other properties too.
 
@@ -105,7 +108,9 @@ Not so fast! There's a *third* thing the orchestrator can do: it can crash. In T
 
 TLA+ allows infinite stutter steps because it is fundamentally a worst-case scenario language. IN reality, systems always crash. If we do not *explicitly say* a system can't crash, TLA+ will assume the system can crash at the worst possible time.
 
-.. todo:: {INKSCAPE} stutter steps
+.. figure:: graphs/stuttering.gv.png
+
+  We can always keep stuttering at the ``{1, 2}`` state. Even though it *could* transition to either good state, it doesn't *have* to.
 
 So we need a way to say "don't assume this system can crash". We do this by saying it's a :dfn:`fair process`.
 

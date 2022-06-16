@@ -5,6 +5,8 @@
 
   Terms
 
+  Debug your designs
+
 .. note::
 
   Welcome to Learn TLA+! This is still a work in progress, please see :doc:`whatsnew` for updates and please raise any questions or concerns at the `github repo <https://github.com/hwayne/learntla-v2>`__.

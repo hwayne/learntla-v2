@@ -96,7 +96,8 @@ If you peak at the definition of the `Sequences` module, you'll see how it defin
 
 ::
 
-  ...
+  s \o t == [i \in 1..(Len(s) + Len(t)) |-> IF i \leq Len(s) THEN s[i]
+                                                           ELSE t[i-Len(s)]]
 
 ``\o`` is a binary operator. There's a fixed set of binary operators, like ``\o``, ``+``, and ``\prec``, that you can define. On the whole I don't like doing this because it makes specs confusing, but there's a couple I use often:
 

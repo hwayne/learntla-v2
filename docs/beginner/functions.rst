@@ -136,7 +136,7 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
 
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
 
-
+.. todo:: {CONTENT} show how this gives us ssequences and structs
 
 
 
@@ -244,7 +244,6 @@ Some more examples of function sets:
 #. We have a set of servers, which can have one of three states. Then ``status \in [Server -> {"online", "booting", "offline"}]``.
 #. We represent a directed graph as a function on pairs of points, which is true iff there's an edge between the two points. Then ``graph \in [Node \X Node -> BOOLEAN]``.
 #. If we define the previous set as the operator ``GraphType``, we could get the set of all *undirected* graphs with ``{g \in GraphType: \A n1, n2 \in Node: g[n1,n2] = g[n2,n1]}``.
-#. Integer addition, as in "two plus two is four", is an element of the function set ``[Int \X Int -> Int]``. However, while this is expressible, TLC cannot enumerate this set.
 
 .. troubleshooting::
 
@@ -337,11 +336,14 @@ From this, extending this to five-element sequences is trivial :ss:`duplicates_l
 
 .. spec:: duplicates/fs_1/duplicates.tla
   :diff: duplicates/constant_2/duplicates.tla
+  :ss: duplicates_len_5_seqs
 
 Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]`` is based on a *value* — the size of the domain set. This means we can pull it into a constant!
 
 .. spec:: duplicates/fs_2/duplicates.tla
   :diff: duplicates/fs_1/duplicates.tla
+
+.. _state_sweeping:
 
 .. tip:: State Sweeping
 
@@ -351,6 +353,7 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
 
     spec:: duplicates/fs_2/duplicates.tla
     :diff: duplicates/fs_1/duplicates.tla
+    :ss: duplicates_len_5_or_less
 
   Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
 

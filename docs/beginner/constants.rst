@@ -175,7 +175,7 @@ Summary
 
 * `Constants <constant>` let you use different values of something for different models.
 * Constants can be assigned ordinary TLA+ expressions, or model values or sets of model values.
-* `ASSUME` checks that you assign meaningful values to your constants.
+* `ASSUME <ASSUME>` checks that you assign meaningful values to your constants.
 * Model values compare equal to themselves and nothing else. They are useful as sentinel values.
 * Sets of model values can be made into symmetry sets, which (usually) speeds up model checking.
 

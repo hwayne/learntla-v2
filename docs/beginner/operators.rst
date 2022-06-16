@@ -69,7 +69,7 @@ TLA+ is an untyped formalism, due to its roots in mathematics. In practice, the 
   If you want to get on ahead, the new types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
 
 
-.. index:: =, #
+.. index:: =, # (not equals)
 
 Every value type in TLA+ has its own operators, with no overlap or overloading. The two exceptions to this are ``=`` and ``#``, which "equals" and "not equals", respectively. Values of different types cannot be tested for equality, and that will throw an error.
 
@@ -212,9 +212,6 @@ Some programming languages have sets, but they're often less important than arra
 
 .. todo:: Explain why they're so powerful
 
-.. This again breaks down to whether we care about programming or specifying. 
-
-
 .. index:: set; set operators, \in; x \in set
 .. _set_operators:
 
@@ -237,7 +234,7 @@ We also have ways of slicing and dicing sets:
 
 .. note:: You might see ``\cup`` and ``\cap`` instead of ``\union`` and ``\intersect``. This comes from the mathematical symbols for set union and intersection, which are :math:`\cup` and :math:`\cap`.
 
-.. todo:: Let's do some examples
+.. todo:: {CONTENT} Examples of using union and intersections
 
 .. _Cardinality:
 
@@ -457,5 +454,4 @@ Summary
 
 
 .. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...
-.. [#leapsecond] Fun fact, in the original ISO standard seconds could go 1-61! There were *two* leap seconds.
 .. [#million] If you actual try this TLC will error out, because it assumes sets with more than 1,000,000 elements are unintentional. You can raise the limit in the TLC options.

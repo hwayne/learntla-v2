@@ -196,7 +196,9 @@ That suggests we can write ``IsUnique`` as
       s[i] # s[j]
 
 
-.. _implication_2:
+
+.. index:: => (implies)
+
 
 The power of :math:`\Rightarrow`
 ---------------------------------
@@ -205,6 +207,7 @@ Let's add this new version of ``IsUnique`` to our duplicates spec:
 
 .. spec:: duplicates/inv_3/duplicates.tla
   :diff: duplicates/inv_2/duplicates.tla
+  :fails:
 
 If you run this, you will see it *fail*. And it fails in the oddest way, by saying a unique sequence has duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
 
@@ -232,7 +235,7 @@ Here's one way to fix it:
       \A j \in (1..Len(s)) \ {i}:
         s[i] # s[j]
 
-And that... works, I guess. But there's a better way to do this, one that really showcases the power of ``=>``: **it lets us rule out unwanted combinations in quantifiers.** Let's say we write
+That… works, I guess. But there's a better way to do this, one that really showcases the power of ``=>``: **it lets us rule out unwanted combinations in quantifiers.** Let's say we write
 
 ::
 
@@ -240,7 +243,7 @@ And that... works, I guess. But there's a better way to do this, one that really
     \A i, j \in 1..Len(s):
       i # j => s[i] # s[j]
 
-And then pass in ``<<"a", "b">>``. There are four possible combinations of values for i and j. Let's write out the full truth table for every combination:
+Then we pass in ``<<"a", "b">>``. There are four possible combinations of values for i and j. Let's write out the full truth table for every combination:
 
 .. list-table::
   :header-rows: 1
