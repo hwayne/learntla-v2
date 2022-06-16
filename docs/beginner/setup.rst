@@ -61,7 +61,9 @@ To actually check this with TLC, we have to create a new model to check. Do that
 
 Once you do that, you should see this page:
 
-.. 
+.. figure:: img/setup/setup_model.png
+
+  You might need to open this in a new tab to see the numbers
 
 1. "What is the behavior spec" should be "Temporal Formula" and "Spec". If it's not, make sure you have only one set of ``====`` in the spec, and the translated TLA+ is above it, then manually set the two fields.
 2. Click the "Invariants" box to open it up.

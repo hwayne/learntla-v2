@@ -2,6 +2,8 @@
 Topics
 ################
 
+This is a collection of techniques and essays on using TLA+ more effectively. People new to TLA+ may find the :doc:`core </beginner/index>` more useful.
+
 .. toctree::
   :maxdepth: 1
   :hidden:

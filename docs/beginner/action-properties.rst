@@ -4,7 +4,7 @@
 Action Properties
 ########################
 
-.. index:: Action Properties
+.. index:: action property
 
 .. _action_properties:
 

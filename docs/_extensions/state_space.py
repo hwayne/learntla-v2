@@ -10,7 +10,6 @@ import yaml
 import sys
 
 # https://stackoverflow.com/questions/20553551/how-do-i-get-pylint-to-recognize-numpy-members
-# make this use the proper class, so we can load the environment once
 class StateSpaceRole(SphinxRole):
     """Used to dynamically add 'error checks' to learntla specs.
     Since TLA+ doesn't provide a lot of feedback, the best way for users to check
@@ -35,7 +34,7 @@ class StateSpaceRole(SphinxRole):
             prb = self.inliner.problematic(self.rawtext, self.rawtext, msg)
             return [prb], [msg]
 
-        body = f"({data['states']:n} states / {data['distinct']:n} distinct)"
+        body = f"{data['states']:n} states / {data['distinct']:n} distinct"
 
         node = nodes.inline(self.rawtext, body) 
 
