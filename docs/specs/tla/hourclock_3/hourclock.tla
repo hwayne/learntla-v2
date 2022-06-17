@@ -1,13 +1,4 @@
-target: specs/tla/hourclock_1/hourclock.tla
-states:
-  hourclock_1:
-    states: 13
-    distinct: 12
-    
-!!!
-LoadLocal !tlacli check %
-!!!
----- MODULE hourclock__1 ----
+---- MODULE hourclock ----
 \* TODO: two clocks
 EXTENDS Naturals
 (*--algorithm hourclock
@@ -18,8 +9,10 @@ begin
     while TRUE do
         if hr = 12 then
           hr := 1;
-        else       
+        else
+          with x = 1 do       
             hr := hr + 1;
+          end with
         end if;
     end while;
 end algorithm; *)

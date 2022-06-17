@@ -191,8 +191,8 @@ In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no 
 
 
 
-.. index:: threads
-  :name: threads
+.. index:: Examples; threads
+.. _threads:
 
 Example: Threads
 =================
@@ -202,6 +202,7 @@ Example: Threads
 Let's go through another example of concurrency. We have two threads incrementing a single counter. At first, we'll have them do this atomically, and show that we get the expected value. Then, we'll make the updates nonatomic and show a race condition exists.
 
 .. spec:: threads/1/threads.tla
+  :ss: threads_1
 
 ``Correct`` is similar to our invariants in `duplicates`. *Once every thread is done running*, each thread should have incremented ``counter`` once, which means that ``counter = NumThreads``. Confirm that the spec passes with ``INVARIANT Correct`` :ss:`threads_1`. 
 
@@ -230,6 +231,7 @@ Both threads read the value of ``counter`` when it's 0, meaning they both set ``
 .. spec:: threads/3/threads.tla
   :diff: threads/2/threads.tla
   :ss: threads_3
+  :name: threads_3
 
 Now the spec passes again.
 

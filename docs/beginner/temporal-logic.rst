@@ -32,7 +32,7 @@ Temporal Operators
 ===================
 
 .. index:: 
-  single: []
+  single: [] (always)
   see: always; []
 
 .. _always:
@@ -147,7 +147,7 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
 
 .. index::
-  single: <>
+  single: <> (eventually)
   see: eventually; <>
 
 .. _eventually:

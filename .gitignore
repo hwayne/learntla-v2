@@ -8,3 +8,5 @@ temporary.cfg
 *.toolbox
 venv-sphinx
 .vscode
+*.st
+states/

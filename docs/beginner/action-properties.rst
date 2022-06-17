@@ -158,6 +158,7 @@ What we can do in this case is pull the quantifier *inside* the action property.
 .. spec:: action_props/counters_3/counters.tla
   :diff: action_props/counters_2/counters.tla
 
+
 .. todo:: {CONTENT}
 
   - ENABLED
@@ -166,13 +167,14 @@ What we can do in this case is pull the quantifier *inside* the action property.
 Using Action Properties
 =======================
 
-I love using action properties.
+Most of the specs I write have more invariants than action properties and more action properties than liveness properties. But liveness properties are arguably more "important" than action properties, as every spec needs at least one. Action props are powerful but optional.
 
-Invariants > Action > Liveness 
+Nonetheless, I love using action properties. They give you an incredible amount of flexibility for defining new properties.
 
 Summary
 ========
 
 - Action properties are properties on *transitions* of a system, and are checked as temporal properties.
 - ``x'`` is the value of ``x`` in the *next* state. Operators with primes in them are called **Actions**.
-- ``[P]_x`` means that ``P \/ UNCHANGED x``.
+- ``[P]_x`` means  ``P \/ UNCHANGED x``.
+- ``<<P>>_x`` means ``P /\ x' # x``.

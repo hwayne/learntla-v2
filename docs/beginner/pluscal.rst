@@ -294,7 +294,9 @@ To make sure that you're following properly, you can check that that you got the
 
   The first column, ``diameter``, is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
 
-Multiple Starting States
+.. index:: \in; variable definition
+
+Testing More Inputs
 -------------------------
 
 We now have a basic implementation of our duplication checker. When we run it, though, we want to make sure it's working properly for both unique and non-unique sequences. Right now we've only hardcoded a single sequence, so we can only check one of the two cases.

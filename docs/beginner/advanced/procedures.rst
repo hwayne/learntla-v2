@@ -1,7 +1,9 @@
 .. index:: 
   single: procedure
-  see: return; procedure
-  see: call; procedure
+  single: call
+  single: return
+  seealso: return; procedure
+  seealso: call; procedure
 
 .. _procedure:
 

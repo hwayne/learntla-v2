@@ -1,4 +1,7 @@
-
+target: specs/tla/hourclock_2/hourclock.tla
+!!!
+LoadLocal !tlacli check %
+!!!
 ---- MODULE hourclock__2 ----
 \* TODO: two clocks
 EXTENDS Naturals

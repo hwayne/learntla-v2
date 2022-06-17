@@ -1,4 +1,7 @@
-
+target: specs/tla/hourclock_3/hourclock.tla
+!!!
+LoadLocal !tlacli check %
+!!!
 ---- MODULE hourclock__3 ----
 \* TODO: two clocks
 EXTENDS Naturals
@@ -17,20 +20,4 @@ begin
         end if;
     end while;
 end algorithm; *)
-\* BEGIN TRANSLATION - the hash of the PCal code: PCal-15444efefd6dbd631b1aa7593ae70afc
-VARIABLE hr
-
-vars == << hr >>
-
-Init == (* Global variables *)
-        /\ hr = 1
-
-Next == IF hr = 12
-           THEN /\ hr' = 1
-           ELSE /\ LET x == 1 IN
-                     hr' = hr + 1
-
-Spec == Init /\ [][Next]_vars
-
-\* END TRANSLATION - the hash of the generated TLA code (remove to silence divergence warnings): TLA-d61bab1363d490c3588864c3a4f39256
 ====

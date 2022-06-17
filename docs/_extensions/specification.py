@@ -68,6 +68,7 @@ class SpecificationDirective(LiteralInclude):
         try:
             out[0][0], out[0][1] = out[0][1], out[0][0]
         except:
+            raise
             breakpoint()
             quit()
          

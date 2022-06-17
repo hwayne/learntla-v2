@@ -38,6 +38,12 @@ state_spaces:
     config: 1
     distinct: 12
     states: 14
+  hourclock_1:
+    distinct: 12
+    states: 13
+  hourclock_2:
+    distinct: 12
+    states: 24
   orchestrator:
     distinct: 3
     states: 5

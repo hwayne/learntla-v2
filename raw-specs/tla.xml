@@ -2,7 +2,6 @@
 <root folder="tla">
 <spec name="hourclock" num="4">
 ---- MODULE $name ----
-\* TODO: two clocks
 EXTENDS Naturals
 (*--algorithm hourclock
 variable hr = 1; \* hour<s on="2">
@@ -14,7 +13,7 @@ begin
         if hr = 12 then
           hr := 1;
         else<s on="3-4">
-          with x<s on="3"> = 1</s><s on="4"> \in 1..2</s> do</s>       
+          with x<s on="3"> = 1</s><s on="4"> \in 0..1</s> do</s>       
             hr := hr + 1;<s on="3-4">
           end with</s>
         end if;
