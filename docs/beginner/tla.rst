@@ -283,11 +283,9 @@ This is doing basically nothing novel, except that we have two separate processe
                    /\ pc' = [pc EXCEPT ![self] = "GetCounter"]
                    /\ UNCHANGED << counter, tmp >>
 
-  * Fairness
-    * Strong fairness
 
-Weak Fairness
--------------
+Fairness
+=========
 
 A TLA+ Spec From Scratch
 =========================
