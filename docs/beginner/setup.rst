@@ -68,20 +68,55 @@ Once you do that, you should see this page:
 1. "What is the behavior spec" should be "Temporal Formula" and "Spec". If it's not, make sure you have only one set of ``====`` in the spec, and the translated TLA+ is above it, then manually set the two fields.
 2. Click the "Invariants" box to open it up.
 3. Click "Add", and then insert the text ``No Overdrafts``.
-4. Run the model, or press ``F11``
+4. Run the model, or press ``F11``.
 
-Error
+When you run this, you will see an error pop up on the right side:
 
 .. figure:: img/setup/error_trace.png
 
-Manual Outputs
-====================
-
-blah blah
+This is an *error trace*, showing the exact set of steps that lead to an invariant being violated.
 
 .. _scratch:
 
-Scratchfile
-------------
+Making a Scratchfile
+====================
 
-Blah blah
+I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate file I call "Scratch"
+
+::
+
+  ---- MODULE Scratch ----
+  EXTENDS Integers, TLC, Sequences
+
+  Eval == 0
+  ====
+
+This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, {{MODEL output stuff}.
+
+Then I put ``Eval`` in the "Evaluate Constant Expression Box":
+
+.. todo:: IMAGE
+
+Now whenever I run the model, the output of ``Eval`` will be put on the box to the right. In this case, it will be 0. But if I change the ``Eval`` expression, I get something different.
+
+.. code-diff:
+
+  - Eval == 0
+  + Eval == "hello world!"
+
+Now running ``Eval`` will put "hello world!".
+
+.. index:: >>> 
+.. _>>>_notation:
+
+Having a scratchfile is very useful and I recommend setting one up. In the guide itself I will occasionally post "expression evaluations" like this::
+
+.. code:: none
+
+  >>> 1+1
+
+  2
+
+This just means that I set ``Eval == 1+1`` and got ``2`` as the output. You can use this to check that you got the same results as me.
+
+And with that, we're ready to start learning TLA+!

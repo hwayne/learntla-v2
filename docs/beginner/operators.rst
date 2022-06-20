@@ -305,8 +305,6 @@ Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType``
 Map and Filter
 ..............
 
-.. todo:: Sometimes you want a more restrictive type
-
 Sets can be mapped and filtered.
 
 ::
@@ -342,18 +340,20 @@ CHOOSE
 
 Getting the number of seconds past midnight from a clock value is straightforward. But what about going the other way? If we have a time in seconds, we can get the clock time by 
 
-#. Floor divide by 60 to get the total minutes, and then set the remainder as "seconds".
-#. Floor divide again by 60 to get the total hours.
-#. Set the remainder of the second division as minutes.
+#. Floor divide by 3600 to get the total hours.
+#. Floor divide again the remainder by 60 to get the total minutes.
+#. Take the remainder of the second division as seconds.
 
 .. todo:: Talk about how this can give you ``<<25, 0, 0>>`` as a value
 
-This *constructs* a clock value from the total seconds. This is how we'd do it in a programming language, where we are implementing algorithms to do things. But here's another thing we could do:
+This *constructs* a clock value from the total seconds. This is how we'd do it in a programming language, where we are implementing algorithms to do things. But it's also error-prone. What happens if I pass in 90,000? Then this would give me ``<<25, 0, 0>>``— a value outside of our ``ClockType``.
+
+Here's another thing we could do:
 
 #. Take the set of all possible clock values.
 #. Pick the element in the set that, when converted to seconds, gives us the value.
 
-We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion. Since we're not running a large app for everybody, definition > performance here. In TLA+ we can write the selection like this: 
+We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion. That makes it more useful for *specification*. In TLA+ we can write the selection like this: 
 
 ::
 
@@ -364,7 +364,6 @@ We don't do it this way because "the set of all possible clock values" is over 8
 CHOOSE is useful whenever we need to pull a value from a set.
 
 Now what happens if we write ``ToClock(86401)``? There are no clock times that have 86,401 seconds. If you try this, TLC will raise an error. This is in contrast to the implementation solution, which will instead give us a nonsense value. 99% of the time if it can't find a corresponding element of the set, that's a bug in the specification, an edge case you didn't consider. Better to harden up the operator:
-{{Notice this is more stricter than the constructive solution, which would instead give you junk values}}
 
 ::
 
@@ -427,6 +426,20 @@ And you can define multiple operators in the same LET:
         Max(maxab, c)
 
 Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
+
+.. todo:: Let's calculate ``ToClock`` the "programming way":
+
+  ::
+
+    ToClock2(seconds) ==
+      LET
+        h == seconds \div 3600
+        h_left == seconds % 3600
+        m == h_left \div 60
+        m_left == h_left % 60
+        s == m_left \div 60
+      IN
+        <<h, m, s>>
 
 If you have to write a complex operator, breaking it into steps with LET is a great way to make it more understandable.
 

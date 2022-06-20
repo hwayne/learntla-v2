@@ -22,16 +22,14 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
     Refinement
     Partial ADTs
     Adversaries
-    Standard Library
     Strong Fairness
 
   WRITE:
-    General tips <tips>
-      Illegal States are representable
+    Standard Library
+        TLC
+    Illegal States are representable
     Optimization
     Modelling legacy systems
-    
-
-  Invariants vs Liveness vs Action properties
+    Invariants vs Liveness vs Action properties
 
 

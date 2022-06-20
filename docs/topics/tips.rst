@@ -80,6 +80,22 @@ Separate Safety and Liveness Models
 
 Since liveness properties take a lot longer to check (and can't use `symmetry sets <symmetry_set>`), I use a separate model for just checking liveness properties, which uses smaller constants.
 
+Using the free space in a module
+--------------------------------
+
+All modules have to take the form
+
+::
+  \* top area
+  ---- MODULE name ----
+  \* actual module
+  ====
+  \* bottom area
+
+Everything in the top space and the bottom space is ignored. I like to use the bottom area as a "scratch space" and put various TLA+ code there. I use the top area to write more about the problem domain and requirements we're trying to model, as well as information about the spec itself.
+
+More recently I've been experimenting with putting configuration data in the top area, which I then target with scripts. I used that to generate a lot of the `spec diffs <https://github.com/hwayne/learntla-v2/tree/master/raw-specs>`__ for this guide.
+
 THEOREM
 -------
 
@@ -177,7 +193,7 @@ It's okay to split the next-state relations across multiple actions. One thing I
     /\ pc[agent] = a
     /\ pc' = [pc EXCEPT ![agent] = b]
 
-Then I can write ``Trans(agent, "state1", "state2")`` inside another action. This cleans things up considerably.
+Then I can write ``Trans(agent, "state1", "state2")`` inside another action.
 
 
 @
@@ -253,3 +269,5 @@ We can check that by adding an `action property` that checks the two are equival
     \A u \in User:
       OldAction(user) <=> NewAction(user)
   ]_vars
+
+If we're trying to *expand* an action, then we only care that ``NewAction`` does a superset of the things ``OldAction`` does. In that case, we can loosen our requirements by using ``=>`` instead of ``<=>``.

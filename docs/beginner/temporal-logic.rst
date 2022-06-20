@@ -45,7 +45,7 @@ Temporal Operators
 
 ``[]P`` means that ``P`` is true in every state. When on the outside of a predicate, this is equivalent to an invariant, and in fact is how TLC supports them: writing ``INVARIANT P`` is the same as writing ``PROPERTY []P``. 
 
-Things get more interesting when ``[]`` is part of a larger expresion. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q: We can also put it inside quantifiers. To properly model (2), we could write::
+Things get more interesting when ``[]`` is part of a larger expresion. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q. We can also put a ``[]`` inside a quantifier. To properly model (2), we could write::
 
   Safety == \E s \in Servers: [](s \in online)
 
@@ -53,7 +53,7 @@ At the beginning of the behavior, we pick one online server. That server is then
 
 .. todo:: {SCREENSHOT} image of the change
 
-.. note:: this is evlaauted at hte beginnieng of hte temporal poperties, which is why it's ewird if you leave the square out.
+.. todo:: this is evlaauted at hte beginnieng of hte temporal poperties, which is why it's ewird if you leave the square out.
 
 ::
 
@@ -255,7 +255,7 @@ When to use Liveness
 
 You probably won't need to ever write a property of form ``\E x: [](P(x))``. 
 
-Liveness properties are less common than invariants. Invariants check faster and give you finer-grained information, and they're a lot easier to write! Most systems will have lots of invariants but only a couple of liveness properties. However, the liveness properties are still critical to the spec, as they define what it is we actually want to *do*. 
+Liveness properties are less common than invariants. Invariants check faster and give you finer-grained information, and they're a lot easier to write! Most systems will have lots of invariants but only a couple of liveness properties. However, the liveness properties are still critical to the spec, as they define what it is we actually want to *do*.
 
 
 .. todo:: 
@@ -269,14 +269,10 @@ Liveness properties are less common than invariants. Invariants check faster and
 
 .. rubric:: Considerations
 
-Temporal properties are incredibly powerful. There's some things you need to keep in mind, though:
-
-* Don't try to be too clever.
-
-It takes TLC significantly longer to test liveness properties than safety ones.
-
-You cannot use `symmetry sets <model_set>` with liveness properties.
-
+* It takes TLC significantly longer to test liveness properties than safety ones. Usually you'll have one model that with large constants for testing safety properties, and a model with smaller constants for testing liveness properties.
+* You cannot use `symmetry sets <model_set>` with liveness properties.
+* For implementation reasons, TLC can't currently tell you *which* property is broken. It can only tell you "Temporal Properties are Violated".
+* Again, due to implementation details, error violations for liveness properties won't be as-short-as-possible. You might get a shorter (and more understandable) error trace if you rerun the model with smaller constants.
 
 Summary
 =========

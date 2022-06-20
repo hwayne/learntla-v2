@@ -81,10 +81,12 @@ A basic config file might look like this:
 
 Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, which work equivalently to their `Toolbox options <topic_toolbox>`. 
 
-.. todo:: Finally, we have ``ALIAS``. 
+.. todo:: Finally, we have ``ALIAS``.
 
 .. todo:: Symmetry sets
 
+
+.. _tlc_options:
 
 TLC Options
 -----------

@@ -4,6 +4,9 @@
 TLA+
 ########
 
+.. todo:: Fix the Pygments TLA+ parser
+.. highlight:: none
+
 PlusCal is a formalism designed to make using formal methods easier. By learning pluscal first, we can focus on teaching first logic and model checking, leaving temporal logic for later. Another advantage is that can bootstrap TLA+ from it by looking at what the pluscal generates, and infer the tla+. We know that the pluscal generated is valid TLA+, so we can use it to understand the TLA+.
 
 .. index:: action
@@ -62,6 +65,10 @@ And for these choices of ``<<hr, hr'>>``, ``Next`` is *false*:
   <<12, 13>>
   <<4, 6>>
   <<9, "corn">>
+
+.. note::
+
+  And this gets to why = vs ``:=`` distinction in PlusCal is so weird, why we use ``=`` for initial variable assignment and equivalence checking and ``:=`` for updating. In TLA+, *it's all comparison*. ``x = 5`` is true if x is 5 in *this* state. ``x' = 5`` is true if x is five in *the next* state.
 
 .. index:: action
 
@@ -207,7 +214,7 @@ What we actually wanted to write is that ``s'`` is the same as ``s`` *except* th
 
   Next == s' = [s EXCEPT ![1] = FALSE]
 
-Yes, I know it's really awkward. No, I don't know of anything better. 
+Yes, I know it's really awkward. No, I can't think of anything better. 
 
 .. tip:: ``EXCEPT`` has some syntactic sugar to make using it more pleasant. First of all, we can assign multiple keys in the same statement:
 
@@ -273,9 +280,51 @@ This is doing basically nothing novel, except that we have two separate processe
 
   Spec == Init /\ [][Next]_vars
 
-`await lock <threads_3>`:
+Looking it at piece-by-piece:
 
-.. code:: none
+::
+
+  Init == (* Global variables *)
+          /\ counter = 0
+          /\ pc = [self \in ProcSet |-> "IncCounter"]
+
+``pc`` is defined as a function from process values to labels. Each thread starts at the "IncCounter" label. Then the ``IncCounter`` label is mapped to this:
+
+::
+
+  IncCounter(self) == /\ pc[self] = "IncCounter"
+                      /\ counter' = counter + 1
+                      /\ pc' = [pc EXCEPT ![self] = "Done"]
+
+
+The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of it, it sets ``pc[self]`` to "Done". That's how we emulate sequentiality in TLA+ algorith— it's like going from the "IncCounter" label to the "Done" label.
+
+.. tip::
+
+  The PlusCal to TLA+ translator is very simple. If we were writing the TLA+ from scatch, we could use a helper action to these transitions look cleaner:
+
+  ::
+
+    Trans(state, from, to) ==
+      /\ pc[state] = from
+      /\ pc' = [pc EXCEPT ![state] = 2]
+
+    IncCounter(self) ==
+      /\ Trans(self, "IncCounter", "Done")
+      /\ counter' = counter + 1
+
+::
+
+    Next == (\E self \in Threads: thread(self))
+             \/ Terminating
+
+Concurrency is "just" saying there exists an element of the Thread set where ``thread`` is true. And that's it! That's how you get concurrency!
+
+.. We can of course do more "interesting" kinds of concurrency with slightly different setups. 
+
+To see how ``await`` statements are modeled, let's look at how TLA+ translates `await lock <threads_3>`:
+
+::
 
   GetLock(self) == /\ pc[self] = "GetLock"
                    /\ lock = NULL
@@ -283,9 +332,20 @@ This is doing basically nothing novel, except that we have two separate processe
                    /\ pc' = [pc EXCEPT ![self] = "GetCounter"]
                    /\ UNCHANGED << counter, tmp >>
 
+So ``await lock`` just becomes ``/\ lock = NULL``.
 
-Fairness
-=========
+.. index:: fairness_TODO_sync
+
+Fairness in TLA+
+=================
+
+That leaves just one topic left to discuss: how we model `fairness` in pure TLA+. First, one last last operator to introduce: ``ENABLED A`` is true if ``A`` *can* be true this step, ie it can describe the next step.
+
+
+How fairness can go wrong
+-------------------------
+
+.. I'm just gonna put this whole thing in a warning block.
 
 A TLA+ Spec From Scratch
 =========================
@@ -345,7 +405,10 @@ Since ``Succeed`` keeps flipping between enabled and disabled, weak fairness can
 
 This satisfies ``Liveness``.
 
+Why use TLA+?
+=============
 
+SO now that we have a brief overview of TLA+, let's double around to a basic question: *why bother*?
 What you can do with TLA+:
 
   * Multiple actions simutaneously

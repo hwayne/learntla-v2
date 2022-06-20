@@ -29,7 +29,9 @@ Notes on the Material
 Examples
 --------
 
+Right now the guide is pretty light on examples. More interesting examples are in the :doc:`examples </examples/index>` section.
 
+.. note:: I haven't put in many examples yet, though I have links to ones I've found around the web!
 
 .. index:: ! pluscal
 

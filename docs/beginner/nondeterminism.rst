@@ -10,13 +10,11 @@ Nondeterminism
 So far all of our specs have been **deterministic**. While there are multiple possible starting states, the behavior from each starting state is fixed. Most systems aren't deterministic. Some examples:
 
 - Randomness creates a new possible behavior for each possible random value.
-- Interactive systems aren't deterministic, since we don't know what the user is going to do, and in what order they do it.
+- Interactive systems aren't deterministic, since we don't know what the user is going to do and in what order they do it.
 - We might know the range of readings a sensor could get, but not what specific reading it *will* get.
 - If the system has many moving independent parts, we don't know in which order they'll run.
 
-The last case, concurrency, we'll cover in the :doc:`next chapter <concurrency>`. To handle the rest, PlusCal has a couple of new constructs:
-
-.. constructs
+The last case, concurrency, we'll cover in the :doc:`next chapter <concurrency>`. To handle the rest, PlusCal has a couple of new constructs.
 
 .. index:: with; nondeterministic
 
@@ -221,7 +219,7 @@ Now running the checker with ``INVARIANT Invariant`` and ``NumInputs <- 5, Targe
   /\ sum = 417
   /\ i = 5
 
-So 417 is (0+1)+9)*6)*7)-3.
+So 417 is ((((0+1)+9)*6)*7)-3.
 
 (This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker `from the command line <topic_cli>` with every value of ``Target`` from 0 to 1000. The first number that doesn't produce an error trace is 851.)
 

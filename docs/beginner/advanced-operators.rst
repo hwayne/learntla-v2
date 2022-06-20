@@ -83,8 +83,9 @@ Not too bad. You can define anonymous operators with ``LAMBDA``:
   SeqMap(LAMBDA x: x + 1, <<1, 2, 3>>)
   \* <<2, 3, 4>>
   
-.. warning:: You can't combine recursive and higher-order operators. {{Can you use a helper op?}}
+.. warning:: You can't combine recursive and higher-order operators.
 
+.. todo:: If you look at the definition of ``Sequences``, you'll see that there's also a sequence filtering op called ``SelectSeq``.
 
 .. index::
   single: Operators; Binary Operators
@@ -92,7 +93,7 @@ Not too bad. You can define anonymous operators with ``LAMBDA``:
 Binary operators
 ================
 
-If you peak at the definition of the `Sequences` module, you'll see how it defines ``\o``:
+If you `peek <toolbox_misc>` at the definition of the `Sequences` module, you'll see how it defines ``\o``:
 
 ::
 
@@ -106,7 +107,8 @@ If you peak at the definition of the `Sequences` module, you'll see how it defin
   set ++ x == set \union {x}
   set -- x == set \ {x}
 
-
+.. todo:: Function operators
+  
 .. index:: CASE
 .. _CASE:
 

@@ -177,4 +177,3 @@ Summary
 - Action properties are properties on *transitions* of a system, and are checked as temporal properties.
 - ``x'`` is the value of ``x`` in the *next* state. Operators with primes in them are called **Actions**.
 - ``[P]_x`` means  ``P \/ UNCHANGED x``.
-- ``<<P>>_x`` means ``P /\ x' # x``.

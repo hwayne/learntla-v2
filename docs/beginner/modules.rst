@@ -56,7 +56,7 @@ Then ``Sequences`` is dumped into the file namespace, just like before. So why w
 
   (You can see this used in ``Sequences.tla``, which locally imports Naturals.)
 
-Oh yeah, there's also a couple of major differences.
+And there's also a couple of major differences.
 
 Namespacing
 ------------

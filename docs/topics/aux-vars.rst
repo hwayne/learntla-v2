@@ -4,7 +4,7 @@
 Auxiliary Variables
 #####################
 
-History, helper, prophecy, error trace varialbes
+History, helper, prophecy, error trace variables
 
 While TLA+ properties have al oto f flexibility, they also have limits. You can't "forget" a property, like say "P is true until Q is true, after while P can be false." Say you write it as "~P => Q". Then if we set ~P and *then* set ~Q, the invariant fails, even though we should have "forgotten" it. 
 
