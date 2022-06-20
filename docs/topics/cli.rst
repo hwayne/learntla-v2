@@ -9,9 +9,9 @@ Most people use the Toolbox for TLA+. But what if you want to run it from the co
 The Command Line
 =================
 
-The main CLI file is ``tla2tools.jar``. You can download it directly from `this link <www.example.org>`_. You can also find it in the Toolbox installation, under ``TODO PATH``.
+The main CLI file is ``tla2tools.jar``. You can download it directly from `this link <https://github.com/tlaplus/tlaplus/releases>`_. You can also find it in the Toolbox installation, in the base directory.
 
-Tlatools has four subtools: TLC, the pluscal translator, a latex pdf generator (Tla2Tex), and a parser (SANY). I'll leave documenting the latter two tools to Lamport TODO and focus on the translator and model checker.
+Tlatools has four subtools: TLC, the pluscal translator, a latex pdf generator (Tla2Tex), and a parser (SANY). I'll leave documenting the latter two tools to `Lamport <https://lamport.azurewebsites.net/tla/current-tools.pdf>`_ and focus on the translator and model checker.
 
 The Pluscal Translator
 ------------------------
@@ -30,7 +30,7 @@ This will:
 
 To prevent (3), add ``-nocfg`` as a flag before ``file.tla``. There is no way to prevent the translator from writing ``file.old``. I have a shell watcher that finds and deletes them.
 
-You can read about all of the other translator options `here <pcal_manual>`_, page TODO, or by running ``java -cp tla2tools.jar pcal.trans -h``.
+You can read about all of the other translator options `here <https://lamport.azurewebsites.net/tla/p-manual.pdf>`_, page 67-69, or by running ``java -cp tla2tools.jar pcal.trans -h``.
 
 TLC
 -------
@@ -53,8 +53,6 @@ Config Format
 The model checkeing config language ia special DSL for using TLC from the command line. It's what the toolbox abstracts away on the backend.
 
 All config files need a ``SPECIFICATION {spec}`` line, where ``Spec`` is whatever action encompasses your initial and next states. By convention, this should be called ``Spec``, but this isn't required— useful if you want different configs to test different variations of your system.
-
-.. todo:: Make that a tip
 
 Invariants you want to check must be prefixed with ``INVARIANT``, temporal properties with ``PROPERTY``. Both can have commas, eg ``INVARIANT TypeInvariant, IsSafe`` is a valid line. Unlike in the toolbox, you **cannot** make expressions invariants— they must be named operators.
 
@@ -81,7 +79,9 @@ A basic config file might look like this:
 
 Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, which work equivalently to their `Toolbox options <topic_toolbox>`. 
 
-.. todo:: Finally, we have ``ALIAS``.
+.. index: ALIAS
+
+.. todo:: Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer` on the command line.
 
 .. todo:: Symmetry sets
 
@@ -91,17 +91,18 @@ Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, whic
 TLC Options
 -----------
 
-Now that we know how to run a config file, let's get back to the TLC options. You can read all of them with ``java -jar tla2tools.jar -help`` (*not* ``-h``), or by reading them `here <tlc_page>`. Most of them are self-explanatory or equivalent to toolbox options. See the `Toolbox topic <topic_toolbox>` for more information on how to use them. The main things of note are:
+Now that we know how to run a config file, let's get back to the TLC options. You can read all of them with ``java -jar tla2tools.jar -help`` (*not* ``-h``), or by reading them `here <https://lamport.azurewebsites.net/tla/current-tools.pdf>`_ (pages 9-11). Most of them are self-explanatory or equivalent to toolbox options. See the `Toolbox topic <topic_toolbox>` for more information on how to use them. The main things of note are:
 
 .. dump:
+``-dump file``
+  Writes all of the states that TLC reached to ``file`` *in no particular order*. If you want to know how the states *connect* to each other, instead write
 
-- ``dump``: TODO
-- ``metadir``:
+``-dump dot file``
+  This outputs a `graphviz <https://graphviz.org/>`_ graph file instead. Nodes are states, edges are {{ TODO actions}}. TLC will *not* append the file extension to the filename; you'll have to add that yourself.
 
+  .. note:: If your spec includes a liveness property, TLC will also write ``file_liveness``. This is an internal representation and `can be ignored <https://groups.google.com/g/tlaplus/c/olBAjD-9btA>`_.
 
+  You can also write ``-dump dot,colorize file`` to color the edges based on the actions they involve and ``-dump dot,actionlabels`` to label the edges with the corresponding action.
 
-
-
-
-.. _pcal_manual: TODO
-.. _tlc_page: TODO
+``metadir dir``
+  Instead of storing the seen statespace in the same directory as the spec, TLC will instead store it in ``dir``. I find this useful when scripting against the CLI, as I can store the state space in a temporary directory for easier cleanup.
