@@ -129,7 +129,9 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
   When in ``AwaitLock``, each thread can only get the lock if ``lock := Null``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
 
-  .. todo:: {DIAGRAM} lock error
+  .. figure:: graphs/strong_fairness.gv.png
+
+    If thread 1 keeps stealing the lock, then thread 2 never has a chance to get it, even if it's weakly fair.
 
   We can make the processes strongly fair by writing ``fair+``. Then every thread will eventually get the lock. We can also make individual actions strongly fair by writing ``AwaitLock:+``.
 
@@ -207,7 +209,7 @@ This now fails, as ``counter`` doesn't stay as 2.
   You can also write ``[]<>P``: "P is always eventually true". In the threads spec, this has the same outcome, but there are cases where it's broader than ``<>[]P``. For example, in an hour clock, ``[]<>(time = midnight)`` is true, but ``<>[](time = midnight)`` is false.
 
 
-.. todo:: inkscape of the three different uses of ``<>``
+.. todo:: {{inkscape}} of the three different uses of ``<>``
 
 
 
@@ -235,8 +237,6 @@ The last operator is ``~>``. Recall that ``P => Q`` preconditions Q on P: if P i
 
 Say we have a set of tasks described by ``TaskType``, an ``inbound`` pool of type ``SUBSET TaskType``, and a set of workers with their own task sets. A property of this system might be that every inbound task is eventually processed by a worker. You can represent this with ``~>``:
 
-
-
   ::
 
 
@@ -257,15 +257,6 @@ You probably won't need to ever write a property of form ``\E x: [](P(x))``.
 
 Liveness properties are less common than invariants. Invariants check faster and give you finer-grained information, and they're a lot easier to write! Most systems will have lots of invariants but only a couple of liveness properties. However, the liveness properties are still critical to the spec, as they define what it is we actually want to *do*.
 
-
-.. todo:: 
-
-  I hate this
-  Think of it as:
-
-  The temporal properties force you to build stuff, and
-
-  The invariants force you to build it *right*.
 
 .. rubric:: Considerations
 

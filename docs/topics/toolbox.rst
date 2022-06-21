@@ -45,7 +45,7 @@ State Constraint
     Inv == x < 10
     Spec == Init /\ [][Next]_x
 
-  Normally, running this with ``INVARIANT Inv`` will make this fail. But if you add the state constraint ``x < 5``, then it won't. And instead of finding N states, it will find N'. States where ``x >= 5`` will be discarded and no new states will be found from them.
+  Normally, running this with ``INVARIANT Inv`` will make this fail. But if you add the state constraint ``x < 5``, then it passes with six states found. States where ``x >= 5`` will be discarded and no new states will be found from them.
 
   Invariants **will** be checked first, though, before the state is discarded. This means that if we change the state constraint to ``x < 10``, it will fail. The state constraint only prevents TLC from searching from new states *from* the discarded state.
 
@@ -57,21 +57,22 @@ Action Constraint
 
   Similar to a state constraint, except it's an action. In the above spec, you can write ``x' > x`` to only explore states where x increases.
 
-  .. todo:: Check whether it needs to be a box action formula. The input must be a `box action formula`.
-
 
 
 Additional TLC Options
 -----------------------
 
+.. todo:: {CONTENT} remote checking
+
 Worker threads
 
   How many workers to distribute TLC checking across. By default, this is the number of cores. Using fewer threads will (generally) make TLC take longer and use fewer CPU resources. Using one thread will guarantee a deterministic model checking across runs, which may be useful if you're using print statements.
 
-.. todo:: remote checking
 
-Fraction of memory:
-  For small specs, takes time to allocate memory
+Fraction of memory
+  How much memory TLC can use for checking. If the model exceeds this limit then TLC will start writing found states to disk, significantly increasing model-checking time.
+
+  Note that TLC needs to preallocate all of the memory before it starts model checking, and then free it afterwards. For small enough models and large enough computers, allocation time can exceed the model runtime! 
 
 View
 

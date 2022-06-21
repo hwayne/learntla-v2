@@ -5,7 +5,6 @@ General Tips
 ############
 
 
-.. todo:: https://github.com/tlaplus/tlaplus/issues/485
 
 General small things for writing better specs.
 

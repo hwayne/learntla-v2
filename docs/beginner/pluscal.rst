@@ -30,9 +30,9 @@ Inside the comment block (``(* *)``) is our PlusCal algorithm. We need to do thi
 
 Next, we have a variables block. Any TLA+ value can be a variable. We open the body of the algorithm with ``begin`` and close it with ``end algorithm``. Inside that we have two :dfn:`labels`, ``A`` and ``B``, which we will discuss more in the next section. Inside the labels we have update statements, which use ``:=``. ``:=`` is **only** used when we have an existing variable and want to update its value. Otherwise, we use ``=``.
 
-Once we have the algorithm, we need to translate it to TLA+. We can do this in the menu bar:
+We discussed how to translate the pluscal in :doc:`setup`, but as a refresher, we can do this in the menu bar:
 
-.. todo:: IMG
+.. figure:: img/setup/translate_pluscal.png
 
 
 Alternatively, we can use :kbd:`cmd-T` on Mac or :kbd:`ctrl-T` on Windows and Linux. This puts a translation below the comment block:
@@ -46,13 +46,7 @@ Alternatively, we can use :kbd:`cmd-T` on Mac or :kbd:`ctrl-T` on Windows and Li
 
 That's what's actually run when we model check this spec.
 
-.. troubleshooting:: No translation
 
-  Put the translation below the ``====``
-
-.. troubleshooting:: No spec
-
-  If the blah blah blah
 
 .. index:: Labels
   :name: label
@@ -105,30 +99,25 @@ If I wanted to, I could *choose* to make the summation nonatomic. Here's how I'd
 
 We'll talk about the nuances of `while` later, but the basic idea is that now *each iteration* of the summation is nonatomic. We could add two numbers, start an http request, add two more, receive the response, and add the rest. Or we could add them all before both steps of the http, or all after. Concurrency is weird.
 
-The point is this: the labels let us specify just how concurrent our system is. If we want to express that something is atomic, we can do that. If we want it to be interruptable, we can do that too.
-
-.. todo:: {conclusion}
+The point is this: the labels let us specify just how concurrent our system is. If we want to express that something is atomic, we can do that. If we want it to be interruptable, we can do that too. This is what gives us the flexibility to model systems in a way that actually finds relevant issues.
 
 Label Rules
 --------------
 
-.. todo:: Rewrite in paragraph form
-
 We're modeling time here, so there are restrictions on where we can place the labels.
 
-1. All statements must belong to a label. 
+First, **all statements must belong to a label.** This means, among other things, that you miust always start the algorithm with a label.
 
-This means, among other things, that you miust always start the algorithm with a label.
-
-2. Any variable can only be updated once per label.
-
-Remember, each label only represents one single instant of time. If the variable is updated twice, that means it's gone through two separate values in a single instant of time, meaning... it's not an instant of time anymore.
+Second, **Any variable can only be updated once per label.** Remember, each label only represents one single instant of time. If the variable is updated twice, that means it's gone through two separate values in a single instant of time, meaning... it's not an instant of time anymore.
 
 This poses a problem when updating sequences. This is invalid::
 
   Label:
     seq[1] := seq[1] + 1;
     seq[2] := seq[2] - 1;
+
+.. index:: ||
+.. _||:
 
 Because we're updating the ``seq`` variable twice in one label. To get around this, PlusCal has the "simultaneous assignment" operator ``||``::
 
@@ -149,7 +138,7 @@ In addition to updates, there are three other statement-level constructs:
 
 * ``skip``: a noop.
 * ``assert expr``: automatically fails the model check if ``expr`` is false.
-* ``goto L``: jumps to label ``L``.
+* ``goto L``: jumps to label ``L``. **A label must immediately follow any goto statement**.
 
 .. todo:: {CONTENT} Also mention print
 
@@ -162,8 +151,6 @@ Everything else in PlusCal is a block-level construct.
 if
 ....................
 
-You know what this is.
-
 ::
 
   if Expr then
@@ -175,7 +162,7 @@ You know what this is.
   end if;
 
 
-if statements are used for control flow. You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block— some conditionals can have labels and others do not. However, if *any* branches have labels, you must follow the entire block with a label. To see why, consider the following:
+You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block— some conditionals can have labels and others do not. **However, if any branch has a label, you must follow the entire block with a label**. To see why, consider the following:
 
 ::
 
@@ -190,9 +177,7 @@ if statements are used for control flow. You *can* put labels inside an if block
 
 If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``bool`` is false, then it would happen as part of label A. Since statements must *unambiguously* belong to a single label, this is invalid PlusCal, and we need to add an extra label ``C``.
 
-3. All statements must *unambiguously* belong to a label. If any part of an ``if`` block contains a label, then you *must* have a label after the end of the whole ``if`` block.
-
-  Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of 
+Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of 
 
 .. index:: macro
 .. _macro:
@@ -200,7 +185,7 @@ If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``
 macro
 ......
 
-Macros are simple rewrite rules, designed to help clean up repetitive bits of logic. They must be placed above the ``begin`` and may not contain labels.
+Macros are simple rewrite rules, designed to help clean up repetitive bits of logic. They must be placed above the ``begin`` block of the algorithm. **Macros may not contain labels.**
 
 ::
 
@@ -229,7 +214,7 @@ with
 
 Inside the ``with`` definition, we do the temporary assignments with ``=``, not ``:=``. Remember the rule: ``:=`` is only used for updating an existing variable.
 
-Macros and ``with`` statements cannot have labels.
+As with macros, ``with`` **statements cannot have labels.**
 
 .. index:: while
 
@@ -238,7 +223,7 @@ Macros and ``with`` statements cannot have labels.
 while
 ......
 
-``while`` is the only form of loop we have. A while loop must always be preceded with a label.
+``while`` is the only form of loop we have. **A while loop must always be preceded with a label.**
 
 ::
 
@@ -294,7 +279,7 @@ To make sure that you're following properly, you can check that that you got the
 
   The first column, ``diameter``, is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
 
-.. index:: \in; variable definition
+.. index:: \in, variable definition
 
 Testing More Inputs
 -------------------------
@@ -333,7 +318,7 @@ We can use the number of states and distinct states as a partial "fingerprint" o
 10,000 starting states
 ----------------------
 
-So now we're testing two inputs. That's twice as good as one input. Even better than that would be testing 10,000 inputs. Remember how in the last chapter we talked about generating `sets_of_values`? This is just one of the many places it's really useful. 
+So now we're testing two inputs. That's twice as good as one input. Even better than that would be testing 10,000 inputs. Remember how in the last chapter we talked about generating `sets of values <sets_of_values>`? This is just one of the many places it's really useful. 
 
 
 .. spec:: duplicates/3/duplicates.tla

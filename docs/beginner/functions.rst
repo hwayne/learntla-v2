@@ -127,6 +127,8 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
 
 .. code-block:: text
 
+  >>> TruthTable
+
   ( <<FALSE, FALSE>> :> TRUE @@
   <<FALSE, TRUE>> :> TRUE @@
   <<TRUE, FALSE>> :> FALSE @@
@@ -136,9 +138,17 @@ If you run this in `scratch <scratch>`, you'll get the results, though they'll b
 
 This is in "expanded form": ``x :> y`` is the single-valued function mapping x to y (so ``[s \in {x} |-> y]``), and ``@@`` merges two functions. If the two functions share a key, then ``@@`` **keeps the value on the left**.
 
-.. todo:: {CONTENT} show how this gives us ssequences and structs
+.. note:: ``@@`` and ``:>`` are only available in your spec if you extend ``TLC``.
 
+With this, `we can see <scratch>` how sequences and structures are just functions:
 
+.. code:: none
+
+  >>> 1 :> "a" @@ 2 :> "b" 
+  <<"a", "b">>
+
+  >>> "a" :> 1 @@ "b" :> 2
+  [a |-> 1, b |-> 2]
 
 .. rubric:: Example: Zip
 
@@ -219,7 +229,7 @@ We could also write this invariant by noticing that "tasks don't share cpus" is 
 Function sets
 ----------------
 
-You know the drill by now: new class of value, new need for a way to generate sets of that value. We need to add function values to our type invariants, too!
+You know the drill: new class of value, new need for a way to generate sets of that value. We need to add function values to our type invariants, too!
 
 The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``. I could also have represented the state with functons of form ``[CPUs -> Tasks \union {NoAssignment}]``.
 
@@ -332,7 +342,7 @@ Currently we can control the value of ``S`` per model, it would be good if we co
 
 We can simplify this with function sets. ``S \X S \X S`` is going to be a set of 3-tuples. We now know that a 3-tuple is a function with domain ``1..3``. Then ``[1..3 -> S] = S \X S \X S``: the set of all 3-tuples where each element of each tuple is a value in ``S``.
 
-From this, extending this to five-element sequences is trivial :ss:`duplicates_len_5_seqs`:
+From this, extending this to five-element sequences is trivial:
 
 .. spec:: duplicates/fs_1/duplicates.tla
   :diff: duplicates/constant_2/duplicates.tla

@@ -218,11 +218,9 @@ Some programming languages have sets, but they're often less important than arra
 Set Operators
 --------------
 
-The main thing we do with sets is check if some values belong to it. We do this with ``\in``: ``x \in set`` is true iff ``x`` is an element of ``set``. ``\in`` is also used in a few other places as syntax, not just as an operator. There's also the inverse, ``\notin``.
+The main thing we do with sets is check if some values belong to it. We do this with ``\in``: ``x \in set`` is true iff ``x`` is an element of ``set``. ``\in`` is also used in a few other places as syntax, not just as an operator. There's also the inverse, ``\notin``. ``set1 \subseteq set2`` tests if every element of ``set1`` is also an element of ``set2``.
 
-* ``set1 \subseteq set2`` tests if every element of ``set1`` is also an element of ``set2``.
-
-    .. note:: That's "subset or equals". It's a way to sidestep the question "Is a set a subset of itself?"
+.. note:: That's "subset or equals". It's a way to sidestep the question "Is a set a subset of itself?"
 
 .. index:: \ (set difference)
 
@@ -344,9 +342,7 @@ Getting the number of seconds past midnight from a clock value is straightforwar
 #. Floor divide again the remainder by 60 to get the total minutes.
 #. Take the remainder of the second division as seconds.
 
-.. todo:: Talk about how this can give you ``<<25, 0, 0>>`` as a value
-
-This *constructs* a clock value from the total seconds. This is how we'd do it in a programming language, where we are implementing algorithms to do things. But it's also error-prone. What happens if I pass in 90,000? Then this would give me ``<<25, 0, 0>>``— a value outside of our ``ClockType``.
+This *constructs* a clock value from the total seconds. This is how we'd do it in a programming language, where we are implementing algorithms to do things. But it's also error-prone. What happens if I pass in 90,000? Then this would give me ``<<25, 0, 0>>`` — a value outside of our ``ClockType``.
 
 Here's another thing we could do:
 
@@ -427,7 +423,7 @@ And you can define multiple operators in the same LET:
 
 Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
 
-.. todo:: Let's calculate ``ToClock`` the "programming way":
+Let's calculate ``ToClock`` the "programming way":
 
   ::
 
@@ -440,6 +436,12 @@ Each operator in the LET can refer to previously defined operators in that scope
         s == m_left \div 60
       IN
         <<h, m, s>>
+
+.. code:: none
+
+  >>> ToClock2(90000)
+
+  <<25, 0, 0>>
 
 If you have to write a complex operator, breaking it into steps with LET is a great way to make it more understandable.
 

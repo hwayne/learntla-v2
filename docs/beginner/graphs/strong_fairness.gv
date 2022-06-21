@@ -1,0 +1,19 @@
+digraph strongfair {
+  rankdir=LR;
+  node[shape=rect, fontname="Fira Code"];
+  edge[arrowhead=vee];
+  label="val: lock"
+  labelloc="t"
+
+  ln[label="NULL"];
+  {rank=min;
+  l1[label="1"];
+  }
+  l2[label="2"];
+  ln:nw -> l1:ne[label="GetLock(1)", color=tomato];
+  l1:se -> ln:sw[label="RelLock(1)", color=tomato];
+  ln:ne -> l2:nw[label="GetLock(2)"];
+  l2:sw -> ln:se[label="RelLock(2)"];
+}
+
+

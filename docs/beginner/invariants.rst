@@ -25,7 +25,7 @@ In the last chapter, we wrote a simple specification for finding duplicates in a
 
 This just says that every single sequence has duplicates! So, like in programming, we want to write some kind of automated test to verify this is correct.
 
-In TLA+, the basic test we have is the :dfn:`invariant`. An invariant is something that must be true on every single step of the program, regardless of the initial values, regardless of where we are. 
+In TLA+, the basic test we have is the *invariant*. An invariant is something that must be true on every single step of the program, regardless of the initial values, regardless of where we are. 
 
 The most common invariant we use in programming: static types! When I have a variable of type ``boolean``, I'm saying that all points in the program, the value of that variable is always true or false, never a string or 17. We can write that as a TLA+ operator:
 
@@ -36,7 +36,7 @@ The most common invariant we use in programming: static types! When I have a var
 
 
 .. index:: define
-  :name: define
+.. _define:
 
 This operator needs to know about the ``all_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper. A define block contains pure TLA+ operators, and the operators may reference the values of PlusCal variables.
 
@@ -50,7 +50,7 @@ To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at ev
 
 .. todo:: {CONTENT} talk about the error trace
 
-  There's a little more we can do with the error trace, see here.
+  (There's a little more we can do with the error trace, see `here <topic_toolbox>`.)
 
 
 So back to the nature of the invariant. We say ``all_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
@@ -86,7 +86,7 @@ Now the next two steps:
 1. Actually implement ``IsUnique(s)``.
 2. Currently, ``is_unique`` starts out true and flips to false if we find a duplicate. If the sequence *isn't* unique, then the invariant would fail as soon as we start— ``is_unique`` is true but ``IsUnique(seq)`` will be false. So we only want to check the "invariant" after the algorithm finishes running.
 
-Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is pretty easy though, so let's stat with that, then cover (2), the double back to doing ``IsUnique`` properly.
+Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is possible though, so let's start with that, then cover (2), the double back to doing ``IsUnique`` properly.
 
 Here's the improper solution for ``IsUnique``:
 
@@ -117,9 +117,7 @@ On every label *except* "Done", this evaluates to TRUE and the invariant passes.
 
 .. index:: => (implies)
 
-``IF A THEN B ELSE TRUE`` conditionals come up a lot, cases where we only want to check B if A is true. Another way of saying this "either B is true or A is false".
-
-Another way of writing this: ``A => B``. Either B is true or A is false. Now we have
+``IF A THEN B ELSE TRUE`` conditionals come up a lot, cases where we only want to check B if A is true. We can write that as ``A => B``: "if A is true, then B is true, otherwise we don't care". Now we have
 
 ::
 
@@ -129,14 +127,21 @@ I said ``=>`` was really important earlier. This is one of those ways: it lets u
 
 We can now run this as our full invariant, and the spec works :ss:`duplicates_many_inputs`. 
 
+.. index::
+  single: quantifier
+  single: quantifier, \A
+  single: quantifier, \E
+  single: \A (forall)
+  single: \E (exists)
+
 .. _\A:
 .. _\E:
-.. _quantifiers:
+.. _quantifier:
 
 Quantifiers
 ===================
 
-.. note:: If you've been working in your own spec, I recommend switching to `scratch` for now, since we'll be testing a lot of simple operators. 
+.. note:: If you've been working in your own spec, I recommend switching to `scratch <scratch>` for now, since we'll be testing a lot of simple operators. 
 
 Here's our current version of ``IsUnique``.
 
@@ -211,7 +216,7 @@ Let's add this new version of ``IsUnique`` to our duplicates spec:
 
 If you run this, you will see it *fail*. And it fails in the oddest way, by saying a unique sequence has duplicates. In my case I got ``seq = <<1, 2, 3, 4>>``, but the exact one TLC finds may differ on your computer.
 
-Let's use `CHOOSE` to ask TLC *what* indices it picked. Back in `scratch`:
+Let's use `CHOOSE` to ask TLC *what* indices it picked. Back in `scratch <scratch>`:
 
 ::
 
@@ -226,16 +231,18 @@ Let's use `CHOOSE` to ask TLC *what* indices it picked. Back in `scratch`:
 
 **We never said the indices had to be different.** Obviously every index is going to be equal to itself!
 
-Here's one way to fix it:
+.. 
 
-::
+  Here's one way to fix it:
 
-  IsUnique(s) ==
-    \A i \in 1..Len(s):
-      \A j \in (1..Len(s)) \ {i}:
-        s[i] # s[j]
+  ::
 
-That… works, I guess. But there's a better way to do this, one that really showcases the power of ``=>``: **it lets us rule out unwanted combinations in quantifiers.** Let's say we write
+    IsUnique(s) ==
+      \A i \in 1..Len(s):
+        \A j \in (1..Len(s)) \ {i}:
+          s[i] # s[j]
+
+The best way to fix it, conveniently enough, really showcases the power of ``=>``: **it lets us rule out unwanted combinations in quantifiers.** Let's say we write
 
 ::
 
@@ -313,8 +320,9 @@ So we just make that change, and:
 
 .. spec:: duplicates/inv_4/duplicates.tla
   :diff: duplicates/inv_3/duplicates.tla
+  :ss: duplicates_many_inputs
 
-This should pass :ss:`duplicates_many_inputs`.
+This now passes.
 
 .. warning:: Do not use ``=>`` with ``\E``! Imagine I wanted to an operator that checks if a sequence has duplicates, and wrote
 
@@ -335,6 +343,14 @@ This should pass :ss:`duplicates_many_inputs`.
 .. todo::
 
   .. rubric:: More invariant practice
+
+    _issorted:
+
+    ::
+
+      IsSorted(seq) ==
+        \A i, j \in 1..Len(seq):
+          i < j => seq[i] <= seq[j]
 
   .. todo:: Find actual names for everything
 

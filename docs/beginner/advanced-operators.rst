@@ -4,15 +4,13 @@
 More Operators
 ++++++++++++++++
 
-This isn't much more complicatedd than the last sections, but this is the best place to put it.
+This isn't much more complicated than the last sections, but this is the best place to put it. So we can now model concurrent algorithms and write complex liveness properties. You know what we can't do?
 
-So we can now model concurrent algorithms and write complex liveness properties. You know what we can't do?
+Sum up sequence.
 
-Add a sequence.
+I mean sure, we can write a Pluscal algoirhtm to do that:
 
-I mean sure, we can write a pluscal algoirhtm to do that
-
-<alg>
+.. todo:: <alg>
 
 But how the heck do you write ``SumSeq``?!
 
@@ -84,8 +82,6 @@ Not too bad. You can define anonymous operators with ``LAMBDA``:
   \* <<2, 3, 4>>
   
 .. warning:: You can't combine recursive and higher-order operators.
-
-.. todo:: If you look at the definition of ``Sequences``, you'll see that there's also a sequence filtering op called ``SelectSeq``.
 
 .. index::
   single: Operators; Binary Operators

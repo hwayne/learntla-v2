@@ -26,6 +26,23 @@ div.document div.admonition.warning p.admonition-title {
   color: crimson;
 }
 
+/* These are inconsistent due to how I currently define the admonition */
+div.document div.admonition-troubleshooting {
+  border-left: 5px solid brown;
+}
+
+div.document div.admonition-troubleshooting p.admonition-title {
+  color: brown;
+}
+
+div.document div.admonition-todo {
+  border-left: 5px solid orange;
+}
+
+div.document div.admonition-todo p.admonition-title {
+  color: orange;
+}
+
 .caption-number {
 /* For some inane reason, the html writer ignores numfig = False when you use captions
  * Best I can figure is to hide it entirely

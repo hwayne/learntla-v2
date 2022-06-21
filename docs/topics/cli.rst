@@ -4,7 +4,7 @@
 Beyond the Toolbox
 ########################
 
-Most people use the Toolbox for TLA+. But what if you want to run it from the command line? Or VsCode? There's an `extension` for using it from VsCode.
+Most people use the Toolbox for TLA+. But you can also use `vscode <https://marketplace.visualstudio.com/items?itemName=alygin.vscode-tlaplus>`_ or the command line. 
 
 The Command Line
 =================
@@ -30,7 +30,7 @@ This will:
 
 To prevent (3), add ``-nocfg`` as a flag before ``file.tla``. There is no way to prevent the translator from writing ``file.old``. I have a shell watcher that finds and deletes them.
 
-You can read about all of the other translator options `here <https://lamport.azurewebsites.net/tla/p-manual.pdf>`_, page 67-69, or by running ``java -cp tla2tools.jar pcal.trans -h``.
+You can read about all of the other translator options `here <https://lamport.azurewebsites.net/tla/p-manual.pdf>`__, page 67-69, or by running ``java -cp tla2tools.jar pcal.trans -h``.
 
 TLC
 -------
@@ -83,6 +83,25 @@ Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, whic
 
 .. todo:: Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer` on the command line.
 
+::
+
+  ---- MODULE aliases ----
+  extends integers
+
+  variable x
+  init == 
+    x = 0
+
+  next == x' = x + 1
+  inv == x < 10
+  spec == init /\ [][next]_x
+
+  alias ==
+    [x |-> x,
+     nextx |-> x',
+    action |-> enabled next]
+  =====
+
 .. todo:: Symmetry sets
 
 
@@ -93,16 +112,17 @@ TLC Options
 
 Now that we know how to run a config file, let's get back to the TLC options. You can read all of them with ``java -jar tla2tools.jar -help`` (*not* ``-h``), or by reading them `here <https://lamport.azurewebsites.net/tla/current-tools.pdf>`_ (pages 9-11). Most of them are self-explanatory or equivalent to toolbox options. See the `Toolbox topic <topic_toolbox>` for more information on how to use them. The main things of note are:
 
-.. dump:
+.. _dump:
+
 ``-dump file``
   Writes all of the states that TLC reached to ``file`` *in no particular order*. If you want to know how the states *connect* to each other, instead write
 
 ``-dump dot file``
-  This outputs a `graphviz <https://graphviz.org/>`_ graph file instead. Nodes are states, edges are {{ TODO actions}}. TLC will *not* append the file extension to the filename; you'll have to add that yourself.
+  This outputs a `graphviz <https://graphviz.org/>`_ graph file instead. Nodes are states, labelled with their variable assignments. TLC will *not* append the file extension to the filename; you'll have to add that yourself.
 
   .. note:: If your spec includes a liveness property, TLC will also write ``file_liveness``. This is an internal representation and `can be ignored <https://groups.google.com/g/tlaplus/c/olBAjD-9btA>`_.
 
-  You can also write ``-dump dot,colorize file`` to color the edges based on the actions they involve and ``-dump dot,actionlabels`` to label the edges with the corresponding action.
+  You can also write ``-dump dot,colorize file`` to color the edges based on the actions they involve and ``-dump dot,actionlabels`` to label the edges with the corresponding action. Both can be used together.
 
 ``metadir dir``
   Instead of storing the seen statespace in the same directory as the spec, TLC will instead store it in ``dir``. I find this useful when scripting against the CLI, as I can store the state space in a temporary directory for easier cleanup.
