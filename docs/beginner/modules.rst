@@ -13,7 +13,7 @@ Modules
 
 Shared TLA+ files should be in the same folder as your spec.
 
-The toolbox has a config option TK for reaching a shared directory.
+.. todo:: The toolbox has a config option TK for reaching a shared directory.
 
 Once you have your module, how do you import it? There's a couple of ways:
 
@@ -38,7 +38,7 @@ Then ``Op`` will not be imported when extended.
 And that's all there is to say about extensions! Let's talk about the much more interesting module mechanism, instances.
 
 .. index:: INSTANCE
-  :name: INSTANCE
+.. _INSTANCE:
 
 INSTANCE
 ==========
@@ -69,11 +69,13 @@ You can namespace the operators in an instance like this:
 
   Foo == INSTANCE Sequences
 
+.. index:: ! (Namespace lookup)
+
 Namespace lookup is done with ``!``. So instead of writing ``Append(seq, 1)``, you'd write ``Foo!Append(seq, 1)``.
 
 .. tip::
 
-  Yes, you can in fact import a module in the middle of a `LET`.
+  Yes, you can import a module in the middle of a `LET`.
 
   ::
 
@@ -90,47 +92,73 @@ In fact you can import the same module multiple times under different names:
 Why would you want to do that? Well, it wouldn't be useful with the standard library functions, but if your imported module has some constants... well, that's where things get interesting.
 
 .. index::
-  single: INSTANCE; Parameterizing Modules
+  single: INSTANCE; Parameterized Modules
 
 Parameterized Modules
-======================
+----------------------
 
-{{Use parameterization when the module you're importing has constants and variables}}
+Here's a new module:
 
-.. index:: WITH
+.. todo:: move into an xml
+
+::
+
+  ---- MODULE Point ----
+  LOCAL INSTANCE Integers
+  CONSTANTS X, Y
+  ASSUME X \in Int /\ Y \in Int
+
+  Repr == <<X, Y>>
+  Add(x, y) == <<X + x, Y + y>>
+  ====
+
+Unlike previous modules we've seen, this one contains constants. When we import it with ``WITH``, we need to define what those constants are. We do it like this:
+
+.. index:: 
+  single: WITH
+  single: <-
+  single: INSTANCE; WITH
+
 .. _WITH:
 
 ::
   
-  Foo == INSTANCE TK WITH X <- Y
+  Origin == INSTANCE Point WITH X <- 0, Y <- 0
+
+This effectively "rewrites" all of the operators in ``Point`` to use the passed in values. Now ``Origin!Add(x, y) == <<0 + x, 0 + y>>``.
 
 .. tip:: If the importing module has a constant with the same name as the child model, it will be imported by default. For example, if both modules contain a ``DEBUG`` constant, the following two are equivalent:
 
   ::
-
     M == INSTANCE Module WITH DEBUG <- DEBUG
     M == INSTANCE Module
 
   (You can still provide your own value in the ``WITH`` as an override.)
 
-Parameterized Variables
-------------------------
+.. todo:: Testing titles
 
-If you parameterize a module over a variable, you can use actions in that model as regular actions. For example:
+  {content} If you parameterize a module over a variable, you can use actions in that model as regular actions. For example:
 
-TK
+
 
 Partial Parameterization
 ------------------------
 
-.. seealso::
-  
-  Test
-    Bar
+We can also write this:
 
-Using Modules
-===================
+::
 
-* Breaking things up
-* Shared Libraries
-* Refinement
+  XAxis(X) == INSTANCE Point WITH Y <- 0
+
+Now instead of ``XAxis!Add(x, y)``, we write ``XAxis(v)!Add(x, y)``, which defines what the ``X`` constant "should be" at runtime. eg ``XAxis(2)!Add(x, y) == <<2 + x, 0 + y>>``.
+
+.. todo:: {EXPAND} when `refinement` exists, link as to why this is useful
+
+.. todo:: {EXPAND} Using Modules
+
+Summary
+===========
+
+- EXTENDS will not import any operators prefixed with ``LOCAL``.
+- ``INSTANCE`` is like ``EXTEND``, except it can be namespaced. Namespaced operators are called with  ``I!operator``.
+- You can instantiate modules with constants and pass them in at instantiation. You can also partially instantiate a module, and pass in the remaining values when calling an operator.
