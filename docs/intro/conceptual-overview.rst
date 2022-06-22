@@ -99,7 +99,7 @@ Once we have our design, we can model check it against some requirements. We can
 
 .. note:: If you want to run this yourself, see `setup`.
 
-We checked it with two transfers. But what if we wanted to check it with four transfers? TLA+ makes it very easy to change our designs. We can parameterize any value, and then have different models check with differen values.
+We checked it with two transfers. But what if we wanted to check it with four transfers? TLA+ makes it very easy to change our designs. We can parameterize any value, and then have different models check with different values.
 
 .. todo:: wire2
 

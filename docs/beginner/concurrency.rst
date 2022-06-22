@@ -75,6 +75,7 @@ Let's modify the writer so it can write twice, instead of once.
 .. spec:: reader_writer/rw_local_1/reader_writer.tla
   :diff: reader_writer/3/reader_writer.tla
   :ss: rw_local_1
+  :name: rw_local_1
 
 
 Notice how many more states we have. The ``while`` loop is nonatomic, and every iteration counts as a separate ``Write`` action. So there are now three possible orderings: Read-Write-Write, Write-Read-Write, and Write-Write-Read.
