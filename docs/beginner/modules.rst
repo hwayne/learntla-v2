@@ -6,7 +6,7 @@ Modules
 
 I'm covering Modules last because they're not as important for organizing specs  as they are for organizing code. Most specs are under 300ish lines so you can keep them all in one file with little trouble.
 
-{{That said, sometimes you want to create an abstract library like ``Sequences``, and sometimes you want to refine something, which is a really complex topic we'll cover in topics, not the core. Also, some people like putting their invariants in a separate file. So here's how to modularize your spec.}}
+That said, sometimes you want to create an abstract library like ``LinkedLists``, and some people like putting their invariants in a separate file. So here's how to modularize your spec.
 
 Modules
 =========

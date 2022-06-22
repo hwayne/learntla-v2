@@ -28,17 +28,18 @@ You index structs the same way you do sequences so ``struct["a"] = 1``. You can 
   It's because you wrote ``["key" |-> val]`` instead of ``[key |-> val]``.
 
 
-Unsurprisingly, structs are mainly used to represent organized collections of data. For example, a TK might consist of an TK.
-
-.. some kind of exercise
+Unsurprisingly, structs are mainly used to represent organized collections of data. For example, a ``BankTransaction`` might consist of an account, an amount, and whether it was a deposit or withdrawal.
 
 Just like sequences, sets, and primitive values, we want some way to generate sets of structs, so we can stick them in our type invariants. Here's how:
 
 ::
 
-  StructType == [a: S, b: T] \* make better
+  \* Accounts is a set of model values
+  BankTransactionType == [acct: Accounts, amnt: 1..10, type: {"deposit", "withdraw"}]
 
-This is the set of all structures where ``s.a \in S /\ s.b \in T``.
+This is the set of all structures where ``s.acct \in Accounts``, ``s.amnt \in 1..10``, etc.
+
+.. tip:: With complex types especially, it's good idea to regularly estimate how many elements are in the set. Here, for in a model with three accounts, BankTransactionType will have :math:`3 \cdot 10 \cdot 2 = 60` elements.
 
 .. troubleshooting::
 
@@ -52,6 +53,7 @@ This is the set of all structures where ``s.a \in S /\ s.b \in T``.
 
 .. index:: DOMAIN
 .. _domain:
+.. _DOMAIN:
 
 Getting a Struct's Keys
 -----------------------
@@ -68,8 +70,6 @@ How can I get all the values of a structure? ``Len`` isn't defined for structure
 
   RangeStruct(struct) == {seq[key]: key \in DOMAIN struct}
 
-Try this out.
-
 Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
 ::
@@ -78,7 +78,7 @@ Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
   {"a", "b"}
 
-...Huh. ``DOMAIN seq == 1..Len(seq)``! In fact, it's actually *the other way around*: ``Len`` is defined in terms of ``DOMAIN``!
+It looks like ``DOMAIN seq == 1..Len(seq)``! In fact, it's actually *the other way around*: ``Len`` is defined in terms of ``DOMAIN``!
 
 Here's the punchline: *both sequences and structures are just syntactic sugar*. TLA+ has only two "real" collections: sets and functions. Sequences and structures are both particular classes of functions, the ones that we as programmers are most familiar with. It's time to finally introduce the true data type.
 
@@ -154,7 +154,7 @@ With this, `we can see <scratch>` how sequences and structures are just function
 
 Python has a function called ``zip``. It takes two iterables and returns a single sequence, where the elements are pairs of elements from the two inputs. If one is larger than the other, it only does up to the length of the shorter.
 
-.. code-block:: python
+.. code:: python
 
   >>> list(zip([1, 2], ["a", "b", "c"]))
   [(1, 'a'), (2, 'b')]
@@ -231,7 +231,11 @@ Function sets
 
 You know the drill: new class of value, new need for a way to generate sets of that value. We need to add function values to our type invariants, too!
 
-The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``. I could also have represented the state with functons of form ``[CPUs -> Tasks \union {NoAssignment}]``.
+The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``.
+
+.. tip:: A function set of form ``[A -> B]`` will have :math:`#B^{#A}` elements in it. If there were two tasks and three CPUs, that would be :math`(2^3)^2 = 64` possible functions.
+
+  A good way to remember this: ``[1..n -> BOOLEAN]`` is the set of all binary strings of length ``n``, and we know there are :math:`2^n` such strings.
 
 I can also use `set maps <map>` and filters here. Let's say a task can only be assigned to at most two CPUs. If I wanted to, I could fold that into the type invariant, using a function set::
 
@@ -254,6 +258,8 @@ Some more examples of function sets:
 #. We have a set of servers, which can have one of three states. Then ``status \in [Server -> {"online", "booting", "offline"}]``.
 #. We represent a directed graph as a function on pairs of points, which is true iff there's an edge between the two points. Then ``graph \in [Node \X Node -> BOOLEAN]``.
 #. If we define the previous set as the operator ``GraphType``, we could get the set of all *undirected* graphs with ``{g \in GraphType: \A n1, n2 \in Node: g[n1,n2] = g[n2,n1]}``.
+
+.. todo:: Two more examples of functon sets
 
 .. troubleshooting::
 
@@ -355,7 +361,7 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
 
 .. _state_sweeping:
 
-.. tip:: State Sweeping
+.. tip::
 
   *State sweeping* is when we use an initial starting state variable to control the parameters for other variables. For example, we could have one variable determine the length of an input sequence, or the maximum size of a bounded buffer.
 
@@ -365,7 +371,7 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
     :diff: duplicates/fs_1/duplicates.tla
     :ss: duplicates_len_5_or_less
 
-  Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences :ss:`duplicates_len_5_or_less`! This is a useful specifying trick known as *state sweeping*.
+  Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences! This is a useful specifying trick known as *state sweeping*.
 
   Strictly speaking, sweeping isn't *necessary*: we can, with sufficient cleverness, construct a complex operator that does the same thing. Sweeping, however, is often much *easier* than doing that, and frees up your brainpower for the actual act of specification.
 
@@ -374,12 +380,14 @@ Summary
 ===========
 
 * Functions map a set of values to another set of values. They are written ``[x \in set |-> Expr(x)]`` and called with ``f[value]``.
+
     * Functions can also be written ``[x, y \in Set1, z \in Set2 |-> P(x, y, z)`` and called with ``f[a, b, c]`` (or ``f[<<a, b, c>>]``).
+
 * The domain of a function, the set we're mapping from, is ``DOMAIN f``.
+
     * ``a :> b`` is the function ``[x \in {a} |-> b]``.
     * ``f @@ g`` merges ``f`` and ``g``, **preferring keys in f**.
+
 * Sequences are just a special kind of function, where the domain is ``1..n``. 
 * Structures are another special kind of function, written ``[key1 |-> val1, key2 |-> val2]``. They are called with ``struct["key1"]`` (or ``struct.key1``).
 * Functions and structures both have special set syntax. For structures, it is ``[key1: set1]``. For functions, it's ``[A -> B]``.
-
-.. todo:: {{POLISH}} Mor on function sets as a summary

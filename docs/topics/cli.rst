@@ -81,26 +81,30 @@ Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, whic
 
 .. index: ALIAS
 
-.. todo:: Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer` on the command line.
+Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer` on the command line. Let's say we have the following spec:
 
 ::
 
   ---- MODULE aliases ----
-  extends integers
+  EXTENDS Integers
 
-  variable x
-  init == 
+  VARIABLE x
+  Init == 
     x = 0
 
-  next == x' = x + 1
-  inv == x < 10
-  spec == init /\ [][next]_x
+  Next == x' = x + 1
+  Inv == x < 10
+  Spec == Init /\ [][Next]_x
 
-  alias ==
+  Alias ==
     [x |-> x,
      nextx |-> x',
-    action |-> enabled next]
+     incx |-> x + 1]
   =====
+
+If we add ``ALIAS Alias`` to our config file, then the error trace will show the values of x, ``nextx``, and ``incx`` in the error output.
+
+.. note:: The alias *replaces* the standard error output. If you don't include some variables in the alias, then they won't show on the error output either.
 
 .. todo:: Symmetry sets
 

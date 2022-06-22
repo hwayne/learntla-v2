@@ -12,6 +12,8 @@ General small things for writing better specs.
 Both TLA+ and PlusCal
 ======================
 
+.. todo:: Tagged unions
+
 Use ASSUME
 -----------
 
@@ -145,7 +147,9 @@ Then you can write your spec to satisfy ``ModelInvariant``, or at a `state const
 Pluscal
 ===========
 
-Abuse macros
+.. todo:: How to use assert
+
+Use macros
 -------------
 
 `Macros <macro>` are your friend.
@@ -173,7 +177,7 @@ Instead, reassign the entire sequence in one step:
 State sweeping
 --------------
 
-Discussed `here <TODO_LINK>`.
+Discussed `here <state_sweeping>`.
 
 TLA+
 ===========
@@ -181,7 +185,7 @@ TLA+
 Managing UNCHANGED
 ------------------
 
-TODO
+.. todo:: this
 
 Helper Actions
 ---------------

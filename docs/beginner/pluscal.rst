@@ -15,7 +15,7 @@ In the :doc:`last chapter <operators>`, we introduced operators, sets, and value
 
 TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of state changes in the system. It's a powerful way of expressing mutation, but it is also very general, accepting a large degree of complexity to be able to express more powerful systems. Many engineers struggle to start learning it. So in 2009, Leslie Lamport created a DSL called PlusCal: a more programming-like syntax that compiles to TLA+ actions.
 
-PlusCal isn't as powerful as "raw" TLA+, and there are some types specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
+PlusCal isn't as powerful as "raw" TLA+, and there are some types of specifications you cannot write in it. But for many other kinds of specifications, it is *simpler* than doing everything in TLA+, and it is easier to learn. In my experience as an educator, I've found that most programmers have an easier time learning PlusCal and then raw TLA+ than they do if they start with raw TLA+. So the rest of the beginner part of this text will use PlusCal.
 
 .. note:: If you're more mathematically inclined, or already know PlusCal and want to go further, you can skip to the section on :doc:`learning TLA+ <tla>`.
 
@@ -26,7 +26,7 @@ Let's start with a very simple spec:
 
 .. spec:: pluscal.tla
 
-Inside the comment block (``(* *)``) is our PlusCal algorithm. We need to do this because this is a valid TLA+ file; the pluscal algorithm will be compiled to TLA+ below. The algorithm must start with ``--algorithm $name``, otherwise it will be treated like a regular comment. Unlike the module name, the algorithm ``$name`` doesn't need to correspond to anything, and can be ``foo`` for all anyone cares.
+Inside the comment block (``(* *)``) is our PlusCal algorithm. We need to do this because this is a valid TLA+ file; the pluscal algorithm will be compiled to TLA+ below. The algorithm must start with ``--algorithm $name``, otherwise it will be treated like a regular comment. Unlike the module name, the algorithm ``$name`` doesn't need to correspond to anything, and can be your root password for all anyone cares.
 
 Next, we have a variables block. Any TLA+ value can be a variable. We open the body of the algorithm with ``begin`` and close it with ``end algorithm``. Inside that we have two :dfn:`labels`, ``A`` and ``B``, which we will discuss more in the next section. Inside the labels we have update statements, which use ``:=``. ``:=`` is **only** used when we have an existing variable and want to update its value. Otherwise, we use ``=``.
 
@@ -45,8 +45,6 @@ Alternatively, we can use :kbd:`cmd-T` on Mac or :kbd:`ctrl-T` on Windows and Li
 
 
 That's what's actually run when we model check this spec.
-
-
 
 .. index:: Labels
   :name: label
@@ -137,7 +135,7 @@ In addition to updates, there are three other statement-level constructs:
 .. _goto:
 
 * ``skip``: a noop.
-* ``assert expr``: automatically fails the model check if ``expr`` is false.
+* ``assert expr``: TLC immediately fails the model check if ``expr`` is false. (This breaks the "everything in the label happens at once", as TLC will stop *as soon* as it finds a failing ``assert``.) To use ``assert`` you need to extend ``TLC``.
 * ``goto L``: jumps to label ``L``. **A label must immediately follow any goto statement**.
 
 .. todo:: {CONTENT} Also mention print
@@ -176,6 +174,8 @@ You *can* put labels inside an if block. This is useful if your logic branches, 
     x := 1;
 
 If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``bool`` is false, then it would happen as part of label A. Since statements must *unambiguously* belong to a single label, this is invalid PlusCal, and we need to add an extra label ``C``.
+
+.. warning:: A common misunderstanding I see in beginners is thinking the B label is *nested in* the A label, like we're in both at the same time. This isn't how it works: we stop being in the A label as soon as we enter the B label. A better mental model is that since ``B:`` is inside a condition from ``A:``, the B label is only *reachable* from A.
 
 Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of 
 
@@ -236,7 +236,7 @@ while
 
 **While is nonatomic**. After each iteration of the while loop, we're back at the ``Sum`` label. Other processes can run before the next iteration. This doesn't change things for single process algorithms, but it will matter a lot when we start adding in concurrency.
 
-.. todo:: exercise about showing that it has multiple states
+.. todo:: {exercise}  showing that it has multiple states
 
 .. index:: ! duplicates
 .. _duplicates:
@@ -334,13 +334,29 @@ Now that we have broad state-space coverage, it's time to write some properties.
 Summary
 =========
 
-.. todo:: {CONTENT} Summary
+- Specifications have variables. These can either be a fixed value (using ``=``) or an element in a set (using ``\n``. Any TLC value can be a variable.
 
-- PlusCal
+  - If an element of a set, then TLC will test the model on *every possible starting state*.
+- PlusCal is a language that makes writing specifications easier. 
 
+  - In the PlusCal algorithm body, variables are updated with ``:=``. ``=`` is comparison.
 
-- :=
-- = vs :=
+- PlusCal specs are broken up into *labels*, units of computations that happen atomically. Everything in the label happens *at once*. Labels have restrictions on where they can be placed.
+- Macros are the primary unit of spec deduplication.
+- PlusCal has several block constructs, including ``with``, ``if``, and ``while``.
+
+  - ``with`` creates temporary identifiers in a block.
+  - ``while`` statements are nonatomic: every loop happens in a separate step.
+
+Summary of Label Rules
+----------------------
+
+- All algorithms must begin with a label.
+- While statements must begin with a label.
+- Each variable can only be updated once in a label. (You can assign to multiple parts of a sequence with `||`.)
+- Macros and ``with`` statements cannot contain labels.
+- A `goto` must be followed by a new label.
+- If a branch in a block contains a label inside it, the end of the block must be followed with a label.
 
 - PlusCal expressions:
 
