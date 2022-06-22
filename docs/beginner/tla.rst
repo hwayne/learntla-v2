@@ -4,9 +4,6 @@
 TLA+
 ########
 
-.. todo:: Fix the Pygments TLA+ parser
-.. highlight:: none
-
 PlusCal is a formalism designed to make using formal methods easier. By learning pluscal first, we can focus on teaching first logic and model checking, leaving temporal logic for later. Another advantage is that can bootstrap TLA+ from it by looking at what the pluscal generates, and infer the tla+. We know that the pluscal generated is valid TLA+, so we can use it to understand the TLA+.
 
 .. index:: action
@@ -28,7 +25,7 @@ I find the easiest way to explain what's going on with TLA+ is to relate it to w
 
 You should be able to look at this spec and run it in your head. ``hr`` starts at some value between 1 and 12, and then increment, wrapping at 12 back to 1. The TLA+ translation *must* do the same thing. Let's take a look at it:
 
-.. code:: none
+::
 
   VARIABLE hr
 
@@ -76,7 +73,7 @@ A boolean operator that contains primed variables is called an **action**. It's 
 
 ``Next`` is used in ``Spec``, as part of ``[][Next]_vars``. Recall `the definition of []_x <box_action>`. Expanding the definition:
 
-.. code:: none
+::
 
   Spec == Init /\ [](Next \/ UNCHANGED vars)
 
@@ -113,7 +110,7 @@ Before we add more elaborate logic, let's make a small noop change:
 
 Notice we're not *using* x, just defining it. Nothing about the output should change except the initialization, right?
 
-.. code:: none
+::
 
   Next == /\ IF hr = 12
                 THEN /\ hr' = 1
@@ -134,7 +131,7 @@ First, let's see what happens when we do a deterministic with:
 .. spec:: tla/hourclock_3/hourclock.tla
   :diff: tla/hourclock_2/hourclock.tla
 
-.. code:: none
+::
 
   Next == IF hr = 12
              THEN /\ hr' = 1
@@ -150,7 +147,7 @@ Now for nondeterministic with:
 .. spec:: tla/hourclock_4/hourclock.tla
   :diff: tla/hourclock_3/hourclock.tla
 
-.. code:: none
+::
 
   Next == IF hr = 12
              THEN /\ hr' = 1
@@ -161,7 +158,7 @@ This is more interesting! We "assign" ``hr'`` inside the quantifier.
 
 That should tell us the following is also ok:
 
-.. code:: none
+::
 
   Next == IF hr = 12
              THEN /\ hr' = 1
@@ -210,7 +207,7 @@ Remember, TLA+ wants you to be as precise as possible. If you didn't specify tha
 
 What we actually wanted to write is that ``s'`` is the same as ``s`` *except* that ``s[1]`` is false. Here's the syntax for that:
 
-.. code:: none
+::
 
   Next == s' = [s EXCEPT ![1] = FALSE]
 
@@ -218,20 +215,20 @@ Yes, I know it's really awkward. No, I can't think of anything better.
 
 .. tip:: ``EXCEPT`` has some syntactic sugar to make using it more pleasant. First of all, we can assign multiple keys in the same statement:
 
-  .. code-block:: none
+  ::
 
     Next == s' = [s EXCEPT ![1] = FALSE, ![2] = 17]
 
   Second, we can reference the original value of the key with ``@``.
 
-  .. code-block:: none
+  ::
 
     IncCounter(c) == 
       counter' = [counter EXCEPT ![c] = @ + 1]
 
   Finally, we can do nested lookups in the ``EXCEPT``:
 
-  .. code:: none
+  ::
 
     Init == s = <<[x |-> TRUE], FALSE>>
 
@@ -253,7 +250,7 @@ Enough with the hour clocks. Let's switch a somewhat more interesting spec: our 
 
 This is doing basically nothing novel, except that we have two separate processes, meaning that it'll showcase for us how TLA+ handles concurrency. I cleaned up the translation a little, but it should have all these elements:
 
-.. code:: none
+::
 
   VARIABLES counter, pc
 

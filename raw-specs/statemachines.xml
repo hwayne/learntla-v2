@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<root folder="statemachines">
+<spec name="pluscal" num="1">
+---- MODULE $name ----
+
+(*--algorithm HTTP
+variable state = "idle"
+process StateMachine = "SM"
+begin
+  Action:
+    either \* this is the state machine
+      await state = "idle";
+      state := "fetching";
+    or
+      await state = "fetching";
+      state := "idle"; \* success! 
+    or
+      await state = "fetching";
+      state := "error"; \* failure :( 
+    or
+      await state = "error"
+      state := "fetching";
+    end either;
+    goto Action;
+end process;
+end algorithm; *)
+====
+</spec>
+
+<spec name="sm_tla" num="1">
+---- MODULE $name ----
+VARIABLE state
+
+Trans(a, b) ==
+  /\ state = a
+  /\ state' = b
+
+Init == state = "idle"
+
+Next == 
+  \/ Trans("idle", "fetching")
+  \/ Trans("fetching", "idle")
+  \/ Trans("fetching", "error")
+  \/ Trans("error", "fetching")
+
+Spec == Init /\ [][Next]_state
+====
+</root>
+
+
+

@@ -55,11 +55,13 @@ Now run this with ``PROPERTY CounterOnlyIncreases`` (**not** as an invariant). I
 
 This doesn't fail because we have a state where the counter is 0. That's a totally valid state for the spec, and is in fact the starting state! It fails because counter *changes from 1 to 0*. It's the fact *counter decreases* that's an error.
 
-.. todo:: make this an image
 .. digraph:: G
-  :caption: Neither state is illegal, but the *transition between them* is.
+  :caption: None of these states are illegal, but the *transition* from ``counter=1`` to ``counter=2`` is.
 
-  A -> B -> {C A};
+  label="val: counter";
+  0 -> 1 -> 2;
+  1 -> 0[color=tomato];
+
 
 
 
@@ -87,9 +89,7 @@ But that's not (yet) a valid TLA+ property. Consider the slightly different prop
 
 .. _box_action:
 
-As yet more syntactic sugar, we can write ``[](x' = x + 1 \/ UNCHANGED x)`` as ``[][x' = x + 1]_x``. This is called a :dfn:`box action formula`. Box action formulas have a special role in TLA+, and TLC can only check action properties that are box action formulas.
-
-.. todo:: more explanation?
+As yet more syntactic sugar, we can write ``[](x' = x + 1 \/ UNCHANGED x)`` as ``[][x' = x + 1]_x``. This is called a :dfn:`box action formula`. Box action formulas have a special role in TLA+, as we'll see in :doc:`the next chapter <tla>`. TLC can only check action properties that are box action formulas.
 
 .. tip:: The underscory bit means that we could have written the property as ``[][counter' > counter]_counter``. Expanding all the steps: 
 
@@ -117,7 +117,14 @@ And now we'll make a change that breaks this property:
 
 Running with ``PROPERTY LockCantBeStolen`` shows this fail.
 
-.. todo:: {Graph} LockCantBeStolen
+.. digraph:: LockCantBeStolen
+  :align: center
+
+  rankdir=TB;
+  label="val: lock";
+  NULL -> {t1 t2};
+  {t1 t2} -> NULL;
+  t1 -> t2[color=tomato];
 
 Another way we could have written the property:
 

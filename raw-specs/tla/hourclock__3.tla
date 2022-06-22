@@ -3,7 +3,6 @@ target: specs/tla/hourclock_3/hourclock.tla
 LoadLocal !tlacli check %
 !!!
 ---- MODULE hourclock__3 ----
-\* TODO: two clocks
 EXTENDS Naturals
 (*--algorithm hourclock
 variable hr = 1; \* hour

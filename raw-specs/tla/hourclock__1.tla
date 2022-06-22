@@ -8,7 +8,6 @@ states:
 LoadLocal !tlacli check %
 !!!
 ---- MODULE hourclock__1 ----
-\* TODO: two clocks
 EXTENDS Naturals
 (*--algorithm hourclock
 variable hr = 1; \* hour

@@ -28,8 +28,8 @@ end define;
 process thread \in Threads
 variables tmp = 0;
 begin
-  GetLock:
-    <s on="-4">await lock = NULL;</s>
+  GetLock:<s on="-4">
+    await lock = NULL;</s>
     lock := self;
 
   GetCounter:

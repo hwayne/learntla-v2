@@ -25,6 +25,8 @@ Every ``CONSTANT`` should have an ``ASSUME`` to communicate what values are expe
 
 From this it's clear that Threads is a set and NULL is not a thread.
 
+.. todo:: Using ASSUME for operators
+
 Use LET to Simplify Operators
 -----------------------------
 

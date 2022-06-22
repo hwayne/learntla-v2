@@ -27,12 +27,11 @@ Operators are what you'd think of as a function in a programming language. They 
 
   If you see an error like
 
-  > Was expecting "=====" or more Module Body, encountered ``"$Operator"`` at line $n...
+    Was expecting "=====" or more Module Body, encountered ``"$Operator"`` at line $n...
 
   It's likely because you used a single ``=`` instead of a double ``==`` when defining the operator.
 
-
-Operators can take any number of arguments. There are no default values, operator overloading, or optional arguments. If an operator has two parameters, it must always take two values. If an operator takes no values, you can write it without the parens. In this case, it's effectively a programming constant.
+Operators can take any number of arguments. There are no default values, overloaded definitions, or optional arguments. If an operator has two parameters, it must always take two values. If an operator takes no values, you can write it without the parens. In this case, it's effectively a constant.
 
 ::
 
@@ -40,7 +39,7 @@ Operators can take any number of arguments. There are no default values, operato
 
 .. note::
 
-  Are a few special forms of operators, like higher-order operators, recursive operators, and lambdas, which we will cover `later <chapter_advanced_operators>`.
+  There are a few special forms of operators, like higher-order operators, recursive operators, and lambdas, which we will cover `later <chapter_advanced_operators>`.
 
 The right-hand side of an operator is called an :dfn:`expression`.
 
@@ -50,7 +49,7 @@ The right-hand side of an operator is called an :dfn:`expression`.
 IF-THEN-ELSE
 ------------
 
-We have three keywords for structuring expressions. These are `let` statements, `case statements <case>`, and conditionals. We'll be introducing the first two later: LET statements are much more useful after we can write some basic operators, while case statements are fairly uncommon in TLA+ practice. That leaves conditionals:
+We have three keywords for structuring expressions. These are `let` statements, `case statements <case>`, and conditionals. We'll be introducing the first two later: LET statements are much more useful after we can write some basic operators, while case statements aren't used very often. That leaves conditionals:
 
 ::
 
@@ -62,7 +61,7 @@ Expressions always equal *something*, so there must always be an ``ELSE`` branch
 Values
 =========
 
-TLA+ is an untyped formalism, due to its roots in mathematics. In practice, the model checker recognizes four primitive types and four advanced ones. We are not going to cover all of them now, just the ones that need little explanation.
+TLA+ is an "untyped" language, due to its roots in mathematics. In practice, the model checker recognizes four primitive types and four advanced ones. We are not going to cover all of them now, just the ones that need little explanation.
 
 .. note::
   
@@ -99,7 +98,7 @@ Booleans
 
 The booleans are ``TRUE`` and ``FALSE``.
 
-So why do they get their own section? There's two things you need to know about booleans. First of all, the boolean operators are patterned after what mathematicians are familiar with, not what programmers are. They are:
+So why do they get their own section? There's two things you need to know about booleans. First of all, the boolean operators look like mathematical symbols, not programming symbols. They are:
 
 .. list-table::
   :header-rows: 1
@@ -189,8 +188,9 @@ There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get 
     - ``<<1, 3>>``
 
 
-.. note:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it :doc:`later <advanced-operators>`.
+.. todo:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it :doc:`later <advanced-operators>`.
 
+With sequences, we can represent a 24-hour clock as ``<<hour, minute, second>>``.
 
 ::
 

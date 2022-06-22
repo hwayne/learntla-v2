@@ -9,6 +9,7 @@ Operators
   :titlesonly:
 
 
+.. todo:: Transitive tree selection
 
 
 +++++++++++++

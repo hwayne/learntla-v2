@@ -69,3 +69,6 @@ html_style = "custom.css"
 html_static_path = ['_static']
 html_css = ["custom.css"]
 todo_include_todos = True
+
+# Graphviz ext
+graphviz_dot_args=["-Grankdir=LR", "-Glabelloc=t", "-Nshape=rect", "-Nfontname=\"Fira Code\""]
