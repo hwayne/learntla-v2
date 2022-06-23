@@ -75,6 +75,8 @@ In summary, adding ``[]`` to the language lets us represent all invariants, and 
 
 
 
+.. index:: fairness; in PlusCal
+.. _fairness:
 
 Stuttering and Fairness
 ------------------------
@@ -120,25 +122,27 @@ So we need a way to say "don't assume this system can crash". We do this by sayi
 
 This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add this change, we see ``Liveness`` holds. There's also **strong** fairness. But this easier to explain (and more useful) in pure TLA+, as opposed to PlusCal. I'll leave the PlusCal material in an advanced topic here.
 
-.. todo:: .. advanced-topic: Strong Fairness
+.. rubric:: Strong Fairness
 
-  Weak fairness says that if a process can *always* make progress, it will eventually make progress. Strong fairness is that if a process can *always intermittently* make progress, it will eventually make progress. To see the difference, consider this model of several threads sharing a lock:
+Weak fairness says that if a process can *always* make progress, it will eventually make progress. Strong fairness is that if a process can *always intermittently* make progress, it will eventually make progress. To see the difference, consider this model of several threads sharing a lock:
 
-  .. spec:: threads/strong_fairness_1/threads.tla
-    :fails:
+.. spec:: threads/strong_fairness_1/threads.tla
+  :fails:
 
-  When in ``AwaitLock``, each thread can only get the lock if ``lock := Null``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
+When in ``AwaitLock``, each thread can only get the lock if ``lock := Null``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
 
-  .. figure:: graphs/strong_fairness.gv.png
+.. figure:: graphs/strong_fairness.gv.png
 
-    If thread 1 keeps stealing the lock, then thread 2 never has a chance to get it, even if it's weakly fair.
+If thread 1 keeps stealing the lock, then thread 2 never has a chance to get it, even if it's weakly fair.
 
-  We can make the processes strongly fair by writing ``fair+``. Then every thread will eventually get the lock. We can also make individual actions strongly fair by writing ``AwaitLock:+``.
+We can make the processes strongly fair by writing ``fair+``. Then every thread will eventually get the lock. We can also make individual actions strongly fair by writing ``AwaitLock:+``.
 
-  .. spec:: threads/strong_fairness_2/threads.tla
-    :diff: threads/strong_fairness_1/threads.tla
+.. spec:: threads/strong_fairness_2/threads.tla
+  :diff: threads/strong_fairness_1/threads.tla
+  :ss: strong_fairness_threads
+  :name: strong_fairness_spec
 
-  We'll double back to strong fairness when we talk about writing `Pure TLA+ <chapter_tla>` specs, where we can do a little more with it.
+We'll double back to strong fairness when we talk about writing `Pure TLA+ <chapter_tla>` specs, where we can do a little more with it.
 
 .. tip::
   

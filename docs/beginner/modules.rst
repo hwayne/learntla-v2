@@ -119,7 +119,7 @@ Unlike previous modules we've seen, this one contains constants. When we import 
   single: <-
   single: INSTANCE; WITH
 
-.. _WITH:
+.. _with_tla:
 
 ::
   
@@ -152,7 +152,7 @@ We can also write this:
 
 Now instead of ``XAxis!Add(x, y)``, we write ``XAxis(v)!Add(x, y)``, which defines what the ``X`` constant "should be" at runtime. eg ``XAxis(2)!Add(x, y) == <<2 + x, 0 + y>>``.
 
-.. todo:: {EXPAND} when `refinement` exists, link as to why this is useful
+.. note:: I haven't yet converted it into a proper topic, but `this article of mine <https://hillelwayne.com/post/tla-adt/>`__ covers a set of techniques where partial parameterization is useful. 
 
 .. todo:: {EXPAND} Using Modules
 

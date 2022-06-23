@@ -253,6 +253,8 @@ Move the ``\E`` to the bottom layer and pass a value into your actions. This is 
          \/ Remove(w)
       /\ Log(w)
 
+.. _action_refactoring:
+
 Refactor with Action Properties
 --------------------------------
 

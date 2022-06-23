@@ -1,4 +1,3 @@
-:orphan:
 
 .. _whatsnew:
 
@@ -7,24 +6,46 @@
 What's New
 #######################
 
-DATE:
+2022-06-30
 
-  - Released beta!
+  Released beta!
 
-:doc:`tla`
 
+
+.. _roadmap:
 
 Roadmap
 =========
 
-- Exercises
+* Core:
 
-- Troubleshooting list directive
+  - Exercises
+  - "What next" page
 
-- Indexed examples
+* Topics:
 
-- More topics and examples
+  - Refinement
+  - Modeling ADTs
+  - Optimizing model-checking
+  - The standard library
+  - The TLC module
+  - Community modules
+  - Modeling legacy systems
+  - Machine-world differences
 
-- Advanced directive
+* Examples:
 
-- PDF output
+  - Many
+
+* Reference:
+
+  - A troubleshooting page
+  - LaTeX to ASCII chart
+  - Resources around the web
+
+* Misc:
+
+  - PDF output for offline use
+  - Panels for C-syntax pluscal
+  - Popup footnotes
+  - FAQ

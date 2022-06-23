@@ -40,7 +40,7 @@ PlusCal vs TLA+
 
 There are two languages that people write TLA+ in practice. First, you can do everything in TLA+ ("pure TLA+"). Second, you can treat it as an "assembly language" of sorts, and write most of your basic logic in TLA+ but handle all the state transitions in a DSL. There's an official DSL for this called "PlusCal", which is what we'll be starting with. I prefer doing things this way for two reasons:
 
-1. Specification is an extremely dense, interconnected topic. By teaching PlusCal first, I can teach *some* aspects of the topic in an isolated, useful way, and gradually introduce other on top of that. This is called `scaffolding`. By contrast, if you learn pure TLA+ first, you have to learn everything all at once to get anything done.
+1. Specification is an extremely dense, interconnected topic. By teaching PlusCal first, I can teach *some* aspects of the topic in an isolated, useful way, and gradually introduce other on top of that. This reduces the `cognitive load`_. By contrast, if you learn pure TLA+ first, you have to learn everything all at once to get anything done.
 2. Once you know PlusCal, it is *extremely* easy to learn pure TLA+. I'll be able to cover all of the "new stuff" in :doc:`a single chapter <tla>`.
 
 That said, not everybody finds it easier to learn this way, and that's fine. There are two TLA+-first resources available, both by the inventor of TLA+:
@@ -72,3 +72,5 @@ That said, not everybody finds it easier to learn this way, and that's fine. The
   modules
 
 .. next steps
+
+.. _cognitive load: https://teachtogether.tech/en/#s:architecture-load

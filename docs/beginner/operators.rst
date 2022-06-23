@@ -188,7 +188,7 @@ There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get 
     - ``<<1, 3>>``
 
 
-.. todo:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it :doc:`later <advanced-operators>`.
+.. todo:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it `later <chapter_advanced_operators>`.
 
 With sequences, we can represent a 24-hour clock as ``<<hour, minute, second>>``.
 

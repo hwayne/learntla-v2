@@ -221,14 +221,16 @@ Yes, I know it's really awkward. No, I can't think of anything better.
 
   Second, we can reference the original value of the key with ``@``.
 
-  ::
+  .. code::
+    :force:
 
     IncCounter(c) == 
       counter' = [counter EXCEPT ![c] = @ + 1]
 
   Finally, we can do nested lookups in the ``EXCEPT``:
 
-  ::
+  .. code::
+    :force:
 
     Init == s = <<[x |-> TRUE], FALSE>>
 
@@ -296,6 +298,7 @@ Looking it at piece-by-piece:
 
 The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of it, it sets ``pc[self]`` to "Done". That's how we emulate sequentiality in TLA+ algorith— it's like going from the "IncCounter" label to the "Done" label.
 
+.. _trans:
 .. tip::
 
   The PlusCal to TLA+ translator is very simple. If we were writing the TLA+ from scatch, we could use a helper action to these transitions look cleaner:
@@ -331,43 +334,67 @@ To see how ``await`` statements are modeled, let's look at how TLA+ translates `
 
 So ``await lock`` just becomes ``/\ lock = NULL``.
 
-.. index:: fairness_TODO_sync
+.. index:: 
+  single: fairness; in TLA+
+  single: WF_vars
+  single: SF_vars
+  single: ENABLED
+
 
 Fairness in TLA+
 =================
 
-That leaves just one topic left to discuss: how we model `fairness` in pure TLA+. First, one last last operator to introduce: ``ENABLED A`` is true if ``A`` *can* be true this step, ie it can describe the next step.
+That leaves just one topic left to discuss: how we model `fairness` in pure TLA+. First, two final keywords to introduce: 
+
+1. ``ENABLED A`` is true if ``A`` *can* be true this step, ie it can describe the next step.
+2. ``<<A>>_v`` means that ``A`` is true *and* v changes. Compare to ``[A]_v`` being "``A`` is true *or* v doesn't change".
+
+Fairness is formally defined in TLA+ as follows::
+
+  WF_vars(A) == <>[](ENABLED <<A>>_v) => []<><<A>>_v
+  SF_vars(A) == []<>(ENABLED <<A>>_v) => []<><<A>>_v
+
+In English:
+
+* ``WF_vars(A)``: If it is *eventually always* true that the A action *can happen* (in a way that changes ``v``), then it *will* eventually happen.
+* ``SF_vars(A)``: If it is *always eventually* true that the A action *can happen* (in a way that changes ``v``), then it *will* eventually happen (and change ``v``).
 
 
-How fairness can go wrong
--------------------------
+Fairness constraints are appended to the definition of ``Spec``. You can see this in the translation of our prior `strong fairness example <strong_fairness_spec>`::
 
-.. I'm just gonna put this whole thing in a warning block.
+  Spec == /\ Init /\ [][Next]_vars
+          /\ \A self \in Threads : SF_vars(thread(self))
 
-A TLA+ Spec From Scratch
-=========================
+.. todo:: Remember, ``Spec`` defines what *counts as a valid trace*. Fairness is an additional constraint, ruling out things like infinite stutters.
 
-Strong Fairness
----------------
+Notice that by writing ``\A self: SF_vars(self)``, we're effectively making every thread fair. If we instead wrote ``\E``, we'd be saying that at least one thread is fair, but the rest may be unfair. If both those conditions are syntactically intuitive to you, I'd say you fully understand how pure TLA+ works.
 
-For this spec, we have a worker doing some abstract job. It can succeed or fail. If it fails, it retries until it succeeds. We make both ``Succeed`` and ``Retry`` weakly fair and leave ``Fail`` unfair. 
 
-.. code-block:: none
+.. todo:: {CONTENT} A warning about how machine closure can blow up in your face
+
+Modeling Retry Logic
+------------------------------------
+
+In pluscal, we can only apply fairness conditions to labels, which correspond to top-level actions. In TLA+, we can apply the fairness condition to subactions, which gives us the branches of labels.
+
+::
 
   VARIABLES status
 
   Init == status = "start"
 
-  ChangeStatus(from, to) == status = from /\ status' = to
+  Trans(from, to) == 
+    /\ status = from 
+    /\ status' = to
 
-  Succeed == ChangeStatus("start", "done")
-  Fail == ChangeStatus("start", "fail")
-  Retry == ChangeStatus("fail", "start")
+  Succeed == Trans("start", "done")
+  Fail == Trans("start", "fail")
+  Retry == Trans("fail", "start")
 
   Next == Succeed \/ Fail \/ Retry \/ UNCHANGED status
 
   Fairness ==
-    /\ WF_status(Succeed)
+    /\ SF_status(Succeed)
     /\ WF_status(Retry)
 
   Spec == Init /\ [][Next]_status /\ Fairness
@@ -376,45 +403,50 @@ For this spec, we have a worker doing some abstract job. It can succeed or fail.
 
   ====
 
-Does ``Liveness`` hold? It does not! Our fairness clause only says that if ``Succeed`` is guaranteed if it is *permanently* enabled. The problem it's *not* permanently enabled. We could have the following error trace:
-
-.. code-block::
-
-  <Init>    status = "start"
-
-  <Fail>*   status = "fail"
-
-  <Retry>   status = "start"
-  <Fail>*   status = "fail"
-  <Retry>   status = "start"
-  ...
-
-After every step marked ``*``, ``status /= "start"``, so ``Succeed`` is not enabled. ``Retry`` _is_ enabled, and no action at this point can disable it, so it's guaranteed to happen. Now we're back with ``status = "start"``, and ``Succeed`` is enabled again. But then ``Fail`` happens and changes ``status``...
-
-Since ``Succeed`` keeps flipping between enabled and disabled, weak fairness can't guarantee it happens. If we want to make sure ``Succeed`` happens we need to make it **strongly fair**. Strong fairness says that if an action isn't permanently disabled it will eventually happen. Unlike weak fairness the action can be _intermittently_ enabled and is still guaranteed to happen. 
-
-.. code-block:: diff
-
-  Fairness ==
-  + /\ SF_status(Succeed)
-  - /\ WF_status(Succeed)
-    /\ WF_status(Retry)
-
-This satisfies ``Liveness``.
+This spec can fail an arbitrary number of times, but is guaranteed to eventually succeed.
 
 Why use TLA+?
 =============
 
-SO now that we have a brief overview of TLA+, let's double around to a basic question: *why bother*?
-What you can do with TLA+:
+So now that we have a brief overview of TLA+, let's come around to a basic question: *why bother*?  While TLA+ has a steeper learning curve than PlusCal, it also has a higher power ceiling. There are lots of things you can do in pure TLA+ that would be difficult or impossible to do in pluscal. Some examples:
 
-  * Multiple actions simutaneously
-  * Or
-  * Strong fairness on branches
-  * Refinement (next chapter)
-  * Refactoring actions
+* Writing helper actions, as we saw with `Trans <trans>`.
+* Using fairness in subtle ways, as in the last section.
+* Verifying a `refactored spec has the same behavior <action_refactoring>`.
+* Interruptable algorithms. Say I have the sequence of steps :math:`Start \to A \to B \to C \to D`, and A,B,C can all "reset" to start. In pluscal I'd have to model that by duplicated `either <either>` blocks:
 
-TODO
+  ::
+
+    A:
+      either
+        \* A step stuff
+      or
+        goto Start;
+      end either;
+    B:
+      either
+        \* B step stuff
+      or
+        goto Start;
+      end either;
+    \* ...
+
+  In TLA+, I can more easily write this as
+
+  ::
+
+    \/ \/ A
+       \/ B
+       \/ C
+       \/ D
+    \/ pc' = "Start"
+
+* Systems that would map onto having multiple processes in pluscal with the same values. 
+* :doc:`Refinement properties</topics/refinement>`.
+
+At the same time, it's okay to stick with PlusCal. Plenty of people never learn pure TLA+ and get along fine with just PlusCal. Just know that it has limits, and know when you're pushing against those limits.
+
+.. todo:: Summary
 
 .. _Specifying Systems: https://lamport.azurewebsites.net/tla/book-02-08-08.pdf
 .. [#plus] The "plus" is for the addition of ZF set theory.
