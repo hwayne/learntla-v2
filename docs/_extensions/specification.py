@@ -8,19 +8,6 @@ from docutils.nodes import Node
 from docutils.parsers.rst import directives # type: ignore
 from sphinx.directives.code import LiteralInclude
 from sphinx.writers.html import HTMLTranslator
-from state_space import StateSpaceRole
-
-
-class spec_caption_node(nodes.caption):
-    ...
-
-def visit_spec_caption_node(self: HTMLTranslator, node: spec_caption_node) -> None:
-    self.body.append(self.starttag(
-            node, 'div', CLASS=('spec-caption')))
-
-
-def depart_spec_caption_node(self: HTMLTranslator, node: spec_caption_node) -> None:
-    self.body.append('</div>\n')
 
 
 class SpecificationDirective(LiteralInclude):
@@ -33,7 +20,8 @@ class SpecificationDirective(LiteralInclude):
     option_spec = LiteralInclude.option_spec | {"hide-header": directives.flag, "ss": directives.unchanged_required, "fails": directives.flag}
 
     def run(self) -> List[Node]:
-        spec_dir = Path(self.env.srcdir) / "specs" 
+        
+        spec_dir = Path("/specs") 
         path = spec_dir / self.arguments[0]
         self.arguments[0] = path.as_posix()
 
@@ -46,6 +34,7 @@ class SpecificationDirective(LiteralInclude):
         
         self.options['caption'] = self.get_caption()
 
+        #breakpoint()
         out = super().run()
 
         if self.options.get('diff'):
@@ -86,10 +75,6 @@ class SpecificationDirective(LiteralInclude):
 
 def setup(app: Sphinx) -> Dict[str, Any]:
     app.add_directive("spec", SpecificationDirective)
-
-
-    app.add_node(spec_caption_node, html=(visit_spec_caption_node, depart_spec_caption_node))
-
 
     return {
         "version": "builtin",

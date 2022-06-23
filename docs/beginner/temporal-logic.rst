@@ -172,8 +172,8 @@ Because "Not always not P" is a mouthful, we have a separate operator that means
 
 The ``AllDone =>`` is just a precondition that ``counter = NumThreads`` is true at the end of the algorithm execution. Using ``<>`` we can rewrite it as a temporal property:
 
-.. spec:: threads\liveness_1\threads.tla
-  :diff: threads\3\threads.tla
+.. spec:: threads/liveness_1/threads.tla
+  :diff: threads/3/threads.tla
 
 (Remember this is checked under "Temporal Properties", not "Invariants"!)
 
@@ -181,16 +181,16 @@ When we run this with ``PROP Liveness, NULL <- [mv]`` the spec fails due to stut
 
 Making the threads fair makes this pass:
 
-.. spec:: threads\liveness_2\threads.tla
-  :diff: threads\liveness_1\threads.tla
+.. spec:: threads/liveness_2/threads.tla
+  :diff: threads/liveness_1/threads.tla
   :ss: threads_liveness
 
 .. index:: <>[]
 
 In one way, ``Liveness`` is more accurate than ``Correct``. In another way, though, it's *less* accurate. Here's a bug that wouldn't pass ``Correct``:
 
-.. spec:: threads\liveness_3\threads.tla
-  :diff: threads\liveness_2\threads.tla
+.. spec:: threads/liveness_3/threads.tla
+  :diff: threads/liveness_2/threads.tla
 
 When we're done, ``counter = 3``... but ``Liveness`` still passes! This is because ``<>(counter = 2)`` is true if ``counter = 2`` in *at least one state* of the behavior. It doesn't matter if we then change *away* from that, because it's been true at least once.
 
@@ -198,8 +198,8 @@ When we're done, ``counter = 3``... but ``Liveness`` still passes! This is becau
 
 Fortunately, our temporal operators are extremely flexible, and we can compose them together. If ``[]P`` means "P is always true", and ``<>P`` is "P is eventually true", then ``<>[]P`` is "eventually P is always true". P can start out false, but after some point in every behavior, it will forevermore be true.
 
-.. spec:: threads\liveness_4\threads.tla
-  :diff: threads\liveness_3\threads.tla
+.. spec:: threads/liveness_4/threads.tla
+  :diff: threads/liveness_3/threads.tla
   :fails:
 
 This now fails, as ``counter`` doesn't stay as 2.
