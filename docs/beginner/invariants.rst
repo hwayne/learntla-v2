@@ -46,11 +46,11 @@ This operator needs to know about the ``all_unique`` variable, so we have to put
 
 To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at every possible state. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
 
-.. todo:: {SCREENSHOT}
+.. figure:: SCREENSHOT
 
-.. todo:: {CONTENT} talk about the error trace
+This shows a series of steps, starting from the initial state. Let's look at the first two states in more detail. {CONTENT} talk about the error trace
 
-  (There's a little more we can do with the error trace, see `here <topic_toolbox>`.)
+  (There's a little more we can do with the error trace, see :doc:`here </topic/toolbox>`.)
 
 
 So back to the nature of the invariant. We say ``all_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
@@ -124,6 +124,18 @@ On every label *except* "Done", this evaluates to TRUE and the invariant passes.
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 
 I said ``=>`` was really important earlier. This is one of those ways: it lets us say invariants should only apply under certain conditions. 
+
+.. warning::
+
+  ``=>`` follows the same indentation rules as other boolean operators. This means that
+
+  ::
+
+    /\ A
+    /\ B
+     => C
+
+  Is interpreted as ``A /\ (B => C)``, *not* ``(A /\ B) => C``. When it doubt, add in parenthesis.
 
 We can now run this as our full invariant, and the spec works :ss:`duplicates_many_inputs`. 
 
@@ -344,13 +356,13 @@ This now passes.
 
   .. rubric:: More invariant practice
 
-    _issorted:
+  _issorted:
 
-    ::
+  ::
 
-      IsSorted(seq) ==
-        \A i, j \in 1..Len(seq):
-          i < j => seq[i] <= seq[j]
+    IsSorted(seq) ==
+      \A i, j \in 1..Len(seq):
+        i < j => seq[i] <= seq[j]
 
   .. todo:: Find actual names for everything
 

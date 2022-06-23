@@ -8,9 +8,9 @@ This isn't much more complicated than the last sections, but this is the best pl
 
 Sum up sequence.
 
-I mean sure, we can write a Pluscal algoirhtm to do that:
+I mean sure, we can write a Pluscal algoirthm to do that:
 
-.. todo:: <alg>
+.. spec:: advanced_operators/sum.tla
 
 But how the heck do you write ``SumSeq``?!
 
@@ -89,7 +89,7 @@ Not too bad. You can define anonymous operators with ``LAMBDA``:
 Binary operators
 ================
 
-If you `peek <toolbox_misc>` at the definition of the `Sequences` module, you'll see how it defines ``\o``:
+If you `peek <toolbox_misc>` at the definition of the ``Sequences`` module, you'll see how it defines ``\o``:
 
 ::
 

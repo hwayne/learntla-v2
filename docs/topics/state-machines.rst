@@ -55,3 +55,8 @@ Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/
   }
   D -> C;
   B -> D[ltail="cluster_A"];
+
+1. *Function from states to their parents*: Impossible for a state to have two parents. Worse ergonomics on checking transitive membership, as not all states will be in the function domain.
+2. *Function from states to the set of children*: Function domain guaranteed to be all states. Two states can have the same child state.
+
+Ah heck, let's implement both and check they're equivalent.

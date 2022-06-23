@@ -1,3 +1,5 @@
+.. role:: btn
+
 .. _topic_toolbox:
 
 ###########################
@@ -9,22 +11,66 @@ The toolbox has a number of power-user tools to make using it easier.
 Error Traces
 ==============
 
-Let's create a simple spec to look at how the error trace works.
+Let's create a simple spec to look at how the error trace works. This doesn't need to do anything interesting, just produce an error trace we can use.
+
+.. spec:: topics/trace.tla
+
+If you run this with ``INVARIANT xyleq10``, then you should get an error trace like this:
+
+.. figure:: img/error_trace.png
+
+By this point you're probably familiar with the basics of the error trace: the each dropdown is a single step. Values in red are variables that changed that step. If the variable is a function, it can be expanded to see which keys changed specifically.
+
+The rest of the trace features aren't exactly *hidden*, but they aren't really advertised either.
 
 Error Trace Information
 ------------------------
 
+Here's a quick markup:
+
+.. figure:: Marked_Up
+
+1. Clicking on this copies the error trace as a TLA+ struct. The head toolbox dev is currently working on a feature to also copy it as a JSON, but that's not done yet.
+2. Clicking this lets you filter out variables from the error trace (such as :doc:`aux-vars`). You can also hide all unchanged variables in each step.
+3. Expands and closes all the trace steps. Good for getting a quick overview of the action flow.
+4. When toggled, clicking on an action line will automatically jump to that action in the spec. 
+
+There are also things can do by clicking on the states and values:
+
+- Alt-clicking a variable hides it from the trace. To re-show it, click the filter button again. 
+- Double-clicking an action jumps to the corresponding spec code. Ctrl-doubleclicking jumps to any corresponding pluscal label.
+- Right-clicking an action lets rerun the same model with that action's state as the initial state.
 
 Trace Explorer
 ------------------------
 
-How it works
-Allows primes
+The last and most complex feature of the error panel is the "Error-Trace Exploration" pane. Any expression added to this pane is evaluated at every state of the error trace, and the results shown. For example, if I add ``prod == x * y`` and then click the :btn:`Explore` button, ``prod`` will show up in the error trace.
+
+.. figure:: img/error_trace_explorer.png
+
+To go back to the original trace, click :btn:`Restore`.
+
+The explorer is a very powerful feature. Any operators added to it can be used in other explorer expression, ie ``prod > x`` is a valid expression. Additionally, you can place `primed values <prime>` in it, too! Remember, ``x'`` is the value of x in the *next* state. This goes for operators, too: ``prod' = x' * y'``.
+
+Finally, we can test entire actions. An action is true if it accurately describes the next state.
+
+.. figure:: img/error_trace_action.png
+  
+  Adding an action to error trace 
+
+The trace explorer is a powerful tool to debug specs, and I'd recommend spending some time getting familiar with it.
+
+.. seealso::
+
+  `ALIAS <ALIAS>`
+    ``ALIAS`` gets you some of the same benefits if you're instead running TLC from the command line.
 
 Model Configuration
 ========================
 
-This is **not** comprehensive. More comprehensive notes can be found in the toolbox help files and TK.
+On the Model Overview page of a model, there are three 
+This is **not** comprehensive. More comprehensive notes can be found in the toolbox help files.
+
 
 Additional Spec Options
 -----------------------
@@ -33,8 +79,6 @@ State Constraint
 
   TLC will ignore any states of the model that don't satisfy the state constraint. For example, take this spec:
   
-  .. todo:: add the numbers
-
   ::
 
     EXTENDS Integers
@@ -49,14 +93,17 @@ State Constraint
 
   Invariants **will** be checked first, though, before the state is discarded. This means that if we change the state constraint to ``x < 10``, it will fail. The state constraint only prevents TLC from searching from new states *from* the discarded state.
 
-  A good use for state constraints is to bound unbound specifications.
-
   Liveness invariants can't be checked when the state constraint is active.
+
+  .. tip:: Use state constraints are a good way to bound unbound models.
 
 Action Constraint
 
   Similar to a state constraint, except it's an action. In the above spec, you can write ``x' > x`` to only explore states where x increases.
 
+Definition Override
+
+  Here you can replace the definitions of some operators with custom ones. For example, if you add the definition override ``Int <- 1..10``. This is mostly often used by people who want say that a variable starts as "any integer" but limit it to a finite set for model checking.
 
 
 Additional TLC Options
@@ -70,6 +117,7 @@ Worker threads
 
 
 Fraction of memory
+
   How much memory TLC can use for checking. If the model exceeds this limit then TLC will start writing found states to disk, significantly increasing model-checking time.
 
   Note that TLC needs to preallocate all of the memory before it starts model checking, and then free it afterwards. For small enough models and large enough computers, allocation time can exceed the model runtime! 
@@ -90,16 +138,22 @@ Simulation Mode
 
   Simulation mode runs never stop, even if they've exhaustively checked the state space. You have to end them manually.
 
+Profiling
+  Two types of profiling are available. "Action Enablement" records how often each partiuclar action was called. This is shown in the model checking results, under statistics. You can use this to check if an action is never enabled, in which case you have a bug in your spec.
+
+  "On" does full profiling: how often each operator is called, how often each branch of an expression was used, and how much each operator cost to invoke. You can use this to help with optimizing models.
+
+  (I plan to write a topic on optimizing model checking. When that happens I'll try to cover profiling in more detail.)
+
 Visualize state graph
   Requires `graphviz`_. Generates a directed graph after the end of model checking. This can be useful for understanding small state spaces. But for large state spaces you're better off `dumping <dump>` the output yourself and pruning the graph or loading it into something like `Gephi`_.
+
+.. _toolbox_tlc_cl:
 
 TLC command-line parameters
   You can pass additional command line parameters to TLC that aren't exposed in the toolbox GUI. See `here <tlc_options>` for more information on what you can pass in.
 
 
-
-Profiler
-=============
 
 .. _toolbox_misc:
 
@@ -108,6 +162,7 @@ Misc Features
 
 - There's autocomplete with ``ctrl+space``.
 - Pressing ``F3`` on a module name will jump to its definition.  
+
 .. _graphviz: https://graphviz.org/
 
 .. _Gephi: https://gephi.org/

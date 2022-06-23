@@ -43,3 +43,10 @@ PlusCal Specs
 
   https://andy.hammerhartes.de/finding-bugs-in-systems-through-formalization.html
 
+  https://www.g9labs.com/2022/03/12/what-s-the-fuss-about-formal-specifications-part-2/
+
+.. todo::
+
+  Ideas:
+
+    - Mutex DAG tracer?

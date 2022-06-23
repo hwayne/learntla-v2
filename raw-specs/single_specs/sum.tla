@@ -1,8 +1,7 @@
-!!!
 target: specs/advanced_operators/sum.tla
 !!!
 LoadLocal !tlacli check % --inv IsCorrect --const S "{1, 2, 3}"
-!!!
+
 RECURSIVE SumSeq(_)
 
 SumSeq(s) == IF s = <<>> THEN 0 ELSE

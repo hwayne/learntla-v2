@@ -1,13 +1,6 @@
-<?xml version="1.0"?>
-<root folder="wire">
-<spec name="wire" num="2">
----- MODULE $name ----
-EXTENDS TLC, Integers<s on="2-">
-CONSTANTS People, Money, NumTransfers</s><s on="1">
-
-People == {"alice", "bob"}
-Money == 1..10
-NumTransfers == 2</s>
+---- MODULE wire ----
+EXTENDS TLC, Integers
+CONSTANTS People, Money, NumTransfers
 
 (* --algorithm wire
 variables
@@ -25,9 +18,9 @@ variable
   from \in People;
   to \in People
 begin
-  Check<s on="3">AndWithdraw</s>:
+  Check:
     if acct[from] >= amnt then
-      <s on="-2">Withdraw:</s>
+      Withdraw:
         acct[from] := acct[from] - amnt;
       Deposit:
         acct[to] := acct[to] + amnt;
@@ -36,5 +29,3 @@ end process;
 end algorithm; *)
 
 ====
-</spec>
-</root>

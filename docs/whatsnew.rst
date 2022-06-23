@@ -32,6 +32,7 @@ Roadmap
   - Community modules
   - Modeling legacy systems
   - Machine-world differences
+  - Keeping a spec and a codebase in sync
 
 * Examples:
 

@@ -4,9 +4,8 @@
 Auxiliary Variables
 #####################
 
-History, helper, prophecy, error trace variables
 
-While TLA+ properties have al oto f flexibility, they also have limits. You can't "forget" a property, like say "P is true until Q is true, after while P can be false." Say you write it as "~P => Q". Then if we set ~P and *then* set ~Q, the invariant fails, even though we should have "forgotten" it. 
+While TLA+ properties have a lot of flexibility, they also have limits. You can't "forget" a property, like say "P is true until Q is true, after while P can be false." Say you write it as "~P => Q". Then if we set ~P and *then* set ~Q, the invariant fails, even though we should have "forgotten" it. 
 
 We can sort of fix this by adding a new variable ``Q_was_true``, then write the property as
 
@@ -39,6 +38,7 @@ Variables that represent something that happened. ``Q_was_true`` is a history va
 
 You can also use history variables to track past information no longer present in the system. Say you want to make sure that two threads alternate in the critical section, so that neither reaches the critical section twice in a row.
 
+.. message pool, seen messages
 .. todo:: Pull the example from Dekker
 
 Error Variables
@@ -96,6 +96,15 @@ Bounding Variables
 ---------------------
 
 We already saw one of these in our ``reader_writer`` spec. We never let any process write to a queue forever; we always had them write at most N messages. This is because, if they could write forever, we'd have an unbound state space!
+
+
+.. prophecy variables, reduce nondeterminism
+
+  Example call will fail
+
+  Very rare, mostly used for refinements
+  if aux_proph_will_receipt then
+
 
 Usage Notes
 ===============

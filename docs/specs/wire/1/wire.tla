@@ -3,7 +3,9 @@ EXTENDS TLC, Integers
 
 People == {"alice", "bob"}
 Money == 1..10
-(*--algorithm wire
+NumTransfers == 2
+
+(* --algorithm wire
 variables
   acct \in [People -> Money];
 
@@ -13,11 +15,11 @@ define
       acct[p] >= 0
 end define;
 
-process wire \in {1, 2}
+process wire \in 1..NumTransfers
 variable
-amnt \in 1..5;
-from \in People;
-to \in People
+  amnt \in 1..5;
+  from \in People;
+  to \in People
 begin
   Check:
     if acct[from] >= amnt then

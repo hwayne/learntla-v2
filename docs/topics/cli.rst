@@ -80,6 +80,7 @@ A basic config file might look like this:
 Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, which work equivalently to their `Toolbox options <topic_toolbox>`. 
 
 .. index: ALIAS
+.. _ALIAS:
 
 Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer` on the command line. Let's say we have the following spec:
 
@@ -115,6 +116,16 @@ TLC Options
 -----------
 
 Now that we know how to run a config file, let's get back to the TLC options. You can read all of them with ``java -jar tla2tools.jar -help`` (*not* ``-h``), or by reading them `here <https://lamport.azurewebsites.net/tla/current-tools.pdf>`_ (pages 9-11). Most of them are self-explanatory or equivalent to toolbox options. See the `Toolbox topic <topic_toolbox>` for more information on how to use them. The main things of note are:
+
+``-continue``
+  Will continue model checking even after a violation is found. Every single invariant violation will be dumped as output.
+
+  .. warning::
+
+    Don't pass this in `as a flag in the toolbox <toolbox_tlc_cl>`, or it will think it's an error:
+
+      | An error has occurred. See error log for more details.
+      | assertion failed: Two traces are provided. Unexpected. This is a bug
 
 .. _dump:
 

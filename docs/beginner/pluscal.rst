@@ -10,8 +10,7 @@ Overview
 
 In the :doc:`last chapter <operators>`, we introduced operators, sets, and values, and did some simple computation with them. Now that we have that groundwork done, it's time to actually talk about specifications.
 
-.. index:: PlusCal
-  :name: pluscal
+.. index:: pluscal
 
 TLA+ is the *Temporal Logic of Actions*, where the "actions" are descriptions of state changes in the system. It's a powerful way of expressing mutation, but it is also very general, accepting a large degree of complexity to be able to express more powerful systems. Many engineers struggle to start learning it. So in 2009, Leslie Lamport created a DSL called PlusCal: a more programming-like syntax that compiles to TLA+ actions.
 
@@ -45,6 +44,8 @@ Alternatively, we can use :kbd:`cmd-T` on Mac or :kbd:`ctrl-T` on Windows and Li
 
 
 That's what's actually run when we model check this spec.
+
+.. tip:: If you right-click in the spec, there's an option at the bottom of the context menu to "Translate PlusCal Automatically". This helps if you keep forgetting to translate, though it raises an error if you're writing a :doc:`pure TLA+ spec <tla>`.
 
 .. index:: Labels
   :name: label
@@ -102,7 +103,7 @@ The point is this: the labels let us specify just how concurrent our system is. 
 Label Rules
 --------------
 
-We're modeling time here, so there are restrictions on where we can place the labels.
+We're modeling time here, so there are restrictions on where we can place the labels. We'll recap all of the label rules `at the end <label_rules_summary>`.
 
 First, **all statements must belong to a label.** This means, among other things, that you miust always start the algorithm with a label.
 
@@ -131,11 +132,16 @@ PlusCal expressions
 
 In addition to updates, there are three other statement-level constructs: 
 
-.. index:: skip; assert; goto
+.. index:: skip, assert, goto
 .. _goto:
 
 * ``skip``: a noop.
 * ``assert expr``: TLC immediately fails the model check if ``expr`` is false. (This breaks the "everything in the label happens at once", as TLC will stop *as soon* as it finds a failing ``assert``.) To use ``assert`` you need to extend ``TLC``.
+
+  .. warning::
+
+    The error trace will *not* show the step that triggered the failing assert! For that reason, prefer invariants to asserts.
+
 * ``goto L``: jumps to label ``L``. **A label must immediately follow any goto statement**.
 
 .. todo:: {CONTENT} Also mention print
@@ -235,8 +241,6 @@ while
     end while;
 
 **While is nonatomic**. After each iteration of the while loop, we're back at the ``Sum`` label. Other processes can run before the next iteration. This doesn't change things for single process algorithms, but it will matter a lot when we start adding in concurrency.
-
-.. todo:: {exercise}  showing that it has multiple states
 
 .. index:: ! duplicates
 .. _duplicates:
@@ -348,6 +352,8 @@ Summary
   - ``with`` creates temporary identifiers in a block.
   - ``while`` statements are nonatomic: every loop happens in a separate step.
 
+.. _label_rules_summary:
+
 Summary of Label Rules
 ----------------------
 
@@ -357,20 +363,3 @@ Summary of Label Rules
 - Macros and ``with`` statements cannot contain labels.
 - A `goto` must be followed by a new label.
 - If a branch in a block contains a label inside it, the end of the block must be followed with a label.
-
-- PlusCal expressions:
-
-  - assert, goto, skip
-
-- PlusCal constructs
-
-  - If
-  - While
-  - Macro
-  - With
-
-
-- Labels represent *atomicity*.
-
-  - Label rules:
-

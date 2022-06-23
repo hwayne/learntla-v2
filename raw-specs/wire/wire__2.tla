@@ -1,15 +1,9 @@
-target: specs/wire/1/wire.tla
-states:
-  wire_overview:
-    states: 835594
-    distinct: 518794
+target: specs/wire/2/wire.tla
 !!!
----- MODULE wire__1 ----
-EXTENDS TLC, Integers
 
-People == {"alice", "bob"}
-Money == 1..10
-NumTransfers == 2
+---- MODULE wire__2 ----
+EXTENDS TLC, Integers
+CONSTANTS People, Money, NumTransfers
 
 (* --algorithm wire
 variables

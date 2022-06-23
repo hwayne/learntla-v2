@@ -5,9 +5,7 @@ Refinement
 ############
 
 
-.. note:: 
-
-  I haven't written this one yet, but in the meantime you can an introduction on `my blog <https://hillelwayne.com/post/refinement/>`__. It has all the content I want to talk about, I just need to adapt it to match this site's style.
+I haven't written this one yet, but in the meantime you can find an introduction on `my blog <https://hillelwayne.com/post/refinement/>`__. It has all the content I want to talk about, I just need to adapt it to match this site's style.
 
 .. todo::
 

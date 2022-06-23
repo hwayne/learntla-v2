@@ -90,6 +90,5 @@ state_spaces:
     distinct: 17
     states: 19
   wire_overview:
-    config: 1
-    distinct: 1
-    states: 2
+    distinct: 518794
+    states: 835594

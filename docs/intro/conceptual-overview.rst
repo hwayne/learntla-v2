@@ -59,6 +59,12 @@ The specification has a set of "behaviors", or possible distinct executions. For
 
 .. todo:: {GRAPH}
 
+  .. digraph:: G
+
+    node[label=""]
+
+    A -> B -> C;
+
   Each box is a state. Any sequence of boxes and arrows is a behavior. The set of all behaviors forms the specification.
 
 .. note:: "No account can overdraft" is an **invariant** property, which is one that must be true of every single state of every single behavior. There are other, more advanced properties, like `liveness <chapter_temporal_logic>` and `action <chapter_action_properties>` properties, which we'll cover in time.
@@ -77,7 +83,7 @@ Specifications
 
 So what does this all look like in practice? Let's present a spec for wire transfers, first with hardcoded parameters and then with model-parameterizable ones.
 
-.. spec:: wire.tla
+.. spec:: wire/1/wire.tla
   :name: wire
   :fails:
 
@@ -89,7 +95,7 @@ Over the rest of the book I'll be covering how all of this works syntactically. 
 * The variable ``acct`` isn't a fixed value, it is one of 100 different values, one for each element of ``[People -> Money]``. When we model check this, TLC will explore every possible behavior starting from every one of these 100 possible initial values.
 * ``NoOverdrafts`` is a `quantifier <\A>`. It's true if *every* account is >= 0 and false otherwise. In python, this might be equivalent to ``all([acct[p] >= 0 for p in People])``. Quantifiers are an extremely powerful feature of TLA+, making it easy to write very complex properties.
 * We have more than one ``wire`` `process` running simultaneously. With ``NumTransfers == 2``, there are two processes in the spec. But we can choose to have ten, a hundred, or a thousand processes if we really want, our only limit is our CPU time.
-* Each step of the algorithm belongs to a separate `label`. The labels determine what happens atomically and what can be interrupted by another process. That way we can represent race conditions.
+* Each step of the algorithm belongs to a separate `label <label>`. The labels determine what happens atomically and what can be interrupted by another process. That way we can represent race conditions.
 
 
 Models
@@ -101,16 +107,13 @@ Once we have our design, we can model check it against some requirements. We can
 
 We checked it with two transfers. But what if we wanted to check it with four transfers? TLA+ makes it very easy to change our designs. We can parameterize any value, and then have different models check with different values.
 
-.. todo:: wire2
-
-.. spec:: wire.tla
+.. spec:: wire/2/wire.tla
+  :diff: wire/1/wire.tla
   :fails:
 
-Now I can make separate models, with the same invariant, but different numbers of workers.
+Now I can make separate models, with the same invariant, but different numbers of simultaneous transfers. So I can see that it works correctly with one transfer but not two. 
 
 Discussion
 ==========
 
 There's a few concepts I haven't introduced here: temporal properties, fairness, stutter-invariance, etc. All of these will be covered later. Hopefully, though, this is enough to give you a sense of what, if you decide to learn TLA+, you'll actually be able to *do* with it. If you're interested in continuing, check out the :doc:`core </beginner/index>` and `setup`.
-
-Test with the fixed 
