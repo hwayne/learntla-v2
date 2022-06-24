@@ -28,7 +28,7 @@ Error Trace Information
 
 Here's a quick markup:
 
-.. figure:: Marked_Up
+.. figure:: img/error_trace_annotated.png
 
 1. Clicking on this copies the error trace as a TLA+ struct. The head toolbox dev is currently working on a feature to also copy it as a JSON, but that's not done yet.
 2. Clicking this lets you filter out variables from the error trace (such as :doc:`aux-vars`). You can also hide all unchanged variables in each step.

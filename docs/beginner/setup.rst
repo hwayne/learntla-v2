@@ -51,6 +51,7 @@ Once you do that, you should see this:
 .. figure:: img/setup/translated_output.png
 
 
+.. _running_models:
 
 Running Models
 ====================
@@ -74,7 +75,7 @@ When you run this, you will see an error pop up on the right side:
 
 .. figure:: img/setup/error_trace.png
 
-This is an *error trace*, showing the exact set of steps that lead to an invariant being violated.
+This is an *error trace*, showing the exact set of steps that lead to an invariant being violated. We'll talk about it a bit more when we get into :doc:`invariants in depth <invariants>`
 
 .. _scratch:
 

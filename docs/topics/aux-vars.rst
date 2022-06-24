@@ -36,10 +36,13 @@ Variables that represent something that happened. ``Q_was_true`` is a history va
   Prop ==
     [][Q_was_true => UNCHANGED Q_was_true]_Q_was_true
 
-You can also use history variables to track past information no longer present in the system. Say you want to make sure that two threads alternate in the critical section, so that neither reaches the critical section twice in a row.
+You can also use history variables to track past information no longer present in the system. For example, say you have clients querying a database, which can be updated in the middle in the request. You could add a variable called ``aux_client_request_value`` that is updated *as soon as the client makes the request*, so that updating the database value doesn't lose the information about what the value was at the time of the request.
+
 
 .. message pool, seen messages
 .. todo:: Pull the example from Dekker
+
+.. tip:: As a rule of thumb, the spec behavior should not depend on a history variable. If it does, then it's state information the machine you're making has access to, so should be lifted from an auxiliary variable to a real one.
 
 Error Variables
 ----------------
@@ -89,13 +92,35 @@ Another common use is to keep a historical log of what happened when::
 
 .. seealso::
 
-  ALIAS
-    If you just want to compute somethig *per state*.
+  `ALIAS <ALIAS>`
+    If you just want to compute something directly from the state.
 
 Bounding Variables
 ---------------------
 
 We already saw one of these in our ``reader_writer`` spec. We never let any process write to a queue forever; we always had them write at most N messages. This is because, if they could write forever, we'd have an unbound state space!
+
+One way I like to use bounding variables is to introduce a *small* error into the system. If I want to model dropping messages, I'll write it as
+
+::
+
+  either
+    queue := Append(queue, msg);
+  or
+    await aux_drops_left > 0;
+    aux_drops_left := aux_drops_left - 1;
+  end either;
+
+(See :doc:`state machines <state-machines>` for a description of how the ``either await`` pattern works.)
+
+Then I can test the system with no drops, or only one drop. The system will not be able to drop every single message.
+
+Prophecy Variables
+---------------------
+
+Prophecy variables dictate something will happen *in the future*. Effectively they're a way of pushing nondeterminism earlier in your spec. 
+
+.. todo:: Give example
 
 
 .. prophecy variables, reduce nondeterminism
@@ -105,6 +130,8 @@ We already saw one of these in our ``reader_writer`` spec. We never let any proc
   Very rare, mostly used for refinements
   if aux_proph_will_receipt then
 
+
+.. todo:: Economy variables
 
 Usage Notes
 ===============

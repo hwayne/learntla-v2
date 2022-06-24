@@ -134,6 +134,7 @@ In addition to updates, there are three other statement-level constructs:
 
 .. index:: skip, assert, goto
 .. _goto:
+.. _assert:
 
 * ``skip``: a noop.
 * ``assert expr``: TLC immediately fails the model check if ``expr`` is false. (This breaks the "everything in the label happens at once", as TLC will stop *as soon* as it finds a failing ``assert``.) To use ``assert`` you need to extend ``TLC``.
@@ -270,11 +271,12 @@ I called this spec ``duplicates``, but the name isn't too important for this.
 
 (I *think* this is self-explanatory, but I've been doing this so long I have no idea what is or isn't explanatory anymore. If enough people say otherwise I'll put a fuller description here.)
 
-If you run it, you will see a page like this:
+If you `run it <running_models>`, you will see a page like this:
 
-.. todo:: {SCREENSHOT}
+.. image:: img/pluscal_run.png
+  :target: img/pluscal_run.png
 
-To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too.
+I know this completed successfully because otherwise a big error bar would have appeared on the right-hand side. Everything on this page is statistics to help you understand the run better:
 
 .. figure:: graphs/duplicates_1.gv.png
 
@@ -282,6 +284,10 @@ To make sure that you're following properly, you can check that that you got the
 .. note::
 
   The first column, ``diameter``, is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
+
+To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too. If you get a different number, you may have made a mistake in transcribing the spec. The states and distinct states make a partial "fingerprint" of the model. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check under the code listing. 
+
+.. note:: You'll get a different number than me if the spec *fails*, because TLC will terminate execution early. In that case, I will note that the modelcheck should fail when showing the code listing.
 
 .. index:: \in, variable definition
 
@@ -315,9 +321,6 @@ Adding multiple starting states increases the complexity of our model. If, in a 
 
 We might think, with 1000 initial states and 2 labels, there will be 3,000 total states. In practice, the first label "collapses" the state space. So the number of *distinct* states will be far smaller.
 
-We can use the number of states and distinct states as a partial "fingerprint" of a model. Going forward, we'll use that as a form of error checking. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check. For example, with the multiple starting states before, I got :ss:`duplicates_two_inputs`. If you got a different number, you may have made a mistake in transcribing.
-
-.. note:: We *cannot* use this as a fingerprint if the spec *fails*, because TLC will terminate execution early. In that case, I will note that the modelcheck should fail when showing the code listing.
 
 10,000 starting states
 ----------------------

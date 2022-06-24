@@ -3,23 +3,35 @@
 <spec name="pluscal" num="1">
 ---- MODULE $name ----
 
-(*--algorithm HTTP
-variable state = "idle"
+(*--algorithm lamp
+variable state = "BothOff";
 process StateMachine = "SM"
 begin
   Action:
     either \* this is the state machine
-      await state = "idle";
-      state := "fetching";
+        await state = "BothOff";
+        state := "WallOff";
+      or
+        await state = "BothOff";
+        state := "LampOff";
     or
-      await state = "fetching";
-      state := "idle"; \* success! 
+        await state = "LampOff";
+        state := "BothOff";
+      or
+        await state = "LampOff";
+        state := "On";
     or
-      await state = "fetching";
-      state := "error"; \* failure :( 
+        await state = "WallOff";
+        state := "BothOff";
+      or
+        await state = "WallOff";
+        state := "On";
     or
-      await state = "error"
-      state := "fetching";
+        await state = "On";
+        state := "LampOff";
+      or
+        await state = "On";
+        state := "WallOff";
     end either;
     goto Action;
 end process;
@@ -35,16 +47,22 @@ Trans(a, b) ==
   /\ state = a
   /\ state' = b
 
-Init == state = "idle"
+Init == state = "BothOff"
 
 Next == 
-  \/ Trans("idle", "fetching")
-  \/ Trans("fetching", "idle")
-  \/ Trans("fetching", "error")
+  \/ Trans("BothOff", "WallOff")
+  \/ Trans("BothOff", "LampOff")
+  \/ Trans("WallOff", "On")
+  \/ Trans("WallOff", "BothOff")
+  \/ Trans("LampOff", "BothOff")
+  \/ Trans("LampOff", "On")
+  \/ Trans("On", "WallOff")
+  \/ Trans("On", "LampOff")
   \/ Trans("error", "fetching")
 
 Spec == Init /\ [][Next]_state
 ====
+</spec>
 </root>
 
 

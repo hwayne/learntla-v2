@@ -17,9 +17,9 @@ In the last chapter, we wrote a simple specification for finding duplicates in a
   (*--algorithm find_duplicates
   variables
     seq \in S \X S \X S \X S;
-    all_unique = TRUE;
+    is_unique = TRUE;
   begin
-    all_unique := FALSE;
+    is_unique := FALSE;
   end algorithm; *)
 
 
@@ -32,28 +32,39 @@ The most common invariant we use in programming: static types! When I have a var
 ::
 
   TypeInvariant ==
-    /\ all_unique \in BOOLEAN
+    /\ is_unique \in BOOLEAN
 
 
 .. index:: define
 .. _define:
 
-This operator needs to know about the ``all_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper. A define block contains pure TLA+ operators, and the operators may reference the values of PlusCal variables.
+This operator needs to know about the ``is_unique`` variable, so we have to put it after the definition in PlusCal. There's a special block, the ``define`` block, we can put between variable definition and the algorithm proper. A define block contains pure TLA+ operators, and the operators may reference the values of PlusCal variables.
 
 .. spec:: duplicates/inv_1/duplicates.tla
   :diff: duplicates/3/duplicates.tla
   :ss: duplicates_many_inputs
 
-To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at every possible state. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``all_unique = TRUE``:
+To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at every possible state. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``is_unique = TRUE``:
 
-.. figure:: SCREENSHOT
+.. figure:: img/invariants_fail.png
 
-This shows a series of steps, starting from the initial state. Let's look at the first two states in more detail. {CONTENT} talk about the error trace
+This shows a series of steps, starting from the initial state. The top box shows which invariant was violated (useful if we have several), and the bottom box is the sequences of steps that lead to the invariant being violated. Let's look at the first two states in more detail:
 
-  (There's a little more we can do with the error trace, see :doc:`here </topic/toolbox>`.)
+.. figure:: img/invariants_fail_annotated.png
+
+#. This box shows the action that happened in that step. For the first one, no action happened, so it instead says ``<Initial Predicate>``.
+#. These are the values of each variable after the action happens. For ``<Initial Predicate>``, these are the starting values of the error trace. Notice how ``seq`` is now a *fixed* value, one of the values in the set we said it could be.
+#. ``pc`` is an extra variable the translator makes to track what label we're on. We'll talk about it `in a little bit <pc>`.
+#. An ``Iterate`` action happens. This changes the values of ``index`` and ``seen``. Values changed in a step are shown in red.
+#. When an invariant fails, the last step will be the one it failed on. Here we can see that after we check the second element, ``is_unique`` is false, breaking the invariant.
+
+.. warning:: If an `assert` fails instead of an invariant, the error trace will end with the step *before* the assertion failed.
 
 
-So back to the nature of the invariant. We say ``all_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
+(There's a little more we can do with the error trace, see :doc:`here </topics/toolbox>`.)
+
+
+So back to the nature of the invariant. We say ``is_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
 
 ::
 
@@ -105,9 +116,9 @@ If the sequence has duplicates, then we won't run the ``\union`` line every sing
 pc
 ....
 
-Time for a quick leaky abstraction. We talk about the labels as being the units of atomicity. That's a PlusCal abstraction to help developers. These are translated to the "actions" in TLA+. To track the label, the PlusCal translator adds an additional variable called ``pc``. The value of ``pc`` is a string matching the name of the current label we evaluated.
+Time for a quick leaky abstraction. We talk about the labels as being the units of atomicity. That's a PlusCal abstraction to help developers. These are translated to the "actions" in TLA+. To track the label, the PlusCal translator adds an additional variable called ``pc``. The value of ``pc`` is a string matching the name of the current label we are about to evaluate.
 
-You can see this in the error trace. When we start the algorithm, ``pc = "Iterate"``. After the algorithm completes, ``pc = "Done"``. So we can only test our invariant at the end with
+You can see this in the error trace. When we start the algorithm, ``pc = "Iterate"``. After the algorithm completes, ``pc = "Done"``. So we can test our invariant at just the end with
 
 ::
 
@@ -354,16 +365,6 @@ This now passes.
 
 .. todo::
 
-  .. rubric:: More invariant practice
-
-  _issorted:
-
-  ::
-
-    IsSorted(seq) ==
-      \A i, j \in 1..Len(seq):
-        i < j => seq[i] <= seq[j]
-
   .. todo:: Find actual names for everything
 
   Consider we have an event queue of events that happen in a system, where the queue is represented by a sequence of strings. One of teh invariants of the system is that "A can only come after B if the D flag is set."
@@ -393,6 +394,8 @@ This now passes.
 
     .. rubric:: More invariant practice
 
+    _issorted:
+
     ``=>`` is extremely powerful, so let's spend more time working with it. How would we write an operator that tests if a sequence is sorted in ascending order? What would ``IsSorted(seq)`` look like
 
     ::
@@ -402,10 +405,12 @@ This now passes.
           i < j => seq[i] <= seq[j]
 
 
-When to use Invariants
-=======================
 
 .. todo::
+
+  When to use Invariants
+  
+  .. =======================
 
   The invariant we wrote here, "the algorithm has the correct answer at the end", isn't usually written *as an invariant*. There's a more elegant way to specify that, which we'll be covering in a `later chapter <chapter_temporal_logic>`.
 
@@ -419,7 +424,7 @@ When to use Invariants
 Summary
 ========
 
-* Invariant
+* An Invariant is something that much be true of every state in our specification.
 * Type Invariants
 * Implication
 * Quantifiers

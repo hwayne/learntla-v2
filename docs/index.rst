@@ -31,17 +31,15 @@ This is a free online resource for learning TLA+. To help both beginners and exp
 
 - *Topics*: "Optional" advanced material. Any individual lesson will be useful to *many* but not *all* TLA+ users. Unlike the core, these are designed to be mostly independent of each other. If topics have dependencies on other topics, I will call them out.
 
-- *Examples:* Applications of TLA+ to specs, showing both how to write and undersstand specs. 
+- *Examples:* Applications of TLA+ to specs, showing both how to write and understand specs. 
 
-The guide is still under development, check :doc:`whatsnew` to see most recent updates and the {{roadmap}} to see what I'm currently working on.
+The guide is still under development, check :doc:`whatsnew` to see most recent updates and the `roadmap <roadmap>` to see what I'm currently working on.
 
 
 About me
 --------
 
-.. todo::
-
-  I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* and am the author of the book `Practical TLA+`_. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a blog, a twitter, and a weekly newsletter. 
+I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* and am the author of the book `Practical TLA+`_. I wrote this because I was unsatisfied with the previous version of the website and didn't like how seeing the best resource on TLA+ wasn't free. I have a `blog`_, a `twitter`_, and a `weekly newsletter`_. 
 
 .. todo:: TLA+ vs pluscal page with prerequisites
 
@@ -77,3 +75,7 @@ About me
   
 
 .. _Practical TLA+: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281
+
+.. _blog: https://www.hillelwayne.com
+.. _twitter: https://twitter.com/hillelogram/
+.. _weekly newsletter: https://buttondown.email/hillelwayne/ 

@@ -1,40 +1,69 @@
 .. _topic_state_machines:
 
-#######################
-State Machines
-#######################
+########################
+Finite State Machines
+########################
 
 The dirty secret of formal methods is that the only way we know to scale it up is to use state machines. So we might as well learn how to write state machines in TLA+!
 
-Basic State Machines
-====================
+.. note:: I want to write a formal introduction, but in the meantime, `here's <http://howtomakeanrpg.com/a/state-machines.html>`__ a good introduction to state machines. 
 
-.. note:: Right now this is all very abstract, I'll make a better example later
+A Simple State Machine
+======================
 
-`Here's <http://howtomakeanrpg.com/a/state-machines.html>`__ a good introduction to state machines. Let's start by modeling the state machine in that article:
+I have a lamp in my bedroom that's controlled by both a lamp switch and an wall switch. Both switches have to be on in order for the lamp to be one. The state machine looks like this:
 
-.. todo:: https://www.smashingmagazine.com/2018/01/rise-state-machines/
 .. graphviz:: 
 
   digraph StateMachine {
-    A -> B -> C -> A;
-    B -> A;
+    {rank=same; WallOff; LampOff}
+    {rank=max; On}
+    {rank=source; BothOff}
+    {BothOff On} -> WallOff[label="lamp switch"];
+    {BothOff On} -> LampOff[label="wall switch"];
+    WallOff -> BothOff[label="lamp switch"];
+    WallOff -> On[label="wall switch"];
+    LampOff -> On[label="lamp switch"];
+    LampOff -> BothOff[label="wall switch"];
   }
 
-Need to be nondeterministic
+A few things to notice:
 
-In PlusCal, we'd model a state machine by placing `await` statements inside an `either` block. If the ``await`` is false the branch is blocked off, but the other branches are still available, preserving nondeterminism.
+- The transitions are nondeterministic. From :math:`BothOff`, I can either flip the wall switch or the lamp switch.
+- There's no transitions between :math:`BothOff` and :math:`On`, I have to flip the switches one at a time.
+- For the same reason, there's no way to get between :math:`WallOff` and :math:`LampOff`.
 
-...
+In PlusCal, we can model a state machine by placing `await` statements inside an `either` block. If the ``await`` is false the branch is blocked off, but the other branches are still available, preserving nondeterminism.
 
-(We could of course nest the ``fetching`` nondeterministic branch into another nested either statement, which would save us one extra ``await``.)
+.. spec:: topics/state_machines/lamp/pluscal/state_machine.tla
+  :ss: sm_simple
+
+Now that's a bit long, as we need one transition per state machine. We could simplify this with a macro:
+
+::
+
+  macro transition(from, to) begin
+    await state = from;
+    state := to;
+  end macro;
+
+Or even
+
+::
+
+  macro transition(from, set_to) begin
+    await state = from;
+    with to \in set_to begin
+      state := to;
+    end with;
+  end macro;
+
+In my opinion, things look a little cleaner if we just do it all in TLA+. 
 
 
-In TLA+, we can use the same trick the PlusCal translator uses to model sequential processes.
+.. spec:: topics/state_machines/lamp/tla/state_machine.tla
 
-
-
-...
+For this reason I'm going to stick with TLA+ going forward. You can still do state machines in PlusCal, it's just that more complicated stuff is messier.
 
 
 Hierarchical State Machines
@@ -42,19 +71,40 @@ Hierarchical State Machines
 
 What's better than a state machine? A *nested* state machine.
 
-Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/se507/harel_Statecharts.pdf>`__, hierarchical state machines allow transitions inside
+Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/se507/harel_Statecharts.pdf>`__, hierarchical state machines allow states inside of other states. If state P' is inside of state P, then P' can take any transitions that P can take. A simple example is the UI of a web app. You can log on or off, and when logged in you start in a homepage and can move to any secondary page. To make things interesting we'll say one of the secondary pages also as subpages.
 
+.. todo:: Graphviz Group
 .. digraph:: hsl
 
   compound=true;
 
-  subgraph cluster_A {
-    label=A;
-    B;
-    C;
+  LogOut
+  
+    LogOut -> Main;
+  subgraph cluster_app {
+    label="Logged In";
+    Main -> Settings;
+    Settings -> Main;
+    {Main Settings} -> Report1;
+    Report1 -> {Main Settings}[ltail="cluster_reports"];
+    
+    subgraph cluster_reports {
+      label=Reports
+      Report1;
+      Report2;
+      Report1 -> Report2;
+      Report2 -> Report1;
+    }
   }
-  D -> C;
-  B -> D[ltail="cluster_A"];
+  Main -> LogOut[ltail="cluster_app"];
+
+There's a few different flavors of HSM. For this one, I'm following three restrictions:
+
+1. Transitions can start from any state, but must end in a "leaf" state. You can't be in ``LoggedIn`` or ``Reports``, you have to be in ``Main`` or ``Report1``.
+2. A state can't have two different parent states.
+3. No cycles.
+
+
 
 1. *Function from states to their parents*: Impossible for a state to have two parents. Worse ergonomics on checking transitive membership, as not all states will be in the function domain.
 2. *Function from states to the set of children*: Function domain guaranteed to be all states. Two states can have the same child state.
