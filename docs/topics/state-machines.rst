@@ -85,7 +85,7 @@ Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/
     label="Logged In";
     Main -> Settings;
     Settings -> Main;
-    {Main Settings} -> Report1;
+    Main -> Report1[ltail="cluster_app"];
     Report1 -> {Main Settings}[ltail="cluster_reports"];
     
     subgraph cluster_reports {

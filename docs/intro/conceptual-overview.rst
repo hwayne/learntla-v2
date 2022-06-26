@@ -91,7 +91,7 @@ Over the rest of the book I'll be covering how all of this works syntactically. 
 
 * Definitions use ``==``. Sorry I don't make the rules
 * ``People`` and ``Money`` are `sets <set>`, collections of unique and unordered values. While programming languages mostly use arrays and key-value maps (`sequence` and `struct` respectively), sets are a lot more foundantional in specification.
-* ``[People -> Money]`` is also a set (in this case, a `function_set`). It represents *all possible assignments* of people to money amounts: alice has 5 dollars and bob 1, alice 10 dollars and bob 6, etc. 
+* ``[People -> Money]`` is also a set (in this case, a `function set <function_set>`). It represents *all possible assignments* of people to money amounts: alice has 5 dollars and bob 1, alice 10 dollars and bob 6, etc. 
 * The variable ``acct`` isn't a fixed value, it is one of 100 different values, one for each element of ``[People -> Money]``. When we model check this, TLC will explore every possible behavior starting from every one of these 100 possible initial values.
 * ``NoOverdrafts`` is a `quantifier <\A>`. It's true if *every* account is >= 0 and false otherwise. In python, this might be equivalent to ``all([acct[p] >= 0 for p in People])``. Quantifiers are an extremely powerful feature of TLA+, making it easy to write very complex properties.
 * We have more than one ``wire`` `process` running simultaneously. With ``NumTransfers == 2``, there are two processes in the spec. But we can choose to have ten, a hundred, or a thousand processes if we really want, our only limit is our CPU time.
@@ -112,6 +112,8 @@ We checked it with two transfers. But what if we wanted to check it with four tr
   :fails:
 
 Now I can make separate models, with the same invariant, but different numbers of simultaneous transfers. So I can see that it works correctly with one transfer but not two. 
+
+.. todo:: {CONTENT} Let's make a fix
 
 Discussion
 ==========

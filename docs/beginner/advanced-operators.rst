@@ -6,15 +6,15 @@ More Operators
 
 This isn't much more complicated than the last sections, but this is the best place to put it. So we can now model concurrent algorithms and write complex liveness properties. You know what we can't do?
 
-Sum up sequence.
+Sum up a sequence.
 
-I mean sure, we can write a Pluscal algoirthm to do that:
+I mean sure, we can write a Pluscal algorithm to do that:
 
 .. spec:: advanced_operators/sum.tla
 
 But how the heck do you write ``SumSeq``?!
 
-We *can* do this with what we've learned so far, but it's really complicated and annoying and I don't expect you to figure it out on your own. Maybe I'll push it to an advanced section. For a long time, that was the only way you could do it. But motivated by the annoyingness of it, in 2018 TLA+ was updated to include recursive operators.
+We *can* do this with what we've learned so far, but it's really complicated and annoying and I don't expect you to figure it out on your own. Maybe I'll push it to a topic or something. But motivated by the annoyingness of summing sequences, in 2018 TLA+ was updated to include recursive operators.
 
 .. index:: 
   single: RECURSIVE
@@ -52,8 +52,36 @@ Easy. In fac we can put the ``RECURSIVE`` part inside a `LET`, to make a helper 
 
 There's no syntactic check that the recursion ends. If you have unbound recursion then TLC will throw a stack overflow error.
 
-.. rubric:: Summing a set and commutativity
-.. todo:: Other ways to use this
+.. rubric:: Recursion on a set and commutativity
+
+If we want to do the same thing with summing a set, we need a way to pick a single element for recursion. Naturally, the easiest way to do that is with `CHOOSE`.
+
+::
+
+  RECURSIVE SetSum(_)
+
+  SetSum(set) == IF set = {} THEN 0 ELSE 
+    LET x == CHOOSE x \in set: TRUE
+      IN x + SetSum(set \ {x})
+
+Seeing this should worry you. There isn't a unique choice of ``x``: *every* element of the set satisfies ``TRUE``! This means that `TLC will choose the lowest value <choose_deterministic>`. 
+
+::
+
+  RECURSIVE SetToSeq(_)
+
+  SetToSeq(set) == IF set = {} THEN <<>> ELSE 
+    LET x == CHOOSE x \in set: TRUE
+      IN <<x>> \o SetToSeq(set \ {x})
+              
+.. code:: none
+
+  >>> SetToSeq({6, 8, 1, 2, -1, 5})
+
+  <<-1, 1, 2, 5, 6, 8>>
+
+Sometimes this doesn't matter like in ``SetSum``. But if it might, you should specify a unique selection predicate for your choose, like explicitly choosing the minimum value.
+
 
 .. index::
   single: Operators; Higher-order operators

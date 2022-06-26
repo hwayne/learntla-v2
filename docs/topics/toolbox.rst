@@ -41,7 +41,9 @@ There are also things can do by clicking on the states and values:
 - Double-clicking an action jumps to the corresponding spec code. Ctrl-doubleclicking jumps to any corresponding pluscal label.
 - Right-clicking an action lets rerun the same model with that action's state as the initial state.
 
-Trace Explorer
+.. _trace_explorer:
+
+The Trace Explorer
 ------------------------
 
 The last and most complex feature of the error panel is the "Error-Trace Exploration" pane. Any expression added to this pane is evaluated at every state of the error trace, and the results shown. For example, if I add ``prod == x * y`` and then click the :btn:`Explore` button, ``prod`` will show up in the error trace.

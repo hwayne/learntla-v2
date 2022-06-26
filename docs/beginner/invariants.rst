@@ -58,7 +58,7 @@ This shows a series of steps, starting from the initial state. The top box shows
 #. An ``Iterate`` action happens. This changes the values of ``index`` and ``seen``. Values changed in a step are shown in red.
 #. When an invariant fails, the last step will be the one it failed on. Here we can see that after we check the second element, ``is_unique`` is false, breaking the invariant.
 
-.. warning:: If an `assert` fails instead of an invariant, the error trace will end with the step *before* the assertion failed.
+.. warning:: If an `assert <assert>` fails instead of an invariant, the error trace will end with the step *before* the assertion failed.
 
 
 (There's a little more we can do with the error trace, see :doc:`here </topics/toolbox>`.)
@@ -148,12 +148,12 @@ I said ``=>`` was really important earlier. This is one of those ways: it lets u
 
   Is interpreted as ``A /\ (B => C)``, *not* ``(A /\ B) => C``. When it doubt, add in parenthesis.
 
-We can now run this as our full invariant, and the spec works :ss:`duplicates_many_inputs`. 
+We can now run this as our full invariant; the spec will still pass.
 
 .. index::
   single: quantifier
-  single: quantifier, \A
-  single: quantifier, \E
+  single: quantifier; \A
+  single: quantifier; \E
   single: \A (forall)
   single: \E (exists)
 
@@ -227,6 +227,7 @@ That suggests we can write ``IsUnique`` as
 
 .. index:: => (implies)
 
+.. _using_=>:
 
 The power of :math:`\Rightarrow`
 ---------------------------------
@@ -243,13 +244,13 @@ Let's use `CHOOSE` to ask TLC *what* indices it picked. Back in `scratch <scratc
 
 ::
 
-  Eval == LET
+  Test == LET
     seq == <<1, 2, 3, 4>>
     s == 1..4
   IN
     CHOOSE p \in s \X s: seq[p[1]] = seq[p[2]]
 
-  >>> Eval
+  >>> Test
   <<1, 1>>
 
 **We never said the indices had to be different.** Obviously every index is going to be equal to itself!
@@ -278,11 +279,11 @@ Then we pass in ``<<"a", "b">>``. There are four possible combinations of values
 .. list-table::
   :header-rows: 1
 
-  * - ``i, j``
-    - ``s[i], s[j]``
-    - ``i # j (P)`` 
-    - ``s[i] # s[j] (Q)``
-    - ``P => Q``
+  * - i, j
+    - s[i], s[j]
+    - P == i # j
+    - Q == s[i] # s[j]
+    - P => Q
   * - 1, 1
     - a, a
     - F
@@ -311,11 +312,11 @@ Now let's do the same for ``<<a, a>>``:
 .. list-table::
   :header-rows: 1
 
-  * - ``i, j``
-    - ``s[i], s[j]``
-    - ``i # j (P)`` 
-    - ``s[i] # s[j] (Q)``
-    - ``P => Q``
+  * - i, j
+    - s[i], s[j]
+    - P == i # j
+    - Q == s[i] # s[j]
+    - P => Q
   * - 1, 1
     - a, a
     - F
@@ -345,7 +346,9 @@ So we just make that change, and:
   :diff: duplicates/inv_3/duplicates.tla
   :ss: duplicates_many_inputs
 
-This now passes.
+This now passes! And with that, we've made a complete version of our specification: we have an algorithm, an invariant that determines its correctness, and a model that checks one against the other.
+
+This is a common idiom for modeling simple CS algorithms. We can use the same pattern to model binary search, or topological sorting, or a SAT solver. This can be useful when trying to optimize an algorithm, since you can test that your optimizations don't make the implementation incorrect. 
 
 .. warning:: Do not use ``=>`` with ``\E``! Imagine I wanted to an operator that checks if a sequence has duplicates, and wrote
 
@@ -363,70 +366,14 @@ This now passes.
       \E i, j \in 1..Len(seq):
         i # j /\ seq[i] = seq[j]
 
-.. todo::
-
-  .. todo:: Find actual names for everything
-
-  Consider we have an event queue of events that happen in a system, where the queue is represented by a sequence of strings. One of teh invariants of the system is that "A can only come after B if the D flag is set."
-
-  Properties of the form "X can only be true if Y is also true" can be written as ``X => Y``. To see why, try writing out the truth table.
-
-  So we have:
-
-  ::
-
-    Inv == IsAfter(A, B) => D
-
-  That just leaves specifying ``IsAfter``. 
-
-  ::
-
-    \* Test this
-
-    IsAfter(seq, e1, e2) ==
-      \E i, j \in 1..Len(seq):
-        /\ i > j
-        /\ seq[i] = e1
-        /\ seq[j] = e2
-
-
-  .. todo:: 
-
-    .. rubric:: More invariant practice
-
-    _issorted:
-
-    ``=>`` is extremely powerful, so let's spend more time working with it. How would we write an operator that tests if a sequence is sorted in ascending order? What would ``IsSorted(seq)`` look like
-
-    ::
-
-      IsSorted(seq) ==
-        \A i, j \in 1..Len(seq):
-          i < j => seq[i] <= seq[j]
-
-
-
-.. todo::
-
-  When to use Invariants
-  
-  .. =======================
-
-  The invariant we wrote here, "the algorithm has the correct answer at the end", isn't usually written *as an invariant*. There's a more elegant way to specify that, which we'll be covering in a `later chapter <chapter_temporal_logic>`.
-
-  Invariants are your bread and butter of TLA+. Every specification should at least have a type invariant, to make sure all values are what you expect. They are very cheap to check. Use a lot of them. Here are some invariants I've written for production specs:
-
-
-  - Messages on the queue are unique.
-  - 
-
 
 Summary
 ========
 
 * An Invariant is something that much be true of every state in our specification.
-* Type Invariants
-* Implication
-* Quantifiers
-* More implication
-* When to use invariants
+
+  * A common invariant is the *Type Invariant*, which checks that all of your variable values belong to strict sets.
+
+* When our spec violates an invariant, TLC produces a step by step error trace to show us how to reproduce the violation.
+* Quantifiers test a predicate over a set. ``\A`` checks if something is true for every element, and ``\E`` checks if it's true for at least one element.
+* Implication can be used to put "preconditions" on invariants, like "only check this when we've reached the end".

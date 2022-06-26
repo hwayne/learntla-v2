@@ -88,7 +88,7 @@ The obvious ones
 
 Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in a `sequence <sequence>`.
 
-Note there is **not** a float type. Floats have incredibly complex semantics that are *extremely* hard to model-check. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
+Note there is **not** a float type. Floats have complex semantics that are *extremely* hard to represent. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
 
 .. index:: 
   /\ (and), \/ (or), ~ (not)
@@ -123,7 +123,7 @@ A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\`` looks li
 .. index:: => (implies)
 .. _=>:
 
-There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means that B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into much, much more detail about it later.
+There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means that B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into more detail about it `later <using_=>>`.
 
 The other thing is that TLA+ has a "bullet point notation" for boolean logic. Let's say you need an expression like ``A /\ (B \/ C) /\ (D \/ (E /\ F))``. That's really hard to read! So in TLA+ you can instead write it as:
 
@@ -150,7 +150,7 @@ That makes it much clearer. Notice that we have an extra ``/\`` before ``A``. Th
 
 That means something different! It's now ``A /\ (B \/ C) /\ (D \/ E) /\ F``. 
 
-.. tip:: "Why would you even want something like that?" It makes complex `invariants <invariants>` *much* easier to read.
+.. tip:: "Why would you even want something like that?" It makes complex :doc:`invariants <invariants>` *much* easier to read.
 
 
 .. index:: 
@@ -168,6 +168,9 @@ A sequence is like a list in any other language. You write it like ``<<a, b, c>>
 There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get (letting ``S == <<"a">>``): 
 
 .. todo:: {PLAN} how to integrate modules and operations in modules
+
+.. index:: Append, Head, Tail, Len, SubSeq
+.. index:: \o (concat)
 
 .. list-table::
   :header-rows: 1
@@ -206,23 +209,25 @@ With sequences, we can represent a 24-hour clock as ``<<hour, minute, second>>``
 Sets
 ====
 
-A set is a collection of *unordered*, *unique* values. You write them with braces, like ``{1, 2, 3}`` or ``{<<"a">>, <<"b", "c">>}``. 
+A set is a collection of *unordered*, *unique* values. You write them with braces, like ``{1, 2, 3}`` or ``{<<"a">>, <<"b", "c">>}``. You can even have sets inside other sets, like ``{{1}, {2}, {3}}``.
 
-Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important.
+Sets cannot contain elements of different types, so you can't do ``{1, "a"}``. 
 
-.. todo:: Explain why they're so powerful
+.. todo:: {POLISH} Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important.
 
 .. index:: set; set operators, \in; x \in set
+.. index:: \notin
+.. index:: \subseteq
 .. _set_operators:
 
 Set Operators
 --------------
 
-The main thing we do with sets is check if some values belong to it. We do this with ``\in``: ``x \in set`` is true iff ``x`` is an element of ``set``. ``\in`` is also used in a few other places as syntax, not just as an operator. There's also the inverse, ``\notin``. ``set1 \subseteq set2`` tests if every element of ``set1`` is also an element of ``set2``.
+To check if ``x`` is an element of ``set``, we write ``x \in set``. ``\in`` is used in a few other places as syntax, not just as an operator. There's also the inverse, ``\notin``. ``set1 \subseteq set2`` tests if every element of ``set1`` is also an element of ``set2``.
 
 .. note:: That's "subset or equals". It's a way to sidestep the question "Is a set a subset of itself?"
 
-.. index:: \ (set difference)
+.. index:: \ (set difference), \union, \intersect
 
 We also have ways of slicing and dicing sets:
 
@@ -232,7 +237,19 @@ We also have ways of slicing and dicing sets:
 
 .. note:: You might see ``\cup`` and ``\cap`` instead of ``\union`` and ``\intersect``. This comes from the mathematical symbols for set union and intersection, which are :math:`\cup` and :math:`\cap`.
 
-.. todo:: {CONTENT} Examples of using union and intersections
+.. code:: none
+
+  >>> {1, 3} \union {1, 5}
+
+  {1, 3, 5}
+
+  >>> {1, 3} \intersect {1, 5}
+
+  {1}
+
+  >>> {1, 3} \ {1, 5}
+
+  {1}
 
 .. _Cardinality:
 
@@ -349,7 +366,7 @@ Here's another thing we could do:
 #. Take the set of all possible clock values.
 #. Pick the element in the set that, when converted to seconds, gives us the value.
 
-We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion. That makes it more useful for *specification*. In TLA+ we can write the selection like this: 
+We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion, making it more useful for *specification*. In TLA+ we can write the selection like this: 
 
 ::
 
@@ -377,6 +394,7 @@ Now what happens if we write ``ToClock(86401)``? There are no clock times that h
   It's because you wrote a ``CHOOSE`` that couldn't find any values.  Sometimes this just means you got the expression wrong. But other times, it points to an actual flaw in your system: you expected a value to exist, and it did not. Better write some error-handling logic or you'll get a nasty surprise in production.
 
 
+.. _choose_deterministic:
 
 .. warning::
 

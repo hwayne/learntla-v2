@@ -7,9 +7,9 @@ Servers == {"s1", "s2"}
 
 (*--algorithm threads
 variables 
-  online = Servers;
+  online = Servers;<s on="2-">
 
-<s on="2-">define
+define
   Invariant == \E s \in Servers: s \in online
   Safety == \E s \in Servers: [](s \in online)<s on="3-">
   \* It's not the case that all servers are always online

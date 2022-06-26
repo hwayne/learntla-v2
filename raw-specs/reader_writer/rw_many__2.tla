@@ -9,7 +9,7 @@ EXTENDS Integers, Sequences, TLC
 
 Writers == {1, 2, 3}
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = <<>>;
   total = 0;

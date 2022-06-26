@@ -50,13 +50,10 @@ There are two languages that people write TLA+ in practice. First, you can do ev
 
 That said, not everybody finds it easier to learn this way, and that's fine. There are two TLA+-first resources available, both by the inventor of TLA+:
 
-.. todo::
 
-  * Specifying Systems
-  * Video course
+* `Specifying Systems`_: This is a comprehensive introduction to modeling systems in TLA+, though it's a little lighter on how to check those specifications.
 
-
-
+* `Video Course`_: I've not watched this so can't speak to its quality, but some people I know really enjoy it.
 
 .. toctree::
   :maxdepth: 2
@@ -79,3 +76,6 @@ That said, not everybody finds it easier to learn this way, and that's fine. The
 .. next steps
 
 .. _cognitive load: https://teachtogether.tech/en/#s:architecture-load
+
+.. _Specifying Systems: https://lamport.azurewebsites.net/tla/book.html
+.. _Video Course: https://lamport.azurewebsites.net/video/videos.html

@@ -24,7 +24,7 @@ begin
       with s \in Servers do
        either
           await s \notin online;
-          online := online \cup {s};
+          online := online \union {s};
         or
           await s \in online;
           await Cardinality(online) > 1;

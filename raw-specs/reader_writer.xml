@@ -69,7 +69,7 @@ EXTENDS Integers, Sequences, TLC
 
 Writers == {1, 2, 3}
 
-(*--algorithm reader_writer
+(* --algorithm reader_writer
 variables
   queue = &lt;&lt;>>;
   total = <s on="-3">0</s>;

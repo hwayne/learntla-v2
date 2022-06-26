@@ -107,7 +107,7 @@ We're modeling time here, so there are restrictions on where we can place the la
 
 First, **all statements must belong to a label.** This means, among other things, that you miust always start the algorithm with a label.
 
-Second, **Any variable can only be updated once per label.** Remember, each label only represents one single instant of time. If the variable is updated twice, that means it's gone through two separate values in a single instant of time, meaning... it's not an instant of time anymore.
+Second, **any variable can only be updated once per label.** Remember, each label only represents one single instant of time. If the variable is updated twice, that means it's gone through two separate values in a single instant of time, meaning... it's not an instant of time anymore.
 
 This poses a problem when updating sequences. This is invalid::
 
@@ -273,17 +273,29 @@ I called this spec ``duplicates``, but the name isn't too important for this.
 
 If you `run it <running_models>`, you will see a page like this:
 
-.. image:: img/pluscal_run.png
-  :target: img/pluscal_run.png
+.. figure:: img/pluscal_run.png
+
+  (Haven't figured out yet how to make the images clickable, in the meantime please open in a new tab to see the zoom in.)
 
 I know this completed successfully because otherwise a big error bar would have appeared on the right-hand side. Everything on this page is statistics to help you understand the run better:
 
+1. Since complicated models can take a long time to check, the "state space progress" tab updates roughly once a minute.
+
+  .. index:: diameter
+
+  2. Diameter is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
+
+  3. States found is how many system states the model checker has explored. This includes duplicate states the checker found in different paths.
+
+  4. The number of *unique* states found.
+
+  5. How many states TLC knows *for certain* it'll have to check. Some of these states will add more states to check, and so on and so forth.
+
+6. TLC stores explored states as hashes, this is the chance that there's a hash collision. In practice this never goes above one in a million billion and can be ignored. 
+
+7. How often each label was run and how many states that lead to. If one label has 0 states run then there's probably a bug in your spec.
+
 .. figure:: graphs/duplicates_1.gv.png
-
-.. index:: diameter
-.. note::
-
-  The first column, ``diameter``, is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
 
 To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too. If you get a different number, you may have made a mistake in transcribing the spec. The states and distinct states make a partial "fingerprint" of the model. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check under the code listing. 
 
@@ -362,7 +374,7 @@ Summary of Label Rules
 
 - All algorithms must begin with a label.
 - While statements must begin with a label.
-- Each variable can only be updated once in a label. (You can assign to multiple parts of a sequence with `||`.)
+- Each variable can only be updated once in a label. (You can assign to multiple parts of a sequence with `|| <||>`.)
 - Macros and ``with`` statements cannot contain labels.
-- A `goto` must be followed by a new label.
+- A `goto <goto>` must be followed by a new label.
 - If a branch in a block contains a label inside it, the end of the block must be followed with a label.

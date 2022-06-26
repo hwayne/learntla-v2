@@ -84,6 +84,8 @@ By convention, in a temporal formula, anything outside a temporal operator (`[] 
 
 Since ``Next`` is an action, to be "always true" it must always accurately describe the new values of the system. Formally, we call it the :dfn:`Next State Relationship`. This gives us the blueprint for what spec is.
 
+.. todo:: {INKSCAPE} Graph showing valid and invalid specs
+
 .. note::
 
   Technically speaking, we can use TLA+ to describe **any possible set of behaviors**. This is technically a valid spec:
@@ -198,7 +200,7 @@ The problem is actually a subtle nuance of assigning to functions. In ``Next``, 
 #. ``<<FALSE>>``
 #. ``0 :> 🌽 @@ 1 :> FALSE @@ 🌽 :> 🌽🌽🌽``
 
-Remember, TLA+ wants you to be as precise as possible. If you didn't specify that ``s[2]'`` is the same as ``s[2]``, it doesn't have to be. TLC naturally considers this an error.
+Remember, TLA+ wants you to be as precise as possible. If you didn't specify that ``s[2]'`` is the same as ``s[2]``, it doesn't have to be. TLC automatically considers this an error.
 
 .. index:: 
   single: EXCEPT
@@ -222,7 +224,6 @@ Yes, I know it's really awkward. No, I can't think of anything better.
   Second, we can reference the original value of the key with ``@``.
 
   .. code::
-    :force:
 
     IncCounter(c) == 
       counter' = [counter EXCEPT ![c] = @ + 1]
@@ -230,7 +231,6 @@ Yes, I know it's really awkward. No, I can't think of anything better.
   Finally, we can do nested lookups in the ``EXCEPT``:
 
   .. code::
-    :force:
 
     Init == s = <<[x |-> TRUE], FALSE>>
 
@@ -238,19 +238,19 @@ Yes, I know it's really awkward. No, I can't think of anything better.
 
   PlusCal will naturally convert function assignments to ``EXCEPT`` statements. This means you can use ``@`` in them, too:
 
-  .. code-block:: none
+  .. code::
 
     counter[i] := @ + 1;
 
 Modeling Concurrency
 --------------------
 
-Enough with the hour clocks. Let's switch a somewhat more interesting spec: our very very first `threads <threads>` spec.
+Enough with the damn clocks. Let's switch a somewhat more interesting spec: our very very first `threads <threads>` spec.
 
 .. spec:: threads/1/threads.tla
   :ss: threads_1
 
-This is doing basically nothing novel, except that we have two separate processes, meaning that it'll showcase for us how TLA+ handles concurrency. I cleaned up the translation a little, but it should have all these elements:
+This has two separate processes, meaning that it'll showcase for us how TLA+ handles concurrency. I cleaned up the translation a little, but it should have all these elements:
 
 ::
 
@@ -296,7 +296,7 @@ Looking it at piece-by-piece:
                       /\ pc' = [pc EXCEPT ![self] = "Done"]
 
 
-The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of it, it sets ``pc[self]`` to "Done". That's how we emulate sequentiality in TLA+ algorith— it's like going from the "IncCounter" label to the "Done" label.
+The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of it, it sets ``pc[self]`` to "Done". That's how we emulate sequentiality in TLA+ algorithm— it's like going from the "IncCounter" label to the "Done" label. Each label corresponds to exactly one action, and vice versa.
 
 .. _trans:
 .. tip::
@@ -365,14 +365,13 @@ Fairness constraints are appended to the definition of ``Spec``. You can see thi
   Spec == /\ Init /\ [][Next]_vars
           /\ \A self \in Threads : SF_vars(thread(self))
 
-.. todo:: Remember, ``Spec`` defines what *counts as a valid trace*. Fairness is an additional constraint, ruling out things like infinite stutters.
+(Remember, ``Spec`` defines what *counts as a valid trace*. Fairness is an additional constraint, ruling out things like infinite stutters.)
 
 Notice that by writing ``\A self: SF_vars(self)``, we're effectively making every thread fair. If we instead wrote ``\E``, we'd be saying that at least one thread is fair, but the rest may be unfair. If both those conditions are syntactically intuitive to you, I'd say you fully understand how pure TLA+ works.
 
 
-.. todo:: {CONTENT} A warning about how machine closure can blow up in your face
 
-Modeling Retry Logic
+Fairness is more useful in TLA+
 ------------------------------------
 
 In pluscal, we can only apply fairness conditions to labels, which correspond to top-level actions. In TLA+, we can apply the fairness condition to subactions, which gives us the branches of labels.
@@ -404,6 +403,11 @@ In pluscal, we can only apply fairness conditions to labels, which correspond to
   ====
 
 This spec can fail an arbitrary number of times, but is guaranteed to eventually succeed.
+
+.. todo:: 
+
+  {CONTENT} A warning about how machine closure can blow up in your face
+  Also an example of TLC
 
 Why use TLA+?
 =============
@@ -441,10 +445,12 @@ So now that we have a brief overview of TLA+, let's come around to a basic quest
        \/ D
     \/ pc' = "Start"
 
-* Systems that would map onto having multiple processes in pluscal with the same values. 
+* Systems that would map onto having multiple processes in pluscal with the same values. For example, if each worker can run multiple sequential tasks in parallel.
 * :doc:`Refinement properties</topics/refinement>`.
 
 At the same time, it's okay to stick with PlusCal. Plenty of people never learn pure TLA+ and get along fine with just PlusCal. Just know that it has limits, and know when you're pushing against those limits.
+
+
 
 .. todo:: Summary
 

@@ -28,9 +28,6 @@ There are two kinds of temporal properties: "safety" properties say our system d
 TLC can check (2) as a temporal property, though. 
 
 
-Temporal Operators
-===================
-
 .. index:: 
   single: [] (always)
   see: always; []
@@ -38,22 +35,24 @@ Temporal Operators
 .. _always:
 
 [] (always/"box")
-------------------
+==================
 
 
 
 
 ``[]P`` means that ``P`` is true in every state. When on the outside of a predicate, this is equivalent to an invariant, and in fact is how TLC supports them: writing ``INVARIANT P`` is the same as writing ``PROPERTY []P``. 
 
+.. warning:: Writing ``PROPERTY P`` will just check that P is true in the first state.
+
 Things get more interesting when ``[]`` is part of a larger expresion. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q. We can also put a ``[]`` inside a quantifier. To properly model (2), we could write::
 
   Safety == \E s \in Servers: [](s \in online)
 
-At the beginning of the behavior, we pick one online server. That server is then *always* online. This isn't true, as we see if we check it with ``PROPERTY Safety``.
+At the beginning of the behavior, we pick one online server. That server is then *always* online. This isn't true: if we check with ``PROPERTY Safety``, then we get an error trace.
 
-.. todo:: {SCREENSHOT} image of the change
-
-.. todo:: this is evlaauted at hte beginnieng of hte temporal poperties, which is why it's ewird if you leave the square out.
+.. spec:: liveness/2/orchestrator.tla
+  :diff: liveness/1/orchestrator.tla
+  :fails:
 
 ::
 
@@ -64,8 +63,6 @@ At the beginning of the behavior, we pick one online server. That server is then
   State 3: online = {"s1", "s2"}
 
   State 4: online = {"s1"}
-
-  State 5: online = {"s1", "s2"}
 
 .. figure:: graphs/liveness.gv.png
 
@@ -78,8 +75,8 @@ In summary, adding ``[]`` to the language lets us represent all invariants, and 
 .. index:: fairness; in PlusCal
 .. _fairness:
 
-Stuttering and Fairness
-------------------------
+Anything can crash 
+===================
 
 
 
@@ -92,7 +89,7 @@ Stuttering and Fairness
 Version (1) is more often useful in specs, so that's what ``~[]P`` formally means. [#ctl]_ If we write
 
 .. spec:: liveness/3/orchestrator.tla
-  :diff: liveness/1/orchestrator.tla
+  :diff: liveness/2/orchestrator.tla
   :fails:
 
 This is a *liveness* property, not a *safety* property. In order to satisfy ``Liveness``, the behavior has to *reach* a state where the server is offline.
@@ -104,7 +101,7 @@ We'd expect that to pass. The orchestrator can do one of two things: remove an e
 
 Not so fast! There's a *third* thing the orchestrator can do: it can crash. In TLA+, any behavior is allowed to :dfn:`stutter`, or make a new state where nothing happens and all variables are unchanged. This includes stutter-steps, meaning any behavior can stutter infinitely, aka crash. And that's exactly what we see if we run the spec with ``PROPERTY <- Liveness``:
 
-.. todo:: {SCREENSHOT} circle stuttering in error trace
+.. figure:: img/stuttering.png
 
 .. note:: Why haven't we see this before? Because up until now we've only had invariants, which are only violated by "bad states": particular configurations of variables that break the invariants. Stutter steps don't change the values of anything, so a stutter step can never break an invariant. Here's the first time it can break things by *preventing* us from reaching a good state.
 
@@ -129,7 +126,7 @@ Weak fairness says that if a process can *always* make progress, it will eventua
 .. spec:: threads/strong_fairness_1/threads.tla
   :fails:
 
-When in ``AwaitLock``, each thread can only get the lock if ``lock := Null``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
+When in ``GetLock``, each thread can only get the lock if ``lock = NULL``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
 
 .. figure:: graphs/strong_fairness.gv.png
 
@@ -159,11 +156,11 @@ We'll double back to strong fairness when we talk about writing `Pure TLA+ <chap
 .. _eventually:
 
 <> (eventually / "diamond")
----------------------------
+===========================
 
 While ``~[]P`` has some interesting properties, we rarely write it. It's not often we need to check that something "is sometimes" not true in our system. What *is* useful is writing ``~[]~P``: "Sometimes 'not P' is false", or "Sometimes P is true". This means that P isn't an invariant in all states, but must hold in *at least one* state. 
 
-Because "Not always not P" is a mouthful, we have a separate operator that means the same thing: ``<>P``, or "Eventually P". We've already been crudely simulating "eventually" properties before, in duplicates and `threads`. Here's the correctness condition for threads:
+Because "Not always not P" is a mouthful, we have a separate operator that means the same thing: ``<>P``, or "Eventually P". We've already been crudely simulating "eventually" properties before, in duplicates and `threads <threads>`. Here's the correctness condition for threads:
 
 ::
 
@@ -178,6 +175,7 @@ The ``AllDone =>`` is just a precondition that ``counter = NumThreads`` is true 
 
 .. spec:: threads/liveness_1/threads.tla
   :diff: threads/3/threads.tla
+  :fails:
 
 (Remember this is checked under "Temporal Properties", not "Invariants"!)
 
@@ -198,6 +196,18 @@ In one way, ``Liveness`` is more accurate than ``Correct``. In another way, thou
 
 When we're done, ``counter = 3``... but ``Liveness`` still passes! This is because ``<>(counter = 2)`` is true if ``counter = 2`` in *at least one state* of the behavior. It doesn't matter if we then change *away* from that, because it's been true at least once.
 
+.. digraph:: Error
+  :name: problem_graph
+  :caption: Since it passes through a state where ``counter = 2``, this passes ``<>counter = 2``.
+
+  label="val: counter"
+  1 2 3;
+  2[color="darkgreen"];
+  1 -> 2 -> 3 -> Done;
+
+
+
+  
 .. rubric:: <>[]
 
 Fortunately, our temporal operators are extremely flexible, and we can compose them together. If ``[]P`` means "P is always true", and ``<>P`` is "P is eventually true", then ``<>[]P`` is "eventually P is always true". P can start out false, but after some point in every behavior, it will forevermore be true.
@@ -208,14 +218,18 @@ Fortunately, our temporal operators are extremely flexible, and we can compose t
 
 This now fails, as ``counter`` doesn't stay as 2.
 
+.. digraph:: Error
+  :caption: Since counter doesn't *converge on 2*, this fails ``<>[]counter = 2``.
+
+  label="val: counter"
+  1 2 3;
+  2[color="darkgreen"];
+  Done[color=tomato]
+  1 -> 2 -> 3 -> Done;
+
 .. tip::
 
   You can also write ``[]<>P``: "P is always eventually true". In the threads spec, this has the same outcome, but there are cases where it's broader than ``<>[]P``. For example, in an hour clock, ``[]<>(time = midnight)`` is true, but ``<>[](time = midnight)`` is false.
-
-
-.. todo:: {{inkscape}} of the three different uses of ``<>``
-
-
 
 
 .. index::
@@ -226,7 +240,7 @@ This now fails, as ``counter`` doesn't stay as 2.
 .. _~>:
 
 ~> (leads-to)
--------------
+=============
 
 
 
@@ -234,6 +248,8 @@ This now fails, as ``counter`` doesn't stay as 2.
 The last operator is ``~>``. Recall that ``P => Q`` preconditions Q on P: if P is true, then Q is also true. ``P ~> Q`` is the temporal analog: if P is true, then Q is *eventually* true (now or in a future state).
 
 .. todo:: better example?
+
+  ::
 
     Liveness ==
       \A e \in Employees:
@@ -252,10 +268,10 @@ Say we have a set of tasks described by ``TaskType``, an ``inbound`` pool of typ
 
 .. note:: ``P ~> Q`` is triggered *every* time P is true. Even if the formula was satisfied before, if ``P`` becomes true again, then ``Q`` has to become true again too.
 
-.. todo:: an example
+.. todo:: {Content}
 
 When to use Liveness
---------------------------
+==========================
 
 You probably won't need to ever write a property of form ``\E x: [](P(x))``. 
 
@@ -277,4 +293,4 @@ Summary
 - All TLA+ specs are "stutter-invariant", meaning they can crash at any time. A "weakly fair" process is guaranteed to "not crash", though it can spinlock.
 - ``[]P`` means that P is true for every state of every behavior. ``<>P`` means that P is true for at least one state of every behavior. ``P ~> Q`` means that if P is true in a state, then Q will be true in a (present or) future state.
 
-.. [#ctl] This isn't "settled fact": TODO 
+.. [#ctl] This isn't "settled fact": there are `other systems`__ where ``~[]P`` only needs P to be false in one state of one behavior. These systems tend to be worse at modeling some things and better at modeling others.

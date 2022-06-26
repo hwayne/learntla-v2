@@ -11,7 +11,7 @@ Parameterizing Specs
 Model Constants
 ===============
 
-In the last chapter, we made a complete specification of the duplicate checker, adding a property to our implementation. By using initial states, we can check all 4-digit lists of single digits. If we wanted to be more thorough, we could check a wider range of inputs, for example ``S == 1..100``. By my estimate, this would kick the number of found states from 70,000 to about seven hundred million. That would take a lot more time to check! If we were writing this as a "real" spec, we'd want to do most of our writing with a smaller value of S, like ``1..10``, so we can get faster feedback from the model checker. It's only when we've shaken out the obvious issues that we'd switch a large value of S, like ``1..100``.
+In the last chapter, we made a complete specification of the duplicate checker, adding a property to our implementation. By using initial states, we can check all 4-digit lists of single digits. If we wanted to be more thorough, we could check a wider range of inputs, for example ``S == 1..100``. By my estimate, this would kick the number of found states from 70,000 to over 500,000,000. That would take a lot more time to check! If we were writing this as a "real" spec, we'd want to do most of our writing with a smaller value of S, like ``1..10``, so we can get faster feedback from the model checker. It's only when we've shaken out the obvious issues that we'd switch a large value of S, like ``1..100``.
 
 This means we don't want ``S`` to be a hardcoded value in the spec. It should instead be something we can dynamically pick per model run. Think of how, in a programming language, you have command line flags for passing in arguments. In TLA+, values that can be configured per model run are called "Constants". [#footnote-constant]_ Let's make ``S`` a constant:
 
@@ -46,12 +46,12 @@ Preventing Nonsense Constants
 
 Not all values of ``S`` are meaningful for our spec. For example, what if we do ``S <- {}``? Then there's no possible values for ``seq``, so there's no possible duplicates, so the entire model is pointless. Or what about ``S <- {1, 2}``? While there are now possible values of ``seq``, they will *always* contain duplicates, so running the spec isn't particularly interesting.
 
-We can rule these pathological values out with the ``ASSUME`` keyword. ``ASSUME`` expressions are checks to make sure we put in correct constants.
+We can rule these pathological values out with the ``ASSUME`` keyword. ASSUME expressions are checks to make sure we put in correct constants.
 
 .. spec:: duplicates/constant_2/duplicates.tla
   :diff: duplicates/constant_1/duplicates.tla
 
-The ASSUME is checked before the model run even starts. If we try running the spec with ``S <- {1}``, we get an error:
+The expression inside an ASSUME can depend on operators and constants, but not variables. The ASSUME is checked before the model run even starts. If we try running the spec with ``S <- {1}``, we get an error:
 
   Error: Assumption %line% is false.
 
@@ -71,20 +71,22 @@ That takes care of ordinary assignments, what about "model values"? Model values
 
 .. code-block::
 
+  \* Given
   X <- [model value]
   Y <- [model value]
 
+  \* Then
   X = X
   X # Y
   X # 1
   X # "a"
   X # <<1, Y>>
 
-Why would you want this? Because in TLC, comparing incompatible types produces an error. Say you want to represent a nullable value, like ``last_access_time``. You can't write ``IF last_access_time = "null"`` because if ``lat`` is non-null, then you're comparing a string to an integer, which is an error. If you use a sentinel value, like ``IF last_access_time = -1``, then you're risking logic errors if you accidentally use it in any other numerical context.
+Why would you want this? Because in TLC, comparing incompatible types produces an error. Say you want to represent a nullable value, like ``last_access_time``. You can't write ``IF last_access_time = "null"`` because if the variable is currently non-null, then you're comparing a string to an integer, which is an error. If you use a sentinel value, like ``IF last_access_time = -1``, then you're risking logic errors if you accidentally use it in any other numerical context.
 
-What you can do instead is define a new constant, like ``NULL`` or ``NoLastAccess``, and set it to a model value. Then you can do ``IF last_access_time = NULL``, which will be false if ``lat`` is already a number. Similarly, you can add them to sets that already have a Model values are incredibly useful as sentinel and placeholder values in organizing larger specs.
+What you can do instead is define a new constant, like ``NULL`` or ``NotYetAccessed``, and set it to a model value. Then you can do ``IF last_access_time = NULL``, which will be false if the value is already a number. Similarly, you can add them to sets that already have a elements. Model values are incredibly useful as sentinel and placeholder values in organizing larger specs.
 
-.. tip:: Once you have a model value, you can use it in ordinary assignments. For example:
+.. note:: Once you have a model value, you can use it in ordinary assignments. For example:
 
   .. code-block::
 
@@ -110,9 +112,7 @@ We can also assign constants to sets of model values. Put it in as a normal set,
 
   S <- [model value] {s1, s2, s3, s4, s5}
 
-Sets of model values will become *extremely* useful when we start modeling :doc:`concurrency <concurrency>`, but there's still one cool trick we can do with them right now. If you run the model with that value of ``S``, you will get 4,735 states total— the same as if you did ``S <- 1..5``...
-
-But notice this other option below the "set of model values" bar:
+Sets of model values will become *extremely* useful when we start modeling :doc:`concurrency <concurrency>`, but there's still one cool trick we can do with them right now. If you run the model with that value of ``S``, you will get 4,735 states total— the same as if you did ``S <- 1..5``. But notice this other option below the "set of model values" bar:
 
 .. image:: img/symmetry_set.png
 
@@ -123,14 +123,15 @@ But notice this other option below the "set of model values" bar:
 
 To illustrate what's going on, let's look at four possible values for ``seq``:
 
-::
+.. code:: none
 
   (1) <<s1, s2, s3>>
   (2) <<s2, s1, s3>>
+
   (3) <<s1, s2, s2>>
   (4) <<s2, s3, s3>>
 
-Normally we'd think of these as four separate initial states. But is that necessarily true? The only difference between (1) and (2) is that we swapped every ``s1`` with an ``s2``. Similarly, the only difference between (3) and (4) is that in (4) we replaced every s1 with s2 and every s2 with s3. So we can tell TLC to treat these "symmetric" values as identical.
+Normally we'd think of these as four separate initial states. But is that necessarily true? The only difference between (1) and (2) is that we swapped every ``s1`` with ``s2``. Similarly, the only difference between (3) and (4) is that in (4) we replaced every s1 with s2 and every s2 with s3. So we can tell TLC to treat these "symmetric" values as identical.
 
 Notice this only works because we're working with model values, which only support equality checks. If we instead had ``<<1, 2, 2>>`` and ``<<2, 3, 3>>`` the results would *not* be symmetric, as they'd give different results for ``s[1] + s[2]``.
 

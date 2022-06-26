@@ -33,7 +33,7 @@ To use procedures, you must extend ``Sequences``. This is because the translator
 
 On reaching a ``return``, the procedure terminates and returns control back to the calling process. Nothing is "returned" as per the programming definition. If a procedure terminates without reaching a ``return``, then TLC will raise an error. the The return just ends the procedure. If your procedure never reaches it, then it's an error.
 
-In order to call a procedure, you have to write ``call Name(val1, ...);``. A procedure call must be followed by a `goto`, a label, or another ``return`` (if you called it from another procedure).
+In order to call a procedure, you have to write ``call Name(val1, ...);``. A procedure call must be followed by a `goto <goto>`, a label, or another ``return`` (if you called it from another procedure).
 
 Procedures must be defined after any macros and before any processes.
 

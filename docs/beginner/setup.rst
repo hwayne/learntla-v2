@@ -75,14 +75,14 @@ When you run this, you will see an error pop up on the right side:
 
 .. figure:: img/setup/error_trace.png
 
-This is an *error trace*, showing the exact set of steps that lead to an invariant being violated. We'll talk about it a bit more when we get into :doc:`invariants in depth <invariants>`
+This is an *error trace*, showing the exact set of steps that lead to an invariant being violated. We'll talk about it a bit more when we get into :doc:`invariants in depth <invariants>`.
 
 .. _scratch:
 
 Making a Scratchfile
 ====================
 
-I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate file I call "Scratch"
+I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate file I call "Scratch":
 
 ::
 
@@ -92,15 +92,13 @@ I often like to test the outputs of operators without having to run the entire s
   Eval == 0
   ====
 
-This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, {{MODEL output stuff}.
+This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, on the "model checking results" page, I put put ``Eval`` in the "Evaluate Constant Expression Box".
 
-Then I put ``Eval`` in the "Evaluate Constant Expression Box":
-
-.. todo:: IMAGE
+.. figure:: img/setup/scratch_eval.png
 
 Now whenever I run the model, the output of ``Eval`` will be put on the box to the right. In this case, it will be 0. But if I change the ``Eval`` expression, I get something different.
 
-.. code-diff:
+.. code:: diff
 
   - Eval == 0
   + Eval == "hello world!"
@@ -110,7 +108,7 @@ Now running ``Eval`` will put "hello world!".
 .. index:: >>> 
 .. _>>>_notation:
 
-Having a scratchfile is very useful and I recommend setting one up. In the guide itself I will occasionally post "expression evaluations" like this::
+Having a scratchfile is very useful and I recommend setting one up. In the guide itself I will occasionally post "expression evaluations" like this
 
 .. code:: none
 

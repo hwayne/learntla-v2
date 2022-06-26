@@ -10,7 +10,7 @@ variables
 define
   Invariant == \E s \in Servers: s \in online
   Safety == \E s \in Servers: [](s \in online)
-  \* It's ot the case that all servers are always online
+  \* It's not the case that all servers are always online
   Liveness == ~[](online = Servers)
 end define;
 
@@ -21,7 +21,7 @@ begin
       with s \in Servers do
        either
           await s \notin online;
-          online := online \cup {s};
+          online := online \union {s};
         or
           await s \in online;
           await Cardinality(online) > 1;

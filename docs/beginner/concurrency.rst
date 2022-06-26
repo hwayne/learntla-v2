@@ -22,14 +22,17 @@ Processes are the main agents of concurrency. They can represent different OS pr
 
 .. spec:: reader_writer/1/reader_writer.tla
   :ss: rw_1
+  :emphasize-lines: 10,14
 
-This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. Now let's add another process that reads from the queue.
+This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. 
+
+Now let's add another process that reads from the queue.
 
 .. spec:: reader_writer/2/reader_writer.tla
   :diff: reader_writer/1/reader_writer.tla
   :fails:
 
-.. warning:: All processes must have comparable types: all integers, all strings, all sequences, etc. The one exception is that processes can also be `model_values`. 
+.. warning:: All processes must have comparable types: all integers, all strings, all sequences, etc. The one exception is that processes can also be `model values <model_values>`. 
 
   Different processes cannot share label names.
 
@@ -89,7 +92,7 @@ Notice how many more states we have. The ``while`` loop is nonatomic, and every 
 
 As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
 
-In practice, local variables aren't often used, as they can't be placed in `define <define>` blocks. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables as :ref:`auxiliary <topic_aux_vars>` or "bookkeeping" variables, like loop iterations and model bounding.
+In practice, local variables aren't often used, as operators in `define <define>` blocks can't use them. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables as :ref:`auxiliary <topic_aux_vars>` or "bookkeeping" variables, like loop iterations and model bounding.
 
 For now let's pull out the ``while`` loop and go back to our `previous version <rw_3>`.
 
@@ -185,14 +188,13 @@ Instead of running, to completion, TLC reports a "deadlock":
 
 In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no processes can make any progress*. Usually this is an error, but if it's not for your particular spec, you disable it here:
 
-.. todo:: image
+.. todo:: img/deadlock.png
 
 .. include:: advanced/procedures.rst
 
 
 
 
-.. index:: Examples; threads
 .. _threads:
 
 Example: Threads
@@ -205,11 +207,11 @@ Let's go through another example of concurrency. We have two threads incrementin
 .. spec:: threads/1/threads.tla
   :ss: threads_1
 
-``Correct`` is similar to our invariants in `duplicates`. *Once every thread is done running*, each thread should have incremented ``counter`` once, which means that ``counter = NumThreads``. Confirm that the spec passes with ``INVARIANT Correct`` :ss:`threads_1`. 
+``Correct`` is similar to our invariants in the duplicates spec we wrote. *Once every thread is done running*, each thread should have incremented ``counter`` once, which means that ``counter = NumThreads``. Confirm that the spec passes with ``INVARIANT Correct``. 
 
 .. note:: I'm hardcoding ``NumThreads`` to make running the example easier. In a real spec NumThreads would be a constant.
 
-Now let's assume we can't atomically update ``counter``: maybe our hardware doesn't support it, maybe ``counter`` is on a separate machine of the network, or maybe the increment is just a stand-in for a much more complex implementation logic. Regardless, we now have to update it in two steps: first we assign it to a thread-local variable, then we compute the next value and assign it to ``counter``. To model this, we'll split the label in two, creating a point of concurrency.
+Now let's assume we can't atomically update ``counter``: maybe our hardware doesn't support it, maybe ``counter`` is on a separate machine of the network, or maybe the increment is just a stand-in for something more complex. Regardless, we now have to update it in two steps: first we assign it to a thread-local variable, then we compute the next value and assign it to ``counter``. To model this, we'll split the label in two, creating a point of concurrency.
 
 The thread-local variable is an "internal implementation detail", and I don't think we'll be doing global operations on it, so this is a good place to use a process var.
 
@@ -219,13 +221,13 @@ The thread-local variable is an "internal implementation detail", and I don't th
 
 Before we continue, I want to recommend a good exercise to improve your modeling skills. You know, based on how I'm presenting this example, that this will fail. But *how* will it fail? Before you run the model checker, try to figure out what error it will give you and why. See if you can guess the number of steps it will take, and what order the processes will run.
 
-This is will help you get better with TLA+, but it's does something else, too. As you write more specifications, you'll start to see errors *without* running the model checker. One reason why concurrency is so unintuitive is we normally don't get rapid feedback on the mistakes we make. If you had a race condition to your code, it could be days or weeks before bites you, and then it takes even longer to fully understand it. Whereas in a specification, the model checker shows you immediately. This trains your intuition for race conditions much more quickly than normal.
+This is will help you get better with TLA+, but its does something else, too. As you write more specifications, you'll start to see errors *without* running the model checker. One reason why concurrency is so unintuitive is we normally don't get rapid feedback on the mistakes we make. If you had a race condition to your code, it could be days or weeks before bites you, and then it takes even longer to fully understand it. Whereas in a specification, the model checker shows you immediately. This trains your intuition for race conditions much more quickly than normal.
 
 ...
 
 Okay, so the error should look something like this:
 
-.. todo:: ERROR
+.. figure:: img/concurrency_threads_error.png
 
 Both threads read the value of ``counter`` when it's 0, meaning they both set ``tmp`` to 0, meaning they both assign ``counter := 0 + 1``. Let's add a lock.
 
@@ -238,6 +240,8 @@ Now the spec passes again.
 
 Finding More Invariants
 -------------------------
+
+Here's another exercise I like to do with people I teach: what are some *other* invariants in the system?
 
 .. todo::
 

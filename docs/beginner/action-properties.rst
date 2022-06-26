@@ -4,7 +4,7 @@
 Action Properties
 ########################
 
-.. index:: action property
+.. index:: action property, property; action property
 
 .. _action_properties:
 
@@ -30,7 +30,7 @@ Here's how we write the first as an action property:
 
 Wait, *what*?
 
-Don't worry, we'll be going into *painful* detail in `the next section <action_prop_syntax>`. For now, let's confirm that this actually breaks. First make a change where counter decreases:
+Don't worry, I'll explain this syntax in `the next section <action_prop_syntax>`. For now, let's confirm that this actually breaks. First make a change where counter decreases:
 
 .. spec:: action_props/threads_3/threads.tla
   :diff: action_props/threads_2/threads.tla
@@ -82,14 +82,15 @@ It's finally time to talk about the "actions" in "Temporal Logic of Actions".
 .. index:: ' (next value)
 .. _prime:
 
-So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+! In any given step, ``x'`` is the value of x at the *end of the step*, and what it starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than x".
+So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+. In any given step, ``x'`` is the value of x at the *end of the step* and the value x starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than x".
 
-.. tip:: you can use primed operators in the `trace explorer`. It'll show you the value of the expression in the next step.
+.. tip:: you can use primed operators in the `trace explorer <trace_explorer>`. It'll show you the value of the expression in the next step.
 
 .. index:: UNCHANGED
 
 But that's not (yet) a valid TLA+ property. Consider the slightly different property ``[](x' = x + 1)``: "x always increases by exactly one". What happens if we insert a `stutter step <stuttering>`? Then x doesn't change at all, which means that the property is false. But by the definition of TLA+, we can *always* insert a stutter step anywhere. So this property is *trivially* false. The more interesting property we actually wanted to check was ``[](x' # x => x' + 1)``. Alternatively, we can write this as ``x' > x \/ UNCHANGED x``.
 
+.. index:: [P]_x
 .. _box_action:
 
 As yet more syntactic sugar, we can write ``[](x' = x + 1 \/ UNCHANGED x)`` as ``[][x' = x + 1]_x``. This is called a :dfn:`box action formula`. Box action formulas have a special role in TLA+, as we'll see in :doc:`the next chapter <tla>`. TLC can only check action properties that are box action formulas.
@@ -101,7 +102,7 @@ As yet more syntactic sugar, we can write ``[](x' = x + 1 \/ UNCHANGED x)`` as `
   #. ``counter' > counter \/ counter' = counter``
   #. ``counter' >= counter``
 
-  But in general, you shouldn't rely on that aspect of ``[]_x`` for your property. If it's okay for counter to stay the same, *make that explicit*.
+  But in general, you shouldn't rely on that aspect of ``[]_x`` for your property. If it's okay for counter to stay the same, make that explicit.
 
 More Action Properties
 -----------------------
@@ -157,7 +158,7 @@ As before, we want an action property saying that the counters are monotonic. Un
   :diff: action_props/counters_1/counters.tla
   :fails:
 
-unfortunately, TLC can't check this, due to limitations of the model checker. 
+Unfortunately, TLC can't check this, due to limitations of the model checker. 
 
   [] followed by action not of form [A]_v.
 
@@ -171,7 +172,6 @@ What we can do in this case is pull the quantifier *inside* the action property.
 
 .. todo:: {CONTENT}
 
-  - ENABLED
   - ``<<A>>_v``
 
 Using Action Properties
