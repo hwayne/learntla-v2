@@ -82,7 +82,7 @@ Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, whic
 .. index: ALIAS
 .. _ALIAS:
 
-Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer` on the command line. Let's say we have the following spec:
+Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace Explorer <trace_explorer>` on the command line. Let's say we have the following spec:
 
 ::
 

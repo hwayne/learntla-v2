@@ -4,7 +4,11 @@ Glossary
 
 `genindex`
 
+Term Guide
+==========
+
 .. glossary::
+  :sorted:
 
   TLC : Tooling
     The name of the model checker for TLA+. The site uses "TLC" and "model checker" interchangeably.
@@ -13,7 +17,7 @@ Glossary
     TODO
 
   TLA+
-    The "Temporal Logic of Actions". A :term:`formal specification` language
+    The "Temporal Logic of Actions". A :term:`formal specification language`
 
 
   Formal Specification Language
@@ -23,3 +27,8 @@ Glossary
     The discipline of writing rigorous, verified code.
 
 
+Symbol Guide
+============
+
+@@ : Symbol
+  Test

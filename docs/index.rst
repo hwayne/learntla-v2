@@ -56,7 +56,7 @@ I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* 
    :hidden:
 
    intro/conceptual-overview.rst
-   beginner/index
+   core/index
    topics/index
 
 .. toctree::

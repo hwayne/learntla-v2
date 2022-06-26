@@ -138,7 +138,7 @@ Model invariants are like TypeInvariants, except that they used to check the sta
     /\ set1 \subseteq ModelInt
     /\ set2 \subseteq ModelInt
 
-Then you can write your spec to satisfy ``ModelInvariant``, or at a `state constraint` to your model runs.
+Then you can write your spec to satisfy ``ModelInvariant``, or at a `state constraint <state_constraint>` to your model runs.
 
 .. Latchkeys and tripwires 
 
@@ -268,7 +268,7 @@ If we're simplifying an action, we want to make sure that our simplification doe
   NewAction(user) ==
     seq' = Append(seq, user)
 
-We can check that by adding an `action property` that checks the two are equivalent:
+We can check that by adding an `action property <action_property>` that checks the two are equivalent:
 
 ::
 

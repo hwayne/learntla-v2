@@ -293,4 +293,4 @@ Summary
 - All TLA+ specs are "stutter-invariant", meaning they can crash at any time. A "weakly fair" process is guaranteed to "not crash", though it can spinlock.
 - ``[]P`` means that P is true for every state of every behavior. ``<>P`` means that P is true for at least one state of every behavior. ``P ~> Q`` means that if P is true in a state, then Q will be true in a (present or) future state.
 
-.. [#ctl] This isn't "settled fact": there are `other systems`__ where ``~[]P`` only needs P to be false in one state of one behavior. These systems tend to be worse at modeling some things and better at modeling others.
+.. [#ctl] This isn't "settled fact": there are `other systems <https://en.wikipedia.org/wiki/Computation_tree_logic>`__ where ``~[]P`` only needs P to be false in one state of one behavior. These systems tend to be worse at modeling some things and better at modeling others.

@@ -77,6 +77,8 @@ This is **not** comprehensive. More comprehensive notes can be found in the tool
 Additional Spec Options
 -----------------------
 
+.. _state_constraint:
+
 State Constraint
 
   TLC will ignore any states of the model that don't satisfy the state constraint. For example, take this spec:

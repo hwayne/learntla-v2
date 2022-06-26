@@ -52,7 +52,6 @@ This is the set of all structures where ``s.acct \in Accounts``, ``s.amnt \in 1.
 
 
 .. index:: DOMAIN
-.. _domain:
 .. _DOMAIN:
 
 Getting a Struct's Keys
@@ -96,7 +95,7 @@ First of all, throw away the programming definition of "function". The closest t
 
   F == [x \in S |-> expr]
 
-The set we're mapping from, ``S``, is the :dfn:`domain` of the function, and can be retreived by writing ``DOMAIN F``. That's why we could also use ``DOMAIN`` with sequences and structures:
+The set we're mapping from, ``S``, is the **domain** of the function, and can be retreived by writing ``DOMAIN F``. That's why we could also use ``DOMAIN`` with sequences and structures:
 
 1. A sequence is just a function where the domain is ``1..n``.
 2. A struct is just a function where the domain is a set of strings.
