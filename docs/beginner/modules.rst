@@ -35,7 +35,7 @@ This is what we've been using. Everything on the ``EXTENDS`` line is dumped into
 
 Then ``Op`` will not be imported when extended.
 
-And that's all there is to say about extensions! Let's talk about the much more interesting module mechanism, instances.
+And that's all there is to say about extensions! Let's talk about the much more interesting module mechanism, instances. 
 
 .. index:: INSTANCE
 .. _INSTANCE:
@@ -67,7 +67,7 @@ As anybody who's worked with Python or C++ or anything that allows unqualified i
 
   Foo == INSTANCE Sequences
 
-.. index:: ! (Namespace lookup)
+.. index:: `!` (Namespace lookup)
 
 Namespace lookup is done with ``!``. So instead of writing ``Append(seq, 1)``, you'd write ``Foo!Append(seq, 1)``.
 

@@ -66,7 +66,14 @@ I'm Hillel. I created a `previous version <old.learntla.com>`__ of *Learn TLA+* 
 
    examples/index
 
-:ref:`genindex`
+.. toctree::
+  :caption: Reference
+  :hidden:
+
+  reference/glossary
+  reference/other-resources
+
+.. todo:: https://stackoverflow.com/questions/25243482/how-to-add-sphinx-generated-index-to-the-sidebar-when-using-read-the-docs-theme
    
 
 .. todolist::
