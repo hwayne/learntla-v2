@@ -184,11 +184,11 @@ What if we also add an ``await`` to the Reader? We'll see something interesting 
   :diff: reader_writer/rw_await_1/reader_writer.tla
   :fails:
 
-Instead of running, to completion, TLC reports a "deadlock":
+If you run this, TLC will report a "deadlock" as an error. Once every writer has finished running, the reader is stuck at ``ReadFromQueue`` forever, waiting for a condition that'll never happen again. Since no processes can make any progress (the writers because they are done, the reader because it's trapped awaiting), we have a deadlock. Usually this is an error, but if it's not for your particular spec, you disable it here:
 
-In that case, TLC raise an error as a :index:`deadlock`. A deadlock is when *no processes can make any progress*. Usually this is an error, but if it's not for your particular spec, you disable it here:
+.. figure:: img/deadlock.png
 
-.. todo:: img/deadlock.png
+.. note:: All processes finishing (reaching the "Done" state) doesn't cause a deadlock because the pluscal translator inserts an extra "everything's complete and nothing happens" action. You can see it in the translation as ``Terminating``.
 
 .. include:: advanced/procedures.rst
 

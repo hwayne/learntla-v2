@@ -30,7 +30,10 @@ Operators
   :titlesonly:
 
 
-.. todo:: Transitive tree selection
+.. todo:: 
+  
+  Graph library
+  Transitive tree selection
 
 
 +++++++++++++
@@ -45,8 +48,11 @@ PlusCal Specs
 
 .. todo:: 
 
+  - Algorithms (binary search, topological sort)
+  - XP14
   
 .. todo::
+
 
   Ideas:
 

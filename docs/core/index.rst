@@ -57,6 +57,8 @@ That said, not everybody finds it easier to learn this way, and that's fine. The
 
 * `Video Course`_: I've not watched this so can't speak to its quality, but some people I know really enjoy it.
 
+See also `other_resources` for a larger list of other learning material.
+
 .. toctree::
   :maxdepth: 2
   :hidden:

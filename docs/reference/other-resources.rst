@@ -1,3 +1,5 @@
+.. _other_resources:
+
 ++++++++++++++++++++++
 Other Resources
 ++++++++++++++++++++++
@@ -10,9 +12,9 @@ Apalache guide
 
 old.learntla
 
-Specifying systems
+* `Specifying Systems`_: This is a comprehensive introduction to modeling systems in TLA+, though it's a little lighter on how to check those specifications.
 
-TLA video course
+* `TLA+ Video Course`
 
 Model book
 
@@ -34,3 +36,6 @@ TLA2JSON
 
 Community
 ==========
+
+.. _Specifying Systems: https://lamport.azurewebsites.net/tla/book.html
+.. _TLA+ Video Course: https://lamport.azurewebsites.net/video/videos.html
