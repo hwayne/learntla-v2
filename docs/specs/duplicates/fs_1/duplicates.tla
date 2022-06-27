@@ -4,11 +4,11 @@ CONSTANT S
 ASSUME Cardinality(S) >= 4
 
 (*--algorithm dup
-variable 
+variable
   seq \in [1..5 -> S];
-index = 1;
-seen = {};
-is_unique = TRUE;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==
@@ -34,3 +34,4 @@ begin
       index := index + 1;
     end while;
 end algorithm; *)
+====

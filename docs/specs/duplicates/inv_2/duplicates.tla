@@ -4,10 +4,11 @@ EXTENDS Integers, Sequences, TLC, FiniteSets
 S == 1..10
 
 (*--algorithm dup
-variable seq \in S \X S \X S \X S;
-index = 1;
-seen = {};
-is_unique = TRUE;
+variable 
+  seq \in S \X S \X S \X S;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==

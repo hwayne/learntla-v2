@@ -4,7 +4,7 @@ states:
     states: 800000
     distinct: 700000
 !!!
-!tlacli check % --inv TypeInvariant --inv IsCorrect
+!tlacli check % --inv TypeInvariant --inv IsCorrect --const S "{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}"
 !tlacli translate %
 !!!
 ---- MODULE duplicates_fs__1 ----
@@ -13,11 +13,11 @@ CONSTANT S
 ASSUME Cardinality(S) >= 4
 
 (*--algorithm dup
-variable 
+variable
   seq \in [1..5 -> S];
-index = 1;
-seen = {};
-is_unique = TRUE;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==
@@ -43,3 +43,4 @@ begin
       index := index + 1;
     end while;
 end algorithm; *)
+====

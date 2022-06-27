@@ -2,7 +2,6 @@ target: specs/topics/state_machines/lamp/tla/state_machine.tla
 !!!
 LoadLocal !tlacli check %
 !!!
-
 ---- MODULE sm_tla__1 ----
 VARIABLE state
 
@@ -21,6 +20,7 @@ Next ==
   \/ Trans("LampOff", "On")
   \/ Trans("On", "WallOff")
   \/ Trans("On", "LampOff")
+  \/ Trans("error", "fetching")
 
 Spec == Init /\ [][Next]_state
 ====

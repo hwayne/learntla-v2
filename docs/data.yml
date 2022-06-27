@@ -71,6 +71,9 @@ state_spaces:
   rw_many_3:
     distinct: 38
     states: 69
+  sm_reports:
+    distinct: 5
+    states: 16
   sm_simple:
     distinct: 4
     states: 9

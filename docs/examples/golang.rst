@@ -236,7 +236,6 @@ Since ``write_channel`` has an ``await`` in it, it will block if there
 are more goroutines than tokens. It will then stay blocked until a
 goroutine releases a token. [3]_ Final spec:
 
-{{% dropdown "show spec" %}}
 
 .. code:: tla
 
@@ -312,7 +311,6 @@ goroutine releases a token. [3]_ Final spec:
    end algorithm; *)
    ====
 
-{{% /dropdown %}}
 
 Now that we have a full spec, we can use the model checker, TLC, to see
 if it satisfies any properties. We didn't specify any, but TLC will
@@ -388,6 +386,9 @@ Fixing This
 Chris suggests three possible ways of fixing this. We can test each of
 the three by modifying our spec:
 
+.. rst-class:: quote
+..
+
    If the goroutines took the token by sending to ``limitCh`` instead of
    the main for loop doing it, the bug would not exist;
 
@@ -409,6 +410,9 @@ the three by modifying our spec:
 
 This passes model checking.
 
+.. rst-class:: quote
+..
+
    If the goroutines received from ``limitCh`` to release their token
    before sending to ``found``, it wouldn't exist (but because of error
    handling, it's simpler and more reliable to do the receive in a
@@ -428,6 +432,9 @@ This passes model checking.
    end process;
 
 This passes model checking.
+
+.. rst-class:: quote
+..
 
    And if the entire for loop was in an additional goroutine…
 

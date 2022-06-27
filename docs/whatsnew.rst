@@ -20,7 +20,8 @@ Roadmap
 * Core:
 
   - Exercises
-  - "What next" page
+  - Fixing whatever people find hard to understand
+  - Some more diagrams
 
 * Topics:
 
@@ -42,7 +43,6 @@ Roadmap
 
   - A troubleshooting page
   - LaTeX to ASCII chart
-  - Resources around the web
 
 * Misc:
 

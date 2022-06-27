@@ -20,7 +20,7 @@ Good layouts
 
 
 I've got my design working, but how do I know my code is correct?
-================================================================
+==================================================================
 
 Can't easily
 Generate tests from sync

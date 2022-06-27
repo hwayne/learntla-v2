@@ -1,9 +1,13 @@
 ---- MODULE duplicates ----
-EXTENDS Integers, Sequences, TLC
-CONSTANT S
+EXTENDS Integers, Sequences, TLC, FiniteSets
+CONSTANT S, Size
+ASSUME Cardinality(S) >= 4
+ASSUME Size > 0
 
 (*--algorithm dup
-  variable seq \in S \X S \X S \X S;
+variable
+  n \in 1..Size;
+  seq \in [1..n -> S];
   index = 1;
   seen = {};
   is_unique = TRUE;

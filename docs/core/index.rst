@@ -74,8 +74,7 @@ That said, not everybody finds it easier to learn this way, and that's fine. The
   action-properties
   tla
   modules
-
-.. next steps
+  next-steps
 
 .. _cognitive load: https://teachtogether.tech/en/#s:architecture-load
 

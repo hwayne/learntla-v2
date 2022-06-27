@@ -1,8 +1,4 @@
 target: specs/duplicates/fs_2/duplicates.tla
-states:
-  duplicates_len_5_or_less:
-    states: 876540
-    distinct: 765430
 !!!
 !tlacli check % --inv TypeInvariant --inv IsCorrect
 !tlacli translate %
@@ -14,11 +10,11 @@ ASSUME Cardinality(S) >= 4
 ASSUME Size > 0
 
 (*--algorithm dup
-variable 
+variable
   seq \in [1..Size -> S];
-index = 1;
-seen = {};
-is_unique = TRUE;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==
@@ -44,3 +40,4 @@ begin
       index := index + 1;
     end while;
 end algorithm; *)
+====

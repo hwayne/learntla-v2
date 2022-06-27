@@ -10,3 +10,4 @@ venv-sphinx
 .vscode
 *.st
 states/
+svgs/*.png

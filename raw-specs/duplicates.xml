@@ -7,10 +7,11 @@ EXTENDS Integers, Sequences, TLC
 <s on="3">S == 1..10
 
 </s>(*--algorithm dup
-variable seq <s on="1">=</s><s on="2-">\in</s> <s on="2">{</s><s on="1-2">&lt;&lt;1, 2, 3, 2>></s><s on="2">, &lt;&lt;1, 2, 3, 4>>}</s><s on="3">S \X S \X S \X S</s>;
-index = 1;
-seen = {};
-is_unique = TRUE;
+  variable seq <s on="1">=</s><s on="2-">\in</s> <s on="2">{</s><s on="1-2">&lt;&lt;1, 2, 3, 2>></s><s on="2">, &lt;&lt;1, 2, 3, 4>>}</s><s on="3">S \X S \X S \X S</s>;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
+
 begin
   Iterate:
     while index &lt;= Len(seq) do
@@ -32,10 +33,11 @@ EXTENDS Integers, Sequences, TLC<s on="2">, FiniteSets</s>
 S == 1..10
 
 (*--algorithm dup
-variable seq \in S \X S \X S \X S;
-index = 1;
-seen = {};
-is_unique = TRUE;
+variable 
+  seq \in S \X S \X S \X S;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==
@@ -72,10 +74,10 @@ CONSTANT S<s on="2">
 ASSUME Cardinality(S) >= 4</s>
 
 (*--algorithm dup
-variable seq \in S \X S \X S \X S;
-index = 1;
-seen = {};
-is_unique = TRUE;
+  variable seq \in S \X S \X S \X S;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==
@@ -104,7 +106,7 @@ end algorithm; *)
 ====
 </spec>
 
-<spec name="duplicates_fs" num="2">
+<spec name="duplicates_fs" num="3">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC, FiniteSets
 CONSTANT S<s on="2-">, Size</s>
@@ -112,11 +114,12 @@ ASSUME Cardinality(S) >= 4<s on="2-">
 ASSUME Size > 0</s>
 
 (*--algorithm dup
-variable 
-  seq \in [1..<s on="1">5</s><s on="2-">Size</s> -> S];
-index = 1;
-seen = {};
-is_unique = TRUE;
+variable<s on="3">
+  n \in 1..Size;</s>
+  seq \in [1..<s on="1">5</s><s on="2">Size</s><s on="3">n</s> -> S];
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==

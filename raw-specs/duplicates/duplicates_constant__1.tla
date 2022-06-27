@@ -5,10 +5,10 @@ EXTENDS Integers, Sequences, TLC
 CONSTANT S
 
 (*--algorithm dup
-variable seq \in S \X S \X S \X S;
-index = 1;
-seen = {};
-is_unique = TRUE;
+  variable seq \in S \X S \X S \X S;
+  index = 1;
+  seen = {};
+  is_unique = TRUE;
 
 define
   TypeInvariant ==

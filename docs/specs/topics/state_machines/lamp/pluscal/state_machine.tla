@@ -1,6 +1,6 @@
 ---- MODULE state_machine ----
 
-(*--algorithm HTTP
+(*--algorithm lamp
 variable state = "BothOff";
 process StateMachine = "SM"
 begin

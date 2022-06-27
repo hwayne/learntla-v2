@@ -1,9 +1,21 @@
----- MODULE duplicates ----
-EXTENDS Integers, Sequences, TLC
-CONSTANT S
+target: specs/duplicates/fs_3/duplicates.tla
+states:
+  duplicates_len_5_or_less:
+    states: 876540
+    distinct: 765430
+!!!
+!tlacli check % --inv TypeInvariant --inv IsCorrect --const S "{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}" --const Size 5
+!!!
+---- MODULE duplicates_fs__3 ----
+EXTENDS Integers, Sequences, TLC, FiniteSets
+CONSTANT S, Size
+ASSUME Cardinality(S) >= 4
+ASSUME Size > 0
 
 (*--algorithm dup
-  variable seq \in S \X S \X S \X S;
+variable
+  n \in 1..Size;
+  seq \in [1..n -> S];
   index = 1;
   seen = {};
   is_unique = TRUE;

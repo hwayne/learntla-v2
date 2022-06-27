@@ -274,7 +274,7 @@ Some more examples of function sets:
 
 .. rubric:: Example: Sorting
 
-Let's put function sets to good use. We `learned before <issorted>` that we can write ``IsSorted(seq)`` as:
+Let's put function sets to good use. If we want to test if a sequence is sorted in ascending order, we can write it like this: 
 
 ::
 
@@ -308,13 +308,15 @@ Then ``[DOMAIN seq -> Range(seq)]`` is the set of all sequences which have the s
       /\ \* sorted has the same number of each element as seq
       /\ IsSorted(sorted)
 
-To figure out if two sequences have the same number of each elemnet, let's define a ``CountMatching(f, val)`` operator that tells us the number of inputs matching ``val``. To get the size of a set, we need `Cardinality <Cardinality>` from the ``FiniteSets`` module.
+To figure out if two sequences have the same number of each element, let's define a ``CountMatching(f, val)`` operator that tells us the number of inputs matching ``val``. To get the size of a set, we need `Cardinality <Cardinality>` from the ``FiniteSets`` module.
 
 ::
 
   CountMatching(f, val) ==
     Cardinality({key \in DOMAIN f: f[key] = val})
     
+Then we just need to test to check this over every element in the sequence:
+
 ::
 
   Sort(seq) ==
@@ -330,7 +332,7 @@ Let's try this on some input:
   >>> Sort(<<8, 2, 7, 4, 3, 1, 3>>)
   <<1, 2, 3, 3, 4, 7, 8>>
 
-.. tip:: {CONTENT} Explain bags
+Perfect!
 
 .. index:: duplicates
 
@@ -340,6 +342,8 @@ The Duplicate Checker Again
 Last time, I promise.
 
 Our last version of the duplicate checker was this:
+
+.. note:: ``S <- 1..10`` for all these examples.
 
 .. spec:: duplicates/constant_2/duplicates.tla
 
@@ -364,15 +368,13 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
 
   *State sweeping* is when we use an initial starting state variable to control the parameters for other variables. For example, we could have one variable determine the length of an input sequence, or the maximum size of a bounded buffer.
 
-  .. todo:: fix
-
-    spec:: duplicates/fs_2/duplicates.tla
-    :diff: duplicates/fs_1/duplicates.tla
+    spec:: duplicates/fs_3/duplicates.tla
+    :diff: duplicates/fs_2/duplicates.tla
     :ss: duplicates_len_5_or_less
 
   Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences! This is a useful specifying trick known as *state sweeping*.
 
-  Strictly speaking, sweeping isn't *necessary*: we can, with sufficient cleverness, construct a complex operator that does the same thing. Sweeping, however, is often much *easier* than doing that, and frees up your brainpower for the actual act of specification.
+  Strictly speaking, sweeping isn't *necessary*: we can, with sufficient cleverness, construct a complex operator that does the same thing. Sweeping, however, is often much *easier* than doing that, and frees up your brainpower for the actual process of specification.
 
 
 Summary
