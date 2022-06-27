@@ -12,7 +12,6 @@ General small things for writing better specs.
 Both TLA+ and PlusCal
 ======================
 
-.. todo:: Tagged unions
 
 Use ASSUME
 -----------
@@ -29,10 +28,20 @@ From this it's clear that Threads is a set and NULL is not a thread.
 
 .. todo:: Using ASSUME for operators
 
-Use LET to Simplify Operators
------------------------------
 
-.. todo:: {CONTENT}
+.. todo:: {CONTENT} Use LET to Simplify Operators
+
+Model tagged unions with structs
+-------------------------------------------
+
+TLC can't have a set of strings and integers. If you need that, you can instead use structs with a ``type`` and ``val`` field.
+
+::
+
+  {
+   [type |-> "int", val |-> 1], 
+   [type |-> "str", val |-> "1"] \* ok
+  }
 
 Decompose functions of structs
 ------------------------------
@@ -77,7 +86,6 @@ In general, I mostly use structures for immutable values, like the bodies of mes
 
 Separate Safety and Liveness Models
 -------------------------------------
-
 
 .. todo:: {CONTENT} more on model optimization
 

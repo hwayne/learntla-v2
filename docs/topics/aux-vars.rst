@@ -39,8 +39,7 @@ Variables that represent something that happened. ``Q_was_true`` is a history va
 You can also use history variables to track past information no longer present in the system. For example, say you have clients querying a database, which can be updated in the middle in the request. You could add a variable called ``aux_client_request_value`` that is updated *as soon as the client makes the request*, so that updating the database value doesn't lose the information about what the value was at the time of the request.
 
 
-.. message pool, seen messages
-.. todo:: Pull the example from Dekker
+.. todo:: message pool, seen messages
 
 .. tip:: As a rule of thumb, the spec behavior should not depend on a history variable. If it does, then it's state information the machine you're making has access to, so should be lifted from an auxiliary variable to a real one.
 
@@ -136,9 +135,9 @@ Prophecy variables dictate something will happen *in the future*. Effectively th
 Usage Notes
 ===============
 
-Don't make the code use them
+When using aux vars, you should make it clear what are "machine" variables that are part of the system and what are auxiliary variables that aren't part of it. If you can't implement something then your spec shouldn't depend on it!
 
-Aux vars are tricky to use in raw TLA+, as they need to be included in ``UNCHANGED`` statements.  You can use sequences to help with this. 
+Aux vars can be fiddly in raw TLA+, as they need to be included in ``UNCHANGED`` statements.  You can use sequences to help with this. 
 
 
 

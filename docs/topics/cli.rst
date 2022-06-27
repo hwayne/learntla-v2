@@ -9,7 +9,7 @@ Most people use the Toolbox for TLA+. But you can also use `vscode <https://mark
 The Command Line
 =================
 
-The main CLI file is ``tla2tools.jar``. You can download it directly from `this link <https://github.com/tlaplus/tlaplus/releases>`_. You can also find it in the Toolbox installation, in the base directory.
+The main CLI file is ``tla2tools.jar``. You can download it directly from `this link <https://github.com/tlaplus/tlaplus/releases>`_. You can also find it in the base directory of your toolbox installation.
 
 Tlatools has four subtools: TLC, the pluscal translator, a latex pdf generator (Tla2Tex), and a parser (SANY). I'll leave documenting the latter two tools to `Lamport <https://lamport.azurewebsites.net/tla/current-tools.pdf>`_ and focus on the translator and model checker.
 

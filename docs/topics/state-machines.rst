@@ -73,6 +73,12 @@ What's better than a state machine? A *nested* state machine.
 
 Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/se507/harel_Statecharts.pdf>`__, hierarchical state machines allow states inside of other states. If state P' is inside of state P, then P' can take any transitions that P can take. A simple example is the UI of a web app. You can log on or off, and when logged in you start in a homepage and can move to any secondary page. To make things interesting we'll say one of the secondary pages also as subpages.
 
+.. note:: There's a few different flavors of HSM. For this one, I'm following three restrictions:
+
+  1. Transitions can start from any state, but must end in a "leaf" state. You can't be in ``LoggedIn`` or ``Reports``, you have to be in ``Main`` or ``Report1``.
+  2. A state can't have two different parent states.
+  3. No state cycles.
+
 .. todo:: Graphviz Group
 .. digraph:: hsl
 
@@ -98,15 +104,20 @@ Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/
   }
   Main -> LogOut[ltail="cluster_app"];
 
-There's a few different flavors of HSM. For this one, I'm following three restrictions:
+To model the hierarchical states, I want to be able to write ``Trans("LoggedIn", "Logout")`` and have that include every state of the app: Main, Settings, Report1, and Report2. So we need an ``In(state1, state2)`` that's recursive. Then ``Trans`` becomes
 
-1. Transitions can start from any state, but must end in a "leaf" state. You can't be in ``LoggedIn`` or ``Reports``, you have to be in ``Main`` or ``Report1``.
-2. A state can't have two different parent states.
-3. No cycles.
+::
 
+  Trans(from, to) ==
+    ...
 
+To represent the state hierarchy, we can go either top-down (a function from states to the set of child states) or bottom-up (a function from states to their parent states). Each has relative tradeoffs:
 
-1. *Function from states to their parents*: Impossible for a state to have two parents. Worse ergonomics on checking transitive membership, as not all states will be in the function domain.
-2. *Function from states to the set of children*: Function domain guaranteed to be all states. Two states can have the same child state.
+#. *Top-down*: Function domain guaranteed to be all states. Can accidentally give two states the same child.
+#. *Bottom-up*: Impossible for a state to have two parents. Worse ergonomics on checking ``In``, as not all states will be in the function's domain. Harder to check if a state doesn't have children.
 
 Ah heck, let's implement both and check they're equivalent.
+
+.. todo:: code
+
+  . Let's prove the two are equivalent!

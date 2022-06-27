@@ -10,7 +10,9 @@ This is the core language material. You can think of this section as a self-cont
 
   who this is for
   
-  who this is not for
+  who this is not for:
+    - beginners
+    - people who want to verify code directly
 
   mention TLC, unbound models
 

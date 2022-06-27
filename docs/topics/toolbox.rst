@@ -164,8 +164,9 @@ TLC command-line parameters
 Misc Features
 ================
 
-- There's autocomplete with ``ctrl+space``.
-- Pressing ``F3`` on a module name will jump to its definition.  
+- ``ctrl+space`` will start autocompletion.
+- Pressing ``F3`` on a module name will jump to its definition.
+- In the right click menu, there's an option to "translate pluscal automatically", which translates the spec on every save. This will raise an error if your spec isn't pluscal, though.
 
 .. _graphviz: https://graphviz.org/
 
