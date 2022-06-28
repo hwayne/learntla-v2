@@ -382,6 +382,8 @@ We don't do it this way because "the set of all possible clock values" is over 8
 
 CHOOSE is useful whenever we need to pull a value from a set.
 
+.. todo:: Can I do things like that in real, big models? That question immediately jumps to my mind, is it practical or just cute (like the naive Haskell quicksort everybody loves)?
+
 Now what happens if we write ``ToClock(86401)``? There are no clock times that have 86,401 seconds. If you try this, TLC will raise an error. This is in contrast to the implementation solution, which will instead give us a nonsense value. 99% of the time if it can't find a corresponding element of the set, that's a bug in the specification, an edge case you didn't consider. Better to harden up the operator:
 
 ::
