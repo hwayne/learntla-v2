@@ -35,6 +35,8 @@ This is a free online resource for learning TLA+. To help both beginners and exp
 
 - *Examples:* Applications of TLA+ to specs, showing both how to write and understand specs. 
 
+.. todo:: Rethink when things have settled down: structure apparent to reader in sidebar is "Learn", "Examples" and "Reference", where "Core" and "Topics" are under "Learn" today.
+
 This guide is still under development, check :doc:`whatsnew` to see most recent updates and the `roadmap <roadmap>` to see what I'm currently working on.
 
 
