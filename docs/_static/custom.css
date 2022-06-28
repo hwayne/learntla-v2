@@ -1,5 +1,10 @@
 @import 'basic_mod.css';
 
+dl.footnote {
+	border-top: 1px black solid;
+	padding-top: 1em;
+}
+
 blockquote.quote {
   border-left: .2em solid #bdbdbd;
   font-style: italic;
@@ -53,8 +58,19 @@ div.document div.admonition-todo p.admonition-title {
 /* span.caption-text */
 .code-block-caption {
   text-align: center;
+  font-size: 0.8em;
 }
 
+div.graphviz {
+  display: flex;
+  justify-content: center;
+}
+
+figure {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 figure img {
   border: 1px;

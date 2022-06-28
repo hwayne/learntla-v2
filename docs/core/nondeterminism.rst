@@ -40,8 +40,7 @@ Remember how, when defining the spec variables, we can write ``x \in set`` inste
     sum := sum + roll;
   end with;
 
-Inside this block, ``roll`` can be any one of those six values. The model checker will try *all six*, effectively creating six new behaviors from that single statement. 
-The ``with`` set can also be a variable. If the set is empty, then the ``with`` blocks. This can lead to deadlocks, too.
+Inside this block, ``roll`` can be any one of those six values. The model checker will try *all six*, effectively creating six new behaviors from that single statement.
 
 .. tip:: You can combine deterministic and nondeterminsitic assignments in a single ``with`` statement. The following is valid:
 
@@ -73,7 +72,7 @@ You can also nondeterministically pull from a variable set:
 either-or
 ----------
 
-``either`` is nondeterminsitic control flow. 
+``either`` is nondeterministic control flow. 
 
 ::
 
@@ -87,7 +86,14 @@ either-or
     
 On evaluating this, TLC will create three branches:
 
-.. todo:: diagram
+.. digraph:: either
+  :name: tmp_link
+  :class: align-default
+  :caption: 
+
+  branch[label=either, shape=point];
+  A -> branch[arrowhead=none, label=either];
+  branch -> {approve request reject};
 
 You *can* have labels inside an either statement. Either statements are especially useful for implementing `state machines <topic_state_machines>`. 
 

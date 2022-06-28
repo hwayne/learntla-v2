@@ -232,7 +232,7 @@ You know the drill: new class of value, new need for a way to generate sets of t
 
 The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``.
 
-.. tip:: A function set of form ``[A -> B]`` will have :math:`#B^{#A}` elements in it. If there were two tasks and three CPUs, that would be :math`(2^3)^2 = 64` possible functions.
+.. tip:: A function set of form ``[A -> B]`` will have :math:`\#B^{\#A}` elements in it. If there were two tasks and three CPUs, that would be :math`(2^3)^2 = 64` possible functions.
 
   A good way to remember this: ``[1..n -> BOOLEAN]`` is the set of all binary strings of length ``n``, and we know there are :math:`2^n` such strings.
 
@@ -337,7 +337,7 @@ Perfect!
 .. index:: duplicates
 
 The Duplicate Checker Again
-...........................
+===========================
 
 Last time, I promise.
 
@@ -368,7 +368,7 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
 
   *State sweeping* is when we use an initial starting state variable to control the parameters for other variables. For example, we could have one variable determine the length of an input sequence, or the maximum size of a bounded buffer.
 
-    spec:: duplicates/fs_3/duplicates.tla
+  .. spec:: duplicates/fs_3/duplicates.tla
     :diff: duplicates/fs_2/duplicates.tla
     :ss: duplicates_len_5_or_less
 

@@ -26,7 +26,7 @@ As a *very* rough guide, here's the order we'll learn things:
 - Specifying *nondeterministic* algorithms, like ones involving randomness or a chance of failure.
 - Specifying concurrent systems, like independent readers and writers sharing a queue.
 - Specifying *temporal properties*, or properties on the entire lifetime on the system, like "eventually all servers come online".
-- Everything else.
+- Writing TLA+-first specifications.
 
 Everything up to and including "temporal properties" is necessary to fully use TLA+. Everything after that adds further power.
 

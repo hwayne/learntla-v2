@@ -71,4 +71,4 @@ html_css = ["custom.css"]
 todo_include_todos = True
 
 # Graphviz ext
-graphviz_dot_args=["-Grankdir=LR", "-Glabelloc=t", "-Nshape=rect", "-Nfontname=\"Fira Code\""]
+graphviz_dot_args=["-Grankdir=LR", "-Glabelloc=t", "-Nshape=rect", "-Nfontname=\"Fira Code\"",  "-Efontname=\"Fira Code\""]

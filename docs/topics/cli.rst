@@ -18,7 +18,7 @@ The Pluscal Translator
 
 To translate a PlusCal algorithm in a file, write
 
-.. code-block::
+.. code-block:: bash
 
   $ java -cp tla2tools.jar pcal.trans file.tla
 
@@ -37,7 +37,7 @@ TLC
 
 To run TLC on a model, write:
 
-.. code-block::
+.. code-block:: bash
 
   $ java -jar tla2tools.jar -config configfile.cfg specfile.tla
 

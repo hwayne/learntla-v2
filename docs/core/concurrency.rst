@@ -46,6 +46,21 @@ Behavior (2) doesn't make any sense: how can we read from the queue if there's n
   | The exception was a tlc2.tool.EvalException
   | : Attempted to apply Head to the empty sequence.
 
+
+.. digraph:: rw_error
+  :caption: Reading before reading is ill-defined, so counts as an error.
+
+
+  Init[label="<<>>"];
+  Bad[label="!?", color=tomato];
+  Good1[label="<<1>>"];
+  Good2[label="<<>>"];
+  Init -> Bad[label=Read];
+  Init -> Good1[label="Write"];
+  Good1 -> Good2[label="Read"];
+
+
+
 It's an "unexpected exception", but it points to a real flaw in our system: we don't specify what should be possible in the case of attempting to read from an empty queue. There's a lot of different things we could *choose* to do:
 
 * We could simply skip the dequeueing logic and continue the process.
@@ -63,6 +78,22 @@ The point is that we decide what's the right choice based on what we need from t
   :ss: rw_2
 
 This passes.
+
+.. todo:: Use peripheries more
+
+.. digraph:: rw_good
+  :caption: Now reading an empty queue is a noop, so the spec passes.
+
+
+  Init[label="<<>>"];
+  Nah1[label="<<>>"];
+  Nah2[label="<<1>>"];
+  Good1[label="<<1>>"];
+  Good2[label="<<>>"];
+  Init -> {Nah1}[label=Read];
+  Init -> Good1[label="Write"];
+  Good1 -> Good2[label="Read"];
+  Nah1 -> Nah2[label="Write"];
 
 .. rubric:: pc
 
