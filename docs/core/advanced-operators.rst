@@ -14,7 +14,7 @@ I mean sure, we can write a Pluscal algorithm to do that:
 
 But how the heck do you write ``SumSeq``?!
 
-We *can* do this with what we've learned so far, but it's really complicated and annoying and I don't expect you to figure it out on your own. Maybe I'll push it to a topic or something. But motivated by the annoyingness of summing sequences, in 2018 TLA+ was updated to include recursive operators.
+We *can* do this with what we've learned so far, but it's really complicated and annoying and I don't expect you to figure it out on your own. Maybe I'll push it to a topic or something. But motivated by the annoyingness of summing sequences, in 2008 TLA+ was updated to include recursive operators.
 
 .. index:: 
   single: RECURSIVE

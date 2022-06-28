@@ -20,6 +20,11 @@
 
   * `Payment Handler <https://www.g9labs.com/2022/03/12/what-s-the-fuss-about-formal-specifications-part-2/>`__: Like the wire example in the conceptual overview, except in real life.
 
+  * `Raft consensus algorithm <https://github.com/ongardie/raft.tla>`__
+
+  See also `Introduction to Formal Pragmatic Modeling <https://elliotswart.github.io/pragmaticformalmodeling/>`__, which is an in-depth discussion of three large production-level specifications.
+
+
 
 +++++++++
 Operators

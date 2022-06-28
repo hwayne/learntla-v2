@@ -34,6 +34,8 @@ Roadmap
   - Modeling legacy systems
   - Machine-world differences
   - Keeping a spec and a codebase in sync
+  - Hyperproperties
+  - ``::`` syntax
 
 * Examples:
 

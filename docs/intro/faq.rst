@@ -27,7 +27,6 @@ move faster: we don’t need to learn what a conditional is, just what it looks 
 Knowing some logic and math is going to help. You don’t have to be particularly
 experienced with it, but TLA+ borrows its syntax heavily from mathematics. If you know
 what (P => Q) \/ R means, you’re fine. If you don’t know, this should still be accessible,
-but Appendix A will also teach you everything else you need.
 It's awesome!
 
 What can't TLA+ do?
