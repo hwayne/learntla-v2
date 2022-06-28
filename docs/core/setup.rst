@@ -40,7 +40,7 @@ Let's replace it with the contents of `wire <wire>`, so you get this:
 Translating Specs
 ====================
 
-As mentioned in the :doc:`core outline <index>`, we're going to be teaching pluscal. Translate it under ``File > Translate PlusCal Algorithm``.
+As mentioned in the :doc:`core outline <index>`, we're going to be teaching PlusCal. Translate it under ``File > Translate PlusCal Algorithm``.
 
 .. figure:: img/setup/translate_pluscal.png
 
