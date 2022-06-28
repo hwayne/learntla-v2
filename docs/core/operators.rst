@@ -89,6 +89,8 @@ The obvious ones
 
 Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in a `sequence <sequence>`.
 
+.. todo:: It may be arrogant, but I'm pretty sure that many programmers don't really have a mental model for token. I have no good suggestion here.
+
 Note there is **not** a float type. Floats have complex semantics that are *extremely* hard to represent. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
 
 .. index:: 
