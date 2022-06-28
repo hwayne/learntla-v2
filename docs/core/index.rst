@@ -30,6 +30,8 @@ As a *very* rough guide, here's the order we'll learn things:
 
 Everything up to and including "temporal properties" is necessary to fully use TLA+. Everything after that adds further power.
 
+.. todo:: I get your point, really, but it sounds awkward when “everything else” is one single bullet point that is basically “whatever”.
+
 Notes on the Material
 =====================
 
