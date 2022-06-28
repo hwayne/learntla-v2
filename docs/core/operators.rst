@@ -341,6 +341,9 @@ To get all the times half-past the hour, we could write:
 
   {t \in ClockType: t[2] = 29 /\ t[3] = 0}
 
+.. todo:: Why not t[2] = 30? We're 1-indexing, right?
+
+.. todo:: At first I misunderstood that as “all the times in the second half of the hour” and wondered why there isn't a > anywhere. Maybe check if others misread it similarly?
 
 Map and filter are great for utility, too. The *range* of a sequence is the set of all elements in the sequence. We can get that with a set map:
 
