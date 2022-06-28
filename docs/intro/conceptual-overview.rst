@@ -119,3 +119,5 @@ Discussion
 ==========
 
 There's a few concepts I haven't introduced here: temporal properties, fairness, stutter-invariance, etc. All of these will be covered later. Hopefully, though, this is enough to give you a sense of what, if you decide to learn TLA+, you'll actually be able to *do* with it. If you're interested in continuing, check out the :doc:`core </core/index>` and `setup`.
+
+.. todo:: core or Core or The Core (as in intro.rst)?
