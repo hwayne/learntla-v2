@@ -67,6 +67,7 @@ TLA+ is an "untyped" language, due to its roots in mathematics. In practice, the
   
   If you want to get on ahead, the new types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
 
+.. todo:: Sorry, this had me stumble, because I wasn't sure what “new” refers to here. I surmised that it might be the ones not covered now, but the wording seemed strange and it had me count in the right sidebar if 3 types were missing from the 4+4. WHich wasn't easy, because the structure in the sidebar isn't meant to support this counting. Maybe just leave out the “new”?
 
 .. index:: =, # (not equals)
 
