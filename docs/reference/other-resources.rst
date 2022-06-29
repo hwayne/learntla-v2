@@ -71,6 +71,8 @@ Other Tooling
 
   (Disclosure, I'm currently doing some consulting work for Informal Systems.)
 
+.. _tlaps:
+
 `TLAPS <https://tla.msr-inria.inria.fr/tlaps/content/Documentation/Tutorial/The_example.html>`__: A proof system for TLA+ if you want to use it as a :term:`theorem prover`.
 
 `VSCode plugin <https://marketplace.visualstudio.com/items?itemName=alygin.vscode-tlaplus>`__

@@ -21,7 +21,10 @@ project = 'learntla'
 copyright = '2022, Hillel Wayne'
 author = 'Hillel Wayne'
 
+version = "0.2"
+release = "0.2"
 
+needs_sphinx = "4.4.0"
 
 # -- General configuration ---------------------------------------------------
 
@@ -57,8 +60,8 @@ smartquote = False
 # a list of builtin themes.
 #
 html_theme = 'piccolo_theme'
-#html_theme = 'alabaster'
 html_title = "Learn TLA+"
+html_short_title = "Learn TLA+"
 default_role = "any"
 highlight_language = "tla"
 html_style = "custom.css"
@@ -69,6 +72,7 @@ html_style = "custom.css"
 html_static_path = ['_static']
 html_css = ["custom.css"]
 todo_include_todos = True
+trim_footnote_reference_space = True
 
 # Graphviz ext
 graphviz_dot_args=["-Grankdir=LR", "-Glabelloc=t", "-Nshape=rect", "-Nfontname=\"Fira Code\"",  "-Efontname=\"Fira Code\""]

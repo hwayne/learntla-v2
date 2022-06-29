@@ -338,7 +338,7 @@ Now let's do the same for ``<<a, a>>``:
     - F
     - **T**
 
-Since ``1, 2`` gives us ``T => F``, there's a case where the quantiifer fails, and ``~IsUnique(<<a, a>>)``, as we want it to be. ``=>`` is an *incredibly* powerful tool for writing invariants. 
+Since ``1, 2`` gives us ``T => F``, there's a case where the quantifier fails, and ``~IsUnique(<<a, a>>)``, as we want it to be. ``=>`` is an *incredibly* powerful tool for writing invariants. 
 
 So we just make that change, and:
 

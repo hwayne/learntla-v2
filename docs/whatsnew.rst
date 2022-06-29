@@ -51,3 +51,7 @@ Roadmap
   - PDF output for offline use
   - Panels for C-syntax pluscal
   - Popup footnotes
+
+
+.. todolist::
+

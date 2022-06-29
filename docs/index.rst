@@ -13,7 +13,7 @@
 
   (In the meantime, you can find the old version at `old.learntla.com <https://old.learntla.com>`__.)
 
-Learn TLA+ and Debug your Designs
+Learn TLA+
 ====================================
 
 Most software flaws come from one of two places. A code bug is when the code doesn't match our design— for example, an off-by-one error, or a null dereference. We have lots of techniques for finding code bugs. But what about design flaws? When it comes to bugs in our designs, we're just taught to "think about it really hard".
@@ -43,6 +43,8 @@ About Me
 
 I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practical TLA+`_. I wrote this because I want TLA+ to be as accessible as possible and didn't like that my book cost money. I have a `blog`_, a `twitter`_, and a `weekly newsletter`_.
 
+(Full disclosure, I'm also a `professional  TLA+ consultant <https://hillelwayne.com/consulting/>`__ and <plug>run workshops</plug>.)
+
 .. I also maintain the `Alloy documentation <https://alloy.readthedocs.io/en/latest/>`__ and have a strong interest in `software history <https://www.hillelwayne.com/post/linked-lists/>`__, `software engineering culture <https://www.hillelwayne.com/post/are-we-really-engineers/>`__
 
 .. toctree::
@@ -50,7 +52,9 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
   :hidden:
 
   Intro <self>
+  intro/faq
   whatsnew
+
 
 .. toctree::
    :maxdepth: 2
@@ -74,12 +78,6 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
 
   reference/glossary
   reference/other-resources
-
-.. todo:: https://stackoverflow.com/questions/25243482/how-to-add-sphinx-generated-index-to-the-sidebar-when-using-read-the-docs-theme
-
-.. todo:: TLA+ compared to other formal methods
-
-.. todolist::
 
 
 .. _Practical TLA+: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281

@@ -2,8 +2,6 @@
 Glossary
 ++++++++++++++++
 
-`genindex`
-
 Term Guide
 ==========
 
@@ -75,7 +73,7 @@ Term Guide
     A property that spans more than one state. For example, "the counter must never decrease" or 
 
   Theorem Prover
-    An alternate way to formally verify specifications, where you mathematically prove it has the properties you want. Much more difficult than model checker and so this guide doesn't cover it. The theorem prover for TLA+ is called `TLAPS`__.
+    An alternate way to formally verify specifications, where you mathematically prove it has the properties you want. Much more difficult than model checker and so this guide doesn't cover it. The theorem prover for TLA+ is called `TLAPS <https://tla.msr-inria.inria.fr/tlaps/content/Home.html>`__.
 
   TLA+
     The "Temporal Logic of Actions", used for modeling concurrent systems. A :term:`formal specification language`. You can either write in TLA+ directly or use the :term:`PlusCal` DSL.
@@ -95,9 +93,3 @@ Term Guide
   Module
   Machine
   World
-
-Symbol Guide
-============
-
-@@ : Symbol
-  Test

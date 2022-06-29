@@ -65,7 +65,7 @@ TLA+ is an "untyped" language, due to its roots in mathematics. In practice, the
 
 .. note::
   
-  If you want to get on ahead, the new types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
+  If you want to get on ahead, the other types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
 
 
 .. index:: =, # (not equals)
@@ -86,7 +86,7 @@ Every value type in TLA+ has its own operators, with no overlap or overloading. 
 The obvious ones
 ----------------
 
-Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as tokens. Use them as tokens. If your system needs to manipulate strings, we instead store them in a `sequence <sequence>`.
+Integers and strings. To get the basic addition operators, you need ``EXTENDS Integers``. Strings must use "double quotes" and cannot use single quotes. There are no operators for strings except ``=`` and ``#``. In practice, they are used as opaque identifiers, similar to how some languages have a `:symbol type <https://ruby-doc.org/core-2.5.0/Symbol.html>`__. If your system needs to manipulate strings, we instead store them in a `sequence <sequence>`.
 
 Note there is **not** a float type. Floats have complex semantics that are *extremely* hard to represent. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
 

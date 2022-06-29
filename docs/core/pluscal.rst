@@ -274,8 +274,9 @@ I called this spec ``duplicates``, but the name isn't too important for this.
 If you `run it <running_models>`, you will see a page like this:
 
 .. figure:: img/pluscal_run.png
+  :scale: 30%
 
-  (Haven't figured out yet how to make the images clickable, in the meantime please open in a new tab to see the zoom in.)
+  (Click to zoom in)
 
 I know this completed successfully because otherwise a big error bar would have appeared on the right-hand side. Everything on this page is statistics to help you understand the run better:
 
@@ -349,6 +350,8 @@ We're now significantly more likely to cover all interesting edge cases. This is
 .. note:: Okay, there's one big gap: while we're trying a lot of different elements, we're only looking at one fixed *length*. Maybe there's an issue with 1 or 0-length sequences. We'll be able to fix this once we learn about `function sets <function_set>`.
 
 Now that we have broad state-space coverage, it's time to write some properties. In :doc:`the next chapter <invariants>` we'll specify that our checker always gets the correct result.
+
+.. todo:: {UPDATE} This is the right place to talk about unbound models. 
 
 Summary
 =========

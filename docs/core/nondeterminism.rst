@@ -105,7 +105,7 @@ Nondeterminism is the first major break between specifications and programming l
 
 Say we're specifying a large business workflow, and as one step in it, an employee requests access to a resource. In the happy path, she makes the request, it's assigned to her, and the workflow continues. There are many business reasons the assignment might be rejected:
 
-* The employee isn't authorized to use tha resource
+* The employee isn't authorized to use the resource
 * The resource is in use and cannot be reassigned until it's free
 * The resource can only be assigned if a CI check passes, and it failed
 * The request was rejected by a higher-up
@@ -113,7 +113,7 @@ Say we're specifying a large business workflow, and as one step in it, an employ
 
 To fully represent all of these possible error states, we'd have to include a *lot* of information in our specification: the authorization policies, reserve policies, the CI process, checkout code, etc. Not to mention all of the other possible errors! This is a *lot* of work, and if the resource checkout is only a small part of our workflow, then it's a lot of work that *could* have been spent on studying the bigger picture.
 
-This is where nondeterminisim is really useful. We don't *need* to put in the details for all those errors. We only need to say the assignment succeeds, *or* there's an error:
+This is where nondeterminism is really useful. We don't *need* to put in the details for all those errors. We only need to say the assignment succeeds, *or* there's an error:
 
 ::
 
@@ -225,9 +225,11 @@ Now running the checker with ``INVARIANT Invariant`` and ``NumInputs <- 5, Targe
   /\ sum = 417
   /\ i = 5
 
+.. todo:: Here would be a good place to talk about auxiliary variables, so that we can see what operation actually happened
+
 So 417 is ((((0+1)+9)*6)*7)-3.
 
-(This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way ot do this as a single model-check. Instead I wrote a script to run the model checker `from the command line <topic_cli>` with every value of ``Target`` from 0 to 1000. The first number that doesn't produce an error trace is 851.)
+(This spec got me curious: what's the *smallest* number we can't reach in 5 inputs? There's no *easy* way to do this as a single model-check. Instead I wrote a script to run the model checker `from the command line <topic_cli>` with every value of ``Target`` from 0 to 1000. The first number that doesn't produce an error trace is 851.)
 
 Summary
 ==========
