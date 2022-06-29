@@ -42,6 +42,8 @@ Right now the guide is pretty light on examples. More interesting examples are i
 
 .. index:: ! pluscal
 
+.. _pluscal_vs_tla:
+
 PlusCal vs TLA+
 ---------------
 

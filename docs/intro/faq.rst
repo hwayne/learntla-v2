@@ -4,58 +4,109 @@ FAQ
 
 These are some of the questions I get regularly asked about TLA+. If you have one you'd like to see me answer, feel free to `ask me! <https://github.com/hwayne/learntla-v2/issues>`__
 
-Who is TLA+ For?
+What's TLA+?
 =================
 
-This book will not teach you programming. It will not teach you how to test code nor how
-to write mathematical proofs that your code is correct. Formally proving code correct is
-much more difficult and high effort than proving designs are correct. This book will not
-teach you how to directly convert TLA+ into production code. Much of TLA+’s flexibility
-and power comes from it not having to match a programming language. A few dozen
-lines of TLA+ can match hundreds or thousands of lines of code. No tool can replace
-your insight as an engineer.
-Finally, this book is not a comprehensive resource on how to use TLA+. In particular,
-we focus on using PlusCal, the main algorithm language that compiles to TLA+. PlusCal
-adds additional constructs that make TLA+ easier to learn and use. While powerful and
-widely used in the TLA+ community, PlusCal nonetheless has a few limitations that raw
-TLA+ does not.
-Prerequisites
-You should already be an experienced programmer. While TLA+ can be used with any
-programming language, it is not a programming language. Without having something to
-program with, there’s really no reason to use TLA+. With this assumption, we can also
-move faster: we don’t need to learn what a conditional is, just what it looks like in TLA+.
-Knowing some logic and math is going to help. You don’t have to be particularly
-experienced with it, but TLA+ borrows its syntax heavily from mathematics. If you know
-what (P => Q) \/ R means, you’re fine. If you don’t know, this should still be accessible,
-It's awesome!
+TLA+ is a language for writing and checking "specifications", or system designs. Once you have your specification, you can then test the specification *directly* for bugs, even before you've written any code. 
 
-What's TLA+ good for?
-=====================
+Who made it?
+------------
 
-What's TLA+ bad for?
-====================
+`Leslie Lamport`_, who's also the man behind Byzantine fault tolerance, Paxos, and LaTeX.
 
-Test code directly
-numbers
-String manipulation
-Probabilistic properties
-Good layouts
+Fun fact: LaTeX is short for "Lamport's TeX"!
 
+.. todo::
 
-What's TLA+ Landscape?
+  Only adding this if someone asks
+
+  What does "TLA" stand for?
+
+  `Lamport's own webpage <https://lamport.azurewebsites.net/tla/tla.html>`__ doesn't say, so I'll follow his example and not say either. We find that people get scared off by the name even when they'd find it useful.
+
+  (It's "Temporal Logic of Actions".)
+
+What's PlusCal?
+---------------
+
+PlusCal is a DSL that compiles down to TLA+. Most engineers find it an easier place to start than with pure TLA+, and it works great for a lot of specifications. The |core| starts off with PlusCal (`here's why <pluscal_vs_tla>`) but fully teaches TLA+ by the end. I wrote `topics <topics>` and `examples <examples>` for both TLA+ and PlusCal.
 
 I've heard that TLA+ is a "formal method". What's that?
-==================================================================
+------------------------------------------------------------------
 
 "Formal methods" is, very roughly, the field of computer scientist dedicated to writing correct programs. This is usually done by first writing a rigorous mathematical definition of what "correct" means ("formal specification"), and then showing that the code satisfies that definition ("formal verification"). You can see what this process looks like in practice at `Let's Prove Leftpad`_, which is another project I run.
 
 You don't see formal verification a lot because it's *really, really hard.* There's just too many complicated things in general-purpose code. One way to get around this is to focus on verifying a much simpler domain, like abstract designs. That's what TLA+ does, making it easier to use at the cost of losting some power. 
 
-I've got my design working, but how do I know my code is correct?
-==================================================================
+How does TLA+ test specifications?
+==================================
 
-Ah, that's the difficult question! You can't 
-Generate tests from sync
+There are a few different tools that work with TLA+, but the main one is called TLC, which does :term:`model checking`. That means it checker takes your specification and requirements, then checks *every possible behavior of the spec* against those requirements.
+
+This gives much more thorough coverage than something like unit tests. Consider a system where three processes each do four sequential steps in parallel. There are 34,650 possible interleavings and 415,800 possible distinct states. TLC will check every single one.
+
+What's the catch?
+-----------------
+
+The big one is that TLA+ tests *designs*, not *code*. There's no built-in way to generate code from designs or check designs against code. This is in part because high level-designs are so much denser than code: a 50 line design could take thousands of lines of code to implement.
+
+(There are some techniques that help keep them in sync. I plan to write them up as a `topic <topics>`.)
+
+.. todo:: Write them as a topic
+
+TLA+ also can't tell you if a design is good, practical, or even *implementable*, just whether it satisfies your requirements. It can help you in finding a good design, but you still need to put the work in. No tool can excuse us from being good engineers.
+
+Does TLA+ actually find bugs?
+-----------------------------
+
+Yes! Here are just a few of the (public!) successful use cases:
+
+* `Espark Learning`_, an edtech company with just ten engineers, used TLA+ to find complex bugs in a distributed app installer, saving weeks of development and hundreds in thousands in revenue per year. [#espark]_
+
+* `Amazon Web Services`_ used TLA+ to model parts of S3 and DynamoDB, finding a 35-step bug that escaped all their tests and two code reviews.
+
+.. todo::
+
+  * Crowdstrike
+
+  * CosmosDB
+
+  * MongoDB: https://github.com/visualzhou/mongo-repl-tla
+
+  * https://www.confluent.io/kafka-summit-sf18/hardening-kafka-replication/
+
+What's TLA+ good for?
+=====================
+
+TLA+ is great for modeling and finding bugs in concurrent and distributed systems. It's also good for modeling systems that span more than one codebase. Something like an `AWS Step Function <https://aws.amazon.com/step-functions/?step-functions.sort-by=item.additionalFields.postDateTime&step-functions.sort-order=desc>`__ involves multiple programs, services, and even human actors working together. All of these can be incorporated into a single system design and checked for errors.
+
+What's TLA+ bad for?
+====================
+
+Like any tool, TLA+ has limitations. Aside from the obvious one (can't test your code), there are some TLA+ weak spots:
+
+- Numerical code. TLA+ supports integers but not decimals or floating-point. 
+- String manipulation. You can represent strings as a sequence of characters for basic manipulation, but it gets awkward.
+- Probabilistic properties. You can say "X definitely happens" or "X never happens", but not "X happens at least 90% of the time". There are `special tools`_ for checking those kinds of properties.
+- Reachability properties. You can't say "it's always *possible* for X to eventually happen, even if it doesn't *have* to happen." 
+- Realtime properties, like "If Y happens, X has to happen within five real actual seconds".
+
+There's also some limitations to the current tooling. There's not yet official features for interactive spec exploration or visualization.
+
+Do I need a strong math background to use TLA+?
+===============================================
+
+TLA+ does use a bit of math that's not often used in regular programming, but it's all learnable as you go. The |core| gradually explains it as you go along. 
+
+(If you want to know what to expect, the new math concepts are the boolean statement "X implies Y" and the set quantifiers "forall/some x in set".)
+
+
+Does using TLA+ mean I don't have to write tests?
+=================================================
+
+Absolutely not. It only verifies the design is correct, not that the code is correct. Write your tests.
+
+
 
 How does TLA+ compare to:
 =========================
@@ -93,7 +144,7 @@ These are all about formally verifying code; you can see examples of what they a
 Alloy/Spin/Event-B/mCRL2?
 -------------------------
 
-Now we're getting into the hard stuff. These are all other formal specification languages with the same domain as TLA+: verifying abstract designs instead of working code. They're close enough for the subtle tradeoffs to matter. In my opinion, comparing any of these should be its own page, written by experts in both languages. 
+Now we're getting into the hard stuff. These are all other formal specification languages with the same domain as TLA+: verifying abstract designs instead of working code. They're close enough for the subtle tradeoffs to matter. In my opinion, any comparisons of these tools needs to be be its own page, written by experts in both languages. 
 
 
 P?
@@ -108,4 +159,17 @@ Dude if you know what CTL* is then you're clearly just messing with me
 
 .. _Let's Prove Leftpad: https://github.com/hwayne/lets-prove-leftpad
 
+
+.. _Espark Learning: https://medium.com/espark-engineering-blog/formal-methods-in-practice-8f20d72bce4f
+
+.. [#espark] Disclaimer, I worked on this project. In fact it was how I started using TLA+!
+
 .. [#investment] I've turned down potential clients for this reason.
+
+.. _Amazon Web Services: https://cacm.acm.org/magazines/2015/4/184701-how-amazon-web-services-uses-formal-methods/fulltext
+
+.. _special tools: https://www.prismmodelchecker.org/
+
+.. |core| replace:: :doc:`Core </core/index>`
+
+.. _Leslie Lamport: https://en.wikipedia.org/wiki/Leslie_Lamport

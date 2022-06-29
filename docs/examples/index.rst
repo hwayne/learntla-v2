@@ -1,3 +1,5 @@
+.. _examples:
+
 .. note:: There aren't a whole lot of examples uploaded yet. I'll be writing more as I continue to work on the site. In the meantime, here are some good examples from around the web!
 
   * `TLA+ Example Repository <https://github.com/tlaplus/Examples>`__: The official repo, mostly abstract algorithms and protocols.

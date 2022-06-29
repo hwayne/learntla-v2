@@ -3,9 +3,8 @@
 
   Separate workbook for MONEYZ
 
-  Terms
 
-  Debug your designs
+  Make a role so I can write ``:r:`thing``` for ```thing <thing>```
 
 .. note::
 
@@ -85,3 +84,6 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
 .. _blog: https://www.hillelwayne.com
 .. _twitter: https://twitter.com/hillelogram/
 .. _weekly newsletter: https://buttondown.email/hillelwayne/ 
+
+
+.. http://carefully.understood.systems/blog-2017-04-19-bounded-log-queue.html

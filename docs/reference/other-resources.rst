@@ -39,7 +39,7 @@ Reference Material
 Reading Resources
 =================
 
-`Use of Formal Methods at Amazon Web Services <http://glat.info/pdf/formal-methods-amazon-2014-11.pdf>`__
+`How Amazon Web Services uses Formal Methods  <https://cacm.acm.org/magazines/2015/4/184701-how-amazon-web-services-uses-formal-methods/fulltext>`__
   The paper that first got major companies interested in using TLA+. Also how I found out about it.
 
 `TLA+ Example Repository <https://github.com/tlaplus/Examples>`__
@@ -57,6 +57,9 @@ Talks
 
 `Designing Distributed Systems with TLA+ <https://www.hillelwayne.com/talks/distributed-systems-tlaplus/>`__
   My standard pitch talk for using TLA+.
+
+`Weeks of Debugging can save you Hours of TLA+ <https://www.youtube.com/watch?v=wjsI0lTSjIo>`__
+  Markus (the core toolbox developer)'s pitch talk for using TLA+.
 
 Other Tooling
 ==============
@@ -87,6 +90,8 @@ Other Tooling
 
 Community
 ==========
+
+`The TLA+ Homepage <https://lamport.azurewebsites.net/tla/tla.html>`__
 
 `conf.tlapl.us <http://conf.tlapl.us/home/>`__
   The standard site where we put info on our annual TLA+ conference. Usually cohosted with `Strange Loop <https://www.thestrangeloop.com/>`__.
