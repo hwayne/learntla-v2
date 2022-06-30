@@ -14,8 +14,6 @@ Operators
 
 Operators are what you'd think of as a function in a programming language. They take arguments and evaluate to expressions.
 
-.. todo:: {CONTENT} When do I talk about EXTENDS?
-
 ::
 
   EXTENDS Integers
@@ -190,12 +188,19 @@ There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get 
   * - ``SubSeq(<<1, 3, 5>>, 1, 2)``
     - ``<<1, 3>>``
 
+.. troubleshooting::
+  
+  If you see an error like
 
-.. todo:: There's also ``SelectSeq``, which requires a bit more machinery to understand so we'll touch on it `later <chapter_advanced_operators>`.
+    Encountered "EXTENDS" at line 3, column 1 and token "Sequences"
+
+  It's because you wrote two separate ``EXTENDS`` lines. TLA+ can only have one ``EXTENDS`` *line* per spec, but you can have multiple modules (separated by commas) on it. So instead write ``EXTENDS Integers, Sequences`` and you should be fine.
 
 With sequences, we can represent a 24-hour clock as ``<<hour, minute, second>>``.
 
 ::
+
+  EXTENDS Integers, Sequences
 
   ToSeconds(time) == time[1] + time[2]*60 + time[3]*3600
   Earlier(t1, t2) == ToSeconds(t1) < ToSeconds(t2)
@@ -211,9 +216,8 @@ Sets
 
 A set is a collection of *unordered*, *unique* values. You write them with braces, like ``{1, 2, 3}`` or ``{<<"a">>, <<"b", "c">>}``. You can even have sets inside other sets, like ``{{1}, {2}, {3}}``.
 
-Sets cannot contain elements of different types, so you can't do ``{1, "a"}``. 
+Sets cannot contain elements of different types; ``{1, "a"}`` is invalid. 
 
-.. todo:: {POLISH} Some programming languages have sets, but they're often less important than arrays and dictionaries. In TLA+, sets are *extremely* important.
 
 .. index:: set; set operators, \in; x \in set
 .. index:: \notin

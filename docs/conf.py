@@ -75,4 +75,4 @@ todo_include_todos = True
 trim_footnote_reference_space = True
 
 # Graphviz ext
-graphviz_dot_args=["-Grankdir=LR", "-Glabelloc=t", "-Nshape=rect", "-Nfontname=\"Fira Code\"",  "-Efontname=\"Fira Code\""]
+graphviz_dot_args=["-Grankdir=LR", "-Glabelloc=t", "-Nshape=rect", "-Nfontname=Fira Code",  "-Efontname=Fira Code"]

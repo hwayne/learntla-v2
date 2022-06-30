@@ -371,6 +371,8 @@ Notice that by writing ``\A self: SF_vars(self)``, we're effectively making ever
 
 
 
+.. _fairness_status_example:
+
 Fairness is more useful in TLA+
 ------------------------------------
 
@@ -407,15 +409,15 @@ This spec can fail an arbitrary number of times, but is guaranteed to eventually
 .. todo:: 
 
   {CONTENT} A warning about how machine closure can blow up in your face
-  Also an example of TLC
+  Also an example of fairness in a temporal property
 
 Why use TLA+?
 =============
 
 So now that we have a brief overview of TLA+, let's come around to a basic question: *why bother*?  While TLA+ has a steeper learning curve than PlusCal, it also has a higher power ceiling. There are lots of things you can do in pure TLA+ that would be difficult or impossible to do in pluscal. Some examples:
 
-* Writing helper actions, as we saw with `Trans <trans>`.
-* Using fairness in subtle ways, as in the last section.
+* Writing `helper actions <trans>`.
+* Using fairness `in subtle ways <fairness_status_example>`.
 * Verifying a `refactored spec has the same behavior <action_refactoring>`.
 * Interruptable algorithms. Say I have the sequence of steps :math:`Start \to A \to B \to C \to D`, and A,B,C can all "reset" to start. In pluscal I'd have to model that by duplicated `either <either>` blocks:
 

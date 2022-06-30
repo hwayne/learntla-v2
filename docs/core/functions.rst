@@ -230,7 +230,7 @@ Function sets
 
 You know the drill: new class of value, new need for a way to generate sets of that value. We need to add function values to our type invariants, too!
 
-The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``.
+The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." [#codomain]_ In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``.
 
 .. tip:: A function set of form ``[A -> B]`` will have :math:`\#B^{\#A}` elements in it. If there were two tasks and three CPUs, that would be :math`(2^3)^2 = 64` possible functions.
 
@@ -392,3 +392,5 @@ Summary
 * Sequences are just a special kind of function, where the domain is ``1..n``. 
 * Structures are another special kind of function, written ``[key1 |-> val1, key2 |-> val2]``. They are called with ``struct["key1"]`` (or ``struct.key1``).
 * Functions and structures both have special set syntax. For structures, it is ``[key1: set1]``. For functions, it's ``[A -> B]``.
+
+.. [#codomain] T is sometimes referred to as the "codomain".

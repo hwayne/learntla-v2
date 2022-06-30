@@ -294,9 +294,20 @@ I know this completed successfully because otherwise a big error bar would have 
 
 6. TLC stores explored states as hashes, this is the chance that there's a hash collision. In practice this never goes above one in a million billion and can be ignored. 
 
-7. How often each label was run and how many states that lead to. If one label has 0 states run then there's probably a bug in your spec.
+7. How often each label was run and how many states that lead to. If one label has 0 states then there's probably a bug in your spec.
 
-.. figure:: graphs/duplicates_1.gv.png
+.. digraph:: duplicates_1
+  :caption: Four iterate loops, plus Initial and Done states, makes 6 distinct states.
+
+  edge[arrowhead=vee];
+  
+  I1 [label="i=1\nseq[i]=1"];
+  I2 [label="i=2\nseq[i]=2"];
+  I3 [label="i=3\nseq[i]=3"];
+  I4 [label="i=4\nseq[i]=4"];
+
+  I1 -> I2 -> I3 -> I4;
+
 
 To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too. If you get a different number, you may have made a mistake in transcribing the spec. The states and distinct states make a partial "fingerprint" of the model. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check under the code listing. 
 
@@ -318,7 +329,7 @@ The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>``
 
 .. figure:: graphs/duplicates_2.gv.png
 
-  There are two possible behaviors now.
+  There are two possible starting states, each with its own behavior.
 
 Adding multiple starting states increases the complexity of our model. If, in a spec, TLC will normally have to check 10 states, adding 100 initial states could increase the state space to a maximum of 1,000. In practice, it will often be lower, because sometimes initial states will converge:
 

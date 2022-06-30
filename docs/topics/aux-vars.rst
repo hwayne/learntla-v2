@@ -114,20 +114,52 @@ One way I like to use bounding variables is to introduce a *small* error into th
 
 Then I can test the system with no drops, or only one drop. The system will not be able to drop every single message.
 
+
 Prophecy Variables
 ---------------------
 
-Prophecy variables dictate something will happen *in the future*. Effectively they're a way of pushing nondeterminism earlier in your spec. 
+Prophecy variables dictate something will happen *in the future*. Effectively they're a way of pushing nondeterminism earlier in your spec. For example, in the `calculator spec <calculator_1>`, I represented nondeterministically adding numbers like this:
 
-.. todo:: Give example
+::
+  
+  Digits == 0..9
 
+  (* --algorithm calculator
+  variables 
+    i = 0;
+    sum = 0;
+
+  begin
+    Calculator:
+      while i < NumInputs do
+        with x \in Digits do
+            \* Add
+            sum := sum + x;
+        end with;
+        i := i + 1;
+      end while;
+
+There's only one starting state, but each state branches 10 times at every loop iteration. We could instead write
+
+::
+
+  variables 
+    i = 1;
+    sum = 0;
+    aux_proph_digits \in [1..NumInputs -> Digits];
+
+  begin
+    Calculator:
+      while i <= NumInputs do
+        sum := sum + aux_proph_digits[i];
+        i := i + 1;
+      end while;
+
+Now there's more starting states, but only one possible behavior from each starting state. 
+
+Prophecy values tend to be fairly rare. They're mostly used for making `refinements <refinement>`.
 
 .. prophecy variables, reduce nondeterminism
-
-  Example call will fail
-
-  Very rare, mostly used for refinements
-  if aux_proph_will_receipt then
 
 
 .. todo:: Economy variables

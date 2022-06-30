@@ -19,7 +19,7 @@ Imagine we're building a wire transfer service for a bank. Users can make transf
       to.balance += amount;     # deposit
 
 
-This would satisfy the requirement: if you try to transfer more than you have, the guard prevent you.
+This would satisfy the requirement: if you try to transfer more than you have, the guard prevents you.
 
 .. todo:: {Inkscape} Diagram of system
 
@@ -94,7 +94,7 @@ Over the rest of the book I'll be covering how all of this works syntactically. 
 * ``[People -> Money]`` is also a set (in this case, a `function set <function_set>`). It represents *all possible assignments* of people to money amounts: alice has 5 dollars and bob 1, alice 10 dollars and bob 6, etc. 
 * The variable ``acct`` isn't a fixed value, it is one of 100 different values, one for each element of ``[People -> Money]``. When we model check this, TLC will explore every possible behavior starting from every one of these 100 possible initial values.
 * ``NoOverdrafts`` is a `quantifier <\A>`. It's true if *every* account is >= 0 and false otherwise. In python, this might be equivalent to ``all([acct[p] >= 0 for p in People])``. Quantifiers are an extremely powerful feature of TLA+, making it easy to write very complex properties.
-* We have more than one ``wire`` `process` running simultaneously. With ``NumTransfers == 2``, there are two processes in the spec. But we can choose to have ten, a hundred, or a thousand processes if we really want, our only limit is our CPU time.
+* We have more than one ``wire`` :doc:`process </core/concurrency>` running simultaneously. With ``NumTransfers == 2``, there are two processes in the spec. But we can choose to have ten, a hundred, or a thousand processes if we really wanted, with only our patience and our RAM as limiting factors. 
 * Each step of the algorithm belongs to a separate `label <label>`. The labels determine what happens atomically and what can be interrupted by another process. That way we can represent race conditions.
 
 
@@ -118,4 +118,4 @@ Now I can make separate models, with the same invariant, but different numbers o
 Discussion
 ==========
 
-There's a few concepts I haven't introduced here: temporal properties, fairness, stutter-invariance, etc. All of these will be covered later. Hopefully, though, this is enough to give you a sense of what, if you decide to learn TLA+, you'll actually be able to *do* with it. If you're interested in continuing, check out the :doc:`core </core/index>` and `setup`.
+There's a few concepts I haven't introduced here: temporal properties, fairness, stutter-invariance, etc. All of these will be covered later. Hopefully, though, this is enough to give you a sense of what, if you decide to learn TLA+, you'll actually be able to *do* with it. If you're interested in continuing, check out the :doc:`Core </core/index>` and `setup`.

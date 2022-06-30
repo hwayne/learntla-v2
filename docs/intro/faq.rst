@@ -16,15 +16,6 @@ Who made it?
 
 Fun fact: LaTeX is short for "Lamport's TeX"!
 
-.. todo::
-
-  Only adding this if someone asks
-
-  What does "TLA" stand for?
-
-  `Lamport's own webpage <https://lamport.azurewebsites.net/tla/tla.html>`__ doesn't say, so I'll follow his example and not say either. We find that people get scared off by the name even when they'd find it useful.
-
-  (It's "Temporal Logic of Actions".)
 
 What's PlusCal?
 ---------------

@@ -171,6 +171,7 @@ Example: A Calculator
 One way we use nondeterminism is to simulate user input. Our system has to handle all user actions properly, so we model them as nondeterministically taking actions from a valid set. As an example, let's specify an extremely simple calculator. While TLA+ can't represent decimal numbers, we can do addition, multiplication, and subtraction. First, let's allow users to add any digit to a current sum:
 
 .. spec:: calculator/1/calculator.tla
+  :name: calculator_1
 
 .. todo:: This example might work better if I break the ``while`` into a separate step. But that's for after v2 is up and I'm polishing— might be totally unecessary.
 
@@ -186,6 +187,7 @@ To allow users to also subtract and multiply, we can place the addition logic in
 
 .. spec:: calculator/2/calculator.tla
   :diff: calculator/1/calculator.tla
+  :name: calculator_2
 
 Allowing a nondeterministic choice of operator bloats the state space further :ss:`calculator_five_inputs_with_either`. When dealing with nondeterminism, there are lots of possible states, which is one reason it's harder to reason about.
 

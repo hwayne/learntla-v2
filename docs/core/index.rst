@@ -6,16 +6,6 @@ Core
 
 This is the core language material. You can think of this section as a self-contained "book" that gets you from a complete outsider to a beginning practitioner. People who are already comfortable with TLA+ may find the :doc:`topics </topics/index>` more useful.
 
-.. todo::
-
-  who this is for
-  
-  who this is not for:
-    - beginners
-    - people who want to verify code directly
-
-  mention TLC, unbound models
-
 Outline
 ========
 

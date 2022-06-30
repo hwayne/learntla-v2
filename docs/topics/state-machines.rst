@@ -75,7 +75,6 @@ What's better than a state machine? A *nested* state machine.
 Also known as `Harel Statecharts <https://www.cs.scranton.edu/~mccloske/courses/se507/harel_Statecharts.pdf>`__, hierarchical state machines allow states inside of other states. If state P' is inside of state P, then P' can take any transitions that P can take. A simple example is the UI of a web app. You can log on or off, and when logged in you start in a homepage and can move to any secondary page. To make things interesting we'll say one of the secondary pages also as subpages.
 
 
-.. todo:: Graphviz Group
 .. digraph:: hsl
 
   compound=true;
