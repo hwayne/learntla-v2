@@ -4,6 +4,8 @@
 Action Properties
 ########################
 
+.. todo:: Maybe this should be taught *before* temporal properties
+
 .. index:: action property, property; action property
 
 .. _action_property:
@@ -12,7 +14,7 @@ Action Properties
 Action Properties
 ==================
 
-In the `last chapter <chapter_temporal_logic>` I said that all invariants are safety properties, but not all safety properties are invariants. Outside invariants, the biggest class of safety properties are "action properties", which are restrictions on how the system is allowed to *change*.
+In the :doc:`last chapter <temporal-logic>` I said that all invariants are safety properties, but not all safety properties are invariants. Outside invariants, the biggest class of safety properties are "action properties", which are restrictions on how the system is allowed to *change*.
 
 Let's play a bit more with the threads spec:
 
@@ -169,11 +171,6 @@ What we can do in this case is pull the quantifier *inside* the action property.
 
 .. spec:: action_props/counters_3/counters.tla
   :diff: action_props/counters_2/counters.tla
-
-
-.. todo:: {CONTENT}
-
-  - ``<<A>>_v``
 
 Using Action Properties
 =======================

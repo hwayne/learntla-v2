@@ -1,5 +1,5 @@
 ---- MODULE threads ----
-EXTENDS TLC, Integers
+EXTENDS TLC, Sequences, Integers
 CONSTANT NULL
 
 NumThreads == 2
@@ -12,20 +12,18 @@ variables
   lock = NULL;
 
 define
-  CounterOnlyIncreases ==
-    [][counter' >= counter]_counter
+  AllDone == 
+    \A t \in Threads: pc[t] = "Done"
 
-  LockCantBeStolen ==
-    [][lock # NULL => lock' = NULL]_lock
-
-  LockNullBeforeAcquired ==
-    [][lock' # NULL => lock = NULL]_lock
+  Correct ==
+      AllDone => counter = NumThreads
 end define;  
 
 process thread \in Threads
 variables tmp = 0;
 begin
   GetLock:
+    await lock = NULL;
     lock := self;
 
   GetCounter:
@@ -35,8 +33,8 @@ begin
     counter := tmp + 1;
   
   ReleaseLock:
+    assert lock = self;
     lock := NULL; 
 end process;
 end algorithm; *)
 ====
-

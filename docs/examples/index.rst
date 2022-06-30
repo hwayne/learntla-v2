@@ -41,6 +41,7 @@ Operators
   
   Graph library
   Transitive tree selection
+  Inverting a function of sets, and what happens if the something doesn't have an element (show this with function sets)
 
 
 +++++++++++++

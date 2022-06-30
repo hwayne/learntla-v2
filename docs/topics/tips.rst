@@ -29,8 +29,6 @@ From this it's clear that Threads is a set and NULL is not a thread.
 .. todo:: Using ASSUME for operators
 
 
-.. todo:: {CONTENT} Use LET to Simplify Operators
-
 Model tagged unions with structs
 -------------------------------------------
 
@@ -91,7 +89,7 @@ Separate Safety and Liveness Models
 
 Since liveness properties take a lot longer to check (and can't use `symmetry sets <symmetry_set>`), I use a separate model for just checking liveness properties, which uses smaller constants.
 
-Using the free space in a module
+Use the extra space in a module
 --------------------------------
 
 All modules have to take the form
@@ -103,7 +101,7 @@ All modules have to take the form
   ====
   \* bottom area
 
-Everything in the top space and the bottom space is ignored. I like to use the bottom area as a "scratch space" and put various TLA+ code there. I use the top area to write more about the problem domain and requirements we're trying to model, as well as information about the spec itself.
+Everything in the top space and the bottom space is ignored. I like using the bottom area as a "scratch space" and put various TLA+ code there. I use the top area to write more about the problem domain and requirements we're trying to model, as well as information about the spec itself.
 
 More recently I've been experimenting with putting configuration data in the top area, which I then target with scripts. I used that to generate a lot of the `spec diffs <https://github.com/hwayne/learntla-v2/tree/master/raw-specs>`__ for this guide.
 
@@ -152,7 +150,7 @@ Then you can write your spec to satisfy ``ModelInvariant``, or at a `state const
 
   Maybe that's its own topic
 
-Pluscal
+PlusCal
 ===========
 
 .. todo:: How to use assert
@@ -160,7 +158,7 @@ Pluscal
 Use macros
 -------------
 
-`Macros <macro>` are your friend.
+`Macros <macro>` are your main form of statement reuse in PlusCal.
 
 While loops considered harmful
 --------------------------------
@@ -193,7 +191,20 @@ TLA+
 Managing UNCHANGED
 ------------------
 
-.. todo:: this
+If you have a lot of variables, `UNCHANGED` statements get unweildy quickly. Fortunately, you can group variables as sequences and then use UNCHANGED on a sequence of groups. 
+
+::
+
+  VARIABLE worker_queue, worker_online
+  VARIABLE topic_subscribers, topic_id
+
+  worker_state == <<worker_queue, worker_online>>
+  topic_state == <<topic_subscribers, topic_id>>
+
+  SomeAction ==
+    /\ x' = x + 1
+    /\ UNCHANGED <<worker_state, topic_state>>
+
 
 Helper Actions
 ---------------

@@ -14,7 +14,7 @@ variables
   counter = 0;
   lock = NULL;
 
-define <s on="2-">  
+define<s on="2-">
   CounterOnlyIncreases ==
     [][counter' >= counter]_counter</s><s on="4-">
 

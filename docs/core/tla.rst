@@ -351,13 +351,13 @@ That leaves just one topic left to discuss: how we model `fairness` in pure TLA+
 
 Fairness is formally defined in TLA+ as follows::
 
-  WF_vars(A) == <>[](ENABLED <<A>>_v) => []<><<A>>_v
-  SF_vars(A) == []<>(ENABLED <<A>>_v) => []<><<A>>_v
+  WF_v(A) == <>[](ENABLED <<A>>_v) => []<><<A>>_v
+  SF_v(A) == []<>(ENABLED <<A>>_v) => []<><<A>>_v
 
 In English:
 
-* ``WF_vars(A)``: If it is *eventually always* true that the A action *can happen* (in a way that changes ``v``), then it *will* eventually happen.
-* ``SF_vars(A)``: If it is *always eventually* true that the A action *can happen* (in a way that changes ``v``), then it *will* eventually happen (and change ``v``).
+* ``WF_x(A)``: If it is *eventually always* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
+* ``SF_vars(A)``: If it is *always eventually* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
 
 
 Fairness constraints are appended to the definition of ``Spec``. You can see this in the translation of our prior `strong fairness example <strong_fairness_spec>`::

@@ -15,7 +15,7 @@ variables
   counter = 0;
   lock = NULL;
 
-define   
+define
   CounterOnlyIncreases ==
     [][counter' >= counter]_counter
 
@@ -27,7 +27,6 @@ process thread \in Threads
 variables tmp = 0;
 begin
   GetLock:
-    
     lock := self;
 
   GetCounter:

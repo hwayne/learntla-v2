@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <root folder="threads">
-<spec name="threads" num="3">
+<spec name="threads" num="4">
 ---- MODULE $name ----
 EXTENDS TLC, Sequences, Integers<s on="3-">
 CONSTANT NULL</s>
@@ -11,7 +11,7 @@ Threads == 1..NumThreads
 (* --algorithm threads
 
 variables 
-  counter = 0;<s on="3">
+  counter = 0;<s on="3-">
   lock = NULL;</s>
 
 define
@@ -24,7 +24,7 @@ end define;
 
 process thread \in Threads<s on="2-">
 variables tmp = 0;</s>
-begin<s on="2-"><s on="3">
+begin<s on="2-"><s on="3-">
   GetLock:
     await lock = NULL;
     lock := self;
@@ -33,9 +33,10 @@ begin<s on="2-"><s on="3">
     tmp := counter;
 </s>
   IncCounter:
-    counter := <s on="1">counter</s><s on="2-">tmp</s> + 1;<s on="3">
+    counter := <s on="1">counter</s><s on="2-">tmp</s> + 1;<s on="3-">
   
-  ReleaseLock:
+  ReleaseLock:<s on="4">
+    assert lock = self;</s>
     lock := NULL; </s>
 end process;
 end algorithm; *)

@@ -61,6 +61,7 @@ div.document div.admonition-todo p.admonition-title {
   font-size: 0.8em;
 }
 
+
 div.graphviz {
   display: flex;
   justify-content: center;
@@ -76,8 +77,8 @@ figure img {
   border: 1px;
 }
 
-figcaption p {
+figcaption p .caption-text {
   margin-top: 8px;
   text-align: center;
-
+  font-size: 0.8em;
 }

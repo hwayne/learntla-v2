@@ -22,7 +22,6 @@ Processes are the main agents of concurrency. They can represent different OS pr
 
 .. spec:: reader_writer/1/reader_writer.tla
   :ss: rw_1
-  :emphasize-lines: 10,14
 
 This is identical to no processes, except the ``end process``. Note it's assigned to a value, ``1``. This will be important later. 
 
@@ -272,21 +271,50 @@ Now the spec passes again.
 Finding More Invariants
 -------------------------
 
-Here's another exercise I like to do with people I teach: what are some *other* invariants in the system?
+Here's another exercise I like to do with people I teach: what are some *other* properties of the system?
 
-.. todo::
+One you should always think about: the type invariant. This should be loose and simple and just be the general sets each value can take.
 
-  Finding more invariants is good practice
+.. note::
+  Since this references the private variable ``tmp``, it'll need to go *below* the TLA+ translation. Look for the ``\* END TRANSLATION`` line and put it after that (and before the ``====``).
 
-  * Type invariant
+.. self note: Since the xml templates use pretranslated specs, there's no way to incorporate these invariants into the template. They're manually in threads__4 (with the assert below)
 
-    * Retstrict ``counter`` to ``0..NumThreads``
+::
 
-  * Assert
+  \* Needs to be below translation
+  TypeInvariant ==
+    /\ counter \in 0..NumThreads
+    /\ tmp \in [Threads -> 0..NumThreads]
+    /\ lock \in Threads \union {NULL}
 
-  * Lock can't go from thread to thread
+A more complex property is that ``counter`` is never smaller than any thread's ``tmp`` value. There's a couple of ways we can write this:
 
-    * Action properties
+::
+
+  CounterNotLtTmp1 ==
+    tmp \in [Threads -> 0..counter]
+
+  \* or
+
+  CounterNotLtTmp2 ==
+    \A t \in Threads:
+      tmp[t] <= counter
+
+Go with whatever feels more comfortable to you.
+
+If I was doing this as a production spec, I'd also add a quick error-check in the form of an assert, just to make sure that a thread actually has the lock before releasing it.
+
+.. spec:: threads/4/threads.tla
+  :diff: threads/3/threads.tla
+
+.. rubric:: The limits of invariants
+
+These are all the interesting invariants I see right now. But I also see some properties that *aren't* invariants. First of all, notice that ``counter`` and ``tmp`` can only increase; it'd be good to have our model checker test that, too. Second, it should be impossible for one thread to "steal" the lock from another. If a thread has the lock, that thread must release the lock before another one acquires it. Neither of these are invariants because violations wouldn't be invalid states, but rather invalid transitions between valid states.
+
+For those reasons alone, invariants are insufficient to fully model our system properties. But there's a deeper problem here. ``AllDone`` only says that if the processes finish, we have the correct result. If we change the spec in a way that lets a thread noop-loop forever, then the invariant trivially passes. What we really want to say is that no matter what, *eventually* we get the correct result.
+
+This is an entirely different class of requirement! Instead of saying that our system does the wrong thing, we want to show it always does the right thing. In the :doc:`next chapter <temporal-logic>`, we'll learn how to write and check these kinds of properties.
 
 
 Summary

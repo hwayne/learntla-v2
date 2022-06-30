@@ -1,7 +1,6 @@
 ---- MODULE threads ----
 EXTENDS TLC, Sequences, Integers
 
-\* Hardcoded, in a real spec NumThreads would be a constant
 NumThreads == 2
 Threads == 1..NumThreads
 

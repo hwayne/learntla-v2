@@ -1,8 +1,8 @@
 .. _chapter_functions:
 
-++++++++++++++
-Functions
-++++++++++++++
++++++++++++++++
+Structured Data
++++++++++++++++
 
 
 .. _struct:
@@ -257,8 +257,8 @@ Some more examples of function sets:
 #. We have a set of servers, which can have one of three states. Then ``status \in [Server -> {"online", "booting", "offline"}]``.
 #. We represent a directed graph as a function on pairs of points, which is true iff there's an edge between the two points. Then ``graph \in [Node \X Node -> BOOLEAN]``.
 #. If we define the previous set as the operator ``GraphType``, we could get the set of all *undirected* graphs with ``{g \in GraphType: \A n1, n2 \in Node: g[n1,n2] = g[n2,n1]}``.
+#. If we have a set of users and resources, the set of all possible allocations could be ``[Resource -> User]``. If some resources could be unallocated, it would instead be ``[Resource -> User \union {NULL}]`` (where NULL is a `model value <model_value>`.
 
-.. todo:: Two more examples of functon sets
 
 .. troubleshooting::
 

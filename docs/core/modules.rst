@@ -13,7 +13,7 @@ Modules
 
 Shared TLA+ files should be in the same folder as your spec.
 
-.. todo:: The toolbox has a config option (TLA+ Preferences > TLA+ Library Path Functions) for reading modules from a shared directory.
+.. tip:: The toolbox has a config option (TLA+ Preferences > TLA+ Library Path Functions) for reading modules from a shared directory. Any module in this directory can be used by all your specifications.
 
 Once you have your module, how do you import it? There's a couple of ways:
 

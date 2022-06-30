@@ -3,6 +3,7 @@
 
   Separate workbook for MONEYZ
 
+  Use https://github.com/sphinx-toolbox/sphinx-toolbox/blob/master/sphinx_toolbox/assets.py for downloads
 
   Make a role so I can write ``:r:`thing``` for ```thing <thing>```
 
@@ -78,6 +79,7 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
   reference/glossary
   reference/other-resources
 
+.. While `index` looks like it's under the Reference toctree, it's actually injected as part of a template (_templates/globaltoc.html)
 
 .. _Practical TLA+: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281
 
@@ -87,3 +89,5 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
 
 
 .. http://carefully.understood.systems/blog-2017-04-19-bounded-log-queue.html
+
+.. https://stackoverflow.com/questions/3280712/how-to-allow-certain-threads-to-have-priority-in-locking-a-mutex-use-pthreads

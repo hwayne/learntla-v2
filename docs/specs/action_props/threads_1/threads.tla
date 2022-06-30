@@ -11,7 +11,7 @@ variables
   counter = 0;
   lock = NULL;
 
-define 
+define
 end define;  
 
 process thread \in Threads

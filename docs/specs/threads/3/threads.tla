@@ -2,7 +2,6 @@
 EXTENDS TLC, Sequences, Integers
 CONSTANT NULL
 
-\* Hardcoded, in a real spec NumThreads would be a constant
 NumThreads == 2
 Threads == 1..NumThreads
 

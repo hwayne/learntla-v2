@@ -15,7 +15,7 @@ variables
   counter = 0;
   lock = NULL;
 
-define   
+define
   CounterOnlyIncreases ==
     [][counter' >= counter]_counter
 
