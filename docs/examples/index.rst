@@ -55,6 +55,7 @@ PlusCal Specs
 ..
   - Algorithms (binary search, topological sort)
   - XP14
+  - Dining philosophers from old learntla
   
 
 

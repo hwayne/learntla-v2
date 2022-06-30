@@ -34,7 +34,6 @@ class SpecificationDirective(LiteralInclude):
         
         self.options['caption'] = self.get_caption()
 
-        #breakpoint()
         out = super().run()
 
         if self.options.get('diff'):
@@ -45,8 +44,6 @@ class SpecificationDirective(LiteralInclude):
             # TODO this should also remove inline @@, so using a regex
             new_body = out[0][1][0].split(r'@@', maxsplit=2)[-1]
             #new_body = sub(r'\n@@[ 0-9+,-]*@@', r'\n\n\\* ... \n', new_body)
-
-
             new_literal = nodes.literal_block(new_body, new_body)
 
             new_literal.attributes = out[0][1].attributes
@@ -54,14 +51,7 @@ class SpecificationDirective(LiteralInclude):
 
         
         # move caption below block
-        try:
-            out[0][0], out[0][1] = out[0][1], out[0][0]
-        except:
-            raise
-            breakpoint()
-            quit()
-         
-
+        out[0][0], out[0][1] = out[0][1], out[0][0]
         return out
 
     def get_caption(self):

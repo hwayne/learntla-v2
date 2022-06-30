@@ -41,7 +41,7 @@ What's the catch?
 
 The big one is that TLA+ tests *designs*, not *code*. There's no built-in way to generate code from designs or check designs against code. This is in part because high level-designs are so much denser than code: a 50 line design could take thousands of lines of code to implement.
 
-(There are some techniques that help keep them in sync. I plan to write them up as a `topic <topics>`.)
+(There are `some techniques <http://www.vldb.org/pvldb/vol13/p1346-davis.pdf>`__ that help keep them in sync. I plan to write them up as a `topic <topics>`.)
 
 .. todo:: Write them as a topic
 
@@ -56,15 +56,11 @@ Yes! Here are just a few of the (public!) successful use cases:
 
 * `Amazon Web Services`_ used TLA+ to model parts of S3 and DynamoDB, finding a 35-step bug that escaped all their tests and two code reviews.
 
-.. todo::
+* `Crowdstrike`_ found multiple failure cases over just five days of workshops. 
 
-  * Crowdstrike
+TLA+ has also been used by Azure, MongoDB, Confluent, Elastic, and Cockroach Labs to find bugs.
 
-  * CosmosDB
-
-  * MongoDB: https://github.com/visualzhou/mongo-repl-tla
-
-  * https://www.confluent.io/kafka-summit-sf18/hardening-kafka-replication/
+.. Also: Auxon and that okta competitor
 
 What's TLA+ good for?
 =====================
@@ -161,6 +157,7 @@ Dude if you know what CTL* is then you're clearly just messing with me
 
 .. _special tools: https://www.prismmodelchecker.org/
 
-.. |core| replace:: :doc:`Core </core/index>`
 
 .. _Leslie Lamport: https://en.wikipedia.org/wiki/Leslie_Lamport
+
+.. _Crowdstrike: https://www.youtube.com/watch?v=QKCG3tz4mOU

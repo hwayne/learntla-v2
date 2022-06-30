@@ -15,7 +15,9 @@ class StateSpaceRole(SphinxRole):
     Since TLA+ doesn't provide a lot of feedback, the best way for users to check
     if they have the correct spec written is by comparing the number of states and distinct states.
     We store this information in modelchecks.yml. This role automatically inserts
-    (n states / m distinct) for a given model check.
+    n states / m distinct for a given model check.
+
+    It's also used by the specification directive, under the `:ss:` field.
 
     """
     def run(self) -> tuple[list[Node], list[Any]]:
