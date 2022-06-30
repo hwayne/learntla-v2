@@ -8,7 +8,23 @@ I've run into two problems with including specs:
 
 So this is where I'm storing raw specs with metadata. I also have a script that converts a spec into a new file *and updates the MODULE string*, while also updating metadata and stripping out PlusCal translations. That's `process_spec.py`.
 
+Raw specs use a header like this:
+
+```
+spec: path/to/spec.tla
+states: # optional
+  state_space_name:
+    states:
+    distinct:
+!!!
+Anything before the last line of !!!'s will be stripped out of the file
+So I put scratch notes there
+!!!
+---- module name ----
+```
  
+The module will be renamed on using `process_spec`.
+
 ### `expand_template.py`
 
 For multiple versions of the same file

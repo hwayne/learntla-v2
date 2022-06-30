@@ -18,22 +18,18 @@ Learn TLA+
 
 Most software flaws come from one of two places. A code bug is when the code doesn't match our design— for example, an off-by-one error, or a null dereference. We have lots of techniques for finding code bugs. But what about design flaws? When it comes to bugs in our designs, we're just taught to "think about it really hard".
 
-TLA+ is a "formal specification language", a means of designing systems that lets you directly test those designs. Developed by the Turing award-winner Leslie Lamport, TLA+ has been endorsed by companies like AWS, Microsoft, and Crowdstrike. Think of it like making an outline of what you want to build and then finding errors in the outline itself. 
-
-TLA+ doesn't replace our engineering skill but *augments* it. With TLA+ we can design systems faster and more confidently. When I first discovered it, it saved my company weeks of work and hundreds of thousands of dollars annually. Since then, I've wanted to make it as accessible as possible to as many people as possible. 
-
-.. todo:: Better intro
+TLA+ is a "formal specification language", a means of designing systems that lets you directly test those designs. Developed by the Turing award-winner Leslie Lamport, TLA+ has been endorsed by companies like AWS, Microsoft, and Crowdstrike. TLA+ doesn't replace our engineering skill but *augments* it. With TLA+ we can design systems faster and more confidently. Check out the `chapter_overview` to see an example of this in practice.
 
 About this guide
 ----------------
 
 This is a free online resource for learning TLA+. To help both beginners and experienced users, the guide is divided into three parts:
 
-- The *Core*: a linear introduction to all of the TLA+ language. It starts with basic operators and gradually progresses all the way to advanced topics. The core is intended to be read **linearly**: people new to TLA+ should start with the conceptual overview and then work forward from there. People comfortable with TLA+ should skim until they find new material.
+- The |core|: a linear introduction to all of the TLA+ language. It starts with basic operators and gradually progresses all the way to advanced topics. The core is intended to be read **linearly**: people new to TLA+ should start with the conceptual overview and then work forward from there. People comfortable with TLA+ should skim until they find new material.
 
-- *Topics*: "Optional" advanced material. Any individual lesson will be useful to *many* but not *all* TLA+ users. Unlike the core, these are designed to be mostly independent of each other. If topics have dependencies on other topics, I will call them out.
+- |topics|: "Optional" advanced material. Any individual lesson will be useful to *many* but not *all* TLA+ users. Unlike the core, these are designed to be mostly independent of each other. If topics have dependencies on other topics, I will call them out.
 
-- *Examples:* Applications of TLA+ to specs, showing both how to write and understand specs. 
+- |examples|: Applications of TLA+ to specs, showing both how to write and understand specs. 
 
 This guide is still under development, check :doc:`whatsnew` to see most recent updates and the `roadmap <roadmap>` to see what I'm currently working on.
 
@@ -54,16 +50,14 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
   Intro <self>
   intro/faq
   whatsnew
-
+  intro/conceptual-overview.rst
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Learn
-   :hidden:
+  :hidden:
+  :caption: TLA+
 
-   intro/conceptual-overview.rst
-   core/index
-   topics/index
+  core/index
+  topics/index
 
 .. toctree::
    :maxdepth: 3

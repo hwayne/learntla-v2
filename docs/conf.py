@@ -50,7 +50,13 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**/advanced']
 
-replace = {"core": ":doc:`Core </core/index>`"}
+replace = {
+    "core": ":doc:`Core </core/index>`",
+    "topics": ":doc:`Topics </topics/index>`",
+    "examples": ":doc:`Examples </examples/index>`",
+
+}
+
 
 epilog_template = lambda x, y: f".. |{x}| replace:: {y}"
 rst_epilog = "\n".join([epilog_template(k,v) for k,v in replace.items()])
