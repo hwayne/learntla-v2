@@ -35,7 +35,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: DocumentationHTML
-          path: docs/_build/html/  deploy:
+          path: docs/_build/html/
 
   deploy:
     runs-on: ubuntu-latest
