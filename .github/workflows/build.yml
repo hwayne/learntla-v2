@@ -33,24 +33,18 @@ jobs:
           sudo apt-get install -y graphviz
           pip install -r requirements.txt
           sphinx-build -D todo_include_todos=0 docs ./docs/_build/html/
+      # not necessary for deployment, but makes output observable
       - uses: actions/upload-artifact@v1
         with:
           name: DocumentationHTML
           path: docs/_build/html/
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions/download-artifact@v3
-      with:
-        name: DocumentationHTML
-        path: build
-    - uses: jakejarvis/s3-sync-action@master
-      with:
-        args: --acl public-read --follow-symlinks --delete
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        SOURCE_DIR: 'build'      # optional: defaults to entire repository
+      # Now deploy it
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --acl public-read --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCE_DIR: 'docs/_build/html/'
