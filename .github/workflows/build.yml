@@ -30,6 +30,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: directly build sphinx
         run: |
+          sudo apt-get install -y graphviz
           pip install -r requirements.txt
           sphinx-build -D todo_include_todos=0 docs ./docs/_build/html/
       - uses: actions/upload-artifact@v1
