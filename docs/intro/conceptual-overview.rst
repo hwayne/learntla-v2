@@ -14,7 +14,7 @@ Imagine we're building a wire transfer service for a bank. Users can make transf
 .. code-block::
 
   def transfer(from, to, amount)
-    if (from.balance <= amount) # guard
+    if (from.balance >= amount) # guard
       from.balance -= amount;   # withdraw
       to.balance += amount;     # deposit
 
