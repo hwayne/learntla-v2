@@ -202,7 +202,7 @@ With sequences, we can represent a 24-hour clock as ``<<hour, minute, second>>``
 
   EXTENDS Integers, Sequences
 
-  ToSeconds(time) == time[1] + time[2]*60 + time[3]*3600
+  ToSeconds(time) == time[1]*3600 + time[2]*60 + time[3]
   Earlier(t1, t2) == ToSeconds(t1) < ToSeconds(t2)
 
 
@@ -253,7 +253,7 @@ We also have ways of slicing and dicing sets:
 
   >>> {1, 3} \ {1, 5}
 
-  {1}
+  {3}
 
 .. _Cardinality:
 
