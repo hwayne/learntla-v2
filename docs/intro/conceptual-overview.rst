@@ -41,7 +41,7 @@ If Withdraw(X) happens before Guard(Y), then there's no problem; transfer Y will
 
 That's also why they're hard to fix. Imagine if we added a third feature, say a lock in the right place, to fix the bug. Does the issue go away because we've solved it, or because we've made it rarer? Without being able to explore the actual consequences of the designs, we can't guarantee we've solved anything.
 
-The purpose of TLA+, then, is to programmatically explore these design issues. We want to give the tooling a system and a requirements and it can tell us whether or not we can break the requirement. If it can, then we know to change our design. If it can't, we can be more confident that we're correct.
+The purpose of TLA+, then, is to programmatically explore these design issues. We want to give the tooling a system and a requirement and it can tell us whether or not we can break the requirement. If it can, then we know to change our design. If it can't, we can be more confident that we're correct.
 
 Structure
 ---------
@@ -55,7 +55,7 @@ First, we need to describe the system and what it can do. This is called the **s
 * A transfer first checks if there are sufficient funds. If there are, the amount is subtracted from the first account and added to the second.
 * Transfers are nonatomic. Multiple transfers can happen concurrently.
 
-The specification has a set of "behaviors", or possible distinct executions. For the spec to be correct, every behavior must satisfy all of our system requirements, or **properties**. "No account can overdraft" is an example property, and is violated if there's a behavior of the spec has a state where an account has a negative balance. It doesn't matter if all of the other possible behaviors *don't* have overdrafts. we're looking for rare design error, so just one violation is enough.
+The specification has a set of "behaviors", or possible distinct executions. For the spec to be correct, every behavior must satisfy all of our system requirements, or **properties**. "No account can overdraft" is an example property, and is violated if there's a behavior of the spec has a state where an account has a negative balance. It doesn't matter if all of the other possible behaviors *don't* have overdrafts. We're looking for rare design error, so just one violation is enough.
 
 .. todo:: {GRAPH}
 
