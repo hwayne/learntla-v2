@@ -29,7 +29,7 @@ Once you do that, you should see something like this:
 
   ====
 
-For Historical Reasons, the ``MODULE $name`` must be surrounded by at least four dashes, the module must end with at least for equal-signs, and the ``$name`` of the module must match the filename (case sensitive). Everything above the module name and below the ``====`` is ignored, making those good places to store notes.
+For Historical Reasons, the ``MODULE $name`` must be surrounded by at least four dashes, the module must end with at least four equal-signs, and the ``$name`` of the module must match the filename (case sensitive). Everything above the module name and below the ``====`` is ignored, making those good places to store notes.
 
 Let's replace it with the contents of `wire <wire>`, so you get this:
 
