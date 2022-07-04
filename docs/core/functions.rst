@@ -322,7 +322,7 @@ Then we just need to test to check this over every element in the sequence:
   Sort(seq) ==
     CHOOSE sorted \in [DOMAIN seq -> Range(seq)]:
       /\ \A i \in DOMAIN seq:
-        CountMatching(seq, i) = CountMatching(sorted, i)
+        CountMatching(seq, seq[i]) = CountMatching(sorted, seq[i])
       /\ IsSorted(sorted)
 
 Let's try this on some input:
