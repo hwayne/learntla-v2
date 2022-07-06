@@ -29,7 +29,7 @@ Once you do that, you should see something like this:
 
   ====
 
-For Historical Reasons, the ``MODULE $name`` must be surrounded by at least four dashes, the module must end with at least for equal-signs, and the ``$name`` of the module must match the filename (case sensitive). Everything above the module name and below the ``====`` is ignored, making those good places to store notes.
+For Historical Reasons, the ``MODULE $name`` must be surrounded by at least four dashes, the module must end with at least four equal-signs, and the ``$name`` of the module must match the filename (case sensitive). Everything above the module name and below the ``====`` is ignored, making those good places to store notes.
 
 Let's replace it with the contents of `wire <wire>`, so you get this:
 
@@ -68,7 +68,7 @@ Once you do that, you should see this page:
 
 1. "What is the behavior spec" should be "Temporal Formula" and "Spec". If it's not, make sure you have only one set of ``====`` in the spec, and the translated TLA+ is above it, then manually set the two fields.
 2. Click the "Invariants" box to open it up.
-3. Click "Add", and then insert the text ``No Overdrafts``.
+3. Click "Add", and then insert the text ``NoOverdrafts``.
 4. Run the model, or press ``F11``.
 
 When you run this, you will see an error pop up on the right side:
