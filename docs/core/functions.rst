@@ -61,7 +61,7 @@ If I wanted to find all of the values of a *sequence*, I could get it like this:
 
 ::
 
-  RangeSeq(seq) == {seq[i]: i \in 1..Len(seq)]
+  RangeSeq(seq) == {seq[i]: i \in 1..Len(seq)}
 
 How can I get all the values of a structure? ``Len`` isn't defined for structures. Instead, we have the special keyword ``DOMAIN``. ``DOMAIN struct`` is the set of all keys of a structure.
 
