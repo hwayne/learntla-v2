@@ -55,11 +55,10 @@ ConvertFolder.ps1 folder
 
 ### Watcher.ps1
 
-Builds the site whenever an rst file changes. Also launches a selenium browser that gets autorefreshed. Can be ignored, unnecessary for development.
+Builds the site whenever an rst file changes. Can be ignored, unnecessary for development.
 
 Requires 
 
 ```
 Install-Module -Name FSWatcherEngineEvent
-Install-Module -Name selenium 
 ```

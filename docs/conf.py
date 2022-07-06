@@ -36,10 +36,11 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.graphviz',
     'piccolo_theme',    
+    'notfound.extension',
     'exercise',
     'state_space',
     'specification',
-    'troubleshooting'
+    'troubleshooting',
 ]
 # https://github.com/mgaitan/sphinxcontrib-mermaid/tree/master/docs
 # Add any paths that contain templates here, relative to this directory.

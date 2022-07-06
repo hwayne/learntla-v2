@@ -1,0 +1,9 @@
+:orphan:
+
++++++++++++++++
+Page Not Found
++++++++++++++++
+
+This page could not be found. If the link is from before 2022, it's probably for `the old learntla`_.
+
+.. _the old learntla: https://old.learntla.com
