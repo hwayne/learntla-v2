@@ -90,7 +90,7 @@ So what does this all look like in practice? Let's present a spec for wire trans
 Over the rest of the book I'll be covering how all of this works syntactically. For now I just want to call attention to various parts that TLA+ does different from code:
 
 * Definitions use ``==``. Sorry I don't make the rules
-* ``People`` and ``Money`` are `sets <set>`, collections of unique and unordered values. While programming languages mostly use arrays and key-value maps (`sequence` and `struct` respectively), sets are a lot more foundantional in specification.
+* ``People`` and ``Money`` are `sets <set>`, collections of unique and unordered values. While programming languages mostly use arrays and key-value maps (`sequence` and `struct` respectively), sets are a lot more foundational in specification.
 * ``[People -> Money]`` is also a set (in this case, a `function set <function_set>`). It represents *all possible assignments* of people to money amounts: alice has 5 dollars and bob 1, alice 10 dollars and bob 6, etc. 
 * The variable ``acct`` isn't a fixed value, it is one of 100 different values, one for each element of ``[People -> Money]``. When we model check this, TLC will explore every possible behavior starting from every one of these 100 possible initial values.
 * ``NoOverdrafts`` is a `quantifier <\A>`. It's true if *every* account is >= 0 and false otherwise. In python, this might be equivalent to ``all([acct[p] >= 0 for p in People])``. Quantifiers are an extremely powerful feature of TLA+, making it easy to write very complex properties.
