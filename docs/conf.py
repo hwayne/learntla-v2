@@ -36,7 +36,6 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.graphviz',
     'piccolo_theme',    
-    'notfound.extension',
     'exercise',
     'state_space',
     'specification',
