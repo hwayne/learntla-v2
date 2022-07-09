@@ -20,12 +20,12 @@ Fun fact: LaTeX is short for "Lamport's TeX"!
 What's PlusCal?
 ---------------
 
-PlusCal is a DSL that compiles down to TLA+. Most engineers find it an easier place to start than with pure TLA+, and it works great for a lot of specifications. The |core| starts off with PlusCal (`here's why <pluscal_vs_tla>`) but fully teaches TLA+ by the end. I wrote `topics <topics>` and `examples <examples>` for both TLA+ and PlusCal.
+PlusCal is a :abbr:`DSL (Domain Specific Language)` that compiles down to TLA+. Most engineers find it an easier place to start than with pure TLA+, and it works great for a lot of specifications. The |core| starts off with PlusCal (`here's why <pluscal_vs_tla>`) but fully teaches TLA+ by the end. I wrote `topics <topics>` and `examples <examples>` for both TLA+ and PlusCal.
 
 I've heard that TLA+ is a "formal method". What's that?
 ------------------------------------------------------------------
 
-"Formal methods" is, very roughly, the field of computer scientist dedicated to writing correct programs. This is usually done by first writing a rigorous mathematical definition of what "correct" means ("formal specification"), and then showing that the code satisfies that definition ("formal verification"). You can see what this process looks like in practice at `Let's Prove Leftpad`_, which is another project I run.
+"Formal methods" is, very roughly, the field of computer science dedicated to writing correct programs. This is usually done by first writing a rigorous mathematical definition of what "correct" means ("formal specification"), and then showing that the code satisfies that definition ("formal verification"). You can see what this process looks like in practice at `Let's Prove Leftpad`_, which is another project I run.
 
 You don't see formal verification a lot because it's *really, really hard.* There's just too many complicated things in general-purpose code. One way to get around this is to focus on verifying a much simpler domain, like abstract designs. That's what TLA+ does, making it easier to use at the cost of losting some power. 
 
