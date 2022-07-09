@@ -154,7 +154,7 @@ We can now run this as our full invariant; the spec will still pass.
   single: quantifier
   single: quantifier; \A
   single: quantifier; \E
-  operator: \A ; (forall)
+  single: \A (forall)
   single: \E (exists)
 
 .. _\A:

@@ -6,6 +6,10 @@
 What's New
 #######################
 
+2022-07-08
+
+  Added the `reference_standard_modules` reference.
+
 2022-06-30
 
   Released beta!
@@ -28,8 +32,6 @@ Roadmap
   - Refinement
   - Modeling ADTs
   - Optimizing model-checking
-  - The standard library
-  - The TLC module
   - Community modules
   - Modeling legacy systems
   - Machine-world differences

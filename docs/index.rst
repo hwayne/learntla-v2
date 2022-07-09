@@ -71,6 +71,7 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
   :hidden:
 
   reference/glossary
+  reference/standard-library
   reference/other-resources
 
 .. While `index` looks like it's under the Reference toctree, it's actually injected as part of a template (_templates/globaltoc.html)
