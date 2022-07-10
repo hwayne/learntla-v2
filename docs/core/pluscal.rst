@@ -74,7 +74,7 @@ Which brings us to labels. Labels represent everything that can happen in a sing
 I am saying that the summation happens in a single step, and no time passes between the start and end of the summation. By contrast, if I write
 
 ::
-  
+
   SendRequest:
     \* blah blah blah
   GetResponse:
@@ -82,7 +82,7 @@ I am saying that the summation happens in a single step, and no time passes betw
 
 Then *time passes* between ``SendRequest`` and ``GetResponse``.
 
-.. note:: The labels represent the titular "actions" in the *Temporal Logic of Actions*. 
+.. note:: The labels represent the titular "actions" in the *Temporal Logic of Actions*.
 
 If I wanted to, I could *choose* to make the summation nonatomic. Here's how I'd do it in PlusCal:
 
@@ -93,7 +93,7 @@ If I wanted to, I could *choose* to make the summation nonatomic. Here's how I'd
       x := x + seq[i];
       i := i + 1;
     end while;
-    
+
 .. todo:: {GV} Diagram of the different times
 
 We'll talk about the nuances of `while` later, but the basic idea is that now *each iteration* of the summation is nonatomic. We could add two numbers, start an http request, add two more, receive the response, and add the rest. Or we could add them all before both steps of the http, or all after. Concurrency is weird.
@@ -105,7 +105,7 @@ Label Rules
 
 We're modeling time here, so there are restrictions on where we can place the labels. We'll recap all of the label rules `at the end <label_rules_summary>`.
 
-First, **all statements must belong to a label.** This means, among other things, that you miust always start the algorithm with a label.
+First, **all statements must belong to a label.** This means, among other things, that you must always start the algorithm with a label.
 
 Second, **any variable can only be updated once per label.** Remember, each label only represents one single instant of time. If the variable is updated twice, that means it's gone through two separate values in a single instant of time, meaning... it's not an instant of time anymore.
 
@@ -130,7 +130,7 @@ The rest of the label rules relate to *specific* constructs in PlusCal, so let's
 PlusCal expressions
 -------------------
 
-In addition to updates, there are three other statement-level constructs: 
+In addition to updates, there are three other statement-level constructs:
 
 .. index:: skip, assert, goto
 .. _goto:
@@ -184,7 +184,7 @@ If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``
 
 .. warning:: A common misunderstanding I see in beginners is thinking the B label is *nested in* the A label, like we're in both at the same time. This isn't how it works: we stop being in the A label as soon as we enter the B label. A better mental model is that since ``B:`` is inside a condition from ``A:``, the B label is only *reachable* from A.
 
-Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of 
+Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of
 
 .. index:: macro
 .. _macro:
@@ -249,12 +249,12 @@ while
 A Duplication Checker
 ======================
 
-Now that we know the basics of PlusCal, let's apply it to a small problem. I like to start with simple array algorithms, because we already have the tools to specify them. First we write an operator that expresses the high-level goal of the algorithm, then we write the algorithm, then we verify the algorithm matches the operator. 
+Now that we know the basics of PlusCal, let's apply it to a small problem. I like to start with simple array algorithms, because we already have the tools to specify them. First we write an operator that expresses the high-level goal of the algorithm, then we write the algorithm, then we verify the algorithm matches the operator.
 
 For example, if we were writing an algorithm to check if ``seq`` has any duplicate elements, the operator might be ``IsUnique(seq)``, and then the algorithm could work like this:
 
 1. Create an empty set ``seen``, then step through the elements of ``seq``.
-2. Every time we see a number, we check if it's already in ``seen``. 
+2. Every time we see a number, we check if it's already in ``seen``.
 
     * If it is, we say the list is not unique.
     * Otherwise, we add the element to ``seen`` and continue.
@@ -292,7 +292,7 @@ I know this completed successfully because otherwise a big error bar would have 
 
   5. How many states TLC knows *for certain* it'll have to check. Some of these states will add more states to check, and so on and so forth.
 
-6. TLC stores explored states as hashes, this is the chance that there's a hash collision. In practice this never goes above one in a million billion and can be ignored. 
+6. TLC stores explored states as hashes, this is the chance that there's a hash collision. In practice this never goes above one in a million billion and can be ignored.
 
 7. How often each label was run and how many states that lead to. If one label has 0 states then there's probably a bug in your spec.
 
@@ -300,7 +300,7 @@ I know this completed successfully because otherwise a big error bar would have 
   :caption: Four iterate loops, plus Initial and Done states, makes 6 distinct states.
 
   edge[arrowhead=vee];
-  
+
   I1 [label="i=1\nseq[i]=1"];
   I2 [label="i=2\nseq[i]=2"];
   I3 [label="i=3\nseq[i]=3"];
@@ -309,7 +309,7 @@ I know this completed successfully because otherwise a big error bar would have 
   I1 -> I2 -> I3 -> I4;
 
 
-To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too. If you get a different number, you may have made a mistake in transcribing the spec. The states and distinct states make a partial "fingerprint" of the model. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check under the code listing. 
+To make sure that you're following properly, you can check that that you got the same number of states and distinct states I did. In my case, I got :ss:`duplicates_fixed_input`; you should see that too. If you get a different number, you may have made a mistake in transcribing the spec. The states and distinct states make a partial "fingerprint" of the model. Going forward, whenever I show a spec, I'll list the states and distinct states of the model check under the code listing.
 
 .. note:: You'll get a different number than me if the spec *fails*, because TLC will terminate execution early. In that case, I will note that the modelcheck should fail when showing the code listing.
 
@@ -325,7 +325,7 @@ To check both, we can use multiple starting states. TLA+ doesn't just let us ass
 .. spec:: duplicates/2/duplicates.tla
   :diff: duplicates/1/duplicates.tla
 
-The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>`` as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know. 
+The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>`` as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know.
 
 .. figure:: graphs/duplicates_2.gv.png
 
@@ -349,7 +349,7 @@ We might think, with 1000 initial states and 2 labels, there will be 3,000 total
 10,000 starting states
 ----------------------
 
-So now we're testing two inputs. That's twice as good as one input. Even better than that would be testing 10,000 inputs. Remember how in the last chapter we talked about generating `sets of values <sets_of_values>`? This is just one of the many places it's really useful. 
+So now we're testing two inputs. That's twice as good as one input. Even better than that would be testing 10,000 inputs. Remember how in the last chapter we talked about generating `sets of values <sets_of_values>`? This is just one of the many places it's really useful.
 
 
 .. spec:: duplicates/3/duplicates.tla
@@ -362,7 +362,7 @@ We're now significantly more likely to cover all interesting edge cases. This is
 
 Now that we have broad state-space coverage, it's time to write some properties. In :doc:`the next chapter <invariants>` we'll specify that our checker always gets the correct result.
 
-.. todo:: {UPDATE} This is the right place to talk about unbound models. 
+.. todo:: {UPDATE} This is the right place to talk about unbound models.
 
 Summary
 =========
@@ -370,7 +370,7 @@ Summary
 - Specifications have variables. These can either be a fixed value (using ``=``) or an element in a set (using ``\n``. Any TLC value can be a variable.
 
   - If an element of a set, then TLC will test the model on *every possible starting state*.
-- PlusCal is a language that makes writing specifications easier. 
+- PlusCal is a language that makes writing specifications easier.
 
   - In the PlusCal algorithm body, variables are updated with ``:=``. ``=`` is comparison.
 

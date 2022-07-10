@@ -92,7 +92,7 @@ I often like to test the outputs of operators without having to run the entire s
   Eval == 0
   ====
 
-This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, on the "model checking results" page, I put put ``Eval`` in the "Evaluate Constant Expression Box".
+This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, on the "model checking results" page, I put ``Eval`` in the "Evaluate Constant Expression" box.
 
 .. figure:: img/setup/scratch_eval.png
 
@@ -105,7 +105,7 @@ Now whenever I run the model, the output of ``Eval`` will be put on the box to t
 
 Now running ``Eval`` will put "hello world!".
 
-.. index:: >>> 
+.. index:: >>>
 .. _>>>_notation:
 
 Having a scratchfile is very useful and I recommend setting one up. In the guide itself I will occasionally post "expression evaluations" like this
