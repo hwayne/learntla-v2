@@ -7,7 +7,7 @@ These are some of the questions I get regularly asked about TLA+. If you have on
 What's TLA+?
 =================
 
-TLA+ is a language for writing and checking "specifications", or system designs. Once you have your specification, you can then test the specification *directly* for bugs, even before you've written any code. 
+TLA+ is a language for writing and checking "specifications", or system designs. Once you have your specification, you can then test the specification *directly* for bugs, even before you've written any code.
 
 Who made it?
 ------------
@@ -27,7 +27,7 @@ I've heard that TLA+ is a "formal method". What's that?
 
 "Formal methods" is, very roughly, the field of computer science dedicated to writing correct programs. This is usually done by first writing a rigorous mathematical definition of what "correct" means ("formal specification"), and then showing that the code satisfies that definition ("formal verification"). You can see what this process looks like in practice at `Let's Prove Leftpad`_, which is another project I run.
 
-You don't see formal verification a lot because it's *really, really hard.* There's just too many complicated things in general-purpose code. One way to get around this is to focus on verifying a much simpler domain, like abstract designs. That's what TLA+ does, making it easier to use at the cost of losting some power. 
+You don't see formal verification a lot because it's *really, really hard.* There's just too many complicated things in general-purpose code. One way to get around this is to focus on verifying a much simpler domain, like abstract designs. That's what TLA+ does, making it easier to use at the cost of losing some power.
 
 How does TLA+ test specifications?
 ==================================
@@ -56,7 +56,7 @@ Yes! Here are just a few of the (public!) successful use cases:
 
 * `Amazon Web Services`_ used TLA+ to model parts of S3 and DynamoDB, finding a 35-step bug that escaped all their tests and two code reviews.
 
-* `Crowdstrike`_ found multiple failure cases over just five days of workshops. 
+* `Crowdstrike`_ found multiple failure cases over just five days of workshops.
 
 TLA+ has also been used by Azure, MongoDB, Confluent, Elastic, and Cockroach Labs to find bugs.
 
@@ -72,10 +72,10 @@ What's TLA+ bad for?
 
 Like any tool, TLA+ has limitations. Aside from the obvious one (can't test your code), there are some TLA+ weak spots:
 
-- Numerical code. TLA+ supports integers but not decimals or floating-point. 
+- Numerical code. TLA+ supports integers but not decimals or floating-point.
 - String manipulation. You can represent strings as a sequence of characters for basic manipulation, but it gets awkward.
 - Probabilistic properties. You can say "X definitely happens" or "X never happens", but not "X happens at least 90% of the time". There are `special tools`_ for checking those kinds of properties.
-- Reachability properties. You can't say "it's always *possible* for X to eventually happen, even if it doesn't *have* to happen." 
+- Reachability properties. You can't say "it's always *possible* for X to eventually happen, even if it doesn't *have* to happen."
 - Realtime properties, like "If Y happens, X has to happen within five real actual seconds".
 
 There's also some limitations to the current tooling. There's not yet official features for interactive spec exploration or visualization.
@@ -83,7 +83,7 @@ There's also some limitations to the current tooling. There's not yet official f
 Do I need a strong math background to use TLA+?
 ===============================================
 
-TLA+ does use a bit of math that's not often used in regular programming, but it's all learnable as you go. The |core| gradually explains it as you go along. 
+TLA+ does use a bit of math that's not often used in regular programming, but it's all learnable as you go. The |core| gradually explains it as you go along.
 
 (If you want to know what to expect, the new math concepts are the boolean statement "X implies Y" and the set quantifiers "forall/some x in set".)
 
@@ -121,7 +121,7 @@ These are all about formally verifying code; you can see examples of what they a
   Isabelle/Agda/Coq/Lean?
         ---
 
-  These are all "theorem provers". They're 
+  These are all "theorem provers". They're
 
   (TLA+ also has a theorem prover, called `TLAPS <tlaps>`.)
 
@@ -131,7 +131,7 @@ These are all about formally verifying code; you can see examples of what they a
 Alloy/Spin/Event-B/mCRL2?
 -------------------------
 
-Now we're getting into the hard stuff. These are all other formal specification languages with the same domain as TLA+: verifying abstract designs instead of working code. They're close enough for the subtle tradeoffs to matter. In my opinion, any comparisons of these tools needs to be be its own page, written by experts in both languages. 
+Now we're getting into the hard stuff. These are all other formal specification languages with the same domain as TLA+: verifying abstract designs instead of working code. They're close enough for the subtle tradeoffs to matter. In my opinion, any comparisons of these tools needs to be be its own page, written by experts in both languages.
 
 
 P?
