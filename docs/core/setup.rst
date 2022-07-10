@@ -92,7 +92,7 @@ I often like to test the outputs of operators without having to run the entire s
   Eval == 0
   ====
 
-This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, on the "model checking results" page, I put ``Eval`` in the "Evaluate Constant Expression Box".
+This is different from a normal TLA+ file in two ways. First, instead of having "What is the behavior spec" set to "Temporal formula", I have it set to "no behavior spec". Second, on the "model checking results" page, I put ``Eval`` in the "Evaluate Constant Expression" box.
 
 .. figure:: img/setup/scratch_eval.png
 
