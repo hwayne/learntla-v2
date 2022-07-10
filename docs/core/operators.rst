@@ -62,8 +62,8 @@ Values
 TLA+ is an "untyped" language, due to its roots in mathematics. In practice, the model checker recognizes four primitive types and four advanced ones. We are not going to cover all of them now, just the ones that need little explanation.
 
 .. note::
-  
-  If you want to get on ahead, the other types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things. 
+
+  If you want to get on ahead, the other types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things.
 
 
 .. index:: =, # (not equals)
@@ -88,7 +88,7 @@ Integers and strings. To get the basic addition operators, you need ``EXTENDS In
 
 Note there is **not** a float type. Floats have complex semantics that are *extremely* hard to represent. Usually you can abstract them out, but if you absolutely *need* floats then TLA+ is the wrong tool for the job.
 
-.. index:: 
+.. index::
   /\ (and), \/ (or), ~ (not)
 
 Booleans
@@ -104,13 +104,13 @@ So why do they get their own section? There's two things you need to know about 
   * - Logic
     - TLA+ Symbol
     - Math Symbol
-  * - and 
+  * - and
     - ``/\``
     - :math:`\wedge`
-  * - or 
+  * - or
     - ``\/``
     - :math:`\vee`
-  * - not 
+  * - not
     - ``~``
     - :math:`\neg`
 
@@ -146,12 +146,12 @@ That makes it much clearer. Notice that we have an extra ``/\`` before ``A``. Th
      \/ /\ E
   /\ F
 
-That means something different! It's now ``A /\ (B \/ C) /\ (D \/ E) /\ F``. 
+That means something different! It's now ``A /\ (B \/ C) /\ (D \/ E) /\ F``.
 
 .. tip:: "Why would you even want something like that?" It makes complex :doc:`invariants <invariants>` *much* easier to read.
 
 
-.. index:: 
+.. index::
   single: sequence
   single: types; sequence
   :name: sequence
@@ -163,7 +163,7 @@ A sequence is like a list in any other language. You write it like ``<<a, b, c>>
 
 .. warning:: Did I mention they're 1-indexed? Because they're 1-indexed.
 
-There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get (letting ``S == <<"a">>``): 
+There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get (letting ``S == <<"a">>``):
 
 .. todo:: {PLAN} how to integrate modules and operations in modules
 
@@ -181,15 +181,15 @@ There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get 
     - ``<<"a", "b", "c">>``
   * - ``Head(S)``
     - ``"a"``
-  * - ``Tail(<<1, 2>>)``
-    - ``<<2>>``
+  * - ``Tail(<<1, 2, 3>>)``
+    - ``<<2, 3>>``
   * - ``Len(S)``
     - ``1``
   * - ``SubSeq(<<1, 3, 5>>, 1, 2)``
     - ``<<1, 3>>``
 
 .. troubleshooting::
-  
+
   If you see an error like
 
     Encountered "EXTENDS" at line 3, column 1 and token "Sequences"
@@ -216,7 +216,7 @@ Sets
 
 A set is a collection of *unordered*, *unique* values. You write them with braces, like ``{1, 2, 3}`` or ``{<<"a">>, <<"b", "c">>}``. You can even have sets inside other sets, like ``{{1}, {2}, {3}}``.
 
-Sets cannot contain elements of different types; ``{1, "a"}`` is invalid. 
+Sets cannot contain elements of different types; ``{1, "a"}`` is invalid.
 
 
 .. index:: set; set operators, \in; x \in set
@@ -259,7 +259,7 @@ We also have ways of slicing and dicing sets:
 
 If you ``EXTEND FiniteSets``, you also get ``Cardinality(set)``, which is the number of elements in the set.
 
-.. tip:: 
+.. tip::
 
   The easiest way to test if a set is empty is by writing ``set = {}``. Similarly, you can test if a sequence is empty by writing ``seq = <<>>``.
 
@@ -278,7 +278,7 @@ Then ``AddTimes(<<2, 0, 1>>, <<1, 2, 3>>) = <<3, 2, 4>>``, and ``AddTimes(<<2, 0
 
 Wait, 81 seconds? Our clock can't show 81 seconds, the answer should be ``<<3, 3, 21>>``. You can think of there being a set of valid clock values, all the way from ``<<0, 0, 0>>`` to ``<<23, 59, 59>>``, and ``AddTimes`` should always return some value in that set, almost like it has a type signature. We can enforce this in TLA+, but first we need a way of generating sets of values from values. Fortunately, for every type of value in TLA+, there's a method to generate sets of those values. [#except-strings]_
 
-.. index:: 
+.. index::
   single: BOOLEAN
   single: .. (set interval)
   single: sets of; booleans
@@ -351,13 +351,13 @@ Map and filter are great for utility, too. The *range* of a sequence is the set 
 
 
 .. index:: CHOOSE, \in; x \in set
-  
+
 .. _CHOOSE:
 
 CHOOSE
 --------
 
-Getting the number of seconds past midnight from a clock value is straightforward. But what about going the other way? If we have a time in seconds, we can get the clock time by 
+Getting the number of seconds past midnight from a clock value is straightforward. But what about going the other way? If we have a time in seconds, we can get the clock time by
 
 #. Floor divide by 3600 to get the total hours.
 #. Floor divide again the remainder by 60 to get the total minutes.
@@ -370,13 +370,13 @@ Here's another thing we could do:
 #. Take the set of all possible clock values.
 #. Pick the element in the set that, when converted to seconds, gives us the value.
 
-We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion, making it more useful for *specification*. In TLA+ we can write the selection like this: 
+We don't do it this way because "the set of all possible clock values" is over 80,000 elements long and doing a find on an 80,000 element list is a waste of resources. But it more closely matches the *definition* of the conversion, making it more useful for *specification*. In TLA+ we can write the selection like this:
 
 ::
 
   ToClock(seconds) == CHOOSE x \in ClockType: ToSeconds(x) = seconds
 
-``CHOOSE x \in set: P(x)`` is the generic "selection" syntax. Try it in `scratch`. 
+``CHOOSE x \in set: P(x)`` is the generic "selection" syntax. Try it in `scratch`.
 
 CHOOSE is useful whenever we need to pull a value from a set.
 
@@ -416,8 +416,8 @@ As you can imagine, TLA+ operators can get quite complex! To make them easier to
 
 ::
 
-  ToClock(seconds) == 
-    LET seconds_per_day == 86400 
+  ToClock(seconds) ==
+    LET seconds_per_day == 86400
     IN CHOOSE x \in ClockType: ToSeconds(x) = seconds % seconds_per_day
 
 The LET gives us a new definition, locally scoped to ``ToClock``. ``seconds_per_day`` is an operator that only exists in the definition of this one.
@@ -443,7 +443,7 @@ And you can define multiple operators in the same LET:
       IN
         Max(maxab, c)
 
-Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step. 
+Each operator in the LET can refer to previously defined operators in that scope. With this we can construct solutions step-by-step.
 
 Let's calculate ``ToClock`` the "programming way":
 
@@ -471,7 +471,7 @@ Summary
 ========
 
 - Operators are top-level "functions", and evaluate to expressions. They are written ``Op(a, b) == expr``, with two equal-signs.
-  
+
   - Operators can have conditions with ``IF-THEN-ELSE``, and suboperators with ``LET-IN``.
 
 - Sequences are collections of ordered values, and are 1-indexed.
