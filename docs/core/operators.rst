@@ -175,7 +175,7 @@ There's also a ``Sequences`` module. If you ``EXTENDS Sequences``, you also get 
 
   * - Expression
     - Gives
-  * - ``Append(S, <<"b">>)``
+  * - ``Append(S, "b")``
     - ``<<"a", "b">>``
   * - ``S \o <<"b", "c">>``
     - ``<<"a", "b", "c">>``
