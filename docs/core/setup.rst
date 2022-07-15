@@ -82,7 +82,7 @@ This is an *error trace*, showing the exact set of steps that lead to an invaria
 Making a Scratchfile
 ====================
 
-I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate module I call "scratch":
+I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate spec that I call "scratch":
 
 ::
 

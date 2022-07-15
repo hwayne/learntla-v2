@@ -195,7 +195,7 @@ We can pull multiple elements from the same quantifier. Example: a *composite* n
 ::
 
   IsComposite(num) ==
-    \E m, n \in 2..Len(num):
+    \E m, n \in 2..num:
       m * n = num
 
 Notice that m and n can be the same number: ``IsComposite(9) = TRUE`` when we pick ``m = n = 3``.

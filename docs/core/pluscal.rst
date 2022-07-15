@@ -184,7 +184,7 @@ If ``bool`` is true, then  ``x := 1`` would happen as part of label B. But if ``
 
 .. warning:: A common misunderstanding I see in beginners is thinking the B label is *nested in* the A label, like we're in both at the same time. This isn't how it works: we stop being in the A label as soon as we enter the B label. A better mental model is that since ``B:`` is inside a condition from ``A:``, the B label is only *reachable* from A.
 
-Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time. If you have a lot of
+Not all blocks have to have the *same* number of labels! Conditionals trigger different behavior, which can take different amounts of time.
 
 .. index:: macro
 .. _macro:
