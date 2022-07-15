@@ -5,6 +5,12 @@ dl.footnote {
 	padding-top: 1em;
 }
 
+/* Make the inline footnote links look like footnotes */
+.footnote-reference {
+  vertical-align: super;
+  font-size: smaller;
+}
+
 blockquote.quote {
   border-left: .2em solid #bdbdbd;
   font-style: italic;
