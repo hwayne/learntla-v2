@@ -82,11 +82,11 @@ This is an *error trace*, showing the exact set of steps that lead to an invaria
 Making a Scratchfile
 ====================
 
-I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate file I call "Scratch":
+I often like to test the outputs of operators without having to run the entire spec. To do that, I have a separate module I call "scratch":
 
 ::
 
-  ---- MODULE Scratch ----
+  ---- MODULE scratch ----
   EXTENDS Integers, TLC, Sequences
 
   Eval == 0
@@ -96,7 +96,7 @@ This is different from a normal TLA+ file in two ways. First, instead of having 
 
 .. figure:: img/setup/scratch_eval.png
 
-Now whenever I run the model, the output of ``Eval`` will be put on the box to the right. In this case, it will be 0. But if I change the ``Eval`` expression, I get something different.
+Now whenever I run the model, the output of ``Eval`` will be placed in the "Value" box below. In this case, it will be 0. But if I change the ``Eval`` expression, I get something different.
 
 .. code:: diff
 
