@@ -29,6 +29,12 @@ I've heard that TLA+ is a "formal method". What's that?
 
 You don't see formal verification a lot because it's *really, really hard.* There's just too many complicated things in general-purpose code. One way to get around this is to focus on verifying a much simpler domain, like abstract designs. That's what TLA+ does, making it easier to use at the cost of losing some power.
 
+What does TLA stand for?
+-------------------------
+
+"Three Letter Acronym." [#tla]_
+
+
 How does TLA+ test specifications?
 ==================================
 
@@ -149,9 +155,12 @@ Dude if you know what CTL* is then you're clearly just messing with me
 
 .. _Espark Learning: https://medium.com/espark-engineering-blog/formal-methods-in-practice-8f20d72bce4f
 
+.. [#TLA] Okay okay, it's actually "Temporal Logic of Actions". TLA+ is designed around the "core" of TLA. TLA+ users are a little shy about sharing the acronym because it intimidates beginners who'd otherwise have little trouble learning TLA+.
+
 .. [#espark] Disclaimer, I worked on this project. In fact it was how I started using TLA+!
 
 .. [#investment] I've turned down potential clients for this reason.
+
 
 .. _Amazon Web Services: https://cacm.acm.org/magazines/2015/4/184701-how-amazon-web-services-uses-formal-methods/fulltext
 
