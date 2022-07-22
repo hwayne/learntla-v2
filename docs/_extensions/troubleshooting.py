@@ -146,7 +146,7 @@ class TroubleshootingListProcessor:
                            (troubleshooting.source, troubleshooting.line))
 
         prefix = description[:description.find('<<')]
-        suffix = description[description.find('>>') + 2:]
+        suffix = description[description.find('>>') + 2:] # this is a great trick
 
         para = nodes.paragraph(classes=['troubleshooting-source'])
         para += nodes.Text(prefix, prefix)

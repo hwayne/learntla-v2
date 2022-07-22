@@ -9,6 +9,52 @@ NOTE: Doesn't yet work for LaTeX builder
 NOTE: currently errors a solution corresponds to an exercise that doesn't have a title
 """
 
+"""
+Order goes:
+Exercise
+  Hint*
+  Test*
+  Solution
+
+Or
+
+Exercise
+    Part+
+      Hint?
+      Test?
+      Sol
+
+Tests and hints can just be dropdowns. Solutions must always belong to a part or an exercise. Directive looks like:
+
+.. ex:: title
+  :name: Optional
+
+  Content
+
+    .. part:: 1
+
+        Content
+        
+        .. sol::
+
+    .. sol::
+
+Then the ref names are:
+:ex:`name`
+:ex:`name-sol`
+:ex:`name-p1`
+:ex:`name-p1-sol`
+
+(Yes, this can lead to name conflicts if you name an exercise `name-sol`. Don't do that.)
+
+Hints and tests won't get references. For HTML, this will be implemented as a dropdown:
+
+Exercise:
+    Content
+    > show solution
+"""
+
+
 ### INCLUDES {{{
 from docutils import nodes
 from docutils.nodes import Node
@@ -45,6 +91,14 @@ def is_extension_node(node):
     return (
         is_enumerable_node(node) or is_unenumerable_node(node) or is_linked_node(node)
     )
+
+class exercise_node(nodes.Admonition, nodes.Element):
+    ...
+
+class solution_node(nodes.Admonition, nodes.Element):
+    ...
+
+# Other nodes: part node (like a question), hints node, tests node
 
 
 class enumerable_node(nodes.Admonition, nodes.Element):
@@ -86,12 +140,43 @@ def depart_linked_node(self, node: Node) -> None:
 
 ### END LOCAL NODES }}}
 
+### DOMAIN {{{
+
+class ExerciseDomain(Domain):
+    name = 'exercise'
+    label = 'ex'
+
+    @property
+    def exercises(self) -> Dict[str, List[exercise_node]]:
+        return self.data.setdefault('exercises', {})
+
+    def clear_doc(self, docname: str) -> None:
+        self.exercises.pop(docname, None)
+
+    def merge_domaindata(self, docnames: List[str], otherdata: Dict) -> None:
+        for docname in docnames:
+            self.exercises[docname] = otherdata['exercises'][docname]
+
+    def process_doc(self, env: BuildEnvironment, docname: str,
+                    document: nodes.document) -> None:
+        exercises = self.exercises.setdefault(docname, [])
+        for exercise in document.traverse(exercise_node):
+            exercises.append(exercise)
+
+
+# }}}
+
 
 ### DIRECTIVES {{{
+
+# class SolutionDirective(SphinxDirective):
+# class PartDirective(ExerciseDirective):
+# Same, except it can't define its own name
 
 class ExerciseDirective(SphinxDirective):
     """ A custom exercise directive """
 
+    node_class = exercise_node
     has_content = True
     required_arguments = 0
     optional_arguments = 1
@@ -108,11 +193,26 @@ class ExerciseDirective(SphinxDirective):
         (ex, ) = super().run() # type: Tuple[Node]
         if isinstance(ex, nodes.system_message):
             return [ex]
+        
+        elif isinstance(ex, exercise_node):
+            ...
+        else:
+            raise RuntimeError
 
     def base_node_type(self):
         if "nonumber" in self.options:
             return unenumerable_node()
         return enumerable_node()
+
+class ExerciseProcessor:
+    def __init__(self, app: Sphinx, doctree: nodes.document, docname: str) -> None:
+        assert app.env
+        self.builder = app.builder
+        self.config = app.config
+        self.env = app.env
+        self.docname = docname
+        self.domain = cast(ExerciseDomain, app.env.get_domain("std"))
+        self.process(doctree, docname)
 
 class CustomDirective(SphinxDirective):
     """ A custom Sphinx directive """
@@ -349,7 +449,6 @@ def doctree_read(app: Sphinx, document: Node) -> None:
             # to include the newly updated sectname
             domain.anonlabels[name] = docname, labelid
             domain.labels[name] = docname, labelid, sectname
-
 
 class DoctreeResolve:
     def __init__(self, app: Sphinx, doctree: nodes.document, docname: str) -> None:
