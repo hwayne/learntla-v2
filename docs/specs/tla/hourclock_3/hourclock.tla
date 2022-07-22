@@ -11,7 +11,7 @@ begin
           hr := 1;
         else
           with x = 1 do       
-            hr := hr + 1;
+            hr := hr + x;
           end with
         end if;
     end while;
