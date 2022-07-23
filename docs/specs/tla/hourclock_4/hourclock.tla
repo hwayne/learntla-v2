@@ -10,9 +10,9 @@ begin
         if hr = 12 then
           hr := 1;
         else
-          with x \in 0..1 do       
-            hr := hr + 1;
-          end with
+          with x \in 1..2 do
+            hr := hr + x;
+          end with;
         end if;
     end while;
 end algorithm; *)

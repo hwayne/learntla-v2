@@ -13,8 +13,8 @@ begin
         if hr = 12 then
           hr := 1;
         else<s on="3-4">
-          with x<s on="3"> = 1</s><s on="4"> \in 0..1</s> do</s>
-            hr := hr + 1;<s on="3-4">
+          with x<s on="3"> = 1</s><s on="4"> \in 1..2</s> do</s>
+            hr := hr +<s on="1-2"> 1;</s><s on="3-4"> x;
           end with;</s>
         end if;
     end while;

@@ -1,6 +1,6 @@
 ---- MODULE hourclock ----
-\* TODO: two clocks
 EXTENDS Naturals
+\* TODO: two clocks
 (*--algorithm hourclock
 variable hr = 1; \* hour
 
@@ -9,7 +9,7 @@ begin
     while TRUE do
         if hr = 12 then
           hr := 1;
-        else       
+        else
             hr := hr + 1;
         end if;
     end while;
