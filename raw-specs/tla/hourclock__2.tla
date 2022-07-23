@@ -13,7 +13,7 @@ begin
     while TRUE do
         if hr = 12 then
           hr := 1;
-        else       
+        else
             hr := hr + 1;
         end if;
     end while;
