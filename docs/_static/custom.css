@@ -42,6 +42,9 @@ div.document div.admonition-troubleshooting {
   border-left: 5px solid brown;
 }
 
+.exercise .hiddencontent {
+  padding: 0.5rem;
+}
 div.document div.admonition-troubleshooting p.admonition-title {
   color: brown;
 }

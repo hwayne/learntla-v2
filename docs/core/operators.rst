@@ -55,6 +55,17 @@ We have three keywords for structuring expressions. These are `let` statements, 
 
 Expressions always equal *something*, so there must always be an ``ELSE`` branch. Otherwise, this works as you'd expect it to.
 
+.. exercise::
+  :name: min
+
+  Define ``Min(x, y)``, which returns the smaller of the two numbers.
+
+  .. solution::
+
+    ::
+
+      Min(x, y) == IF x < y THEN x ELSE y
+
 
 Values
 =========
