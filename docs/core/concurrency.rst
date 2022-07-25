@@ -266,6 +266,8 @@ Both threads read the value of ``counter`` when it's 0, meaning they both set ``
   :ss: threads_3
   :name: threads_3
 
+(You can make ``NULL <- -1`` or ``NULL <- [model value]`` here. I *strongly* recommend using a model value, as then there's no chance of accidentally using it as a number!)
+
 Now the spec passes again.
 
 Finding More Invariants

@@ -58,7 +58,7 @@ Does TLA+ actually find bugs?
 
 Yes! Here are just a few of the (public!) successful use cases:
 
-* `Espark Learning`_, an edtech company with just ten engineers, used TLA+ to find complex bugs in a distributed app installer, saving weeks of development and hundreds in thousands in revenue per year. [#espark]_
+* `Espark Learning`_, an edtech company with just ten engineers, used TLA+ to find complex bugs in a distributed app installer, saving weeks of development and hundreds of thousands in revenue per year. [#espark]_
 
 * `Amazon Web Services`_ used TLA+ to model parts of S3 and DynamoDB, finding a 35-step bug that escaped all their tests and two code reviews.
 
