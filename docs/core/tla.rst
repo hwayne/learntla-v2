@@ -23,7 +23,7 @@ I find the easiest way to explain what's going on with TLA+ is to relate it to w
 .. spec:: tla/hourclock_1/hourclock.tla
   :ss: hourclock_1
 
-You should be able to look at this spec and run it in your head. ``hr`` starts at some value between 1 and 12, and then increment, wrapping at 12 back to 1. The TLA+ translation *must* do the same thing. Let's take a look at it:
+You should be able to look at this spec and run it in your head. ``hr`` starts at 1, and then increment, wrapping at 12 back to 1. The TLA+ translation *must* do the same thing. Let's take a look at it:
 
 ::
 
@@ -44,7 +44,7 @@ You should be able to look at this spec and run it in your head. ``hr`` starts a
 
 First, we need to define the ``VARIABLES``, same way we define ``CONSTANTS``. Then there are operators: ``Init``, ``Next``, and ``Spec``. ``Spec`` is what we always put as "the temporal property to run", so that's the core of the TLA+ specification.
 
-In ``Next``, we've replaced ``hr := 0`` with ``hr' = 1``. As we learned in the :doc:`last chapter <action-properties>`, ``hr'`` is the value of ``hr`` in the *next* state. ``hr' = 1`` is a *boolean* statement, which is true or false. In fact, ``Next`` is a boolean operator: it's either true or false. It is true if it accurately describes the value of ``hr`` in the next state, and false if it does not.
+In ``Next``, we've replaced ``hr := 1`` with ``hr' = 1``. As we learned in the :doc:`last chapter <action-properties>`, ``hr'`` is the value of ``hr`` in the *next* state. ``hr' = 1`` is a *boolean* statement, which is true or false. In fact, ``Next`` is a boolean operator: it's either true or false. It is true if it accurately describes the value of ``hr`` in the next state, and false if it does not.
 
 So for these choices of ``<<hr, hr'>>``, ``Next`` is *true*:
 
@@ -92,7 +92,7 @@ Since ``Next`` is an action, to be "always true" it must always accurately descr
 
   .. code-block:: none
 
-    Init == x = 0
+    Init == x = 1
     Next == x' >= x
     Spec == Init /\ [][Next]_x
 
