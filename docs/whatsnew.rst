@@ -6,6 +6,10 @@
 What's New
 #######################
 
+2022-07-25
+
+  Added an exercise directive, so I can start adding exercises to the core.
+
 2022-07-08
 
   Added the `reference_standard_modules` reference.

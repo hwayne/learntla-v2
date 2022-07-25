@@ -86,9 +86,6 @@ class ExerciseDomain(StandardDomain):
 
 ### DIRECTIVES {{{
 
-class exercise_embed(nodes.General, nodes.Element):
-    pass
-
 class ExerciseDirective(BaseAdmonition, SphinxDirective):
     """ A custom exercise directive """
 
@@ -147,7 +144,6 @@ class HiddenContentDirective(BaseAdmonition, SphinxDirective):
 
     def run(self) -> List[Node]:
         (node,) = super().run()
- #       (node,) = CodeBlock(**self).run()
 
         if isinstance(node, nodes.system_message):
             return [node]

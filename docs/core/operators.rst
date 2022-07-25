@@ -55,18 +55,6 @@ We have three keywords for structuring expressions. These are `let` statements, 
 
 Expressions always equal *something*, so there must always be an ``ELSE`` branch. Otherwise, this works as you'd expect it to.
 
-.. exercise::
-  :name: min
-
-  Define ``Min(x, y)``, which returns the smaller of the two numbers.
-
-  .. solution::
-
-    ::
-
-      Min(x, y) == IF x < y THEN x ELSE y
-
-
 Values
 =========
 
@@ -133,6 +121,24 @@ A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\`` looks li
 .. _=>:
 
 There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means that B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into more detail about it `later <using_=>>`.
+
+.. exercise:: Contrapositives
+  :name: contrapositive
+
+  1. Rewrite ``A => B`` using the "regular three" programming operators.
+
+    .. solution::
+
+      ::
+
+        ~A \/ B
+
+  2. For what values of ``A`` and ``B`` is ``~B => ~A`` true?
+
+    .. solution::
+
+      Using the same rewrite rule as part 1, we get ``~~B \/ ~A``, aka ``~A \/ B``, which means it has the same truth values as ``A => B``. ``~B => ~A`` is called the **contrapositive** of ``A => B``.
+
 
 The other thing is that TLA+ has a "bullet point notation" for boolean logic. Let's say you need an expression like ``A /\ (B \/ C) /\ (D \/ (E /\ F))``. That's really hard to read! So in TLA+ you can instead write it as:
 
