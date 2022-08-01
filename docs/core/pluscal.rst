@@ -367,7 +367,7 @@ Now that we have broad state-space coverage, it's time to write some properties.
 Summary
 =========
 
-- Specifications have variables. These can either be a fixed value (using ``=``) or an element in a set (using ``\n``). Any TLC value can be a variable.
+- Specifications have variables. These can either be a fixed value (using ``=``) or an element in a set (using ``\in``). Any TLC value can be a variable.
 
   - If an element of a set, then TLC will test the model on *every possible starting state*.
 - PlusCal is a language that makes writing specifications easier.
