@@ -26,7 +26,7 @@ sphinx-build docs/ docs/_build/html/
 sphinx-build -D todo_include_todos=0 docs/ docs/_build/html/
 
 # check links for issues
-sphinx-build -D linkcheck docs/ docs/_build/
+sphinx-build -b linkcheck docs/ docs/_build/
 ```
 
 ### Working with Specs
