@@ -71,7 +71,7 @@ So back to the nature of the invariant. We say ``is_unique`` is the boolean type
   TypeInvariant ==
     /\ is_unique \in BOOLEAN
     /\ seen \subseteq S
-    /\ i \in 1..Len(seq)+1
+    /\ index \in 1..Len(seq)+1
 
 I think that's enough of an introduction to invariants. Now let's write one that proves our algorithm correct.
 
