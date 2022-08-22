@@ -46,7 +46,7 @@ You can also use history variables to track past information no longer present i
 Error Variables
 ----------------
 
-Let's say you're writing a pluscal spec with an ``either`` branch::
+Let's say you're writing a PlusCal spec with an ``either`` branch::
 
   either
     \* path 1
@@ -55,7 +55,7 @@ Let's say you're writing a pluscal spec with an ``either`` branch::
   or
     \* ...
 
-It can be hard to tell in the error trace which branch was taken, you have to infer it from the state change. To get around this, people sometimes add lots of labels::
+It can be hard to tell in the error trace which branch was taken; you have to infer it from the state change. To get around this, people sometimes add lots of labels::
 
   either
     Path1:

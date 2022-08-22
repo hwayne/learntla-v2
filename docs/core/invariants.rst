@@ -64,7 +64,7 @@ This shows a series of steps, starting from the initial state. The top box shows
 (There's a little more we can do with the error trace, see :doc:`here </topics/toolbox>`.)
 
 
-So back to the nature of the invariant. We say ``is_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+s are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
+So back to the nature of the invariant. We say ``is_unique`` is the boolean type by writing that it's an element of the set of all booleans. "Types" in TLA+ are just arbitrary sets of values. We could say that ``i`` is an integer, but we can be even more exact than that. We know that the it represents an index of ``seq``, or one past the sequence length. Its "type" is the set ``1..Len(seq)+1``. Similarly, we know ``seen`` can't have any values not in ``S``. Expanding our type invariant:
 
 ::
 
@@ -370,7 +370,7 @@ This is a common idiom for modeling simple CS algorithms. We can use the same pa
 Summary
 ========
 
-* An Invariant is something that much be true of every state in our specification.
+* An Invariant is something that must be true of every state in our specification.
 
   * A common invariant is the *Type Invariant*, which checks that all of your variable values belong to strict sets.
 
