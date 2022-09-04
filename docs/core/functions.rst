@@ -67,7 +67,7 @@ How can I get all the values of a structure? ``Len`` isn't defined for structure
 
 ::
 
-  RangeStruct(struct) == {seq[key]: key \in DOMAIN struct}
+  RangeStruct(struct) == {struct[key]: key \in DOMAIN struct}
 
 Now for the fun bit. What happens if we pass a *sequence* into ``RangeStruct``?
 
