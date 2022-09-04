@@ -4,7 +4,7 @@
 TLA+
 ########
 
-PlusCal is a formalism designed to make using formal methods easier. By learning pluscal first, we can focus on teaching first logic and model checking, leaving temporal logic for later. Another advantage is that can bootstrap TLA+ from it by looking at what the pluscal generates, and infer the tla+. We know that the pluscal generated is valid TLA+, so we can use it to understand the TLA+.
+PlusCal is a formalism designed to make using formal methods easier. By learning pluscal first, we can focus on teaching first logic and model checking, leaving temporal logic for later. Another advantage is that can bootstrap TLA+ from it by looking at what the pluscal generates, and infer the TLA+. We know that the pluscal generated is valid TLA+, so we can use it to understand the TLA+.
 
 .. index:: action
 
@@ -307,7 +307,7 @@ The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of
 
     Trans(state, from, to) ==
       /\ pc[state] = from
-      /\ pc' = [pc EXCEPT ![state] = 2]
+      /\ pc' = [pc EXCEPT ![state] = to]
 
     IncCounter(self) ==
       /\ Trans(self, "IncCounter", "Done")

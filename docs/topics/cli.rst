@@ -50,13 +50,13 @@ TLC has other flags, but if you can't write a config format that's all moot, so 
 Config Format
 .............
 
-The model checkeing config language ia special DSL for using TLC from the command line. It's what the toolbox abstracts away on the backend.
+The model checking config language is a special DSL for using TLC from the command line. It's what the toolbox abstracts away on the backend.
 
 All config files need a ``SPECIFICATION {spec}`` line, where ``Spec`` is whatever action encompasses your initial and next states. By convention, this should be called ``Spec``, but this isn't required— useful if you want different configs to test different variations of your system.
 
 Invariants you want to check must be prefixed with ``INVARIANT``, temporal properties with ``PROPERTY``. Both can have commas, eg ``INVARIANT TypeInvariant, IsSafe`` is a valid line. Unlike in the toolbox, you **cannot** make expressions invariants— they must be named operators.
 
-.. note:: Why does that work in the toolbox? When you make an expression an invariant, the Toolbox makes a separate ``MC.tla`` file, adds that expression as an operator, and then model checks ``MC.tla`` with the new operator as an invariant. It does a similar thing to get around restrictins on constant expressions, below.
+.. note:: Why does that work in the toolbox? When you make an expression an invariant, the Toolbox makes a separate ``MC.tla`` file, adds that expression as an operator, and then model checks ``MC.tla`` with the new operator as an invariant. It does a similar thing to get around restrictions on constant expressions, below.
 
 Constants are written as ``CONSTANT name = value``. Values can be simple values or sets of simple values, but not functions or expressions. To set a model value instead of an ordinary assignment, write ``CONSTANT name = name`` instead. To make a set of model values, write ``name = {a, b, c}``, where ``a, b, c`` are identifiers (**not** strings). 
 

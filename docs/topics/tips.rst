@@ -95,6 +95,7 @@ Use the extra space in a module
 All modules have to take the form
 
 ::
+
   \* top area
   ---- MODULE name ----
   \* actual module

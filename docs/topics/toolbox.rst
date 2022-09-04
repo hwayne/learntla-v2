@@ -35,7 +35,7 @@ Here's a quick markup:
 3. Expands and closes all the trace steps. Good for getting a quick overview of the action flow.
 4. When toggled, clicking on an action line will automatically jump to that action in the spec. 
 
-There are also things can do by clicking on the states and values:
+There are also things you can do by clicking on the states and values:
 
 - Alt-clicking a variable hides it from the trace. To re-show it, click the filter button again. 
 - Double-clicking an action jumps to the corresponding spec code. Ctrl-doubleclicking jumps to any corresponding pluscal label.
@@ -99,7 +99,7 @@ State Constraint
 
   Liveness invariants can't be checked when the state constraint is active.
 
-  .. tip:: Use state constraints are a good way to bound unbound models.
+  .. tip:: State constraints are a good way to bound unbound models.
 
 Action Constraint
 
@@ -107,7 +107,7 @@ Action Constraint
 
 Definition Override
 
-  Here you can replace the definitions of some operators with custom ones. For example, if you add the definition override ``Int <- 1..10``. This is mostly often used by people who want say that a variable starts as "any integer" but limit it to a finite set for model checking.
+  Here you can replace the definitions of some operators with custom ones. For example, you can add the definition override ``Int <- 1..10``. This is mostly often used by people who want say that a variable starts as "any integer" but limit it to a finite set for model checking.
 
 
 Additional TLC Options

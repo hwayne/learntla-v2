@@ -146,7 +146,7 @@ If we need to also model the type of error (if that affects our recovery logic),
 
 ``either or skip`` is a common nondeterminism pattern and it's quite useful in a lot of places.
 
-We can also use nondeterminism to represent outside actions. If we're modeling requests are coming into a system, we don't need to pick a specific request to spec. Instead we can define a ``RequestType`` and pull from that on every inbound request.
+We can also use nondeterminism to represent outside actions. If we're modeling requests that are coming into a system, we don't need to pick a specific request to spec. Instead we can define a ``RequestType`` and pull from that on every inbound request.
 
 ::
 
