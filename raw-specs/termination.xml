@@ -15,7 +15,7 @@ end define;
 begin
   Loop:
     while x &lt; 3 do
-      <s on="1,3">x := x + 1</s><s on="2">skip</s>;
+      <s on="1">x := x + 1</s><s on="3">x := x + 1</s><s on="2">skip</s>;
     end while;
 end algorithm; *)
 ====
