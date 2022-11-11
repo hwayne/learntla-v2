@@ -353,11 +353,11 @@ Sets can be mapped and filtered.
 
 I've found that the best way to remember which is which is by reading the colon as a "where". So the map is "x squared where x in 1..4", while the filter is "x in 1..4 where x is even".
 
-To get all the times half-past the hour, we could write:
+To get all the times in the second half of each hour, we could write:
 
 ::
 
-  {t \in ClockType: t[2] = 29 /\ t[3] = 0}
+  {t \in ClockType: t[2] >= 30 /\ t[3] = 0}
 
 
 Map and filter are great for utility, too. The *range* of a sequence is the set of all elements in the sequence. We can get that with a set map:
