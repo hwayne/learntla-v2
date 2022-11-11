@@ -6,6 +6,10 @@
 What's New
 #######################
 
+2022-11-11
+
+  Fixed various issues raised in Github, added a `new operator example <example_partitions>`.
+
 2022-07-25
 
   Added an exercise directive, so I can start adding exercises to the core.

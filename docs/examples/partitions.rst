@@ -57,18 +57,15 @@ And that's just a function in the function set ``[{a, b, c} -> 1..3]``! Every fu
   >> PartitionsV1({"a", "b"})
   {<<{}, {"a", "b"}>>, <<{"a"}, {"b"}>>, <<{"b"}, {"a"}>>, <<{"a", "b"}, {}>>}
 
-Now it's just a matter of converting it back to sets. We can do this with a `set map <map>` and a ``Range`` helper.
+Now it's just a matter of converting it back to sets. We can do this with a `set map <map>` and a ``Range`` helper. Note that ``Range`` to ``<<{1, 2}, {}>>`` gives us the set ``{{1, 2}, {}}``, which is why we have to set diff out the empty set.
 
 ::
 
   Range(f) == {f[x] : x \in DOMAIN f}
 
   Partitions(set) ==
-      {Range(P) \ {{}}: P \in Partitions(set)}
+      {Range(P) \ {{}}: P \in PartitionsV1(set)}
     
-
-
-
 Performance Notes
 =================
 
