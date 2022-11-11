@@ -294,7 +294,7 @@ We can check that by adding an `action property <action_property>` that checks t
 
   RefactorProp == [][
     \A u \in User:
-      OldAction(user) <=> NewAction(user)
+      OldAction(user) = NewAction(user)
   ]_vars
 
-If we're trying to *expand* an action, then we only care that ``NewAction`` does a superset of the things ``OldAction`` does. In that case, we can loosen our requirements by using ``=>`` instead of ``<=>``.
+If we're trying to *expand* an action, then we only care that ``NewAction`` does a superset of the things ``OldAction`` does. In that case, we can loosen our requirements by using ``=>`` instead of ``=``.

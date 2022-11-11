@@ -372,7 +372,7 @@ Notice now that, while ``S \X S \X S`` has a *hardcoded* length, ``[1..3 -> S]``
     :diff: duplicates/fs_2/duplicates.tla
     :ss: duplicates_len_5_or_less
 
-  Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences! This is a useful specifying trick known as *state sweeping*.
+  Now, instead of checking all length 5 sequences, we're checking all length 5 *or smaller* sequences!
 
   Strictly speaking, sweeping isn't *necessary*: we can, with sufficient cleverness, construct a complex operator that does the same thing. Sweeping, however, is often much *easier* than doing that, and frees up your brainpower for the actual process of specification.
 

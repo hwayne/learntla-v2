@@ -75,7 +75,11 @@ The point is that we decide what's the right choice based on what we need from t
   :diff: reader_writer/2/reader_writer.tla
   :name: rw_3
   :ss: rw_2
-pty queue is a noop, so the spec passes.
+
+This passes.
+
+.. digraph:: rw_good
+  :caption: Now reading an empty queue is a noop, so the spec passes.
 
 
   Init[label="<<>>"];
@@ -90,7 +94,7 @@ pty queue is a noop, so the spec passes.
 
 .. rubric:: pc
 
-In our single process specs, we used a string variable called `pc` to track the value. To model multiple processes, the translator "lifts" ``pc`` to be a function from process values to strings. So if you're writing an invariant that depends on the reader's current label, you can retrieve it with ``pc[0]``.
+In our single process specs, we used a string variable called `pc` ("program counter") to track the value. To model multiple processes, the translator "lifts" ``pc`` to be a function from process values to strings. So if you're writing an invariant that depends on the reader's current label, you can retrieve it with ``pc[0]``.
 
 .. index:: process; local variables
 

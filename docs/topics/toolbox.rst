@@ -70,8 +70,9 @@ The trace explorer is a powerful tool to debug specs, and I'd recommend spending
 Model Configuration
 ========================
 
-On the Model Overview page of a model, there are three 
-This is **not** comprehensive. More comprehensive notes can be found in the toolbox help files.
+On the Model Overview page of a model, there are three pages of configuration values. The most useful ones are covered here. 
+
+This explanation is **not** comprehensive. More comprehensive notes can be found in the toolbox help files.
 
 
 Additional Spec Options

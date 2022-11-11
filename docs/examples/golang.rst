@@ -164,7 +164,7 @@ An extra macro I added to more closely match the Go syntax.
        await channels[chan] > 0;
        channels[chan] := channels[chan] - 1;
      else
-       await channels[chan] /= {};
+       await channels[chan] # {};
        with w \in channels[chan] do
          channels[chan] := channels[chan] \ {w}
        end with;
@@ -264,7 +264,7 @@ goroutine releases a token. [3]_ Final spec:
        await channels[chan] > 0;
        channels[chan] := channels[chan] - 1;
      else
-       await channels[chan] /= {};
+       await channels[chan] # {};
        with w \in channels[chan] do
          channels[chan] := channels[chan] \ {w}
        end with;

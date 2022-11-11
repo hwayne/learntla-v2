@@ -121,7 +121,7 @@ This makes the process :dfn:`weakly fair`: it cannot "stop forever". Once we add
 
 .. rubric:: Strong Fairness
 
-Weak fairness says that if a process can *always* make progress, it will eventually make progress. Strong fairness is that if a process can *always intermittently* make progress, it will eventually make progress. To see the difference, consider this model of several threads sharing a lock:
+Weak fairness says that if a process can *always* make progress, it will eventually make progress. Strong fairness is that if a process can *always intermittently* make progress, it will eventually make progress. To see the difference, consider this model of several threads sharing a lock (``<>`` is defined `below <eventually>`):
 
 .. spec:: threads/strong_fairness_1/threads.tla
   :fails:

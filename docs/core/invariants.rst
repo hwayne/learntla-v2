@@ -172,9 +172,9 @@ Here's our current version of ``IsUnique``.
 
   IsUnique(s) == Cardinality(seen) = Len(s) 
 
-I said that this is the improper way. That's for two reasons. First of all, it's tying the definition of uniqueness to ``seen``, which is a variable. Whether a sequence is unique or not should be independent of our actual behavior. It is or it isn't. The ``IsUnique`` operator should rely on the values in ``s`` and nothing else.
+I said that this is the improper way. That's for three reasons. First of all, it's tying the definition of uniqueness to ``seen``, which is a variable. Whether a sequence is unique or not should be independent of our actual behavior. It is or it isn't. The ``IsUnique`` operator should rely on the values in ``s`` and nothing else.
 
-Second, this isn't really the *definition* of uniqueness. We're just using a clever trick involving set cardinalities. It'd be better if we our operator captured the meaning of uniqueness, not a weird side-channel which is coincidentally identical to uniqueness. 
+Second, this isn't really the *definition* of uniqueness. We're just using a clever trick involving set cardinalities. It'd be better if our operator captured the meaning of uniqueness, not use a weird side-channel which is coincidentally identical to uniqueness. 
 
 Finally, this doesn't give us anywhere to go. We could represent uniqueness this way, but what about, say, sortedness? 
 
@@ -366,6 +366,7 @@ This is a common idiom for modeling simple CS algorithms. We can use the same pa
       \E i, j \in 1..Len(seq):
         i # j /\ seq[i] = seq[j]
 
+.. todo:: exercise for sortedness now
 
 Summary
 ========
