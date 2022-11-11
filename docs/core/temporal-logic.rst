@@ -7,7 +7,7 @@ Temporal Properties
 Intro
 =======
 
-Invariants aren't really part of TLA+. There's no concept of an "invariant" that's treated as special by TLA+. The model checker, TLC, gives us that, but more that's due to pramgatics and efficiency than "invariants" being something deeply important. Rather, TLA+ provides a *general principled* way to write all kinds of different properties, where invariants are just one of many things we can check. To write these, we use a set of :dfn:`temporal operators` to describe logical statements across time. We call the broad class of all properties :dfn:`temporal properties`.
+Invariants aren't really part of TLA+. There's no concept of an "invariant" that's treated as special by TLA+. The model checker, TLC, gives us that, but more that's due to pragmatics and efficiency than "invariants" being something deeply important. Rather, TLA+ provides a *general principled* way to write all kinds of different properties, where invariants are just one of many things we can check. To write these, we use a set of :dfn:`temporal operators` to describe logical statements across time. We call the broad class of all properties :dfn:`temporal properties`.
 
 .. index::
   single: safety
@@ -44,7 +44,7 @@ TLC can check (2) as a temporal property, though.
 
 .. warning:: Writing ``PROPERTY P`` will just check that P is true in the first state.
 
-Things get more interesting when ``[]`` is part of a larger expresion. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q. We can also put a ``[]`` inside a quantifier. To properly model (2), we could write::
+Things get more interesting when ``[]`` is part of a larger expression. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q. We can also put a ``[]`` inside a quantifier. To properly model (2), we could write::
 
   Safety == \E s \in Servers: [](s \in online)
 
@@ -126,7 +126,7 @@ Weak fairness says that if a process can *always* make progress, it will eventua
 .. spec:: threads/strong_fairness_1/threads.tla
   :fails:
 
-When in ``GetLock``, each thread can only get the lock if ``lock = NULL``. So it's only *intermittently* able to progress. Since every thread with the lock is gauranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
+When in ``GetLock``, each thread can only get the lock if ``lock = NULL``. So it's only *intermittently* able to progress. Since every thread with the lock is guaranteed to release it, it's *always intermittently* able to progress. In weak fairness, if we have five threads, we can't guarantee that all five threads will eventually get the lock; one could get starved out.
 
 .. figure:: graphs/strong_fairness.gv.png
 
@@ -289,7 +289,7 @@ Summary
 =========
 
 - In addition to checking properties of states, TLA+ can check properties of entire *behaviors*.
-- Safety properties are "bad things don't happen", liveness properties are "good things do happen". All invariants are safety proprties, and all liveness properties are temporal properties.
+- Safety properties are "bad things don't happen", liveness properties are "good things do happen". All invariants are safety properties, and all liveness properties are temporal properties.
 - All TLA+ specs are "stutter-invariant", meaning they can crash at any time. A "weakly fair" process is guaranteed to "not crash", though it can spinlock.
 - ``[]P`` means that P is true for every state of every behavior. ``<>P`` means that P is true for at least one state of every behavior. ``P ~> Q`` means that if P is true in a state, then Q will be true in a (present or) future state.
 
