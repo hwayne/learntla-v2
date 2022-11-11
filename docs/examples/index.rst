@@ -36,6 +36,8 @@ Operators
 .. toctree::
   :titlesonly:
 
+  partitions
+
 
 .. Graph library
   Transitive tree selection
@@ -62,3 +64,7 @@ PlusCal Specs
   Ideas:
 
     - Mutex DAG tracer?
+
+.. todo::
+  - ksubsets operator
+  - Task ordering

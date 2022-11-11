@@ -75,13 +75,7 @@ The point is that we decide what's the right choice based on what we need from t
   :diff: reader_writer/2/reader_writer.tla
   :name: rw_3
   :ss: rw_2
-
-This passes.
-
-.. todo:: Use peripheries more
-
-.. digraph:: rw_good
-  :caption: Now reading an empty queue is a noop, so the spec passes.
+pty queue is a noop, so the spec passes.
 
 
   Init[label="<<>>"];

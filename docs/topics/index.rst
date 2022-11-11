@@ -18,3 +18,7 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
   aux-vars
   state-machines
   refinement
+
+.. todo::
+
+  - Handling queues with indexes
