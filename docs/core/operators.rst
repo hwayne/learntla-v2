@@ -58,11 +58,10 @@ Expressions always equal *something*, so there must always be an ``ELSE`` branch
 Values
 =========
 
-TLA+ is an "untyped" language, due to its roots in mathematics. In practice, the model checker recognizes four primitive types and four advanced ones. We are not going to cover all of them now, just the ones that need little explanation.
+TLA+ is an "untyped" language, due to its roots in mathematics. In practice, the model checker recognizes four primitive types and four complex ones.
 
-.. note::
-
-  If you want to get on ahead, the other types we are not talking about are `model values <model_value>`, `structs <struct>`, and `functions <function>`. Yes, operators and functions are different things.
+- **Primitive**: `strings <string>`, `booleans <boolean>`, `integers <integer>`, and `model values <model_values>`.
+- **Complex**: `sets <set>`, `sequences <sequence>`, `structures <struct>`, and `functions <function>`.
 
 
 .. index:: =, # (not equals)
@@ -77,8 +76,10 @@ Every value type in TLA+ has its own operators, with no overlap or overloading. 
 
   It's likely because you used a double ``==`` instead of a single ``=`` when testing for equality.
 
+We'll leave the more sophisticated types for later and focus now on just strings, booleans, integers, and sets.
 
 .. _string:
+.. _integer:
 
 The obvious ones
 ----------------
@@ -90,12 +91,14 @@ Note there is **not** a float type. Floats have complex semantics that are *extr
 .. index::
   /\ (and), \/ (or), ~ (not)
 
+.. _boolean:
+
 Booleans
 --------
 
 The booleans are ``TRUE`` and ``FALSE``.
 
-So why do they get their own section? There's two things you need to know about booleans. First of all, the boolean operators look like mathematical symbols, not programming symbols. They are:
+So why do they get their own section? First of all, the boolean operators look like mathematical symbols, not programming symbols. They are:
 
 .. list-table::
   :header-rows: 1
@@ -120,7 +123,7 @@ A quick mnemonic: ``~`` is a little flippy thing, so it's "not". ``/\`` looks li
 .. index:: => (implies)
 .. _=>:
 
-There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means that B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into more detail about it `later <using_=>>`.
+There is one more boolean operator of note: ``=>``, or "implication". ``A => B`` means "A is at least as true as B". ``A => B = FALSE`` when false if A is true and B is false, otherwise it's true. B is true or A is false (or both). You don't see this very often in programming, as it's pretty useless for control flow. But it's *extremely* important for any kind of specification work. We'll go into more detail about it `later <using_=>>`. [#iff]_
 
 .. exercise:: Contrapositives
   :name: contrapositive
@@ -328,7 +331,7 @@ As a quick sanity check, run ``Cardinality(ClockType)`` in your `scratch` (remem
 .. index:: SUBSET, set; set sets, sets of; sets
 .. _SUBSET:
 
-Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType`` will be all the sets containing a bunch of clock values... all 7,464,960,000 of them. [#million]_
+Finally, we can get all subsets of a set with ``SUBSET S``. ``SUBSET ClockType`` will be all the sets containing a bunch of clock values... all 2^86400 of them. *Don't do this.*
 
 .. tip::
 
@@ -508,4 +511,4 @@ Summary
 
 
 .. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...
-.. [#million] If you actual try this TLC will error out, because it assumes sets with more than 1,000,000 elements are unintentional. You can raise the limit in the TLC options.
+.. [#iff] There's also ``A <=> B`` for "A and B are both true or both false", but it's the same thing as writing ``A = B``.
