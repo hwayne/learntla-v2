@@ -59,7 +59,7 @@ Now run this with ``PROPERTY CounterOnlyIncreases`` (**not** as an invariant). I
 This doesn't fail because we have a state where the counter is 0. That's a totally valid state for the spec, and is in fact the starting state! It fails because counter *changes from 1 to 0*. It's the fact *counter decreases* that's an error.
 
 .. digraph:: G
-  :caption: None of these states are illegal, but the *transition* from ``counter=1`` to ``counter=2`` is.
+  :caption: None of these states are illegal, but the *transition* from ``counter=1`` to ``counter=0`` is.
 
   label="val: counter";
   0 -> 1 -> 2;
