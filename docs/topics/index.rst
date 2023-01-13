@@ -10,7 +10,6 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
 
 .. toctree::
   :maxdepth: 1
-  :hidden:
 
   tips
   toolbox
@@ -19,6 +18,8 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
   state-machines
   refinement
 
-.. todo::
+.. toctree::
+  :caption: How to Model...
+  :maxdepth: 1
 
-  - Handling queues with indexes
+  Message Queues <message-queues>

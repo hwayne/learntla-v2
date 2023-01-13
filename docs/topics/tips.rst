@@ -41,6 +41,9 @@ TLC can't have a set of strings and integers. If you need that, you can instead 
    [type |-> "str", val |-> "1"] \* ok
   }
 
+
+.. _decompose_structs:
+
 Decompose functions of structs
 ------------------------------
 
