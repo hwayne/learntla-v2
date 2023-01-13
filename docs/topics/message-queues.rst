@@ -1,4 +1,4 @@
-.. _message-queues:
+.. _topic_message_queues:
 
 
 ########################

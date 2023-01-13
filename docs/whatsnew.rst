@@ -6,6 +6,10 @@
 What's New
 #######################
 
+2023-01-13
+
+  Added the `topic_message_queues` topic.
+
 2022-11-11
 
   Fixed various issues raised in Github, added a `new operator example <example_partitions>`.
