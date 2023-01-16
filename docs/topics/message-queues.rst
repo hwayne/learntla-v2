@@ -111,5 +111,5 @@ This is the same as multiple reader queues, except the question is how do we *re
 
   \* TLA+
     \E w \in Writer:
-    msg' = Head(queue[w]);
-    queue' = [queue EXCEPT ![w] = Tail(@)]
+    /\ msg' = Head(queue[w])
+    /\ queue' = [queue EXCEPT ![w] = Tail(@)]
