@@ -36,7 +36,7 @@ def expand_on_attrib(on_str: str) -> set[int]:
     return out
 
 def get_on(s: Element) -> set[int]: 
-    return expand_on_attrib(s.attrib["on"])
+    return expand_on_attrib(s.attrib["on"]) # -> _
 
 def tree_to_text(tree) -> str:
     return "".join(tree.itertext())
@@ -51,10 +51,10 @@ class Spec:
         return f"{self.name}__{self.version}"
 
     def __str__(self):
-        return Template(self.text).substitute({"name": self.filename()})
+        return Template(self.text).substitute({"name": self.filename()}) #make safe_substitute, for TLA+ files
 
 def create_spec_version(spec_root: Element, version: int) -> Spec:
-    new_version = deepcopy(spec_root)
+    new_version = deepcopy(spec_root) ### INstead pass this in
 
     for switch in new_version.findall('.//s'):
         if version not in get_on(switch):
@@ -75,7 +75,7 @@ def create_spec_version(spec_root: Element, version: int) -> Spec:
 
 def create_all_spec_versions(spec_root: Element) -> list[Spec]:
     out = []
-    num_versions = int(spec_root.attrib["num"])
+    num_versions = int(spec_root.attrib["num"]) # This is where the switch computation should happen
     for i in range(1, num_versions+1):
         out.append(create_spec_version(spec_root, i))
     return out
@@ -85,10 +85,10 @@ if __name__ == "__main__":
     tree = ET.parse(args.file)
     folder = tree.getroot().attrib["folder"]
     out: list[Spec] = []
-    if args.spec:
+    if args.spec: # Remove this, we're not doing subspecs anymore
         spec_root = tree.find(f"spec[@name='{args.spec}']")
         assert spec_root is not None # did we get the name wrong
-        if args.version:
+        if args.version: # Remove this, always just replace them all
             out = [create_spec_version(spec_root, int(args.version))]
         else:
             out = create_all_spec_versions(spec_root)
@@ -109,7 +109,6 @@ if __name__ == "__main__":
                 parts = out_path.read_text().split("!!!")
                 parts[-1] = to_write
                 to_write = "!!!".join(parts)
-            
             out_path.write_text(to_write)
         
 

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<root folder="pubsub">
+<spec name="publish_subscribe" num="2">
+---- MODULE $name ----
+EXTENDS TLC, Sequences, Integers
+CONSTANT Servers, Clients, Topics, MaxMessages 
+
+------
+Range(f) == {f[x]: x \in DOMAIN f}
+set ++ x == set \union {x}
+set -- x == set \ {x}
+------
+
+MessageType ==
+  [id: Nat, server: Servers]
+
+(*--algorithm pubsub
+variables 
+  message_id = 1;
+  messages = 1;
+  client_queue = [c \in Clients |-> &lt;&lt;>>];
+  topics = [t \in Topics |-> {}];
+
+define
+  TypeInv ==
+    /\ message_id \in Nat
+    /\ client_queue \in [Clients -> Seq(MessageType)]
+    /\ topics \in [Topics -> SUBSET Clients]
+end define
+
+
+process client \in Clients
+begin
+  Client:
+    either
+      \* Subscribe
+      with t \in Topics do
+        topics[t] := topics[t] ++ self;
+      end with;
+    or
+      \* Unsub
+      with t \in Topics do
+        topics[t] := topics[t] -- self;
+      end with;
+    or
+      \* Read
+      await client_queue[self] # &lt;&lt;>>;
+      client_queue[self] := Tail(client_queue[self])
+    end either;
+end process;
+
+process server \in Servers
+begin
+  Server:
+    while message_id &lt;= MaxMessages do
+      with 
+        t \in Topics, 
+        msg = [id |-> message_id, server |-> self] 
+      do
+        client_queue :=
+          <s on="1">
+            [c \in topics[t] |-> Append(client_queue[c], msg)] @@ client_queue
+          </s><s on="2">
+          LET cq == client_queue IN
+            [c \in topics[t] |-> Append(cq[c], msg)] @@ cq
+          </s>
+      end with;
+      message_id := message_id + 1;
+    end while;
+end process;
+end algorithm; *)
+====
+</spec>
+
+</root>
