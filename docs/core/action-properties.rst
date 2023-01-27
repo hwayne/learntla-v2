@@ -85,7 +85,7 @@ It's finally time to talk about the "actions" in "Temporal Logic of Actions".
 .. index:: ' (next value)
 .. _prime:
 
-So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+. In any given step, ``x'`` is the value of x at the *end of the step* and the value x starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than x".
+So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+. In any given step, ``x'`` is the value of x at the *end of the step* and the value x starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than or equal to x".
 
 .. tip:: you can use primed operators in the `trace explorer <trace_explorer>`. It'll show you the value of the expression in the next step.
 
