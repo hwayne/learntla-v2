@@ -59,7 +59,7 @@ Now run this with ``PROPERTY CounterOnlyIncreases`` (**not** as an invariant). I
 This doesn't fail because we have a state where the counter is 0. That's a totally valid state for the spec, and is in fact the starting state! It fails because counter *changes from 1 to 0*. It's the fact *counter decreases* that's an error.
 
 .. digraph:: G
-  :caption: None of these states are illegal, but the *transition* from ``counter=1`` to ``counter=2`` is.
+  :caption: None of these states are illegal, but the *transition* from ``counter=1`` to ``counter=0`` is.
 
   label="val: counter";
   0 -> 1 -> 2;
@@ -85,7 +85,7 @@ It's finally time to talk about the "actions" in "Temporal Logic of Actions".
 .. index:: ' (next value)
 .. _prime:
 
-So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+. In any given step, ``x'`` is the value of x at the *end of the step* and the value x starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than x".
+So remember how way back I said that `strings must use double quotes <string>`? That's because single quotes have a special role in TLA+. In any given step, ``x'`` is the value of x at the *end of the step* and the value x starts as in the *next* step. ``[](x' >= x)``, then, is "it is always true that the *next value of x* is larger than or equal to x".
 
 .. tip:: you can use primed operators in the `trace explorer <trace_explorer>`. It'll show you the value of the expression in the next step.
 

@@ -10,7 +10,7 @@ Structured Data
 Structures
 ============
 
-Sequences cover tuples and arrays, now we need something to represent string hashmaps. In TLA+, this is the struct:
+`Sequences <sequence>` cover tuples and arrays, now we need something to represent string hashmaps. In TLA+, this is the struct:
 
 ::
 

@@ -495,7 +495,7 @@ Summary
   - Operators can have conditions with ``IF-THEN-ELSE``, and suboperators with ``LET-IN``.
 
 - Sequences are collections of ordered values, and are 1-indexed.
-- Logic is ``/\`` for "and", ``\/`` for "or", and ~ for "not".
+- Logic is ``/\`` for "and", ``\/`` for "or", and ``~`` for "not".
 
   - Logical statements can be written "bullet-points" style.
 
