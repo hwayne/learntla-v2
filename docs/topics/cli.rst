@@ -77,7 +77,7 @@ A basic config file might look like this:
     Const3 = {c1, c2, c3}
 
 
-Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, which work equivalently to their `Toolbox options <topic_toolbox>`. 
+Config files may also have ``CONSTRAINT``, ``ACTION-CONSTRAINT``, ``VIEW``, which work equivalently to their `Toolbox options <topic_toolbox>`.  You can also disable deadlock checking in the cfg with ``CHECK_DEADLOCK FALSE``.
 
 .. index: ALIAS
 .. _ALIAS:

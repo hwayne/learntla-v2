@@ -7,6 +7,10 @@
 
   Make a role so I can write ``:r:`thing``` for ```thing <thing>```
 
+  Use the .. sidebar directive!
+
+  Add an "external resources" section"
+
 .. note::
 
   Welcome to Learn TLA+! This is still a work in progress, please see :doc:`whatsnew` for updates and please raise any questions or concerns at the `github repo <https://github.com/hwayne/learntla-v2>`__. I'd love to hear your feedback!
@@ -87,3 +91,4 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
 .. http://carefully.understood.systems/blog-2017-04-19-bounded-log-queue.html
 
 .. https://stackoverflow.com/questions/3280712/how-to-allow-certain-threads-to-have-priority-in-locking-a-mutex-use-pthreads
+
