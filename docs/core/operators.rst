@@ -334,7 +334,7 @@ Now for sequences. The :dfn:`Cartesian product` of two sets S and T is the set o
       FALSE
 
       >> <<<<1, 2>>, 3>> \in (S \X S) \X S
-      FALSE
+      TRUE
 
 Speaking of ``Time``, we can combine ``\X`` and ``..`` to finally get our clock type:
 
