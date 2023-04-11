@@ -317,7 +317,24 @@ Let's start with the easiest: to get the set of all booleans, just write ``BOOLE
 
 .. _\X:
 
-Now for sequences. The :dfn:`Cartesian product` of two sets S and T is the set of all sequences where the first element is in S and the second is in T. It's written with ``\X``. For example, consider ``LoginAttempt`` containing who's logging in, the time they attempted the login, and if it was successful or not. I can represent the set of all possible such values as ``LoginAttempt == Person \X Time \X BOOLEAN`` {{explain better}}.
+Now for sequences. The :dfn:`Cartesian product` of two sets S and T is the set of all sequences where the first element is in S and the second is in T. It's written with ``\X``. For example, consider ``LoginAttempt`` containing who's logging in, the time they attempted the login, and if it was successful or not. I can represent the set of all possible such values as ``LoginAttempt == Person \X Time \X BOOLEAN``.
+
+.. note::
+
+  ``\X`` is *not* associative:
+
+    .. code:: none
+
+      S == 1..3
+
+      >> <<1, 2, 3>> \in S \X S \X S
+      TRUE
+
+      >> <<1, 2, 3>> \in (S \X S) \X S
+      FALSE
+
+      >> <<<<1, 2>>, 3>> \in (S \X S) \X S
+      FALSE
 
 Speaking of ``Time``, we can combine ``\X`` and ``..`` to finally get our clock type:
 
