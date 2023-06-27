@@ -16,6 +16,7 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
   cli
   aux-vars
   refinement
+  unbound-models
 
 .. toctree::
   :caption: How to Model...
