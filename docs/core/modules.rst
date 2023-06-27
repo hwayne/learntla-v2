@@ -128,6 +128,7 @@ This effectively "rewrites" all of the operators in ``Point`` to use the passed 
 .. tip:: If the importing module has a constant with the same name as the child model, it will be imported by default. For example, if both modules contain a ``DEBUG`` constant, the following two are equivalent:
 
   ::
+
     M == INSTANCE Module WITH DEBUG <- DEBUG
     M == INSTANCE Module
 
@@ -138,6 +139,7 @@ This effectively "rewrites" all of the operators in ``Point`` to use the passed 
   {content} If you parameterize a module over a variable, you can use actions in that model as regular actions. For example:
 
   ::
+
     ---- MODULE test -----
 
     VARIABLE x

@@ -32,6 +32,8 @@ Unsurprisingly, structs are mainly used to represent organized collections of da
 
 Just like sequences, sets, and primitive values, we want some way to generate sets of structs, so we can stick them in our type invariants. Here's how:
 
+.. _struct_set:
+
 ::
 
   \* Accounts is a set of model values
@@ -95,7 +97,7 @@ First of all, throw away the programming definition of "function". The closest t
 
   F == [x \in S |-> expr]
 
-The set we're mapping from, ``S``, is the **domain** of the function, and can be retreived by writing ``DOMAIN F``. That's why we could also use ``DOMAIN`` with sequences and structures:
+The set we're mapping from, ``S``, is the **domain** of the function, and can be retrieved by writing ``DOMAIN F``. That's why we could also use ``DOMAIN`` with sequences and structures:
 
 1. A sequence is just a function where the domain is ``1..n``.
 2. A struct is just a function where the domain is a set of strings.
@@ -232,7 +234,10 @@ You know the drill: new class of value, new need for a way to generate sets of t
 
 The syntax for function sets is ``[S -> T]`` and is "every function where the domain is ``S`` and all of the values are in ``T``." [#codomain]_ In the prior task example, ``assignments`` was always a function in the function set ``[Tasks -> SUBSET CPUs]``.
 
+.. todo:: Explain the function set with a two-stage invariant
+
 .. tip:: A function set of form ``[A -> B]`` will have :math:`\#B^{\#A}` elements in it. If there were two tasks and three CPUs, that would be :math`(2^3)^2 = 64` possible functions.
+
 
   A good way to remember this: ``[1..n -> BOOLEAN]`` is the set of all binary strings of length ``n``, and we know there are :math:`2^n` such strings.
 

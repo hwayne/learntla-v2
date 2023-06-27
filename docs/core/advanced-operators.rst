@@ -131,7 +131,23 @@ If you `peek <toolbox_misc>` at the definition of the ``Sequences`` module, you'
   set ++ x == set \union {x}
   set -- x == set \ {x}
 
-.. todo:: Function operators
+Function Operators
+==================
+
+This is a bit of syntactic sugar for writing top-level functions:
+
+.. code-block:: tla
+
+  Double == [x \in 1..10 |-> x * 2]
+  
+  \* can also be written as
+
+  Double[x \in 1..10] == x * 2
+
+This is primarily for writing recursive functions::
+
+  Factorial[x \in 0..10] == IF x = 0 THEN 1 ELSE x * Factorial[x - 1]
+
   
 .. index:: CASE
 .. _CASE:

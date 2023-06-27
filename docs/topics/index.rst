@@ -15,7 +15,6 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
   toolbox
   cli
   aux-vars
-  state-machines
   refinement
 
 .. toctree::
@@ -23,3 +22,4 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
   :maxdepth: 1
 
   Message Queues <message-queues>
+  state-machines

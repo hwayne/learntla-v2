@@ -41,7 +41,7 @@ This guide is still under development, check :doc:`whatsnew` to see most recent 
 About Me
 --------
 
-I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practical TLA+`_. I wrote this because I want TLA+ to be as accessible as possible and didn't like that my book cost money. I have a `blog`_, a `twitter`_, and a `weekly newsletter`_.
+I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practical TLA+`_. I wrote this because I want TLA+ to be as accessible as possible and didn't like that my book cost money. I have a `blog`_ and a `weekly newsletter`_.
 
 (Full disclosure, I'm also a `professional  TLA+ consultant <https://hillelwayne.com/consulting/>`__ and <plug>run workshops</plug>.)
 
@@ -84,7 +84,6 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
 .. _Practical TLA+: https://www.amazon.com/Practical-TLA-Planning-Driven-Development/dp/1484238281
 
 .. _blog: https://www.hillelwayne.com
-.. _twitter: https://twitter.com/hillelogram/
 .. _weekly newsletter: https://buttondown.email/hillelwayne/ 
 
 
@@ -92,3 +91,4 @@ I'm Hillel. I'm part of the TLA+ foundation and the author of the book `Practica
 
 .. https://stackoverflow.com/questions/3280712/how-to-allow-certain-threads-to-have-priority-in-locking-a-mutex-use-pthreads
 
+.. todolist:: 

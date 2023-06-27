@@ -100,7 +100,7 @@ State Constraint
 
   Liveness invariants can't be checked when the state constraint is active.
 
-  .. tip:: State constraints are a good way to bound unbound models.
+  .. tip:: State constraints are a good way to bound :ref:`unbound models <topic_unbound_models>`.
 
 Action Constraint
 

@@ -4,9 +4,6 @@
 Conceptual Overview
 +++++++++++++++++++
 
-
-.. todo:: Mention the name TLC
-
 To justify the value of TLA+, let's talk about how it's useful, and how it's different from programming languages.
 
 Imagine we're building a wire transfer service for a bank. Users can make transfers to other users. As a requirement, we don't allow any wires that would overdraft the user's account, or make it go below zero dollars. At a high level, the could would look like this:

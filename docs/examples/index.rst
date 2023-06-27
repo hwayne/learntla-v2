@@ -68,3 +68,4 @@ PlusCal Specs
 .. todo::
   - ksubsets operator
   - Task ordering
+  - https://tavianator.com/2023/futex.html

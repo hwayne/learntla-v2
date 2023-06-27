@@ -26,7 +26,7 @@ This will:
 
 1. Translate the text *in file* to TLA+
 2. Write ``file.old`` as a backup
-3. Write ``file.cfg`` as a `configuration file <cfg>`, overwriting it if it already exists.
+3. Write ``file.cfg`` as a :ref:`configuration file <cfg>`, overwriting it if it already exists.
 
 To prevent (3), add ``-nocfg`` as a flag before ``file.tla``. There is no way to prevent the translator from writing ``file.old``. I have a shell watcher that finds and deletes them.
 
@@ -139,5 +139,14 @@ Now that we know how to run a config file, let's get back to the TLC options. Yo
 
   You can also write ``-dump dot,colorize file`` to color the edges based on the actions they involve and ``-dump dot,actionlabels`` to label the edges with the corresponding action. Both can be used together.
 
-``metadir dir``
+``-metadir dir``
   Instead of storing the seen statespace in the same directory as the spec, TLC will instead store it in ``dir``. I find this useful when scripting against the CLI, as I can store the state space in a temporary directory for easier cleanup.
+
+``-workers num/auto``
+  Specifies the number of worker threads to use for model checking. **This is very important.** Without this, the CLI defaults to a single worker. Pass in ``auto`` to use as many workers as you have cores.
+
+``-noGenerateSpecTE``
+  Newer versions of TLA+ save an error file whenever it finds a property error. This flag disables writing the file.
+
+``-fpmem num``
+  What percentage of the system memory to earmark for model checking, expressed as a decimal. Defaults to ``0.25`` (1/4 the memory).

@@ -492,7 +492,7 @@ Let's calculate ``ToClock`` the "programming way":
         h_left == seconds % 3600
         m == h_left \div 60
         m_left == h_left % 60
-        s == m_left \div 60
+        s == m_left
       IN
         <<h, m, s>>
 

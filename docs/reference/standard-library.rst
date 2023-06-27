@@ -126,6 +126,9 @@ BagCardinality(bag)
 CopiesIn(e, bag)
   If ``e`` is in ``bag``, then ``bag[e]``, otherwise 0.
 
+
+.. _tlc_module:
+
 TLC
 ============
 
@@ -165,6 +168,9 @@ Print(val, out)
 PrintT(val)
   Equivalent to ``Print(val, TRUE)``.
 
+Any
+  ``x \in Any`` for *any* value ``x``. Don't use this as part of a ``Spec``, but it's occasionally useful for modeling properties.
+
 Assert(bool, errmsg)
   If ``bool`` is false, then terminates model checking with ``errmsg``. Otherwise, evaluates to TRUE.
 
@@ -173,6 +179,9 @@ RandomElement(set)
 
 TLCEval(v)
   Evaluates the expression ``v`` and caches the result. Can be used to speed up recursive definitions.
+
+
+.. _tlcget:
 
 TLCGet(val)
   val can be either an integer or a string. If an integer, retrieves the value from the corresponding TLCSet. If a string, retrieves statistics from the current model run. The following strings are valid:

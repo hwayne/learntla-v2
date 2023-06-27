@@ -24,6 +24,7 @@ PlusCal
 Let's start with a very simple spec:
 
 .. spec:: pluscal.tla
+ 
 
 Inside the comment block (``(* *)``) is our PlusCal algorithm. We need to do this because this is a valid TLA+ file; the pluscal algorithm will be compiled to TLA+ below. The algorithm must start with ``--algorithm $name``, otherwise it will be treated like a regular comment. Unlike the module name, the algorithm ``$name`` doesn't need to correspond to anything, and can be your root password for all anyone cares.
 
@@ -390,5 +391,5 @@ Summary of Label Rules
 - While statements must begin with a label.
 - Each variable can only be updated once in a label. (You can assign to multiple parts of a sequence with `|| <||>`.)
 - Macros and ``with`` statements cannot contain labels.
-- A `goto <goto>` must be followed by a new label.
+- A :ref:`goto <goto>` must be followed by a new label.
 - If a branch in a block contains a label inside it, the end of the block must be followed with a label.
