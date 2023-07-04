@@ -356,8 +356,8 @@ Fairness is formally defined in TLA+ as follows::
 
 In English:
 
-* ``WF_x(A)``: If it is *eventually always* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
-* ``SF_vars(A)``: If it is *always eventually* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
+* ``WF_v(A)``: If it is *eventually always* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
+* ``SF_v(A)``: If it is *always eventually* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
 
 
 Fairness constraints are appended to the definition of ``Spec``. You can see this in the translation of our prior `strong fairness example <strong_fairness_spec>`::
@@ -367,7 +367,7 @@ Fairness constraints are appended to the definition of ``Spec``. You can see thi
 
 (Remember, ``Spec`` defines what *counts as a valid trace*. Fairness is an additional constraint, ruling out things like infinite stutters.)
 
-Notice that by writing ``\A self: SF_vars(self)``, we're effectively making every thread fair. If we instead wrote ``\E``, we'd be saying that at least one thread is fair, but the rest may be unfair. If both those conditions are syntactically intuitive to you, I'd say you fully understand how pure TLA+ works.
+Notice that by writing ``\A self \in Threads : SF_vars(thread(self))``, we're effectively making every thread fair. If we instead wrote ``\E``, we'd be saying that at least one thread is fair, but the rest may be unfair. If both those conditions are syntactically intuitive to you, I'd say you fully understand how pure TLA+ works.
 
 
 
