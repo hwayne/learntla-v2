@@ -145,7 +145,7 @@ You *can* use helper actions in your action properties, so we could do something
   BecomesNull(x) == x' = NULL
 
   LockCantBeStolen ==
-     [][lock # NULL => BecomesNull(lock')]_lock
+     [][lock # NULL => BecomesNull(lock)]_lock
 
 Quantified Action Properties
 -----------------------------

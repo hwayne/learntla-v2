@@ -334,7 +334,7 @@ To see how ``await`` statements are modeled, let's look at how TLA+ translates `
                    /\ pc' = [pc EXCEPT ![self] = "GetCounter"]
                    /\ UNCHANGED << counter, tmp >>
 
-So ``await lock`` just becomes ``/\ lock = NULL``.
+So ``await lock = NULL`` just becomes ``/\ lock = NULL``.
 
 .. index::
   single: fairness; in TLA+
