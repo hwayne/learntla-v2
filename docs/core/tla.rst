@@ -142,7 +142,7 @@ First, let's see what happens when we do a deterministic with:
 
 
 
-Okay, that's done through a `LET`, which makes sense. It's a 1-1 translation. It also explains why you can't put labels inside a ``with`` statement, since ``LET`` is just a temporary binding. 
+Okay, that's done through a `LET`, which makes sense. It's a 1-1 translation. It also explains why you can't put labels inside a ``with`` statement, since ``LET`` is just a temporary binding.
 
 Now for nondeterministic with:
 
@@ -202,18 +202,20 @@ The problem is actually a subtle nuance of assigning to functions. In ``Next``, 
 
 Remember, TLA+ wants you to be as precise as possible. If you didn't specify that ``s[2]'`` is the same as ``s[2]``, it doesn't have to be. TLC automatically considers this an error.
 
-.. index:: 
+.. index::
   single: EXCEPT
   single: @
   seealso: EXCEPT; function
 
-What we actually wanted to write is that ``s'`` is the same as ``s`` *except* that ``s[1]`` is false. Here's the syntax for that:
+What we actually wanted to write is that ``s'`` is the same as ``s`` *except* that ``s'[1]`` is false. Here's the syntax for that:
 
 ::
 
   Next == s' = [s EXCEPT ![1] = FALSE]
 
-Yes, I know it's really awkward. No, I can't think of anything better. 
+In ``![1]``, ``!`` is the "selector" and ``[1]`` is the element. So this creates a copy of s, looks up ``copy_s[1]``, replaces that value with ``FALSE``, and assigns the whole mess to ``s'``.
+
+Yes, I know it's really awkward. No, I can't think of anything better.
 
 .. tip:: ``EXCEPT`` has some syntactic sugar to make using it more pleasant. First of all, we can assign multiple keys in the same statement:
 
@@ -225,7 +227,7 @@ Yes, I know it's really awkward. No, I can't think of anything better.
 
   .. code::
 
-    IncCounter(c) == 
+    IncCounter(c) ==
       counter' = [counter EXCEPT ![c] = @ + 1]
 
   Finally, we can do nested lookups in the ``EXCEPT``:
@@ -320,7 +322,7 @@ The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of
 
 Concurrency is "just" saying there exists an element of the Thread set where ``thread`` is true. And that's it! That's how you get concurrency!
 
-.. We can of course do more "interesting" kinds of concurrency with slightly different setups. 
+.. We can of course do more "interesting" kinds of concurrency with slightly different setups.
 
 To see how ``await`` statements are modeled, let's look at how TLA+ translates `await lock <threads_3>`:
 
@@ -334,7 +336,7 @@ To see how ``await`` statements are modeled, let's look at how TLA+ translates `
 
 So ``await lock`` just becomes ``/\ lock = NULL``.
 
-.. index:: 
+.. index::
   single: fairness; in TLA+
   single: WF_vars
   single: SF_vars
@@ -344,7 +346,7 @@ So ``await lock`` just becomes ``/\ lock = NULL``.
 Fairness in TLA+
 =================
 
-That leaves just one topic left to discuss: how we model `fairness` in pure TLA+. First, two final keywords to introduce: 
+That leaves just one topic left to discuss: how we model :ref:`fairness <fairness>` in pure TLA+. First, two final keywords to introduce:
 
 1. ``ENABLED A`` is true if ``A`` *can* be true this step, ie it can describe the next step.
 2. ``<<A>>_v`` means that ``A`` is true *and* v changes. Compare to ``[A]_v`` being "``A`` is true *or* v doesn't change".
@@ -356,8 +358,8 @@ Fairness is formally defined in TLA+ as follows::
 
 In English:
 
-* ``WF_x(A)``: If it is *eventually always* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
-* ``SF_vars(A)``: If it is *always eventually* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
+* ``WF_x(A)`` (A is weakly fair): If it is *eventually always* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
+* ``SF_vars(A)`` (A is strongly fair): If it is *always eventually* true that the A action *can happen* (in a way that changes v), then it *will* eventually happen (and change v).
 
 
 Fairness constraints are appended to the definition of ``Spec``. You can see this in the translation of our prior `strong fairness example <strong_fairness_spec>`::
@@ -384,8 +386,8 @@ In pluscal, we can only apply fairness conditions to labels, which correspond to
 
   Init == status = "start"
 
-  Trans(from, to) == 
-    /\ status = from 
+  Trans(from, to) ==
+    /\ status = from
     /\ status' = to
 
   Succeed == Trans("start", "done")
@@ -406,7 +408,7 @@ In pluscal, we can only apply fairness conditions to labels, which correspond to
 
 This spec can fail an arbitrary number of times, but is guaranteed to eventually succeed.
 
-.. todo:: 
+.. todo::
 
   {CONTENT} A warning about how machine closure can blow up in your face
   Also an example of fairness in a temporal property

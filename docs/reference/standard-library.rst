@@ -73,6 +73,8 @@ IsFiniteSet(set)
 Cardinality(set)
   The number of elements in ``set``.
 
+.. _bag:
+
 Bags
 ============
 
