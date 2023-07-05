@@ -314,6 +314,8 @@ To make sure that you're following properly, you can check that that you got the
 
 .. note:: You'll get a different number than me if the spec *fails*, because TLC will terminate execution early. In that case, I will note that the modelcheck should fail when showing the code listing.
 
+.. _multiple_starting_states:
+
 .. index:: \in; variable definition
 
 Testing More Inputs

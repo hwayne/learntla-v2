@@ -31,7 +31,7 @@ sphinx-build -b linkcheck docs/ docs/_build/
 
 ### Working with Specs
 
-See the [raw-specs readme](/raw-specs/readme.md) for explanation of what these are for.
+See the [raw-specs readme](/raw-specs/README.md) for explanation of what these are for.
 
 To expand an xml template:
 

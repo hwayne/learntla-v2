@@ -40,9 +40,9 @@ TLC can check (2) as a temporal property, though.
 
 
 
-``[]P`` means that ``P`` is true in every state. When on the outside of a predicate, this is equivalent to an invariant, and in fact is how TLC supports them: writing ``INVARIANT P`` is the same as writing ``PROPERTY []P``. 
+``[]P`` means that ``P`` is true in every state. When on the outside of a predicate, this is equivalent to an invariant, and in fact is how TLC supports them: making ``P`` an invariant is the same thing as making ``[]P`` a property. 
 
-.. warning:: Writing ``PROPERTY P`` will just check that P is true in the first state.
+.. warning:: Making ``P`` a property (without the box) will just check that P is true in the first state.
 
 Things get more interesting when ``[]`` is part of a larger expression. Writing ``[]P \/ []Q`` means every behavior has either P or Q as an invariant, but doesn't need to have both. Or we could write ``[]P => []Q``, to say that P is a *stronger* invariant than Q. We can also put a ``[]`` inside a quantifier. To properly model (2), we could write::
 
