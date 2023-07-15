@@ -12,9 +12,9 @@ Procedures
 
 *Note: this is both fairly complicated and fairly niche, so feel free to skip this and come back to it later.*
 
-If you want two separate processes to share some spec, you can extract the common bit into a macro. But what if you want to extract something more complicated, with labels? For this, instead of macros we use **procedures**. They're like macros, except they can contain labels, and they're a little more complicated to write and use. 
+If you want two separate processes to share some spec, you can extract the common bit into a macro. But what if you want to extract something more complicated, with labels? For this, instead of macros we use **procedures**. They're like macros, except they can contain labels, and they're a little more complicated to write and use.
 
-To use procedures, you must extend ``Sequences``. This is because the translator needs to store a call stack for control flow, which is does in a tuple. 
+To use procedures, you must extend ``Sequences``. This is because the translator needs to store a call stack for control flow, which it does in a tuple.
 
 ::
 
