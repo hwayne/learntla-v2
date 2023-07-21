@@ -236,7 +236,7 @@ The syntax for function sets is ``[S -> T]`` and is "every function where the do
 
 .. todo:: Explain the function set with a two-stage invariant
 
-.. tip:: A function set of form ``[A -> B]`` will have :math:`\#B^{\#A}` elements in it. If there were two tasks and three CPUs, that would be :math`(2^3)^2 = 64` possible functions.
+.. tip:: A function set of form ``[A -> B]`` will have :math:`\#B^{\#A}` elements in it. If there were two tasks and three CPUs, that would be :math:`(2^3)^2 = 64` possible functions.
 
 
   A good way to remember this: ``[1..n -> BOOLEAN]`` is the set of all binary strings of length ``n``, and we know there are :math:`2^n` such strings.
