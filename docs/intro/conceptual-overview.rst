@@ -34,7 +34,7 @@ Neither change by itself causes a problem. But both of them *together* leads to 
 
 .. todo:: {GRAPH} error
 
-If Withdraw(X) happens before Guard(Y), then there's no problem; transfer Y will simply fail. Race conditions like this are fundamentally rare: *most* of the time, the program will behave as expected and maintain our properties. It's only in very particular orderings of events that we have a bug. That's why concurrency errors are so far hard to find.
+If Withdraw(X) happens before Guard(Y), then there's no problem; transfer Y will simply fail. Race conditions like this are fundamentally rare: *most* of the time, the program will behave as expected and maintain our properties. It's only in very particular orderings of events that we have a bug. That's why concurrency errors are so hard to find.
 
 That's also why they're hard to fix. Imagine if we added a third feature, say a lock in the right place, to fix the bug. Does the issue go away because we've solved it, or because we've made it rarer? Without being able to explore the actual consequences of the designs, we can't guarantee we've solved anything.
 
