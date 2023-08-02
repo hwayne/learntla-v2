@@ -87,7 +87,7 @@ As we'll see later, ``writer`` is essentially an inefficient means of picking a 
   - * S
     * :math:`|S|`
   - * SUBSET S
-    * :math:`2^|S|`
+    * :math:`2^{|S|}`
   - * ``S \X T`` (tuple)
     * :math:`|S|*|T|`
   - * ``[s: S, t: T]`` (:ref:`struct set <struct_set>`)
@@ -324,6 +324,7 @@ Don't write doubly-recursive function definitions
 
 Self-explanatory.
 
+
 Use Overrides
 -------------
 
@@ -344,6 +345,11 @@ So to sort a ten item list, you'd first generate a :math:`10^{10}` element funct
 .. _here: https://github.com/tlaplus/CommunityModules/tree/master/modules/tlc2/overrides
 
 .. _insertion_sort: https://github.com/tlaplus/tlaplus/blob/master/tlatools/org.lamport.tlatools/src/tlc2/module/TLC.java#L247
+
+Use Refactor Properties
+-----------------------
+
+See :ref:`here <action_refactoring>`. This is a good way to check if your optimizations aren't changing the state space.
 
 Misc
 ====
