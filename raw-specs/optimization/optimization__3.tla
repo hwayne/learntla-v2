@@ -23,7 +23,6 @@ begin
     end while;
 end process;
 
-
 process worker \in Workers
 variable total = 0;
 local = 0;

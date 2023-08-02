@@ -38,8 +38,7 @@ begin
         i := i + 1;
       end with;
     end while;
-end process;
-</s>
+end process;</s>
 
 process worker \in Workers
 variable total = 0;
@@ -97,7 +96,6 @@ begin
       aux_last_run := "writer";
     end while;
 end process;
-
 
 process worker \in Workers
 variable total = 0;
