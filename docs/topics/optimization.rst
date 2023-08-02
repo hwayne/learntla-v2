@@ -68,7 +68,7 @@ Before we start optimizing, it's a good idea to get a handle on where the "compl
 
 First, let's start with the ``writer``. There are :math:`3^7 = 2187` possible ways to assign 7 numbers to one of three workers. Adding one more worker would octuple the number of possible assignments, while adding one more number would only triple it. So *right now*, the number of workers is having more impact on the state space than ``MaxNum``. On the other hand, if we had seven workers and ``MaxNum = 3``, incrementing ``MaxNum`` would do more than adding an eighth worker.
 
-As a quick test, try making both constants smaller. Reducing ``MaxInt`` by 1 reduces the statespace to only 3.2M states, while removing a worker drops the state space to 1.3M. Making both changes
+As a quick test, try making both constants smaller. Reducing ``MaxInt`` by 1 reduces the statespace to only 3.2M states, while removing a worker drops the state space to 1.3M.
 
 Set Sizes
 .........
