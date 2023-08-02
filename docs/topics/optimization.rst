@@ -33,7 +33,7 @@ The Spec
 
 To discuss optimizations, we'll use the following:
 
-.. spec:: topics\optimization\1\optimization.tla
+.. spec:: topics/optimization/1/optimization.tla
    :ss: optimization_7_3_nosym
 
 Run with ``MaxNum = 7``, ``Workers = {w1, w2, w3}``, and no deadlock checking. You should get 28,351,303 (28M) states. I'll be showing optimizations one-at-a-time as changes to this base model, and undo them before showing the next optimization.
@@ -42,8 +42,8 @@ Run with ``MaxNum = 7``, ``Workers = {w1, w2, w3}``, and no deadlock checking. Y
 
   The spec can take up to 28 seconds to run on my computer. To test optimizations out faster, I'll use a trick to iterate more quickly. :ref:`TLCGet <tlcget>` lets us query the current depth of the model checking with ``TLCGet("level")``. I'll add the :ref:`constraint <state_constraint>` ``TLCGet("level") < 12`` to my spec.
 
-  .. spec:: topics\optimization\2\optimization.tla
-    :diff: topics\optimization\1\optimization.tla
+  .. spec:: topics/optimization/2/optimization.tla
+    :diff: topics/optimization/1/optimization.tla
     :ss: optimization_7_3_nosym_level
 
   This reduces the state space by 97% percent, making it easier for me to try out different optimizations. When I'm done I'll remove the constraint and see how much my optimizations help with the whole spec.
@@ -133,8 +133,8 @@ As a very rough rule of thumb, if you take an n-element set of model values and 
 
 Note that if you're using the cli, you'll have to define the symmetry relaton in the model, like this:
 
-.. spec:: topics\optimization\3\optimization.tla
-  :diff: topics\optimization\2\optimization.tla
+.. spec:: topics/optimization/3/optimization.tla
+  :diff: topics/optimization/2/optimization.tla
   :ss: optimization_7_3_sym
 
 Then put ``SYMMETRY Symmetry`` in your config file.
@@ -158,8 +158,8 @@ The writer assigns each number to exactly one worker, so by the end ``to_process
 1.  For each number, there's a worker it belongs to, and
 2.  It doesn't belong to any other worker.
 
-.. spec:: topics\optimization\fs\optimization.tla
-  :diff: topics\optimization\3\optimization.tla
+.. spec:: topics/optimization/fs/optimization.tla
+  :diff: topics/optimization/3/optimization.tla
   :ss: optimization_fs
 
 
@@ -179,8 +179,8 @@ possible behaviors, and :math:`6 \cdot 90 = 540` new states.
 
 If we fuse the two labels into one, like this:
 
-.. spec:: topics\optimization\one_label\optimization.tla
-  :diff: topics\optimization\3\optimization.tla
+.. spec:: topics/optimization/one_label/optimization.tla
+  :diff: topics/optimization/3/optimization.tla
   :ss: optimization_one_label
 
 
@@ -196,8 +196,8 @@ The ``Read``, the worker is allowed to pull *any* number in its pool for process
 
 In this case, the algorithm is commutative and it doesn't matter which order we use. So I'll pick a completely arbitrary order via ``CHOOSE``:
 
-.. spec:: topics\optimization\fixed_with\optimization.tla
-  :diff: topics\optimization\3\optimization.tla
+.. spec:: topics/optimization/fixed_with/optimization.tla
+  :diff: topics/optimization/3/optimization.tla
   :ss: optimization_fixed_with
 
 .. warning:: This is one of the rare cases where I'm comfortable with a ``CHOOSE x \in set: TRUE``. Otherwise it's :ref:`deterministic <choose>`, which a lot of people don't expect!
@@ -225,24 +225,24 @@ Use Views
 
 This is an advanced technique and should only be used with caution. To set it up, let's say we add an auxiliary variable to track the last process run:
 
-.. spec:: topics\optimization\view_1\optimization.tla
-  :diff: topics\optimization\3\optimization.tla
+.. spec:: topics/optimization/view_1/optimization.tla
+  :diff: topics/optimization/3/optimization.tla
   :ss: optimization_view_1
 
 This balloons the state space to 80M states! Behaviors that used to lead to the same state now lead to different states. But the difference is only in an auxiliary variable and shouldn't affect the behavior of our spec.
 
 To determine if two states are distinct, TLC compares their values for ``<<i, pc, to_process, aux_last_run>>``. If we want, we can tell TLC instead compare them with ``<<i, pc, to_process>>`` and ignore ``aux_last_run`` entirely. This called setting a :ref:`view <view>`. First we add an operator corresponding to our view:
 
-.. spec:: topics\optimization\view_2\optimization.tla
-  :diff: topics\optimization\view_1\optimization.tla
+.. spec:: topics/optimization/view_2/optimization.tla
+  :diff: topics/optimization/view_1/optimization.tla
   :ss: optimization_view_2
 
 Then we tell TLC to use ``view`` as our view. In the Toolbox that's under ``TLC Options > Checking ode > View``. In the :ref:`cli <topic_cli>` add  ``VIEW view`` to the config.
 
 Adding the new view reduces our state space to just one million states... *less* than the amount in our basic spec. I forgot that each writer has ``total`` and ``local`` variables, too, which needs to be part of our view. Since that's local to the process we can't reference it in a ``define`` block and need to put the whole thing below our translation. 
 
-.. spec:: topics\optimization\view_3\optimization.tla
-  :diff: topics\optimization\view_2\optimization.tla
+.. spec:: topics/optimization/view_3/optimization.tla
+  :diff: topics/optimization/view_2/optimization.tla
   :ss: optimization_view_3
 
 
