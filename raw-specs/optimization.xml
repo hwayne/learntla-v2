@@ -12,15 +12,15 @@
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 CONSTANTS MaxNum, Workers
+<s on="2-">
+Constraint == TLCGet("level") &lt; 11</s><s on="3-">
+Symmetry == Permutations(Workers)</s>
 
-
-<s on="2-">Constraint == TLCGet("level") &lt; 11</s>
-<s on="3">Symmetry == Permutations(Workers)</s>
 (*--algorithm alg
 variables<s on="-3,5-">
   i = 1;
-  to_process = [w \in Workers |-> {}];</s>
-  <s on="4">to_process \in {
+  to_process = [w \in Workers |-> {}];</s><s on="4">
+  to_process \in {
     tp \in [Workers -> SUBSET (1..MaxNum)]:
       \A x \in 1..MaxNum:
         \E w \in Workers:
@@ -29,8 +29,7 @@ variables<s on="-3,5-">
             x \notin tp[w2]
     }</s>
 
-<s on="-3,5-">
-process writer = "writer"
+<s on="-3,5-">process writer = "writer"
 begin 
   Write:
     while i &lt;= MaxNum do
@@ -70,11 +69,10 @@ end algorithm; *)
 <comment>
   Showcasing view
 </comment>
-<spec name="optimization_view" num="1">
+<spec name="optimization_view" num="3">
 ---- MODULE $name ----
 EXTENDS Integers, Sequences, TLC
 CONSTANTS MaxNum, Workers
-
 
 Constraint == TLCGet("level") &lt; 11
 Symmetry == Permutations(Workers)
@@ -82,7 +80,11 @@ Symmetry == Permutations(Workers)
 variables
   i = 1;
   to_process = [w \in Workers |-> {}];
-  hist = &lt;&lt;>>;
+  aux_last_run = "none";<s on="2">
+
+define
+  view == &lt;&lt;i, to_process, pc, total>>
+end define;</s>
 
 process writer = "writer"
 begin 
@@ -92,6 +94,7 @@ begin
         to_process[w] := @ \union {i};
         i := i + 1;
       end with;
+      aux_last_run := "writer";
     end while;
 end process;
 
@@ -105,12 +108,17 @@ begin
       local := x;
       to_process[self] := @ \ {local};
     end with;
+    aux_last_run := self;
     Update:
       total := total + local;
+      aux_last_run := self;
       goto Read;
 end process;
 
-end algorithm; *)
+end algorithm; *)<s on="3">
+\* under the translation
+view == &lt;&lt;i, to_process, pc, total, local>>
+</s>
 ====
 </spec>
 </root>

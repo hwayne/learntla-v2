@@ -1,4 +1,4 @@
-target: specs/tla/optimization_fixed_with/optimization.tla
+target: specs/topics/optimization/fixed_with/optimization.tla
 states:
   optimization_fixed_with:
     states: 2052493
@@ -8,15 +8,13 @@ states:
 EXTENDS Integers, Sequences, TLC
 CONSTANTS MaxNum, Workers
 
-
 Constraint == TLCGet("level") < 11
+Symmetry == Permutations(Workers)
 
 (*--algorithm alg
 variables
   i = 1;
   to_process = [w \in Workers |-> {}];
-  
-
 
 process writer = "writer"
 begin 

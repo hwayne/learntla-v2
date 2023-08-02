@@ -1,16 +1,20 @@
-target: specs/topics/optimization/3/optimization.tla
+target: specs/topics/optimization/view_3/optimization.tla
+states:
+  optimization_view_3:
+    states: 28351303
+    distinct: 8241961
 !!!
----- MODULE optimization__3 ----
+---- MODULE optimization_view__3 ----
 EXTENDS Integers, Sequences, TLC
 CONSTANTS MaxNum, Workers
 
 Constraint == TLCGet("level") < 11
 Symmetry == Permutations(Workers)
-
 (*--algorithm alg
 variables
   i = 1;
   to_process = [w \in Workers |-> {}];
+  aux_last_run = "none";
 
 process writer = "writer"
 begin 
@@ -20,6 +24,7 @@ begin
         to_process[w] := @ \union {i};
         i := i + 1;
       end with;
+      aux_last_run := "writer";
     end while;
 end process;
 
@@ -33,10 +38,15 @@ begin
       local := x;
       to_process[self] := @ \ {local};
     end with;
+    aux_last_run := self;
     Update:
       total := total + local;
+      aux_last_run := self;
       goto Read;
 end process;
 
 end algorithm; *)
+\* under the translation
+view == <<i, to_process, pc, total, local>>
+
 ====

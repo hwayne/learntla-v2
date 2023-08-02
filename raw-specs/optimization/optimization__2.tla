@@ -1,8 +1,8 @@
-
+target: specs/topics/optimization/2/optimization.tla
+!!!
 ---- MODULE optimization__2 ----
 EXTENDS Integers, Sequences, TLC
 CONSTANTS MaxNum, Workers
-
 
 Constraint == TLCGet("level") < 11
 
@@ -10,8 +10,6 @@ Constraint == TLCGet("level") < 11
 variables
   i = 1;
   to_process = [w \in Workers |-> {}];
-  
-
 
 process writer = "writer"
 begin 

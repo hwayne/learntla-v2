@@ -6,6 +6,10 @@
 What's New
 #######################
 
+2023-08-02
+
+  Added topics `topic_unbound_models` and `topic_optimization`.
+
 2023-01-13
 
   Added the `topic_message_queues` topic.
@@ -43,7 +47,6 @@ Roadmap
 
   - Refinement
   - Modeling ADTs
-  - Optimizing model-checking
   - Community modules
   - Modeling legacy systems
   - Machine-world differences
@@ -59,6 +62,8 @@ Roadmap
 
   - A troubleshooting page
   - LaTeX to ASCII chart
+  - TLA+ and PlusCal Cheatsheets
+  
 
 * Misc:
 

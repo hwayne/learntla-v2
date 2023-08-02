@@ -1,4 +1,5 @@
-target: specs/tla/optimization_1/optimization.tla
+target: specs/topics/optimization/1/optimization.tla
+
 states:
   optimization_7_3_nosym:
     states: 28351303
@@ -21,14 +22,10 @@ EXTENDS Integers, Sequences, TLC
 CONSTANTS MaxNum, Workers
 
 
-
-
 (*--algorithm alg
 variables
   i = 1;
   to_process = [w \in Workers |-> {}];
-  
-
 
 process writer = "writer"
 begin 

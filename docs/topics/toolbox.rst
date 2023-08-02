@@ -102,6 +102,8 @@ State Constraint
 
   .. tip:: State constraints are a good way to bound :ref:`unbound models <topic_unbound_models>`.
 
+.. _action_constraint:
+
 Action Constraint
 
   Similar to a state constraint, except it's an action. In the above spec, you can write ``x' > x`` to only explore states where x increases.
@@ -126,6 +128,8 @@ Fraction of memory
   How much memory TLC can use for checking. If the model exceeds this limit then TLC will start writing found states to disk, significantly increasing model-checking time.
 
   Note that TLC needs to preallocate all of the memory before it starts model checking, and then free it afterwards. For small enough models and large enough computers, allocation time can exceed the model runtime! 
+
+.. _view:
 
 View
 

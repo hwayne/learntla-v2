@@ -44,6 +44,39 @@ state_spaces:
   hourclock_2:
     distinct: 12
     states: 24
+  optimization_6_3:
+    distinct: 995764
+    states: 3162166
+  optimization_7_2:
+    distinct: 413315
+    states: 1262215
+  optimization_7_3_nosym:
+    distinct: 8241961
+    states: 28351303
+  optimization_7_3_nosym_level:
+    distinct: 146056
+    states: 872224
+  optimization_7_3_sym:
+    distinct: 1374882
+    states: 4728962
+  optimization_fixed_with:
+    distinct: 651349
+    states: 2052493
+  optimization_fs:
+    distinct: 3856467
+    states: 10794312
+  optimization_one_label:
+    distinct: 534330
+    states: 2353282
+  optimization_view_1:
+    distinct: 23582803
+    states: 80081623
+  optimization_view_2:
+    distinct: 206964
+    states: 1018176
+  optimization_view_3:
+    distinct: 8241961
+    states: 28351303
   orchestrator:
     distinct: 3
     states: 5

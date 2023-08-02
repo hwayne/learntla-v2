@@ -17,6 +17,7 @@ This is a collection of techniques and essays on using TLA+ more effectively. Pe
   aux-vars
   refinement
   unbound-models
+  optimization
 
 .. toctree::
   :caption: How to Model...
