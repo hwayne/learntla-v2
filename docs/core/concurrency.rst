@@ -216,7 +216,7 @@ If you run this, TLC will report a "deadlock" as an error. Once every writer has
 
 .. figure:: img/deadlock.png
 
-.. note:: All processes finishing (reaching the "Done" state) doesn't cause a deadlock because the pluscal translator inserts an extra "everything's complete and nothing happens" action. You can see it in the translation as ``Terminating``.
+.. note:: All processes finishing (reaching the "Done" state) doesn't cause a deadlock because the PlusCal translator inserts an extra "everything's complete and nothing happens" action. You can see it in the translation as ``Terminating``.
 
 .. include:: advanced/procedures.rst
 
