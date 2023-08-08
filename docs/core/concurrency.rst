@@ -160,7 +160,7 @@ In process sets we have a special keyword ``self``, which retrieves the "value" 
 .. spec:: reader_writer/rw_many_3/reader_writer.tla
   :diff: reader_writer/rw_many_2/reader_writer.tla
 
-If you run this, you'll see the state space increase a little and the distinct states more than double :ss:`rw_many_3`.  To see why, consider what happens when writers 1 and 2 have run in some order. Before the queue would have been ``<<1, 1>>``, regardless of which writer ran first. But now, sinece they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
+If you run this, you'll see the state space increase a little and the distinct states more than double :ss:`rw_many_3`.  To see why, consider what happens when writers 1 and 2 have run in some order. Before the queue would have been ``<<1, 1>>``, regardless of which writer ran first. But now, since they enqueue different values, there are *two* possible queues: ``<<1, 2>>`` and ``<<2, 1>>``.
 
 
 .. tip::
