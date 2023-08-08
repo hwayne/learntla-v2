@@ -4,7 +4,7 @@
 TLA+
 ########
 
-PlusCal is a formalism designed to make using formal methods easier. By learning pluscal first, we can focus on teaching first logic and model checking, leaving temporal logic for later. Another advantage is that can bootstrap TLA+ from it by looking at what the pluscal generates, and infer the TLA+. We know that the pluscal generated is valid TLA+, so we can use it to understand the TLA+.
+PlusCal is a formalism designed to make using formal methods easier. By learning PlusCal first, we can focus on teaching first logic and model checking, leaving temporal logic for later. Another advantage is that can bootstrap TLA+ from it by looking at what the PlusCal generates, and infer the TLA+. We know that the PlusCal generated is valid TLA+, so we can use it to understand the TLA+.
 
 .. index:: action
 
@@ -18,7 +18,7 @@ Now let's learn us some TLA+!
 Learning from PlusCal
 ======================
 
-I find the easiest way to explain what's going on with TLA+ is to relate it to what the PlusCal does. In his original book `Specifying Systems`_, Leslie Lamport introduces TLA+ with a specification of an hour clock, and I'd be remiss to break with tradition. The pluscal is a *mostly* faithful translation of his TLA+ spec.
+I find the easiest way to explain what's going on with TLA+ is to relate it to what the PlusCal does. In his original book `Specifying Systems`_, Leslie Lamport introduces TLA+ with a specification of an hour clock, and I'd be remiss to break with tradition. The PlusCal is a *mostly* faithful translation of his TLA+ spec.
 
 .. spec:: tla/hourclock_1/hourclock.tla
   :ss: hourclock_1
@@ -416,12 +416,12 @@ This spec can fail an arbitrary number of times, but is guaranteed to eventually
 Why use TLA+?
 =============
 
-So now that we have a brief overview of TLA+, let's come around to a basic question: *why bother*?  While TLA+ has a steeper learning curve than PlusCal, it also has a higher power ceiling. There are lots of things you can do in pure TLA+ that would be difficult or impossible to do in pluscal. Some examples:
+So now that we have a brief overview of TLA+, let's come around to a basic question: *why bother*?  While TLA+ has a steeper learning curve than PlusCal, it also has a higher power ceiling. There are lots of things you can do in pure TLA+ that would be difficult or impossible to do in PlusCal. Some examples:
 
 * Writing `helper actions <trans>`.
 * Using fairness `in subtle ways <fairness_status_example>`.
 * Verifying a `refactored spec has the same behavior <action_refactoring>`.
-* Interruptable algorithms. Say I have the sequence of steps :math:`Start \to A \to B \to C \to D`, and A,B,C can all "reset" to start. In pluscal I'd have to model that by duplicated `either <either>` blocks:
+* Interruptable algorithms. Say I have the sequence of steps :math:`Start \to A \to B \to C \to D`, and A,B,C can all "reset" to start. In PlusCal I'd have to model that by duplicated `either <either>` blocks:
 
   ::
 
@@ -449,7 +449,7 @@ So now that we have a brief overview of TLA+, let's come around to a basic quest
        \/ D
     \/ pc' = "Start"
 
-* Systems that would map onto having multiple processes in pluscal with the same values. For example, if each worker can run multiple sequential tasks in parallel.
+* Systems that would map onto having multiple processes in PlusCal with the same values. For example, if each worker can run multiple sequential tasks in parallel.
 * :doc:`Refinement properties</topics/refinement>`.
 
 At the same time, it's okay to stick with PlusCal. Plenty of people never learn pure TLA+ and get along fine with just PlusCal. Just know that it has limits, and know when you're pushing against those limits.
