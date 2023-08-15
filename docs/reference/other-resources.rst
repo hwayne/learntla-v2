@@ -8,7 +8,7 @@ Learning Resources
 ==================
 
 `Specifying Systems`_
-  This is a comprehensive introduction and formal grounding of TLA+, though it has very little on model checking. Does not cover features past 2004 or so (like pluscal and `recursive`.
+  This is a comprehensive introduction and formal grounding of TLA+, though it has very little on model checking. Does not cover features past 2004 or so (like PlusCal and `recursive`).
 
 `TLA+ Video Course`_
   A video course by the inventor of TLA+.

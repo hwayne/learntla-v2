@@ -42,7 +42,7 @@ Remember how, when defining the spec variables, we can write ``x \in set`` inste
 
 Inside this block, ``roll`` can be any one of those six values. The model checker will try *all six*, effectively creating six new behaviors from that single statement.
 
-.. tip:: You can combine deterministic and nondeterminsitic assignments in a single ``with`` statement. The following is valid:
+.. tip:: You can combine deterministic and nondeterministic assignments in a single ``with`` statement. The following is valid:
 
   ::
 
@@ -173,7 +173,7 @@ One way we use nondeterminism is to simulate user input. Our system has to handl
 .. spec:: calculator/1/calculator.tla
   :name: calculator_1
 
-.. todo:: This example might work better if I break the ``while`` into a separate step. But that's for after v2 is up and I'm polishing— might be totally unecessary.
+.. todo:: This example might work better if I break the ``while`` into a separate step. But that's for after v2 is up and I'm polishing— might be totally unnecessary.
 
 Two things to notice:
 

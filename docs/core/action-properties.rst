@@ -98,7 +98,7 @@ But that's not (yet) a valid TLA+ property. Consider the slightly different prop
 
 As yet more syntactic sugar, we can write ``[](x' = x + 1 \/ UNCHANGED x)`` as ``[][x' = x + 1]_x``. This is called a :dfn:`box action formula`. Box action formulas have a special role in TLA+, as we'll see in :doc:`the next chapter <tla>`. TLC can only check action properties that are box action formulas.
 
-.. tip:: The underscory bit means that we could have written the property as ``[][counter' > counter]_counter``. Expanding all the steps: 
+.. tip:: The underscory bit (``_``) means that we could have written the property as ``[][counter' > counter]_counter``. Expanding all the steps: 
 
   #. ``[counter' > counter]_counter``
   #. ``counter' > counter \/ UNCHANGED counter``

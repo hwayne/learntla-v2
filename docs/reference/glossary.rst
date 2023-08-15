@@ -9,7 +9,7 @@ Term Guide
   :sorted:
 
   Action
-    A predicate that describes how a state "evolves". Any boolean expression with a primed operator (like ``x' = x``). Actions are true if they describe the next state and false if they don't. Multiple actions can be true at once, for example if two things happen in parrallel.
+    A predicate that describes how a state "evolves". Any boolean expression with a primed operator (like ``x' = x``). Actions are true if they describe the next state and false if they don't. Multiple actions can be true at once, for example if two things happen in parallel.
 
   Behavior
     A sequence of states, or "timeline", in the system.

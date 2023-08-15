@@ -62,7 +62,7 @@ Yes! Here are just a few of the (public!) successful use cases:
 
 * `Amazon Web Services`_ used TLA+ to model parts of S3 and DynamoDB, finding a 35-step bug that escaped all their tests and two code reviews.
 
-* `Crowdstrike`_ found multiple failure cases over just five days of workshops.
+* `CrowdStrike`_ found multiple failure cases over just five days of workshops.
 
 TLA+ has also been used by Azure, MongoDB, Confluent, Elastic, and Cockroach Labs to find bugs.
 
@@ -169,4 +169,4 @@ Dude if you know what CTL* is then you're clearly just messing with me
 
 .. _Leslie Lamport: https://en.wikipedia.org/wiki/Leslie_Lamport
 
-.. _Crowdstrike: https://www.youtube.com/watch?v=QKCG3tz4mOU
+.. _CrowdStrike: https://www.youtube.com/watch?v=QKCG3tz4mOU
