@@ -373,8 +373,6 @@ ToJson(val)
       \"<<TRUE, FALSE>>\":false,
       \* ...
 
-.. todo:: Explain randomization module when I understand the actual guarantees it gives
-
 JsonSerialize(absoluteFilename, value)
   Exports ``value`` as a JSON object to a file. 
 
@@ -385,18 +383,39 @@ JsonDeserialize(absoluteFilename)
 Randomization
 ============
 This module defines operators for choosing pseudo-random subsets of a set.  It is useful for inductive invariance checking, where the 
-operators appear only in the initial predicate.  However, it may have other uses.
+operators appear only in the initial predicate. However, it may have other uses.
 
 RandomSubset(k, S)
   Where k is a Natural number, and S is a set. Selects a randomly chosen subset of S containing k elements where 0 < k < Cardinality(set).
+
   ::
+
     RandomSubset(1, {"a"}) = {"a"}
+    \* Running multiple times will yield different subsets
+    RandomSubset(2, {"a", "b", "c"}) = {"b", "c"}
 
 RandomSetOfSubsets(k, n, S)
-  Where k and n are Natural numbers and S is a set. Pseudo-randomly chosen set of subsets of S
+  Where k and n are Natural numbers and S is a set. Pseudo-randomly chosen set of subsets of S, or in other words a randomly chosen subset of SUBSET S.
+  Each element T of this set is a subset of S.Each such T is chosen so that each element of S has a probability n / Cardinality(S) of being in T.
+  Thus, the average number of elements in each chosen subset T is n. The set RandomSetOfSubsets(k, n, S) is obtained by making k such choices of T .
+
+  ::
+
+    RandomSetOfSubsets(1, 1, {"a"}) = {{"a"}}
+    \* Different executions will yield differenet results:
+    RandomSetOfSubsets(2, 3, {"a", "b", "c", "d", "e"}) = {{"a", "d", "c"}, {"a", "b", "e", "c"}}
 
 TestRandomSetOfSubsets(k, n, S)
   Where k and n are Natural numbers and S is a set. It yields a sequence of five values that are the cardinality of the set of subsets produced by five 
   executions of RandomSetOfSubsets(k, n, S).
+  For constant values of k, n, and S, you can enter TestRandomSetOfSubsets(k, n, S) in the Evaluate Constant Expression section of a TLC model in the 
+  TLA+ Toolbox. Running TLC will then tell you the approximate number of elements in the set of subsets produced by RandomSetOfSubsets for these parameters.
+  You can then choose k to obtain a set of the desired size.
+
+  ::
+
+    TestRandomSetOfSubsets(1, 1, {"a"}) = <<1, 1, 1, 1, 1>>
+    \* Differenet executions will yield different results:
+    TestRandomSetOfSubsets(3, 4, {"a", "b", "c", "d", "e"}) = <<3, 3, 2, 2, 2>>
 
 
