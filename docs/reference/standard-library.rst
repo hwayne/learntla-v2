@@ -109,15 +109,16 @@ IsFiniteSet(set)
 
   ::
 
-  IsFiniteSet({1, 2, 3}) = TRUE
+  IsFiniteSet({2, 5, 7}) = TRUE
   IsFiniteSet(Seq({1})) = FALSE
+  IsFiniteSet(Nat) = FALSE
 
 Cardinality(set)
   The number of elements in ``set``.
 
   ::
 
-  Cardinality({1, 2, 3}) = 3
+  Cardinality({2, 5, 7}) = 3
 
 .. _bag:
 
@@ -129,34 +130,91 @@ Also known as multisets. Bags are functions items to "counts" of items. IE the s
 IsABag(func)
   Tests if ``func`` is a bag.
 
+  ::
+    IsABag([a |-> 3, b |-> 7]) = TRUE
+
 BagToSet(bag)
   Equivalent to ``DOMAIN bag``.
+
+  ::
+
+    BagToSet([a |-> 3, b |-> 7]) = {"a", "b"}
 
 SetToBag(set)
   Equivalent to ``[x \in set |-> 1]``.
 
+  ::
+
+    SetToBag({}) = <<>>
+    SetToBag({"a","b"}) = [a |-> 1, b |-> 1]
+    SetToBag({"a", "b", "a", "a"}) = [a |-> 1, b |-> 1]
+
 BagIn(e, bag)
   Equivalent to ``e \in DOMAIN bag``.
+
+  ::
+    BagIn("a", [a |-> 1, b |-> 1]) = TRUE
+    BagIn("c", [a |-> 1, b |-> 1]) = FALSE
 
 EmptyBag
   Equivalent to ``<<>>``.
 
+  ::
+    EmptyBag = <<>>
+
 ``bag1 (+) bag2``
   Bag addition. Creates a new bag where each key is the sum of the values of that key in each bag.
+
+  ::
+
+    [a |-> 1, b |-> 3] (+) EmptyBag = [a |-> 1, b |-> 3]
+    [a |-> 1, b |-> 3] (+) [a |-> 1] = [a |-> 2, b |-> 3]
+    [a |-> 1, b |-> 3] (+) [c |-> 1] = [a |-> 1, b |-> 3, c |-> 1]
 
 ``bag1 (-) bag2``
   Bad subtraction. If ``bag2[e] >= bag1[e]``, then ``e`` is dropped from the final bag's keys.
 
   .. todo:: Topic of a bag that goes Nat instead of Nat-0
+  
+  ::
+    \* Nothing changes:
+    [a |-> 1, b |-> 3] (-) EmptyBag = [a |-> 1, b |-> 3]
+    \* a is removed from the bag:
+    [a |-> 1, b |-> 3] (-) [a |-> 1] = [b |-> 3]
+    \* a is decreased by the amount of the second bag:
+    [a |-> 2, b |-> 3] (-) [a |-> 1] = [a |-> 1, b |-> 3]
+    \* c is not in the domain of the bag on the left, hence nothing changes:
+    [a |-> 1, b |-> 3] (-) [c |-> 1] = [a |-> 1, b |-> 3]
+
 
 BagUnion(set)
   Equivalent to ``bag1 (+) bag2 (+) ...``, where ``set = {bag1, bag2, ...}``.
 
+  ::
+
+    BagUnion({}) = <<>>
+    BagUnion({[a |-> 2]}) = [a |-> 2]
+    BagUnion({[a |-> 2], [b |-> 3]}) = [a |-> 2, b |-> 3]
+
+
 ``B1 \sqsubseteq B2``
-  B1 \sqsubseteq B2 iff, for all e, bag B2 has at least as many copies of e as bag B1 does. |fromdocs| 
+  B1 \sqsubseteq B2 iff, for all e in DOMAIN B1, bag B2 has at least as many copies of e as bag B1 does. |fromdocs| 
   
+  ::
+
+    [a |-> 2, b |-> 3] \sqsubseteq [b |-> 2] = FALSE
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 2, b |-> 2] = FALSE
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 2, b |-> 3] = TRUE
+    \* it doesn't matter if B2 has "c |-> 1", because has enough copies of a and b.
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 2, b |-> 3, c |-> 1] = TRUE
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 5, b |-> 3, c |-> 1] = TRUE
+
 SubBag(bag)
   The set of all subbags of ``bag``.
+
+  ::
+    SubBag(EmptyBag) = {<<>>}
+    SubBag([a |-> 2]) = {<<>>, [a |-> 1], [a |-> 2]}
 
 BagOfAll(Op(_), bag)
   If ``bag[e] = x``, then ``out[Op(e)] = x``. eg
@@ -170,10 +228,19 @@ BagOfAll(Op(_), bag)
 
 BagCardinality(bag)
   The sum of all values in ``bag``.
+  
+  ::
+
+    BagCardinality(EmptyBag) = 0
+    BagCardinality([a |-> 2]) = 2
+    BagCardinality([a |-> 5, b |-> 3, c |-> 1]) = 9
 
 CopiesIn(e, bag)
   If ``e`` is in ``bag``, then ``bag[e]``, otherwise 0.
-
+  
+  ::
+    CopiesIn("a", EmptyBag) = 0
+    CopiesIn("a", [a |-> 5, b |-> 3]) = 5
 
 .. _tlc_module:
 
