@@ -38,40 +38,77 @@ Int
 Sequences
 ============
 
-Required for `pluscal procedures <procedure>`.
+Required for `pluscal procedures <procedure>`. A sequence is like a list in any other language. You write it like `<<a, b, c>>`, and the elements can be any other values (including other sequences).
 
 Seq(set)
-  The set of all sequences where the values are all elements of ``set``. |noenumerate| 
+  The set of all sequences where the values are all elements of ``set``. As the output is computed in a lazy way, this is not memory/cpu intensive. |noenumerate|
+
+  ::  
+
+  Seq({a, b}) = Seq({a, b})
+  \* in practice, the output is a set that contains the values:
+  \* {<<>>, <<a>>, <<b>>, <<a, b>>, <<b, a>>}
 
 Len(seq)
   Length of ``seq``.
 
+  ::
+
+    Len(<<1, 2, 3>>) = 3
+
 Head(seq)
   First element of ``seq``.
+  ::
+
+    Head(<<1, 2, 3>>) = 1
 
 Tail(seq)
   All but first element of ``seq``.
+  ::
+
+    Tail(<<1, 2, 3>>) = <<2, 3>>
+
+
 
 ``seq1 \o seq2``
-  Sequence concatination.
+  Concatenates two sequences.
+  ::
+
+    <<1>> \o <<2 , 3>> = <<1, 2, 3>>
 
 Append(seq, e)
-  Equivalent to ``seq1 \o <<e>>``.
+  Append `e` at the end of `seq`. Equivalent to ``seq1 \o <<e>>``.
+  ::
+
+    Append(<<1, 2>>, 3) = <<1, 2, 3>>
   
 SubSeq(seq, m, n)
-  The sequence ``<<s[m], s[m+1], ... , s[n]>>``. |fromdocs|
+  Used to select the subsequence ``<<s[m], s[m+1], ... , s[n]>>`` in seq. |fromdocs|
+  ::
+
+    SubSeq(<<1, 2, 3>>, 1, 2) = <<1, 2>>
 
 SelectSeq(seq, Op(_))
-  Sequence filter.
+  Sequence filter using Op.
+::
+
+  IsEven(x) == x % 2
+  SelectSeq(<<1, 2, 3>>, IsEven) = <<2>>
 
 FiniteSets
 ============
 
 IsFiniteSet(set)
   Tests if ``set`` is not an infinite set.
+::
+
+  IsFiniteSet({1, 2, 3}) = TRUE
 
 Cardinality(set)
   The number of elements in ``set``.
+::
+
+  Cardinality({1, 2, 3}) = 3
 
 .. _bag:
 
