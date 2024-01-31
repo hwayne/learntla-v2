@@ -38,59 +38,65 @@ Int
 Sequences
 ============
 
-Required for `pluscal procedures <procedure>`. A sequence is like a list in any other language. You write it like `<<a, b, c>>`, and the elements can be any other values (including other sequences).
+Required for `pluscal procedures <procedure>`. A sequence is like a list in any other language. You write it like ``<<a, b, c>>``, and the elements can be any other values (including other sequences).
+Check the related section on :doc:`sequences </core/operators>`.
 
 Seq(set)
-  The set of all sequences where the values are all elements of ``set``. As the output is computed in a lazy way, this is not memory/cpu intensive. |noenumerate|
+  The set of all sequences where the values are all elements of ``set``. TLC has special code to check if you're testing membership, this is not memory/cpu intensive. |noenumerate|
 
   ::  
 
-  Seq({a, b}) = Seq({a, b})
-  \* in practice, the output is a set that contains the values:
-  \* {<<>>, <<a>>, <<b>>, <<a, b>>, <<b, a>>}
+    Seq({a, b}) = Seq({a, b})
+    \* in practice, the output is a set that contains all sequences made from 'a's and 'b's, 
+    \* so it also includes the sequence <<a, a, a, a, b, a, b>> for example. That's why it's nonenumerable.
 
 Len(seq)
   Length of ``seq``.
 
   ::
 
-    Len(<<1, 2, 3>>) = 3
+    Len(<<2, 4, 6>>) = 3
 
 Head(seq)
   First element of ``seq``.
+
   ::
 
     Head(<<1, 2, 3>>) = 1
 
 Tail(seq)
   All but first element of ``seq``.
+
   ::
 
     Tail(<<1, 2, 3>>) = <<2, 3>>
 
 
-
 ``seq1 \o seq2``
   Concatenates two sequences.
+
   ::
 
     <<1>> \o <<2 , 3>> = <<1, 2, 3>>
 
 Append(seq, e)
   Append `e` at the end of `seq`. Equivalent to ``seq1 \o <<e>>``.
+
   ::
 
     Append(<<1, 2>>, 3) = <<1, 2, 3>>
   
 SubSeq(seq, m, n)
-  Used to select the subsequence ``<<s[m], s[m+1], ... , s[n]>>`` in seq. |fromdocs|
+  Used to select the subsequence ``<<s[m], s[m+1], ... , s[n]>>`` in seq. Indices are inclusive. |fromdocs|
+
   ::
 
-    SubSeq(<<1, 2, 3>>, 1, 2) = <<1, 2>>
+    SubSeq(<<7, 8, 9>>, 1, 2) = <<7, 8>>
 
 SelectSeq(seq, Op(_))
   Sequence filter using Op.
-::
+
+  ::
 
   IsEven(x) == x % 2
   SelectSeq(<<1, 2, 3>>, IsEven) = <<2>>
@@ -100,13 +106,16 @@ FiniteSets
 
 IsFiniteSet(set)
   Tests if ``set`` is not an infinite set.
-::
+
+  ::
 
   IsFiniteSet({1, 2, 3}) = TRUE
+  IsFiniteSet(Seq({1})) = FALSE
 
 Cardinality(set)
   The number of elements in ``set``.
-::
+  
+  ::
 
   Cardinality({1, 2, 3}) = 3
 
