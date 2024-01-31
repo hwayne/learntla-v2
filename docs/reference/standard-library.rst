@@ -114,7 +114,7 @@ IsFiniteSet(set)
 
 Cardinality(set)
   The number of elements in ``set``.
-  
+
   ::
 
   Cardinality({1, 2, 3}) = 3
@@ -313,3 +313,23 @@ JsonSerialize(absoluteFilename, value)
 
 JsonDeserialize(absoluteFilename)
   Imports a JSON object from a file.
+
+
+Randomization
+============
+This module defines operators for choosing pseudo-random subsets of a set.  It is useful for inductive invariance checking, where the 
+operators appear only in the initial predicate.  However, it may have other uses.
+
+RandomSubset(k, S)
+  Where k is a Natural number, and S is a set. Selects a randomly chosen subset of S containing k elements where 0 < k < Cardinality(set).
+  ::
+    RandomSubset(1, {"a"}) = {"a"}
+
+RandomSetOfSubsets(k, n, S)
+  Where k and n are Natural numbers and S is a set. Pseudo-randomly chosen set of subsets of S
+
+TestRandomSetOfSubsets(k, n, S)
+  Where k and n are Natural numbers and S is a set. It yields a sequence of five values that are the cardinality of the set of subsets produced by five 
+  executions of RandomSetOfSubsets(k, n, S).
+
+
