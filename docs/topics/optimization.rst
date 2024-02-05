@@ -93,7 +93,7 @@ As we'll see later, ``writer`` is essentially an inefficient means of picking a 
   - * ``[s: S, t: T]`` (:ref:`struct set <struct_set>`)
     * :math:`|S|*|T|`
   - * ``[S -> T]``
-    * :math:`|B|^{|A|}`
+    * :math:`|T|^{|S|}`
   - * ``[1..n -> S]`` (:ref:`sequence set <function_set>`)
     * :math:`|S|^n`
 
