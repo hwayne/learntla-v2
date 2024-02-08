@@ -38,31 +38,70 @@ Int
 Sequences
 ============
 
-Required for `pluscal procedures <procedure>`.
+Required for `pluscal procedures <procedure>`. A sequence is like a list in any other language. You write it like ``<<a, b, c>>``, and the elements can be any other values (including other sequences).
+Check the related section on :doc:`sequences </core/operators>`.
 
 Seq(set)
-  The set of all sequences where the values are all elements of ``set``. |noenumerate| 
+  The set of all sequences where the values are all elements of ``set``. TLC has special code to check if you're testing membership, this is not memory/cpu intensive. |noenumerate|
+
+  ::  
+
+    <<a>>          \in Seq({a, b})
+    <<a, b>>       \in Seq({a, b})
+    <<a, b, b, a>> \in Seq({a, b})
+    \* in practice, the output is a set that contains all sequences made from 'a's and 'b's, 
+    \* so it also includes the sequence <<a, a, a, a, b, a, b>> for example. That's why it's nonenumerable.
 
 Len(seq)
   Length of ``seq``.
 
+  ::
+
+    Len(<<2, 4, 6>>) = 3
+
 Head(seq)
   First element of ``seq``.
+
+  ::
+
+    Head(<<1, 2, 3>>) = 1
 
 Tail(seq)
   All but first element of ``seq``.
 
+  ::
+
+    Tail(<<1, 2, 3>>) = <<2, 3>>
+
+
 ``seq1 \o seq2``
-  Sequence concatination.
+  Concatenates two sequences.
+
+  ::
+
+    <<1>> \o <<2 , 3>> = <<1, 2, 3>>
 
 Append(seq, e)
-  Equivalent to ``seq1 \o <<e>>``.
+  Append ``e`` at the end of ``seq``. Equivalent to ``seq1 \o <<e>>``.
+
+  ::
+
+    Append(<<1, 2>>, 3) = <<1, 2, 3>>
   
 SubSeq(seq, m, n)
-  The sequence ``<<s[m], s[m+1], ... , s[n]>>``. |fromdocs|
+  Used to select the subsequence ``<<s[m], s[m+1], ... , s[n]>>`` in seq. Indices are inclusive. |fromdocs|
+
+  ::
+
+    SubSeq(<<7, 8, 9>>, 1, 2) = <<7, 8>>
 
 SelectSeq(seq, Op(_))
-  Sequence filter.
+  Sequence filter using Op.
+
+  ::
+
+    IsEven(x) == x % 2
+    SelectSeq(<<1, 2, 3>>, IsEven) = <<2>>
 
 FiniteSets
 ============
@@ -70,8 +109,18 @@ FiniteSets
 IsFiniteSet(set)
   Tests if ``set`` is not an infinite set.
 
+  ::
+
+    IsFiniteSet({2, 5, 7}) = TRUE
+    IsFiniteSet(Seq({1})) = FALSE
+    IsFiniteSet(Nat) = FALSE
+
 Cardinality(set)
   The number of elements in ``set``.
+
+  ::
+
+    Cardinality({2, 5, 7}) = 3
 
 .. _bag:
 
@@ -83,34 +132,96 @@ Also known as multisets. Bags are functions items to "counts" of items. IE the s
 IsABag(func)
   Tests if ``func`` is a bag.
 
+  ::
+
+    IsABag([a |-> 3, b |-> 7]) = TRUE
+
 BagToSet(bag)
   Equivalent to ``DOMAIN bag``.
+
+  ::
+
+    BagToSet([a |-> 3, b |-> 7]) = {"a", "b"}
 
 SetToBag(set)
   Equivalent to ``[x \in set |-> 1]``.
 
+  ::
+
+    SetToBag({}) = <<>>
+    SetToBag({"a","b"}) = [a |-> 1, b |-> 1]
+    SetToBag({"a", "b", "a", "a"}) = [a |-> 1, b |-> 1]
+
 BagIn(e, bag)
   Equivalent to ``e \in DOMAIN bag``.
+
+  ::
+
+    BagIn("a", [a |-> 1, b |-> 1]) = TRUE
+    BagIn("c", [a |-> 1, b |-> 1]) = FALSE
 
 EmptyBag
   Equivalent to ``<<>>``.
 
+  ::
+
+    EmptyBag = <<>>
+
 ``bag1 (+) bag2``
   Bag addition. Creates a new bag where each key is the sum of the values of that key in each bag.
+
+  ::
+
+    [a |-> 1, b |-> 3] (+) EmptyBag = [a |-> 1, b |-> 3]
+    [a |-> 1, b |-> 3] (+) [a |-> 1] = [a |-> 2, b |-> 3]
+    [a |-> 1, b |-> 3] (+) [c |-> 1] = [a |-> 1, b |-> 3, c |-> 1]
 
 ``bag1 (-) bag2``
   Bad subtraction. If ``bag2[e] >= bag1[e]``, then ``e`` is dropped from the final bag's keys.
 
   .. todo:: Topic of a bag that goes Nat instead of Nat-0
+  
+  ::
+
+    \* Nothing changes:
+    [a |-> 1, b |-> 3] (-) EmptyBag = [a |-> 1, b |-> 3]
+    \* a is removed from the bag:
+    [a |-> 1, b |-> 3] (-) [a |-> 1] = [b |-> 3]
+    \* a is decreased by the amount of the second bag:
+    [a |-> 2, b |-> 3] (-) [a |-> 1] = [a |-> 1, b |-> 3]
+    \* c is not in the domain of the bag on the left, hence nothing changes:
+    [a |-> 1, b |-> 3] (-) [c |-> 1] = [a |-> 1, b |-> 3]
+
 
 BagUnion(set)
   Equivalent to ``bag1 (+) bag2 (+) ...``, where ``set = {bag1, bag2, ...}``.
 
+  ::
+
+    BagUnion({}) = <<>>
+    BagUnion({[a |-> 2]}) = [a |-> 2]
+    BagUnion({[a |-> 2], [b |-> 3]}) = [a |-> 2, b |-> 3]
+
+
 ``B1 \sqsubseteq B2``
-  B1 \sqsubseteq B2 iff, for all e, bag B2 has at least as many copies of e as bag B1 does. |fromdocs| 
+  B1 \sqsubseteq B2 iff, for all e in DOMAIN B1, bag B2 has at least as many copies of e as bag B1 does. |fromdocs| 
   
+  ::
+
+    [a |-> 2, b |-> 3] \sqsubseteq [b |-> 2] = FALSE
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 2, b |-> 2] = FALSE
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 2, b |-> 3] = TRUE
+    \* it doesn't matter if B2 has "c |-> 1", because has enough copies of a and b.
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 2, b |-> 3, c |-> 1] = TRUE
+    [a |-> 2, b |-> 3] \sqsubseteq [a |-> 5, b |-> 3, c |-> 1] = TRUE
+
 SubBag(bag)
   The set of all subbags of ``bag``.
+
+  ::
+
+    SubBag(EmptyBag) = {<<>>}
+    SubBag([a |-> 2]) = {<<>>, [a |-> 1], [a |-> 2]}
 
 BagOfAll(Op(_), bag)
   If ``bag[e] = x``, then ``out[Op(e)] = x``. eg
@@ -124,10 +235,20 @@ BagOfAll(Op(_), bag)
 
 BagCardinality(bag)
   The sum of all values in ``bag``.
+  
+  ::
+
+    BagCardinality(EmptyBag) = 0
+    BagCardinality([a |-> 2]) = 2
+    BagCardinality([a |-> 5, b |-> 3, c |-> 1]) = 9
 
 CopiesIn(e, bag)
   If ``e`` is in ``bag``, then ``bag[e]``, otherwise 0.
+  
+  ::
 
+    CopiesIn("a", EmptyBag) = 0
+    CopiesIn("a", [a |-> 5, b |-> 3]) = 5
 
 .. _tlc_module:
 
@@ -198,7 +319,7 @@ TLCGet(val)
 
   .. from https://github.com/tlaplus/tlaplus/blob/master/tlatools/org.lamport.tlatools/src/tlc2/module/TLCGetSet.java
 
-  .. todo:: Write about using TLCGet for bounding models
+  ``TLCGet("level")`` can be used to :ref:`bound an unbound model <topic_unbound_models>`.
 
 TLCSet(i, val)
   Sets the value for ``TLCGet(i)``. ``i`` must be a positive integer. TLCSet can be called multiple times in the same step.
@@ -260,10 +381,68 @@ ToJson(val)
       \"<<TRUE, FALSE>>\":false,
       \* ...
 
-.. todo:: Explain randomization module when I understand the actual guarantees it gives
-
 JsonSerialize(absoluteFilename, value)
   Exports ``value`` as a JSON object to a file. 
 
 JsonDeserialize(absoluteFilename)
   Imports a JSON object from a file.
+
+
+Randomization
+=============
+
+This module defines operators for choosing pseudo-random subsets of a set. If you use this, **TLC will not check all possible states.** For example, consider the spec
+
+::
+
+  EXTENDS Integers, TLC, Randomization
+  VARIABLE x
+
+  Init == 
+      /\ x = 0
+
+  Next ==
+      \/ /\ x = 0
+         /\ x' \in {1, 2, 3}
+      \/ /\ PrintT(x)
+         /\ UNCHANGED x
+
+  \* Magic magic magic
+  Spec == Init /\ [][Next]_x
+
+Running this will print the numbers {0, 1, 2, 3}. If we replace ``{1, 2, 3}`` with ``RandomSubset(2, {1, 2, 3})``, then it will only print two of those three numbers, and *which two* may change from run to run. This makes ``Randomization`` useful for optimization, but you need to be careful.
+
+RandomSubset(k, S)
+  Returns a random size-k subset of S.
+
+  ::
+
+    RandomSubset(1, {"a"}) = {"a"}
+    \* Running multiple times will yield different subsets
+    RandomSubset(2, {"a", "b", "c"}) = {"b", "c"}
+    RandomSubset(2, {"a", "b", "c"}) = {"a", "c"}
+
+RandomSetOfSubsets(k, n, S)
+  Selects k random subsets of S, where each random subset has *on average* n elements. Since this process may result in some duplicate subsets, the operator can potentially return fewer than k subsets. This can also potentially return the empty set.
+
+  ::
+
+    RandomSetOfSubsets(1, 1, {"a"}) = {{"a"}}
+
+    \* Each element has a 3-in-5 chance of appearing in each subset
+    RandomSetOfSubsets(2, 3, {"a", "b", "c", "d", "e"}) = {{"a", "d", "c"}, {"a", "b", "e", "c"}}
+    RandomSetOfSubsets(2, 3, {"a", "b", "c", "d", "e"}) = {{"a", "e"}, {"d", "e", "b", "c"}}
+
+    \* Fewer than 4 results because it generated a duplicate
+    RandomSetOfSubsets(4, 1, {"a", "b"}) = {{}, {"b"}, {"a", "b"}}
+
+TestRandomSetOfSubsets(k, n, S)
+  Calls ``RandomSetOfSubsets(k, n, s)`` five times and returns the number of unique sets returned each time.
+
+  ::
+
+    TestRandomSetOfSubsets(1, 1, {"a"}) = <<1, 1, 1, 1, 1>>
+    \* Different executions will yield different results:
+    TestRandomSetOfSubsets(3, 4, {"a", "b", "c", "d", "e"}) = <<3, 3, 2, 2, 2>>
+
+
