@@ -283,15 +283,15 @@ I know this completed successfully because otherwise a big error bar would have 
 
 1. Since complicated models can take a long time to check, the "state space progress" tab updates roughly once a minute.
 
-  .. index:: diameter
+.. index:: diameter
 
-  2. Diameter is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
+2. Diameter is the length of the longest behavior. If TLC found a thousand behaviors with length 2 and one with length 20, the diameter will be reported as 20.
 
-  3. States found is how many system states the model checker has explored. This includes duplicate states the checker found in different paths.
+3. States found is how many system states the model checker has explored. This includes duplicate states the checker found in different paths.
 
-  4. The number of *unique* states found.
+4. The number of *unique* states found.
 
-  5. How many states TLC knows *for certain* it'll have to check. Some of these states will add more states to check, and so on and so forth.
+5. How many states TLC knows *for certain* it'll have to check. Some of these states will add more states to check, and so on and so forth.
 
 6. TLC stores explored states as hashes, this is the chance that there's a hash collision. In practice this never goes above one in a million billion and can be ignored.
 
