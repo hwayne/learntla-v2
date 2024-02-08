@@ -485,7 +485,7 @@ Ultimately we wrote about 75 lines of specification to test 20 lines of
 Go code. Over half the spec is channel logic which we can now reuse in
 other specs. Discounting those puts us a little closer, though I'll
 admit that a real TLA+ spec would be a lot longer because you'd be
-writing a lot more sanity checking properties. Noneless, writing the
+writing a lot more sanity checking properties. Nonetheless, writing the
 TLA+ version wouldn't be significantly more effort than writing the
 original version and could save you net time if it caught the deadlock
 before production.

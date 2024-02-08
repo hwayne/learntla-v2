@@ -80,7 +80,7 @@ I think that's enough of an introduction to invariants. Now let's write one that
 Testing Duplicates
 -------------------
 
-When the algorithm finishes, ``is_unique`` is either true or false. If it's true, then every indice of the value is unique. If it's false, then there must be duplicates. So we're looking at something like
+When the algorithm finishes, ``is_unique`` is either true or false. If it's true, then every index of the value is unique. If it's false, then there must be duplicates. So we're looking at something like
 
 ::
 

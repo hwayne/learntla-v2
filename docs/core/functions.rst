@@ -213,7 +213,7 @@ Then I could write ``assignment[t] := assignment[t] \union {cpu}`` to assign ``c
       /\ c \in assignments[t1] 
       => c \notin assignments[t2]
 
-We could also write this invariant by noticing that "tasks don't share cpus" is the same as saying "assignment sets are disjoint":
+We could also write this invariant by noticing that "tasks don't share CPUs" is the same as saying "assignment sets are disjoint":
 
 ::
 

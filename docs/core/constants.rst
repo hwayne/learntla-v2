@@ -183,4 +183,4 @@ Summary
 * Model values compare equal to themselves and nothing else. They are useful as sentinel values.
 * Sets of model values can be made into symmetry sets, which (usually) speeds up model checking.
 
-.. [#footnote-constant] This is different from how we use constant in programming languages, as well as other specification languages. AFAICT it's an idiosyncracy of TLA+. Constants as in "values that never change" are just 0-arity operators.
+.. [#footnote-constant] This is different from how we use constant in programming languages, as well as other specification languages. AFAICT it's an idiosyncrasy of TLA+. Constants as in "values that never change" are just 0-arity operators.

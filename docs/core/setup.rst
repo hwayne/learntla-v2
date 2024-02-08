@@ -108,7 +108,7 @@ Now running ``Eval`` will put "hello world!".
 .. index:: >>>
 .. _>>>_notation:
 
-Having a scratchfile is very useful and I recommend setting one up. In the guide itself I will occasionally post "expression evaluations" like this
+Having a scratch file is very useful and I recommend setting one up. In the guide itself I will occasionally post "expression evaluations" like this
 
 .. code:: none
 
