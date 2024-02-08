@@ -46,7 +46,9 @@ Seq(set)
 
   ::  
 
-    Seq({a, b}) = Seq({a, b})
+    <<a>>          \in Seq({a, b})
+    <<a, b>>       \in Seq({a, b})
+    <<a, b, b, a>> \in Seq({a, b})
     \* in practice, the output is a set that contains all sequences made from 'a's and 'b's, 
     \* so it also includes the sequence <<a, a, a, a, b, a, b>> for example. That's why it's nonenumerable.
 
@@ -80,7 +82,7 @@ Tail(seq)
     <<1>> \o <<2 , 3>> = <<1, 2, 3>>
 
 Append(seq, e)
-  Append `e` at the end of `seq`. Equivalent to ``seq1 \o <<e>>``.
+  Append ``e`` at the end of ``seq``. Equivalent to ``seq1 \o <<e>>``.
 
   ::
 
@@ -98,8 +100,8 @@ SelectSeq(seq, Op(_))
 
   ::
 
-  IsEven(x) == x % 2
-  SelectSeq(<<1, 2, 3>>, IsEven) = <<2>>
+    IsEven(x) == x % 2
+    SelectSeq(<<1, 2, 3>>, IsEven) = <<2>>
 
 FiniteSets
 ============
@@ -109,16 +111,16 @@ IsFiniteSet(set)
 
   ::
 
-  IsFiniteSet({2, 5, 7}) = TRUE
-  IsFiniteSet(Seq({1})) = FALSE
-  IsFiniteSet(Nat) = FALSE
+    IsFiniteSet({2, 5, 7}) = TRUE
+    IsFiniteSet(Seq({1})) = FALSE
+    IsFiniteSet(Nat) = FALSE
 
 Cardinality(set)
   The number of elements in ``set``.
 
   ::
 
-  Cardinality({2, 5, 7}) = 3
+    Cardinality({2, 5, 7}) = 3
 
 .. _bag:
 
@@ -131,6 +133,7 @@ IsABag(func)
   Tests if ``func`` is a bag.
 
   ::
+
     IsABag([a |-> 3, b |-> 7]) = TRUE
 
 BagToSet(bag)
@@ -153,6 +156,7 @@ BagIn(e, bag)
   Equivalent to ``e \in DOMAIN bag``.
 
   ::
+
     BagIn("a", [a |-> 1, b |-> 1]) = TRUE
     BagIn("c", [a |-> 1, b |-> 1]) = FALSE
 
@@ -160,6 +164,7 @@ EmptyBag
   Equivalent to ``<<>>``.
 
   ::
+
     EmptyBag = <<>>
 
 ``bag1 (+) bag2``
@@ -177,6 +182,7 @@ EmptyBag
   .. todo:: Topic of a bag that goes Nat instead of Nat-0
   
   ::
+
     \* Nothing changes:
     [a |-> 1, b |-> 3] (-) EmptyBag = [a |-> 1, b |-> 3]
     \* a is removed from the bag:
@@ -213,6 +219,7 @@ SubBag(bag)
   The set of all subbags of ``bag``.
 
   ::
+
     SubBag(EmptyBag) = {<<>>}
     SubBag([a |-> 2]) = {<<>>, [a |-> 1], [a |-> 2]}
 
@@ -239,6 +246,7 @@ CopiesIn(e, bag)
   If ``e`` is in ``bag``, then ``bag[e]``, otherwise 0.
   
   ::
+
     CopiesIn("a", EmptyBag) = 0
     CopiesIn("a", [a |-> 5, b |-> 3]) = 5
 
@@ -311,7 +319,7 @@ TLCGet(val)
 
   .. from https://github.com/tlaplus/tlaplus/blob/master/tlatools/org.lamport.tlatools/src/tlc2/module/TLCGetSet.java
 
-  .. todo:: Write about using TLCGet for bounding models
+  ``TLCGet("level")`` can be used to :ref:`bound an unbound model <topic_unbound_models>`.
 
 TLCSet(i, val)
   Sets the value for ``TLCGet(i)``. ``i`` must be a positive integer. TLCSet can be called multiple times in the same step.
@@ -381,41 +389,60 @@ JsonDeserialize(absoluteFilename)
 
 
 Randomization
-============
-This module defines operators for choosing pseudo-random subsets of a set.  It is useful for inductive invariance checking, where the 
-operators appear only in the initial predicate. However, it may have other uses.
+=============
+
+This module defines operators for choosing pseudo-random subsets of a set. If you use this, **TLC will not check all possible states.** For example, consider the spec
+
+::
+
+  EXTENDS Integers, TLC, Randomization
+  VARIABLE x
+
+  Init == 
+      /\ x = 0
+
+  Next ==
+      \/ /\ x = 0
+         /\ x' \in {1, 2, 3}
+      \/ /\ PrintT(x)
+         /\ UNCHANGED x
+
+  \* Magic magic magic
+  Spec == Init /\ [][Next]_x
+
+Running this will print the numbers {0, 1, 2, 3}. If we replace ``{1, 2, 3}`` with ``RandomSubset(2, {1, 2, 3})``, then it will only print two of those three numbers, and *which two* may change from run to run. This makes ``Randomization`` useful for optimization, but you need to be careful.
 
 RandomSubset(k, S)
-  Where k is a Natural number, and S is a set. Selects a randomly chosen subset of S containing k elements where 0 < k < Cardinality(set).
+  Returns a random size-k subset of S.
 
   ::
 
     RandomSubset(1, {"a"}) = {"a"}
     \* Running multiple times will yield different subsets
     RandomSubset(2, {"a", "b", "c"}) = {"b", "c"}
+    RandomSubset(2, {"a", "b", "c"}) = {"a", "c"}
 
 RandomSetOfSubsets(k, n, S)
-  Where k and n are Natural numbers and S is a set. Pseudo-randomly chosen set of subsets of S, or in other words a randomly chosen subset of SUBSET S.
-  Each element T of this set is a subset of S.Each such T is chosen so that each element of S has a probability n / Cardinality(S) of being in T.
-  Thus, the average number of elements in each chosen subset T is n. The set RandomSetOfSubsets(k, n, S) is obtained by making k such choices of T .
+  Selects k random subsets of S, where each random subset has *on average* n elements. Since this process may result in some duplicate subsets, the operator can potentially return fewer than k subsets. This can also potentially return the empty set.
 
   ::
 
     RandomSetOfSubsets(1, 1, {"a"}) = {{"a"}}
-    \* Different executions will yield differenet results:
+
+    \* Each element has a 3-in-5 chance of appearing in each subset
     RandomSetOfSubsets(2, 3, {"a", "b", "c", "d", "e"}) = {{"a", "d", "c"}, {"a", "b", "e", "c"}}
+    RandomSetOfSubsets(2, 3, {"a", "b", "c", "d", "e"}) = {{"a", "e"}, {"d", "e", "b", "c"}}
+
+    \* Fewer than 4 results because it generated a duplicate
+    RandomSetOfSubsets(4, 1, {"a", "b"}) = {{}, {"b"}, {"a", "b"}}
 
 TestRandomSetOfSubsets(k, n, S)
-  Where k and n are Natural numbers and S is a set. It yields a sequence of five values that are the cardinality of the set of subsets produced by five 
-  executions of RandomSetOfSubsets(k, n, S).
-  For constant values of k, n, and S, you can enter TestRandomSetOfSubsets(k, n, S) in the Evaluate Constant Expression section of a TLC model in the 
-  TLA+ Toolbox. Running TLC will then tell you the approximate number of elements in the set of subsets produced by RandomSetOfSubsets for these parameters.
-  You can then choose k to obtain a set of the desired size.
+  Calls ``RandomSetOfSubsets(k, n, s)`` five times and returns the number of unique sets returned each time.
 
   ::
 
     TestRandomSetOfSubsets(1, 1, {"a"}) = <<1, 1, 1, 1, 1>>
-    \* Differenet executions will yield different results:
+    \* Different executions will yield different results:
     TestRandomSetOfSubsets(3, 4, {"a", "b", "c", "d", "e"}) = <<3, 3, 2, 2, 2>>
 
 
