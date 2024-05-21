@@ -387,7 +387,7 @@ Summary
 
 * Functions map a set of values to another set of values. They are written ``[x \in set |-> Expr(x)]`` and called with ``f[value]``.
 
-    * Functions can also be written ``[x, y \in Set1, z \in Set2 |-> P(x, y, z)`` and called with ``f[a, b, c]`` (or ``f[<<a, b, c>>]``).
+    * Functions can also be written ``[x, y \in Set1, z \in Set2 |-> P(x, y, z)]`` and called with ``f[a, b, c]`` (or ``f[<<a, b, c>>]``).
 
 * The domain of a function, the set we're mapping from, is ``DOMAIN f``.
 
