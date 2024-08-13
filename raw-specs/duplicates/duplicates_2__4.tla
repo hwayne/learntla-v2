@@ -23,7 +23,7 @@ define
     
   IsUnique(s) == 
     \A i, j \in 1..Len(s): 
-      i # j => seq[i] # seq[j]
+      i # j => s[i] # s[j]
 
   IsCorrect == pc = "Done" => is_unique = IsUnique(seq)
 end define; 
