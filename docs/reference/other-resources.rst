@@ -13,7 +13,7 @@ Learning Resources
 `TLA+ Video Course`_
   A video course by the inventor of TLA+.
 
-.. https://apalache.informal.systems/docs/idiomatic/index.html
+.. https://apalache-mc.org/docs/idiomatic/index.html
 
 `Introduction to Formal Pragmatic Modeling <https://elliotswart.github.io/pragmaticformalmodeling/>`__
   A fantastic dive into three large production-level specifications. Assumes some TLA+ knowledge.
@@ -69,7 +69,7 @@ Other Tooling
 
 .. _apalache:
 
-`Apalache <https://apalache.informal.systems/>`__
+`Apalache <https://apalache-mc.org/>`__
   An alternate model checker for TLA+. It uses symbolic model checking instead of enumerating all states. 
 
   (Disclosure, I'm currently doing some consulting work for Informal Systems.)
