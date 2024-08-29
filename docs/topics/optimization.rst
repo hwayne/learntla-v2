@@ -388,7 +388,7 @@ You can also do this with :ref:`state <state_constraint>` and :ref:`action <acti
 Try Apalache
 ------------
 
-`Apalache <https://apalache.informal.systems/>`__ is an alternative model checker for TLA+. It doesn't `support the full language yet <https://apalache.informal.systems/docs/apalache/features.html>`__ but I've heard that it's faster on some kinds of specs. It also has a `type system <https://apalache.informal.systems/docs/tutorials/snowcat-tutorial.html>`__!
+`Apalache <https://apalache-mc.org/>`__ is an alternative model checker for TLA+. It doesn't `support the full language yet <https://apalache-mc.org/docs/apalache/features.html>`__ but I've heard that it's faster on some kinds of specs. It also has a `type system <https://apalache-mc.org/docs/tutorials/snowcat-tutorial.html>`__!
 
 Fiddle with JVM Arguments
 -------------------------
