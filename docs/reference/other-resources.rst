@@ -21,7 +21,7 @@ Learning Resources
 Reference Material
 -------------------
 
-`TLA+ Language Reference Manual <https://apalache.informal.systems/docs/lang/index.html>`__
+`TLA+ Language Reference Manual <https://apalache-mc.org/docs/lang/index.html>`__
   A formal reference by the developers of `Apalache <apalache>`. Work in progress.
 
 `TLA+ Version 2 <https://lamport.azurewebsites.net/tla/tla2-guide.pdf>`__
