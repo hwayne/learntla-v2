@@ -40,7 +40,7 @@ The ``(_)`` is the number of arguments you want in advance. So for a 2-parameter
   SumSeq(s) == IF s = <<>> THEN 0 ELSE
     Head(s) + SumSeq(Tail(s))
 
-Easy. In fac we can put the ``RECURSIVE`` part inside a `LET`, to make a helper op:
+Easy. In fact we can put the ``RECURSIVE`` part inside a `LET`, to make a helper op:
 
 ::
 
