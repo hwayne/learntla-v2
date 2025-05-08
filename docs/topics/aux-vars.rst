@@ -66,7 +66,7 @@ It can be hard to tell in the error trace which branch was taken; you have to in
   or
     \* ...
 
-Then you can see which path you took in ``pc``. But doing this adds a lot of extra concurrency to your spec— at best exploding the state space, at worst changing the spec semantics!
+Then you can see which path you took in ``pc``. But doing this adds a lot of extra concurrency to your spec — at best exploding the state space, at worst changing the spec semantics!
 
 What we want is to enrich the error traces without changing the spec semantics. This is a great place for an aux var.
 

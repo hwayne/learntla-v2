@@ -52,7 +52,7 @@ Config Format
 
 The model checking config language is a special DSL for using TLC from the command line. It's what the toolbox abstracts away on the backend.
 
-All config files need a ``SPECIFICATION {spec}`` line, where ``Spec`` is whatever action encompasses your initial and next states. By convention, this should be called ``Spec``, but this isn't required— useful if you want different configs to test different variations of your system.
+All config files need a ``SPECIFICATION {spec}`` line, where ``Spec`` is whatever action encompasses your initial and next states. By convention, this should be called ``Spec``, but this isn't required — useful if you want different configs to test different variations of your system.
 
 Invariants you want to check must be prefixed with ``INVARIANT``, temporal properties with ``PROPERTY``. Both can have commas, eg ``INVARIANT TypeInvariant, IsSafe`` is a valid line. Unlike in the toolbox, you **cannot** make expressions invariants— they must be named operators.
 

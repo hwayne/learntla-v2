@@ -194,7 +194,7 @@ We can check that these are equivalent by writing a quantifier check:
 Using Functions
 -----------------
 
-Why functions over operators? We rarely use functions for computations— operators are far superior for that. Functions are important as *values*. We can assign them to variables and manipulate them like any other value.
+Why functions over operators? We rarely use functions for computations - operators are far superior for that. Functions are important as *values*. We can assign them to variables and manipulate them like any other value.
 
 In a spec I once wrote, I had to assign tasks to CPUs. Some tasks needed to be assigned to many CPUs, but each CPU should only have one task. In that spec, the best solution was to store assignments as functions, where each task mapped to a set of CPUs.
 

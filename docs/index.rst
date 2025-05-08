@@ -20,7 +20,7 @@
 Learn TLA+
 ====================================
 
-Most software flaws come from one of two places. A code bug is when the code doesn't match our design— for example, an off-by-one error, or a null dereference. We have lots of techniques for finding code bugs. But what about design flaws? When it comes to bugs in our designs, we're just taught to "think about it really hard".
+Most software flaws come from one of two places. A code bug is when the code doesn't match our design — for example, an off-by-one error, or a null dereference. We have lots of techniques for finding code bugs. But what about design flaws? When it comes to bugs in our designs, we're just taught to "think about it really hard".
 
 TLA+ is a "formal specification language", a means of designing systems that lets you directly test those designs. Developed by the Turing award-winner Leslie Lamport, TLA+ has been endorsed by companies like AWS, Microsoft, and CrowdStrike. TLA+ doesn't replace our engineering skill but *augments* it. With TLA+ we can design systems faster and more confidently. Check out the `chapter_overview` to see an example of this in practice.
 

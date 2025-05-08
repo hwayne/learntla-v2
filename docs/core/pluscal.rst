@@ -168,7 +168,7 @@ if
   end if;
 
 
-You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block— some conditionals can have labels and others do not. **However, if any branch has a label, you must follow the entire block with a label**. To see why, consider the following:
+You *can* put labels inside an if block. This is useful if your logic branches, and some of the branches represent more complicated behavior. You don't need to balance the labels in an if block — some conditionals can have labels and others do not. **However, if any branch has a label, you must follow the entire block with a label**. To see why, consider the following:
 
 ::
 

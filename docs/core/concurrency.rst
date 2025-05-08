@@ -118,7 +118,7 @@ Notice how many more states we have. The ``while`` loop is nonatomic, and every 
   :diff: reader_writer/rw_local_1/reader_writer.tla
   :ss: rw_local_2
 
-As with global variables, we can have multiple starting local variables— ``i \in 1..3`` is valid.
+As with global variables, we can have multiple starting local variables — ``i \in 1..3`` is valid.
 
 In practice, local variables aren't often used, as operators in `define <define>` blocks can't use them. This means you can't easily typecheck them, write helper operators, etc. Generally we use local variables as :ref:`auxiliary <topic_aux_vars>` or "bookkeeping" variables, like loop iterations and model bounding.
 
@@ -197,11 +197,11 @@ In real systems you often have *bounded* queues, which prevent writes when they'
   :diff: reader_writer/rw_many_3/reader_writer.tla
   :ss: rw_await
 
-``await`` is a *restriction* on when the label can run. The label can only run— the state "committed", if you will— if *every* ``await`` statement in the label evaluates to true.
+``await`` is a *restriction* on when the label can run. The label can only run — the state "committed", if you will — if *every* ``await`` statement in the label evaluates to true.
 
 .. note:: `with <nondet_with>` ``x \in set`` also blocks if the set is empty.
 
-.. warning:: ``await`` interacts a little oddly with variable updates— it will be based on the updated value if directly embedded but not if the variable is used via a ``defined`` operator. This is due to the PlusCal->TLA+ translation grammar. As a general precaution, don't use updated variables in ``await`` statements.
+.. warning:: ``await`` interacts a little oddly with variable updates — it will be based on the updated value if directly embedded but not if the variable is used via a ``defined`` operator. This is due to the PlusCal->TLA+ translation grammar. As a general precaution, don't use updated variables in ``await`` statements.
 
 .. index:: Deadlocks
 .. _deadlock:

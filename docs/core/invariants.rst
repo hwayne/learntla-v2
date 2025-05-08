@@ -44,7 +44,7 @@ This operator needs to know about the ``is_unique`` variable, so we have to put 
   :diff: duplicates/3/duplicates.tla
   :ss: duplicates_many_inputs
 
-To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at every possible state. All of the invariants passing looks the same as us not having any invariants— TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``is_unique = TRUE``:
+To check this, we add it as an :doc:`invariant <setup>`. TLC will check it at every possible state. All of the invariants passing looks the same as us not having any invariants — TLC will only do something interesting if the invariant fails. Here's what happens if we instead change the invariant to ``is_unique = TRUE``:
 
 .. figure:: img/invariants_fail.png
 
@@ -95,7 +95,7 @@ We can simplify this by just using ``=``.
 Now the next two steps:
 
 1. Actually implement ``IsUnique(s)``.
-2. Currently, ``is_unique`` starts out true and flips to false if we find a duplicate. If the sequence *isn't* unique, then the invariant would fail as soon as we start— ``is_unique`` is true but ``IsUnique(seq)`` will be false. So we only want to check the "invariant" after the algorithm finishes running.
+2. Currently, ``is_unique`` starts out true and flips to false if we find a duplicate. If the sequence *isn't* unique, then the invariant would fail as soon as we start — ``is_unique`` is true but ``IsUnique(seq)`` will be false. So we only want to check the "invariant" after the algorithm finishes running.
 
 Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is possible though, so let's start with that, then cover (2), the double back to doing ``IsUnique`` properly.
 

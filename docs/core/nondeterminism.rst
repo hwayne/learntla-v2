@@ -173,7 +173,7 @@ One way we use nondeterminism is to simulate user input. Our system has to handl
 .. spec:: calculator/1/calculator.tla
   :name: calculator_1
 
-.. todo:: This example might work better if I break the ``while`` into a separate step. But that's for after v2 is up and I'm polishing— might be totally unnecessary.
+.. todo:: This example might work better if I break the ``while`` into a separate step. But that's for after v2 is up and I'm polishing — might be totally unnecessary.
 
 Two things to notice:
 
