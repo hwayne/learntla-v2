@@ -67,7 +67,7 @@ If you have a spec with constants, you should put constraining assumptions on th
 Model Values
 ----------------
 
-That takes care of ordinary assignments, what about "model values"? Model values are a special type of value in TLA+. A model value has no operations and can only be tested for equality, and is only equal to itself. IE
+That takes care of ordinary assignments, what about "model values"? Model values are a special type of value in TLA+. A model value has no operations and can only be tested for equality, and is only equal to itself.
 
 .. code-block::
 

@@ -303,7 +303,7 @@ The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of
 .. _trans:
 .. tip::
 
-  The PlusCal to TLA+ translator is very simple. If we were writing the TLA+ from scatch, we could use a helper action to these transitions look cleaner:
+  The PlusCal to TLA+ translator is very simple. If we were writing the TLA+ from scatch, we could use a helper action to make these transitions look cleaner:
 
   ::
 

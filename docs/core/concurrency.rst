@@ -35,7 +35,7 @@ Now let's add another process that reads from the queue.
 
   Different processes cannot share label names.
 
-The writer has a single action, ``Write``, and the reader has a single action, ``Read``. We haven't specified which should happen first, so the two can happen in any order. Either we (1) write to the queue and then read from it, or (2) read from the queue and then write to it.
+The writer has a single action, ``AddToQueue``, and the reader has a single action, ``ReadFromQueue``. We haven't specified which should happen first, so the two can happen in any order. Either we (1) write to the queue and then read from it, or (2) read from the queue and then write to it.
 
 Behavior (2) doesn't make any sense: how can we read from the queue if there's nothing already in it? And if you try to run the spec, TLC will raise this as an error.
 
@@ -155,7 +155,7 @@ This is equivalent to putting the label in a ``while TRUE`` loop.
 
 .. rubric:: ``self``
 
-In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1`` and ``2``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 6.
+In process sets we have a special keyword ``self``, which retrieves the "value" of the process. So for the writers, the values of the process would be ``1``, ``2`` and ``3``. If we tell the writers to put ``self`` on instead of ``1``, we'd expect the end total to be 6.
 
 .. spec:: reader_writer/rw_many_3/reader_writer.tla
   :diff: reader_writer/rw_many_2/reader_writer.tla
@@ -249,7 +249,7 @@ The thread-local variable is an "internal implementation detail", and I don't th
 
 Before we continue, I want to recommend a good exercise to improve your modeling skills. You know, based on how I'm presenting this example, that this will fail. But *how* will it fail? Before you run the model checker, try to figure out what error it will give you and why. See if you can guess the number of steps it will take, and what order the processes will run.
 
-This is will help you get better with TLA+, but it does something else, too. As you write more specifications, you'll start to see errors *without* running the model checker. One reason why concurrency is so unintuitive is we normally don't get rapid feedback on the mistakes we make. If you had a race condition to your code, it could be days or weeks before bites you, and then it takes even longer to fully understand it. Whereas in a specification, the model checker shows you immediately. This trains your intuition for race conditions much more quickly than normal.
+This is will help you get better with TLA+, but it does something else, too. As you write more specifications, you'll start to see errors *without* running the model checker. One reason why concurrency is so unintuitive is we normally don't get rapid feedback on the mistakes we make. If you had a race condition to your code, it could be days or weeks before it bites you, and then it takes even longer to fully understand it. Whereas in a specification, the model checker shows you immediately. This trains your intuition for race conditions much more quickly than normal.
 
 ...
 

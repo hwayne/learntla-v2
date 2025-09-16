@@ -97,7 +97,7 @@ Now the next two steps:
 1. Actually implement ``IsUnique(s)``.
 2. Currently, ``is_unique`` starts out true and flips to false if we find a duplicate. If the sequence *isn't* unique, then the invariant would fail as soon as we start — ``is_unique`` is true but ``IsUnique(seq)`` will be false. So we only want to check the "invariant" after the algorithm finishes running.
 
-Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is possible though, so let's start with that, then cover (2), the double back to doing ``IsUnique`` properly.
+Writing ``IsUnique(s)`` *properly* requires learning some things. Writing it *improperly* is possible though, so let's start with that, then cover (2), then double back to doing ``IsUnique`` properly.
 
 Here's the improper solution for ``IsUnique``:
 

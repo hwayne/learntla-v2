@@ -148,7 +148,7 @@ Simulation Mode
   Simulation mode runs never stop, even if they've exhaustively checked the state space. You have to end them manually.
 
 Profiling
-  Two types of profiling are available. "Action Enablement" records how often each partiuclar action was called. This is shown in the model checking results, under statistics. You can use this to check if an action is never enabled, in which case you have a bug in your spec.
+  Two types of profiling are available. "Action Enablement" records how often each particular action was called. This is shown in the model checking results, under statistics. You can use this to check if an action is never enabled, in which case you have a bug in your spec.
 
   "On" does full profiling: how often each operator is called, how often each branch of an expression was used, and how much each operator cost to invoke. You can use this to help with optimizing models.
 

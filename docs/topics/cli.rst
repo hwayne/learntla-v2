@@ -103,7 +103,7 @@ Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace E
      incx |-> x + 1]
   =====
 
-If we add ``ALIAS Alias`` to our config file, then the error trace will show the values of x, ``nextx``, and ``incx`` in the error output.
+If we add ``ALIAS Alias`` to our config file, then the error trace will show the values of ``x``, ``nextx``, and ``incx`` in the error output.
 
 .. note:: The alias *replaces* the standard error output. If you don't include some variables in the alias, then they won't show on the error output either.
 

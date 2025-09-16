@@ -102,7 +102,7 @@ The set we're mapping from, ``S``, is the **domain** of the function, and can be
 1. A sequence is just a function where the domain is ``1..n``.
 2. A struct is just a function where the domain is a set of strings.
 
-But functions are a more general than that, and can map *any* set of values. For example, we can have pairs of numbers in the domain of the function.
+But functions are more general than that, and can map *any* set of values. For example, we can have pairs of numbers in the domain of the function.
 
 ::
   
@@ -271,11 +271,11 @@ Some more examples of function sets:
 
     Encountered "\|->" in line X, column Y
 
-  In a function set, then you probably wrote ``[S |-> T]`` instead of ``[S -> T]``. Similarly, if you get
+  in a function set, then you probably wrote ``[S |-> T]`` instead of ``[S -> T]``. Similarly, if you get
 
     Encountered "->" in line X, column Y
 
-  In a function, then you probably wrote ``[x \in S -> T]`` instead of ``[x \in S |-> T]``. Don't worry, everybody gets the two mixed up at some point.
+  in a function, then you probably wrote ``[x \in S -> T]`` instead of ``[x \in S |-> T]``. Don't worry, everybody gets the two mixed up at some point.
 
 .. rubric:: Example: Sorting
 
@@ -320,7 +320,7 @@ To figure out if two sequences have the same number of each element, let's defin
   CountMatching(f, val) ==
     Cardinality({key \in DOMAIN f: f[key] = val})
     
-Then we just need to test to check this over every element in the sequence:
+Then we just need to check this over every element in the sequence:
 
 ::
 

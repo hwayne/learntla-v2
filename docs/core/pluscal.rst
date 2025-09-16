@@ -328,7 +328,7 @@ To check both, we can use multiple starting states. TLA+ doesn't just let us ass
 .. spec:: duplicates/2/duplicates.tla
   :diff: duplicates/1/duplicates.tla
 
-The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>`` as the value of ``seq``. More specifically, does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know.
+The model checker will now check *both* ``<<1, 2, 3, 2>>`` and ``<1, 2, 3, 4>>`` as the value of ``seq``. More specifically, it does two complete runs, one for each possible value. If either complete run, or :dfn:`behavior`, would lead to an error, TLC will let us know.
 
 .. figure:: graphs/duplicates_2.gv.png
 
@@ -372,7 +372,7 @@ Summary
 
 - Specifications have variables. These can either be a fixed value (using ``=``) or an element in a set (using ``\in``). Any TLC value can be a variable.
 
-  - If an element of a set, then TLC will test the model on *every possible starting state*.
+  - If a variable is an element of a set, then TLC will test the model on *every possible starting state*.
 - PlusCal is a language that makes writing specifications easier.
 
   - In the PlusCal algorithm body, variables are updated with ``:=``. ``=`` is comparison.
