@@ -184,7 +184,7 @@ For all these reasons, it's time to introduce :dfn:`quantifiers`. A quantifier i
 
   \A x \in {1, 2, 3}: x < 2
 
-That's equivalent to "every element in the set is less than 2", which is false. If I wrote ``\E x \in {1, 2, 3}: x < 3``, that would instead be true.
+That's equivalent to "every element in the set is less than 2", which is false. If I wrote ``\E x \in {1, 2, 3}: x <= 3``, that would instead be true.
 
 .. warning:: 
 
