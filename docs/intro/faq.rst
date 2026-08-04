@@ -38,7 +38,7 @@ What does TLA stand for?
 How does TLA+ test specifications?
 ==================================
 
-There are a few different tools that work with TLA+, but the main one is called TLC, which does :term:`model checking`. That means it checker takes your specification and requirements, then checks *every possible behavior of the spec* against those requirements.
+There are a few different tools that work with TLA+, but the main one is called TLC, which does :term:`model checking`. That means a checker takes your specification and requirements, then checks *every possible behavior of the spec* against those requirements.
 
 This gives much more thorough coverage than something like unit tests. Consider a system where three processes each do four sequential steps in parallel. There are 34,650 possible interleavings and 415,800 possible distinct states. TLC will check every single one.
 
