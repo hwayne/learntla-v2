@@ -52,7 +52,7 @@ Config Format
 
 The model checking config language is a special DSL for using TLC from the command line. It's what the toolbox abstracts away on the backend.
 
-All config files need a ``SPECIFICATION {spec}`` line, where ``Spec`` is whatever action encompasses your initial and next states. By convention, this should be called ``Spec``, but this isn't required— useful if you want different configs to test different variations of your system.
+All config files need a ``SPECIFICATION {spec}`` line, where ``Spec`` is whatever action encompasses your initial and next states. By convention, this should be called ``Spec``, but this isn't required — useful if you want different configs to test different variations of your system.
 
 Invariants you want to check must be prefixed with ``INVARIANT``, temporal properties with ``PROPERTY``. Both can have commas, eg ``INVARIANT TypeInvariant, IsSafe`` is a valid line. Unlike in the toolbox, you **cannot** make expressions invariants— they must be named operators.
 
@@ -103,7 +103,7 @@ Finally, we have ``ALIAS``. This lets us effectively simulate the `Error Trace E
      incx |-> x + 1]
   =====
 
-If we add ``ALIAS Alias`` to our config file, then the error trace will show the values of x, ``nextx``, and ``incx`` in the error output.
+If we add ``ALIAS Alias`` to our config file, then the error trace will show the values of ``x``, ``nextx``, and ``incx`` in the error output.
 
 .. note:: The alias *replaces* the standard error output. If you don't include some variables in the alias, then they won't show on the error output either.
 

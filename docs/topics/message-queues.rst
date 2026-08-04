@@ -16,7 +16,7 @@ For now let's consider a perfect FIFO queue, with the operations to push new mes
 
 The ``queue`` variable is generally a `sequence <sequence>` of message `structs <struct>`. To write a new message, we just do ``queue := Append(queue, msg)`` (or ``queue' = ...``). There's an easy way and a hard way to read from a queue.
 
-The *easy* way is to destructively update the queue, so that the newest message is always ``Head(queue)``. This is conceptually simple, and it's easy to do things like check if the queue is empty and write a type invariant (see below). The one downside is that you can't write properties that rely on the queue's history, like "the same message is never enqueued twice". You'd be able to see if duplicates are on the queue at the same time, but not that a duplicae was pushed after the original was popped. At least, not without a `history queue <topic_aux_vars>`. 
+The *easy* way is to destructively update the queue, so that the newest message is always ``Head(queue)``. This is conceptually simple, and it's easy to do things like check if the queue is empty and write a type invariant (see below). The one downside is that you can't write properties that rely on the queue's history, like "the same message is never enqueued twice". You'd be able to see if duplicates are on the queue at the same time, but not that a duplicate was pushed after the original was popped. At least, not without a `history queue <topic_aux_vars>`.
 
 The *hard* way is to make the queue immutable. You append to the queue like normal, but have an additional ``i`` variable representing the next message to read. To "pop" a message, increment ``i``. This is harder to work with, adds variable bloat, and makes a lot of simple queue checks (like getting the length) more awkward. The one upside is that you preserve the whole queue history, making generalized properties easier.
 
@@ -58,7 +58,7 @@ Use a set of structs.
   QueueType == Seq(MessageType)
   MessageType == [id: Nat, from: Writer, data: DataType]
 
-Having an ``id`` field is good practice because it lets you distinguish difference messages with the same content (make sure to have a ``MaxId`` constant!). ``DataType`` can also be a struct. If you want to have multiple distinct kinds of messages, add an additional ``msg`` field and push the details of the data to the ``data`` struct. Then make the ``MessageType`` a union of the possible subtypes:
+Having an ``id`` field is good practice because it lets you distinguish different messages with the same content (make sure to have a ``MaxId`` constant!). ``DataType`` can also be a struct. If you want to have multiple distinct kinds of messages, add an additional ``msg`` field and push the details of the data to the ``data`` struct. Then make the ``MessageType`` a union of the possible subtypes:
 
 ::
 

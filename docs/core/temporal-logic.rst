@@ -66,7 +66,7 @@ At the beginning of the behavior, we pick one online server. That server is then
 
 .. figure:: graphs/liveness.gv.png
 
-  The behavior sequence 1-2-3 breaks violates our safety property, even though no state is individually a "bad state".
+  The behavior sequence 1-2-3 violates our safety property, even though no state is individually a "bad state".
 
 In summary, adding ``[]`` to the language lets us represent all invariants, and a host of other properties too.
 
@@ -105,7 +105,7 @@ Not so fast! There's a *third* thing the orchestrator can do: it can crash. In T
 
 .. note:: Why haven't we see this before? Because up until now we've only had invariants, which are only violated by "bad states": particular configurations of variables that break the invariants. Stutter steps don't change the values of anything, so a stutter step can never break an invariant. Here's the first time it can break things by *preventing* us from reaching a good state.
 
-TLA+ allows infinite stutter steps because it is fundamentally a worst-case scenario language. IN reality, systems always crash. If we do not *explicitly say* a system can't crash, TLA+ will assume the system can crash at the worst possible time.
+TLA+ allows infinite stutter steps because it is fundamentally a worst-case scenario language. In reality, systems always crash. If we do not *explicitly say* a system can't crash, TLA+ will assume the system can crash at the worst possible time.
 
 .. figure:: graphs/stuttering.gv.png
 

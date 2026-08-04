@@ -298,12 +298,12 @@ Looking it at piece-by-piece:
                       /\ pc' = [pc EXCEPT ![self] = "Done"]
 
 
-The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of it, it sets ``pc[self]`` to "Done". That's how we emulate sequentiality in TLA+ algorithm— it's like going from the "IncCounter" label to the "Done" label. Each label corresponds to exactly one action, and vice versa.
+The action is only enabled when ``pc[self] = "IncCounter"``, and then as part of it, it sets ``pc[self]`` to "Done". That's how we emulate sequentiality in TLA+ algorithm — it's like going from the "IncCounter" label to the "Done" label. Each label corresponds to exactly one action, and vice versa.
 
 .. _trans:
 .. tip::
 
-  The PlusCal to TLA+ translator is very simple. If we were writing the TLA+ from scatch, we could use a helper action to these transitions look cleaner:
+  The PlusCal to TLA+ translator is very simple. If we were writing the TLA+ from scatch, we could use a helper action to make these transitions look cleaner:
 
   ::
 

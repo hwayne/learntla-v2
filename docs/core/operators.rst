@@ -527,5 +527,5 @@ Summary
   - We can map and filter sets.
 
 
-.. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...
 .. [#iff] There's also ``A <=> B`` for "A and B are both true or both false", but it's the same thing as writing ``A = B``.
+.. [#except-strings] Except strings. Well actually there is a keyword, ``STRING``, but it represents all possible strings, which is an infinitely large set, so...

@@ -67,7 +67,7 @@ If you have a spec with constants, you should put constraining assumptions on th
 Model Values
 ----------------
 
-That takes care of ordinary assignments, what about "model values"? Model values are a special type of value in TLA+. A model value has no operations and can only be tested for equality, and is only equal to itself. IE
+That takes care of ordinary assignments, what about "model values"? Model values are a special type of value in TLA+. A model value has no operations and can only be tested for equality, and is only equal to itself.
 
 .. code-block::
 
@@ -113,7 +113,7 @@ We can also assign constants to sets of model values. Put it in as a normal set,
   S <- [model value] {s1, s2, s3, s4, s5}
 
 
-Sets of model values will become *extremely* useful when we start modeling :doc:`concurrency <concurrency>`, but there's still one cool trick we can do with them right now. If you run the model with that value of ``S``, you will get 4,375 states total— the same as if you did ``S <- 1..5``. But notice this other option below the "set of model values" bar:
+Sets of model values will become *extremely* useful when we start modeling :doc:`concurrency <concurrency>`, but there's still one cool trick we can do with them right now. If you run the model with that value of ``S``, you will get 4,375 states total — the same as if you did ``S <- 1..5``. But notice this other option below the "set of model values" bar:
 
 .. image:: img/symmetry_set.png
 
