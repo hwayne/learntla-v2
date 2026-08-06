@@ -314,7 +314,7 @@ These are all the interesting invariants I see right now. But I also see some pr
 
 For those reasons alone, invariants are insufficient to fully model our system properties. But there's a deeper problem here. ``AllDone`` only says that if the processes finish, we have the correct result. If we change the spec in a way that lets a thread noop-loop forever, then the invariant trivially passes. What we really want to say is that no matter what, *eventually* we get the correct result.
 
-This is an entirely different class of requirement! Instead of saying that our system does the wrong thing, we want to show it always does the right thing. In the :doc:`next chapter <temporal-logic>`, we'll learn how to write and check these kinds of properties.
+This is an entirely different class of requirement! Instead of only saying that our system does not do the wrong thing, we want to show it always does the right thing. In the :doc:`next chapter <temporal-logic>`, we'll learn how to write and check these kinds of properties.
 
 
 Summary
